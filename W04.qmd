@@ -1,0 +1,1221 @@
+---
+title: "W#04: Math refresh, Function Programming, Descriptive Statistics"
+author: Jan Lorenz
+format: 
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: true
+    preview-links: true
+    logo: img/ConstructorUniversity.png
+    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+---
+
+```{r}
+#| include = FALSE
+library(nycflights13)
+```
+
+# Math: Sets and vectors
+
+## Definition: Sets and vectors {background-color="aquamarine"}
+
+A **set** is mathematical model for the collection of *different* things.
+
+Examples
+
+- $\{3, \text{Hi}, 😀, 🖖 \}$
+- $\{1,3,5\}$
+- The natural numbers $\mathbb{N} = \{1, 2, 3, \dots\}$ (infinite!)
+- $\{\mathtt{"EWR"}, \mathtt{"LGA"}, \mathtt{"JFK"}\}$   
+these are `origin` airports in `flights`
+
+
+## Math: Sets and vectors {background-color="aquamarine"}
+
+A **vector** is an ordered collection of things (**elements**) of the same type. 
+
+In a set each thing can only be once and the order does not matter!
+
+$\{1,3,5\} = \{3,5,1\} = \{1,1,1,3,5,5\}$
+
+For vectors:
+
+$[1\ 3\ 5] \neq [3\ 5\ 1]$ because we compare component-wise, so we cannot even compare with those with the vector $[1\ 1\ 1\ 3\ 5\ 5]$
+
+## Math: Set operations  {background-color="aquamarine"}
+
+Sets $A = \{🐺, 🦊, 🐶\}$ and $B = \{🐶, 🐷, 🐹\}$, $C = \{🐶, 🐷\}$:
+
+::: {.incremental}
+- Set **union** $A \cup B$ = \{🐺, 🦊, 🐶, 🐷, 🐹\}    
+  $x \in A \cup B$ when $x \in A$ `|` (or) $x\in B$
+- Set **intersection** $A \cap B$ = \{🐶\}    
+  $x \in A \cap B$ when $x \in A$ `&` (and) $x\in B$
+- Set **difference** $A \setminus B = \{🐺, 🦊\}$, $B \setminus A$ = \{🐷, 🐹\}
+- **Subset**: $C \subset B$ but $C \not\subset A$
+:::
+
+. . . 
+
+See the analogy of set operations and logical operations. 
+
+## Set operations in R {.smaller}
+
+`unique` shows the set of elements in a vector
+
+```{r}
+#| echo: true
+unique(flights$origin)
+```
+
+. . . 
+
+`setequal` tests for set equality
+
+```{r}
+#| echo: true
+setequal(c("EWR","LGA","JFK"), c("EWR","EWR","LGA","JFK"))
+```
+
+. . . 
+
+`union`, `intersect`, `setdiff` treat vectors as sets and operate as expected
+
+```{r}
+#| echo: true
+union(1:5,3:7)
+intersect(1:5,3:7)
+setdiff(1:5,3:7)
+```
+
+## Sets: Take-away
+
+- Set operations are not a daily business in data science
+- However, they are useful for data exploration!
+- Knowing set operations is key to understand **probability**:
+    - A *sample space* is the *set of all atomic events*. 
+    - An *event* is a *subset of the sample* 
+    - A *probability function* assigns probabilities to all events. 
+
+
+# Math: Functions
+
+## Functions mathematically  {background-color="aquamarine"}
+
+Consider two sets: The *domain* $X$ and the *codomain* $Y$. 
+
+A *function* $f$ assigns each element of $X$ to exactly one element of $Y$.
+
+:::{.columns}
+:::{.column width="50%"}
+We write $f : X \to  Y$  
+["$f$ maps from $X$ to $Y$"]{style="color:blue;"}
+
+and $x \mapsto f(x)$   
+["$x$ maps to $f(x)$"]{style="color:blue;"}
+
+The yellow set is called the *image* of $f$.
+:::
+:::{.column }
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Codomain2.SVG/375px-Codomain2.SVG.png)
+:::
+:::
+
+:::{.aside}
+Picture from wikipedia. 
+:::
+
+## Conventions in mathematical text  {.smaller background-color="aquamarine"}
+
+- Sets are denoted with capital letters. 
+- Their elements with (corresponding) small letters. 
+- Functions are often called $f$, $g$, or $h$. 
+- Other terminology can be used! 
+
+. . . 
+
+**Important in math**
+
+- When you read math:     
+  *Keep track of what objects are! What are functions, what are sets, what are numbers, ...*^[Watch: How to read math <https://www.youtube.com/watch?v=Kp2bYWRQylk>] 
+- When you write math: *Define what objects are.*
+
+
+
+
+## Is this a mathematical function? {.smaller}
+
+![](img/function_lionfilter_input_Jan.jpeg){height=200} $\ \mapsto\ $ ![](img/function_lionfilter_Jan.jpg){height=200} 
+
+*Input* from $X = \{\text{A picture where a face can be recognized}\}$. 
+
+*Function:* Upload input at <https://funny.pho.to/lion/> and download output.
+
+*Output* from $Y = \{\text{Set of pictures with a specific format.}\}$ 
+
+. . . 
+
+Yes, it is a function. **Important: Output is the same for the same input!**
+
+
+## Is this a mathematical function? {.smaller}
+
+*Input* a text snippet. *Function:* Enter text at <https://www.craiyon.com>. *Output* a picture.
+
+:::{.columns}
+:::{.column width="50%"}
+![](img/craiyon-DataScienceConcepts.png){height=430} 
+:::
+:::{.column }
+Other examples:
+
+- "Nuclear explosion broccoli"
+- "The Eye of Sauron reading a newspaper"
+- "The legendary attack of Hamster Godzilla wearing a tiny Sombrero"
+
+![](img/Nuclear exposion broccoli.png){height=150}
+![](img/The Eye of Sauron reading a newspaper.png){height=150} 
+![](img/The legendary attack of Hamster Godzilla wearing a tiny Sombrero.png){height=150} 
+:::
+:::
+
+. . .
+
+No, it is not a function. It has nine outcomes and these change when run again. 
+
+## Graphs of functions   {.smaller background-color="aquamarine"}
+
+- A function is characterized by the set all possible pairs $(x,f(x))$. 
+- This is called its *graph*. 
+- When domain and codomain are real numbers then the graph can be shown in a *Cartesian coordinate system*. Example $f(x) = x^3 - x^2$
+
+```{r}
+library(tidyverse)
+ggplot() + geom_function(fun = function(x) x^3 - x^2) + xlim(c(-0.5,1.5)) + xlab("x") + theme_minimal(base_size = 20)
+```
+
+<!-- ## Higher dimensional input and output -->
+
+<!-- Function can take $m$-dimensional input vectors and $n$-dimensional output vectors $f : \mathbb{R}^m \to \mathbb{R}^n$.  -->
+
+
+## Some functions $f: \mathbb{R} \to \mathbb{R}$ {.smaller background-color="aquamarine"}
+
+:::{.columns}
+:::{.column width="50%"}
+$f(x) = x$ *identity function*   
+[$f(x) = x^2$ *square function*]{style="color:orange;"}  
+[$f(x) = \sqrt{x}$ *square root function*]{style="color:blue;"}   
+[$f(x) = e^x$ *exponential function*]{style="color:red;"}   
+[$f(x) = \log(x)$ *natural logarithm*]{style="color:green;"}
+
+- Square and square root function are *inverse* of each other. Exponential and natural logarithm, too. 
+
+$\sqrt[2]{x}^2 = \sqrt[2]{x^2} = x$, $\log(e^x) = e^{\log(x)} = x$
+
+- Identity function graph as mirror axis. 
+:::
+:::{.column width="50%"}
+```{r}
+#| fig-width: 5
+ggplot() + 
+  geom_function(fun = function(x) x) + 
+  geom_function(fun = function(x) exp(x), color = "red") + 
+  geom_function(fun = function(x) log(x), color = "green") + 
+  geom_function(fun = function(x) x^2, color = "orange") + 
+  geom_function(fun = function(x) sqrt(x), color = "blue") + 
+  coord_fixed() +
+  xlim(c(-3,3))+ ylim(c(-3,3)) + xlab("x") + theme_minimal(base_size = 20)
+```
+:::
+:::
+
+:::{.aside}
+$e$ is *Euler's number* $2.71828\dots$. The natural logarithm is also often called $\ln$. The square root function is $\mathbb{R}_{\geq 0} \to \mathbb{R}$, the logarithm $\mathbb{R}_{>0} \to \mathbb{R}$.   
+:::
+
+
+## Shifts and scales {.smaller background-color="aquamarine"}
+
+How can we shift, stretch, or shrink a graph vertically and horizontally?
+
+. . . 
+
+:::{.panel-tabset}
+
+### $y$-shift
+:::{.columns}
+:::{.column width="50%"}
+Add a constant to the function. 
+
+$f(x) = x^3 - x^2 \leadsto$
+
+$\quad f(x) = x^3 - x^2 + a$
+
+For $a =$ [-2]{style="color:red;"}, [-0.5]{style="color:darkred;"}, [0.5]{style="color:darkblue;"}, [2]{style="color:blue;"}
+::: 
+:::{.column}
+```{r}
+#| fig-height: 8.5
+a = c(1, 0.5, 2, -0.5, -2)
+ggplot() + geom_function(fun = function(x) x^3 - x^2, size = 2, alpha = 0.5) +
+  geom_function(fun = function(x) x^3 - x^2 +a[2], color = "blue4", size = 2) +
+  geom_function(fun = function(x) x^3 - x^2 +a[3], color = "blue", size = 2) +
+  geom_function(fun = function(x) x^3 - x^2 +a[4], color = "red4") +
+  geom_function(fun = function(x) x^3 - x^2 +a[5], color = "red") +
+  coord_fixed() + xlim(c(-3,3)) + ylim(c(-3,3)) + xlab("x") + theme_minimal(base_size = 24)
+```
+:::
+:::
+
+### $x$-shift
+:::{.columns}
+:::{.column width="50%"}
+**Subtract** a constant from all $x$ within the function definition.
+
+$f(x) = x^3 - x^2 \leadsto$
+
+$\quad f(x) = (x - a)^3 - (x - a)^2$
+
+For $a =$ [-2]{style="color:red;"}, [-0.5]{style="color:darkred;"}, [0.5]{style="color:darkblue;"}, [2]{style="color:blue;"}
+
+**Attention:**  
+Shifting $a$ units to the right needs subtracting $a$!   
+You can think of the *coordinate system being shifted* in direction $a$ while the graph stays.
+::: 
+:::{.column}
+```{r}
+#| fig-height: 8.5
+a = c(1, 0.5, 2, -0.5, -2)
+ggplot() + geom_function(fun = function(x) x^3 - x^2, size = 2, alpha = 0.5) +
+  geom_function(fun = function(x) (x-a[2])^3 - (x-a[2])^2, color = "blue4", size = 2) +
+  geom_function(fun = function(x) (x-a[3])^3 - (x-a[3])^2, color = "blue", size = 2) +
+  geom_function(fun = function(x) (x-a[4])^3 - (x-a[4])^2, color = "red4") +
+  geom_function(fun = function(x) (x-a[5])^3 - (x-a[5])^2, color = "red") +
+  coord_fixed() + xlim(c(-3,3)) + ylim(c(-3,3)) + xlab("x") + theme_minimal(base_size = 24)
+```
+:::
+:::
+
+### $y$-scale
+:::{.columns}
+:::{.column width="50%"}
+**Multiply** a constant to all $x$ within the function definition.
+
+$f(x) = x^3 - x^2 \leadsto$
+
+$\quad f(x) = a(x^3 - x^2)$
+
+For $a =$ [-2]{style="color:red;"}, [-0.5]{style="color:darkred;"}, [0.5]{style="color:darkblue;"}, [2]{style="color:blue;"}
+
+Negative numbers flip the graph around the $x$-axis. 
+::: 
+:::{.column}
+```{r}
+#| fig-height: 8.5
+a = c(1, 0.5, 2, -0.5, -2)
+ggplot() + geom_function(fun = function(x) x^3 - x^2, size = 2, alpha = 0.5) +
+  geom_function(fun = function(x) a[2]*((x)^3 - (x)^2), color = "blue4", size = 2) +
+  geom_function(fun = function(x) a[3]*((x)^3 - (x)^2), color = "blue", size = 2) +
+  geom_function(fun = function(x) a[4]*((x)^3 - (x)^2), color = "red4") +
+  geom_function(fun = function(x) a[5]*((x)^3 - (x)^2), color = "red") +
+  coord_fixed() + xlim(c(-3,3)) + ylim(c(-3,3)) + xlab("x") + theme_minimal(base_size = 24)
+```
+:::
+:::
+
+### $x$-scale
+:::{.columns}
+:::{.column width="50%"}
+**Divide** all $x$ within the function definition by a constant.
+
+$f(x) = x^3 - x^2 \leadsto$
+
+$\quad f(x) = (x/a)^3 - (x/a)^2$
+
+For $a =$ [-2]{style="color:red;"}, [-0.5]{style="color:darkred;"}, [0.5]{style="color:darkblue;"}, [2]{style="color:blue;"}
+
+Negative numbers flip the graph around the $y$-axis. 
+
+**Attention:**
+Stretching needs a division by $a$!   
+You can think of the *coordinate system being stretched* multiplicatively by $a$ while the graph stays.
+::: 
+:::{.column}
+```{r}
+#| fig-height: 8.5
+a = c(1, 0.5, 2, -0.5, -2)
+ggplot() + geom_function(fun = function(x) x^3 - x^2, size = 2, alpha = 0.5) +
+  geom_function(fun = function(x) (x/a[2])^3 - (x/a[2])^2, color = "blue4", size = 2) +
+  geom_function(fun = function(x) (x/a[3])^3 - (x/a[3])^2, color = "blue", size = 2) +
+  geom_function(fun = function(x) (x/a[4])^3 - (x/a[4])^2, color = "red4") +
+  geom_function(fun = function(x) (x/a[5])^3 - (x/a[5])^2, color = "red") +
+  coord_fixed() + xlim(c(-3,3)) + ylim(c(-3,3)) + xlab("x") + theme_minimal(base_size = 24)
+```
+:::
+:::
+
+::: 
+
+## Math: Polynomials and exponentials {.smaller background-color="aquamarine"}
+
+A *polynomial* is a function which is composed of (many) addends of the form $ax^n$ for different values of $a$ and $n$. 
+
+In an *exponential* the $x$ appears in the exponent. 
+
+$f(x) = x^3$ vs. [$f(x) = e^x$]{style="color:red;"}
+
+```{r}
+library(patchwork)
+g1 = ggplot() + 
+  geom_function(fun = function(x) x^3) +
+  geom_function(fun = function(x) exp(x)-1, color = "red") +
+  xlim(c(0,2)) + xlab("x") + theme_minimal(base_size = 18)
+g2 = g1 + xlim(c(0,5))
+g1 + g2 + plot_annotation(title = "Same function but different of axis limits!")
+```
+
+**For $x\to\infty$, any exponential will finally "overtake" any polynomial.**
+
+
+# Math: Exponentiations and logarithms
+
+## Rules for exponentiation {background-color="aquamarine"}
+
+:::{.columns}
+:::{.column width="20%"}
+$x^0$  
+
+$0^x$  
+
+$0^0$  
+
+$(x\cdot y)^a$  
+
+$x^{-a}$, $x^{-1}$  
+
+$x^\frac{a}{b}$, $x^\frac{1}{2}$  
+
+$(x^a)^b$  
+
+::: 
+:::{.column}
+:::{.fragment fragment-index=1}
+$x^0 = 1$
+:::
+:::{.fragment fragment-index=2}
+$0^x = 0$ for $x\neq 0$
+:::
+:::{.fragment fragment-index=3}
+$0^0 = 1$ (discontinuity in $0^x$)
+:::
+:::{.fragment fragment-index=4}
+$(x\cdot y)^a = x^a\cdot x^b$  
+:::
+:::{.fragment fragment-index=5}
+$x^{-a} = \frac{1}{x^a}$, $x^{-1} = \frac{1}{x}$  
+:::
+:::{.fragment fragment-index=6}
+$x^\frac{a}{b} = \sqrt[b]{x^a} = (\sqrt[b]{x})^a,\ x^\frac{1}{2} = \sqrt{x}$  
+:::
+:::{.fragment fragment-index=7}
+$(x^a)^b = x^{a\cdot b} = (x^b)^a \neq x^{a^b} = x^{(a^b)}$   
+Example: $(4^3)^2 = 64^2 = 4096 \qquad 4^{3^2} = 4^9 = 262144$
+:::
+:::
+:::
+
+
+## More rules for exponentiation {.smaller background-color="aquamarine"}
+
+:::{.columns}
+:::{.column width="20%"}
+$x^a\cdot x^b$
+::: 
+:::{.column width="79%"}
+:::{.fragment}
+$x^a\cdot x^b = x^{a+b}$  Multiplication of powers (with same base $x$) becomes addition of exponents.
+:::
+:::
+:::
+
+. . . 
+
+:::{.columns}
+:::{.column width="20%"}
+$(x+y)^a$
+::: 
+:::{.column width="79%"}
+:::{.fragment}
+No "simple" form! For $a$ integer use *binomial expansion*.
+$(x+y)^2 = x^2 + 2xy + y^2$  
+$(x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$  
+$(x+y)^n = \sum_{k=0}^n {n \choose k} x^{n-k}y^k$
+:::
+:::
+:::
+
+. . . 
+
+**Pascal's triangle**
+
+:::{.columns}
+:::{.column width="40%"}
+![From wikipedia](https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif){height=200} 
+:::
+:::{.column}
+We meet it again in **Probability**:   
+A row represents a *binomial distribution*   
+Which tends to mimics the *normal distribution* more and more  
+and is related to the *central limit theorem*
+:::
+:::
+
+
+## Logarithms {.smaller background-color="aquamarine"}
+
+**Definition:** A *logarithm* of $a$ for some base $b$ is the value of the exponent which brings $b$ to $a$: 
+$\log_b(a) = x$ means that $b^x =a$
+
+**Most common:**
+
+- $\log_{10}$ useful for plotting data in logarithmic scales because the numbers can be interpreted easiest (number of decimals of the original values)
+- $\log_{e}$ *natural logarithm* (also $\log$ or $\ln$) useful in calculus and statistics because of nice mathematical properties
+
+. . .
+
+:::{.columns}
+:::{.column width="30%"}
+$\log_{10}(100) =$
+::: 
+:::{.column}
+:::{.fragment}
+$2$
+:::
+:::
+:::
+
+. . .
+
+:::{.columns}
+:::{.column width="30%"}
+$\log_{10}(1) =$
+::: 
+:::{.column}
+:::{.fragment}
+$0$
+:::
+:::
+:::
+
+. . .
+
+:::{.columns}
+:::{.column width="30%"}
+$\log_{10}(6590) =$
+::: 
+:::{.column}
+:::{.fragment}
+$3.818885$
+:::
+:::
+:::
+
+. . .
+
+:::{.columns}
+:::{.column width="30%"}
+$\log_{10}(0.02) =$
+::: 
+:::{.column}
+:::{.fragment}
+$-1.69897$
+:::
+:::
+:::
+
+
+## Rules for logarithms {.smaller background-color="aquamarine"}
+
+Usually only one base is used in the same context, because changing base is easy:
+
+$\log_c(x) = \frac{\log_b(x)}{\log_b(c)} = \frac{\log(x)}{\log(c)}$
+
+
+
+
+:::{.columns}
+:::{.column width="20%"}
+$\log(x\cdot y)$
+::: 
+:::{.column width="79%"}
+:::{.fragment}
+$= \log(x) + \log(y)$ Multiplication $\to$ addition.
+:::
+:::
+:::
+
+. . .
+
+:::{.columns}
+:::{.column width="20%"}
+$\log(x^y)$
+::: 
+:::{.column width="75%"}
+:::{.fragment}
+$= y\cdot\log(x)$
+:::
+:::
+
+
+:::
+:::{.columns}
+:::{.column width="20%"}
+$\log(x+y)$
+::: 
+:::{.column width="75%"}
+:::{.fragment}
+complicated!
+:::
+:::
+:::
+
+. . . 
+
+Also changing bases for powers is easy: $x^y = (e^{\log(x)})^y = e^{y\cdot\log(x)}$
+
+# Functions in Programming
+
+## Input $\to$ output {.smaller} 
+
+![](https://upload.wikimedia.org/wikipedia/commons/3/3b/Function_machine2.svg)
+
+- Metaphorically, a function is a *machine* or a *blackbox* that for each input yields an output. 
+- The inputs of a function are also called **arguments**. 
+
+. . . 
+
+Difference to math terminolgy:   
+**The output need not be the same for the same input.**
+
+:::{.aside}
+Picture from wikipedia. 
+:::
+
+
+
+## Function as objects in R {.scrollable .smaller}
+ 
+`function` is a class of an object in R
+
+```{r}
+#| echo: true
+class(c)
+class(ggplot2::ggplot)
+```
+
+Calling the function without brackets writes its code or some information. 
+```{r}
+#| echo: true
+sd # This function is written in R, and we see its code
+c # This function is not written in R but is a R primitive
+ggplot2::ggplot # This function is not written solely in R
+```
+
+## Define your own functions! (in R) {.smaller}
+
+```{r}
+#| echo: true
+add_one <- function(x) {
+  x + 1 
+}
+# Test it
+add_one(10)
+```
+
+The skeleton for a function definition is
+
+```R
+function_name <- function(input){
+  # do something with the input(s)
+  # return something as output
+}
+```
+
+- `function_name` should be a short but evocative verb. 
+- The `input` can be empty or one or more `name` or `name=expression` terms as arguments.
+- The last evaluated expression is returned as output. 
+- When the body or the function is only one line `{}` can be omitted. For example   
+`add_one <- function(x) x + 1`
+
+
+## Flexibility of inputs and outputs {.smaller}
+
+- Arguments can be specified by `name=expression` or just `expression` (then they are taken as the next argument)
+- Default values for arguments can be provided. Useful when an argument is a parameter. 
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+mymult <- function(x = 2, y = 3) x * (y - 1)
+mymult(3,4)
+```
+
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+mymult()
+```
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+mymult(y = 3, x = 6)
+```
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+mymult(5)
+```
+```{r}
+#| echo: true
+#| output-location: column-fragment
+mymult(y = 2)
+```
+
+. . . 
+
+For complex output use a list
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+mymult <- function(x = 2, y = 3) 
+  list(out1 = x * (y - 1), out2 = x * (y - 2))
+mymult()
+```
+
+## Vectorized functions {.smaller}
+
+Mathematical functions in programming are often "vectorized": 
+
+- Operations on a single value are applied to each component of the vector. 
+- Operations on two values are applied "component-wise" (for vectors of the same length)
+
+```{r}
+#| echo: true
+log10(c(1,10,100,1000,10000))
+c(1,1,2) + c(3,1,0)
+(0:5)^2
+```
+
+## Recall: Vector creation functions
+
+```{r}
+#| echo: true
+1:10
+seq(from=-0.5, to=1.5, by=0.1)
+seq(from=0, to=1, length.out=10)
+rep(1:3, times=3)
+rep(1:3, each=3)
+```
+
+## Plotting and transformation {.smaller}
+
+**Vector creation and vectorized functions** are key for plotting and transformation. 
+
+```{r}
+#| echo: true
+func <- function(x) x^3 - x^2    # Create a vectorized function
+data <- tibble(x = seq(-0.5,1.5,by =0.01)) |>    # Vector creation
+	mutate(y = func(x))        # Vectorized transformation using the function
+data |> ggplot(aes(x,y)) + geom_line() + theme_minimal(base_size = 20)
+```
+
+## Conveniently `ggplot`ing functions
+
+```{r}
+#| echo: true
+#| fig.width: 5
+#| fig.height: 3
+ggplot() +
+ geom_function(fun = log) +
+ geom_function(fun = function(x) 3*x - 4, color = "red") +
+ theme_minimal(base_size = 20)
+```
+
+::: aside
+Line 3 shows another important concept: **anonymous functions**. The function `function(x) 3*x - 4` is defined *on the fly* without a name.
+:::
+
+
+## Conditional statements  {.smaller}
+
+- `if` executes a code block if a condition is `TRUE`
+- `else` executes a code block if the condition is `FALSE`
+
+Skeleton
+
+```R
+if (condition) {
+  # code block
+} else {
+  # code block
+}
+```
+
+Example: A piece-wise defined function
+
+:::: {.columns}
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+
+piecewise <- function(x) {
+  if (x < 2) {
+    0.5 * x
+  } else {
+    x - 1
+  }
+}
+```
+:::
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+piecewise(1)
+piecewise(2)
+piecewise(3)
+```
+:::
+
+::::
+
+. . . 
+
+Problem: `piecewise` is not vectorized. `piecewise(c(1,2,3))` does not work.
+
+## Vectorized operations with `map` {.smaller}
+
+- `map` functions apply a function to each element of a vector.^[In `tidyverse` they are provided in the package `purrr`]
+- `map(.x, .f, ...)` applies the function `.f` to each element of the vector of `.x` and returns a *list*.
+- `map_dbl` returns a double *vector* (other variants exist)
+
+:::: {.columns}
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+
+map(c(1,2,3), piecewise) 
+map_dbl(c(1,2,3), piecewise) 
+
+piecewise_vectorized <- 
+ function(x) map_dbl(x, piecewise) 
+```
+:::
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+piecewise_vectorized(seq(0,3,by = 0.5))
+tibble(x = seq(0,3,by = 0.5)) |> 
+  mutate(y = piecewise_vectorized(x)) |> 
+  ggplot(aes(x,y)) + geom_line() + theme_minimal(base_size = 20)
+```
+
+:::
+
+::::
+
+## `map` and `reduce` {.smaller}
+
+Instead of a list or a vector `reduce` returns a single value.   
+To that end it needs a function with two arguments. It applies it to the first two elements of the vector, then to the result and the third element, then the result and the fourth element, and so on.
+
+```{r}
+#| echo: true
+1:10 |> reduce(\(x,y) x + y)
+```
+Note: `\(x)` is a short way to write an anonymous function as `function(x)`. 
+
+. . . 
+
+Example: Reading multiple files
+
+:::: {.columns}
+
+::: {.column width='50%'}
+Instead of 
+
+```R
+a <-read_csv("a.csv")
+b <-read_csv("b.csv")
+c <-read_csv("c.csv")
+d <-read_csv("d.csv")
+e <-read_csv("e.csv")
+f <-read_csv("f.csv")
+g <-read_csv("g.csv")
+
+bind_rows(a,b,c,d,e,f,g)
+```
+:::
+
+::: {.column width='50%'}
+Write
+```R
+letter[1:7] |> 
+ map(\(x) read_csv(paste0(x,".csv"))) |> 
+ reduce(bind_rows)
+```
+:::
+
+::::
+
+
+
+
+## Function programming: Take away
+
+- Functions are the most important building blocks of programming.
+- Functions can and often should be vectorized.
+- Vectorized functions are the basis for plotting and transformation.
+- `map` functions are powerful tools for iterative tasks!    
+    *Expect to not get the idea first but to love them later.*
+
+
+# Descriptive Statistics 
+
+
+## Descriptive vs. Inferential Statistics {background-color="khaki"}
+
+- The process of using and analyzing **summary statistics**
+  - Solely concerned with properties of the **observed data**.
+
+- Distinct from **inferential statistics**: 
+  - Inference of properties of an underlying distribution given sampled observations from a larger population. 
+  
+  
+**Summary Statistics** are used to summarize a set of observations to communicate the largest amount of information as simple as possible. 
+
+
+## Summary statistics {background-color="khaki"}
+
+*Univariate* (for one variable)
+
+- Measures of **location**, or *central tendency*
+- Measures of statistical **dispersion** 
+- Measure of the **shape** of the distribution like skewness or kurtosis
+
+*Bivariate* (for two variables)
+
+- Measures of statistical dependence or **correlation**
+
+# Measures of central tendency 
+
+## Measures of central tendency {.smaller background-color="aquamarine"}
+
+Goal: For a sequence of numerical observations $x_1,\dots,x_n$ we want to measure
+
+- the "typical" value.
+- a value summarizing the **location** of values on the numerical axis.
+
+Three different ways:
+
+1. **Arithmetic mean** (also *mean*, *average*): Sum of the all observations divided by the number of observations $\frac{1}{n}\sum_{i=1}^n x_i$
+2. **Median**: Assume $x_1 \leq x_2 \leq\dots\leq x_n$. Then the median is middlemost values in the sequence $x_\frac{n+1}{2}$ when $n$ odd. For $n$ even there are two middlemost values and the median is $\frac{x_\frac{n}{2} + x_\frac{n+1}{2}}{2}$
+3. **Mode**: The value that appears most often in the sequence. 
+
+
+## Philosophy of aggregation {.smaller background-color="khaki"}
+
+::: {.incremental}
+- The **mean** represents *total value* per value.   
+[Example: *per capita income* in a town is the total income per individual]{style="color:blue;"}
+- The **median** represents the value such that half of the values are lower *and* higher.    
+[In a *democracy* where each value is represented by one voter preferring it, the median is the value which is *unbeatable* by an *absolute majority*. Half of the people prefer higher the other half lower values. ([Median voter model](https://en.wikipedia.org/wiki/Median_voter_theorem))]{style='color:blue;'}
+- The **mode** represents the most common value.  
+[In a *democracy*, the mode represents the winner of a *plurality vote* where each value runs as a candidate and the winner is the one with the most votes.]{style='color:blue;'}
+:::
+
+## Mean, Median, Mode properties  {.smaller background-color="aquamarine"}
+
+**Do they deliver one unambiguous answer for any sequence?**
+
+. . . 
+
+Mean and median, yes.   
+The mode has no rules for a tie. 
+
+. . . 
+
+**Can they by generalized to variables with ordered or even unordered categories?**
+
+. . .
+
+Mean: No.   
+Median: For ordered categories (except when even number and the two middlemost are not the same) 
+Mode: For any categorical variable.
+
+. . .
+
+**Is the measure always also in the data sequence?**
+
+. . . 
+
+Mean: No.   
+Median: Yes, for sequences of odd length.   
+Mode: Yes. 
+
+
+## Generalized means^[Also called *power mean* or *$p$-mean*. ] {.smaller background-color="aquamarine"}
+
+For $x_1, \dots, x_n > 0$ and $p\in \mathbb{R}_{\neq 0}$ the generalized mean is
+
+$$M_p(x_1, \dots, x_n) = (\frac{1}{n}\sum_{i=1}^n x_i^p)^\frac{1}{p}$$
+
+For $p = 0$ it is $M_0(x_1, \dots, x_n) = (\prod_{i=1}^n x_i)^\frac{1}{n}$. 
+
+$M_1$ is the arithmetic mean. $M_0$ is called the **geometric mean**. $M_{-1}$ the **harmonic mean**. 
+
+Note: Generalized means are often only reasonable when all values are positive $x_i > 0$.
+
+::: aside
+$M_0$ can also be expressed as the exponential ($\exp(x) = e^x$) of the mean of the the $\log$'s of the $x_i$'s: $\exp(\log((\prod_{i=1}^n x_i)^\frac{1}{n})) = \exp(\frac{1}{n}\sum_{i=1}^n\log(x_i))$. 
+:::
+
+## Box-Cox transformation function^[Also a common transformation to pre-process data to make it closer to a normal distribution.]  {.smaller background-color="aquamarine"}
+
+For $p \in \mathbb{R}$: $f(x) = \begin{cases}\frac{x^p - 1}{p} & \text{for $p\neq 0$} \\ \log(x) & \text{for $p= 0$}\end{cases}$
+
+::: {.columns}
+
+::: {.column width='60%' .smaller}
+The $p$-mean is
+
+$$M_p(x) = f^{-1}(\frac{1}{n}\sum_{i=1}^n f(x_i))$$
+
+with $x = [x_1, \dots, x_n]$. $f^{-1}$ is the **inverse**^[That means $f^-1(f(x)) = x =f(f^-1(x))$.] of $f$.
+:::
+
+::: {.column width='40%'}
+```{r}
+#| fig-width: 4
+library(tidyverse)
+pfun <- function(x, p) (x^p-1)/p
+ipfun <- function(x, p) (p*x + 1)^(1/p)
+ggplot() + 
+	geom_function(fun = pfun, args = list(p = 1), color="red", size = 1.5) +
+	geom_function(fun = pfun, args = list(p = 2), color = "red", alpha=0.6) + 
+	geom_function(fun = pfun, args = list(p = 3), color = "red", alpha=0.3) +  
+	geom_function(fun = pfun, args = list(p = 1/2), color = "red3") + 
+	geom_function(fun = pfun, args = list(p = 1/3), color = "red4") + 
+	geom_function(fun = pfun, args = list(p = -1), color = "blue", size = 1.5) +  
+	geom_function(fun = pfun, args = list(p = -1/2), color = "blue3") + 
+	geom_function(fun = pfun, args = list(p = -1/3), color = "blue4") + 
+	geom_function(fun = pfun, args = list(p = -2), color = "blue", alpha=0.6) + 
+	geom_function(fun = pfun, args = list(p = -3), color = "blue", alpha=0.3) + 
+	geom_function(fun = log, color = "black", size = 1.5) + coord_fixed() +
+	xlim(c(0.01,4)) + ylim(c(-2,2)) + 
+	labs(x="x", y = "f(x)", title = "p = -1 (blue), 0 (black), +1 (red)") + 
+	theme(title = element_text(size = 2)) +
+	theme_minimal() 
+```
+:::
+
+:::
+
+
+
+# Measures of central tendency and the Wisdom of the Crowd 
+
+## Application: The Wisdom of the Crowd {.smaller background-color="khaki"}
+
+::: {.columns}
+
+::: {.column width='80%'}
+- The collective opinion of a diverse group of independent individuals rather than that of a single expert. 
+- The classical wisdom-of-the-crowds finding is about **point estimation** of a continuous quantity.
+- Popularized by James Surowiecki (2004).
+- The opening anecdote is about Francis Galton's^[Galton (1822-1911) was a half-cousin to Charles Darwin and one of the founding fathers of statistics. He also was a scientific racist, see <https://twitter.com/kareem_carr/status/1575506343401775104?s=20&t=8T5TzrayAWNShmOSzJgCJQ.>.] surprise in 1907 that the crowd at a county fair accurately guessed the weight of an ox's meat when their individual guesses were averaged.
+:::
+
+::: {.column width='20%'}
+
+![](https://upload.wikimedia.org/wikipedia/en/9/95/Wisecrowds.jpg) 
+
+![](https://upload.wikimedia.org/wikipedia/commons/a/ae/Sir_Francis_Galton_by_Charles_Wellington_Furse.jpg){width=150}  
+:::
+
+:::
+
+## Galton's data^[Kenneth Wallis dug out the data from Galton's notebook and put it here <https://warwick.ac.uk/fac/soc/economics/staff/kfwallis/publications/galton_data.xlsx>] {.smaller background-color="aquamarine"}
+
+*What is the weight of the meat of this ox?*
+
+```{r}
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+```
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+library(readxl)
+galton <- read_excel("data/galton_data.xlsx")
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + geom_vline(xintercept = 1198, color = "green") + 
+ geom_vline(xintercept = mean(galton$Estimate), color = "red") + geom_vline(xintercept = median(galton$Estimate), color = "blue") + geom_vline(xintercept = Mode(galton$Estimate), color = "purple")
+```
+
+`r nrow(galton)` estimates, [true value]{style="color:green;"} 1198, [mean]{style="color:red;"} `r round(mean((galton$Estimate)), digits=1)`, [median]{style="color:blue;"} `r median((galton$Estimate))`, [mode]{style="color:purple;"} `r Mode((galton$Estimate))`
+
+
+## Viertelfest Bremen 2008^[Data collected as additional guessing game at the Lottery "Haste mal 'nen Euro?", data provided by Jan Lorenz  <https://docs.google.com/spreadsheets/d/1HiYhUrYrsbeybJ10mwsae_hQCawZlUQFOOZzcugXzgA/edit#gid=0>] {.smaller background-color="aquamarine"}
+
+*How many lots will be sold by the end of the festival?*
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+viertel <- read_csv("data/Viertelfest.csv")
+viertel |> ggplot(aes(`Schätzung`)) + geom_histogram() + geom_vline(xintercept = 10788, color = "green") + 
+ geom_vline(xintercept = mean(viertel$Schätzung), color = "red") + geom_vline(xintercept = median(viertel$Schätzung), color = "blue") + geom_vline(xintercept = Mode(viertel$Schätzung), color = "purple")
+```
+
+`r nrow(viertel)` estimates, the maximal value is `r format(max(viertel$Schätzung))`!  
+We should filter out the highest values for the histogram...
+
+## Viertelfest Bremen 2008 {.smaller background-color="aquamarine"}
+
+*How many lots will be sold by the end of the festival?*
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+viertel <- read_csv("data/Viertelfest.csv")
+viertel |> filter(Schätzung<100000) |> ggplot(aes(`Schätzung`)) + geom_histogram(binwidth = 500) + geom_vline(xintercept = 10788, color = "green") + 
+ geom_vline(xintercept = mean(viertel$Schätzung), color = "red") + geom_vline(xintercept = median(viertel$Schätzung), color = "blue") + geom_vline(xintercept = Mode(viertel$Schätzung), color = "purple") + geom_vline(xintercept = exp(mean(log(viertel$Schätzung))), color = "orange")
+```
+
+`r nrow(viertel)` estimates, [true value]{style="color:green;"} 10788, [mean]{style="color:red;"} `r format(round(mean(viertel$Schätzung), digits=1))`, [median]{style="color:blue;"} `r median(viertel$Schätzung)`, [mode]{style="color:purple;"} `r format(Mode(viertel$Schätzung))`,   
+[geometric mean]{style="color:orange;"} `r format(round(exp(mean(log(viertel$Schätzung))), digits=1))`
+
+
+## $\log_{10}$ transformation Viertelfest {.smaller background-color="aquamarine"}
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+viertel |> mutate(log10Est = log10(Schätzung)) |> ggplot(aes(log10Est)) + geom_histogram(binwidth = 0.05) + geom_vline(xintercept = log10(10788), color = "green") + 
+ geom_vline(xintercept = log10(mean(viertel$Schätzung)), color = "red") + geom_vline(xintercept = log10(median(viertel$Schätzung)), color = "blue") + geom_vline(xintercept = log10(Mode(viertel$Schätzung)), color = "purple") + geom_vline(xintercept = mean(log10(viertel$Schätzung)), color = "orange")
+```
+
+`r nrow(viertel)` estimates, [true value]{style="color:green;"} 10788, [mean]{style="color:red;"} `r format(round(mean(viertel$Schätzung), digits=1))`, [median]{style="color:blue;"} `r median(viertel$Schätzung)`, [mode]{style="color:purple;"} `r format(Mode(viertel$Schätzung))`,   
+[geometric mean]{style="color:orange;"} `r format(round(exp(mean(log(viertel$Schätzung))), digits=1))`
+
+
+## Wisdom of the crowd insights {.smaller background-color="aquamarine"}
+
+::: {.incremental}
+- In Galton's sample the different measures do not make a big difference
+- In the Viertelfest data the arithmetic mean performs very bad!
+- The mean is *vulnerable to extreme values*.   
+Quoting Galton on the mean as a democratic aggregation function:   
+*"The mean gives voting power to the cranks in proportion to their crankiness."*
+- The mode tends to be on *focal* values as round numbers (10,000). In Galton's data this is not so pronounced beause estimators used several units which Galton had to convert. 
+- **How to choose a measure to aggregate the wisdom?**
+  - By the nature of the estimate problem? Is the scale mostly clear? (Are we in the hundreds, thousands, ten thousands, ...)
+  - By the nature of the distribution?
+  - There is no real insurance against a systematic bias in the population.
+:::
+  
+
+# Measures of dispersion
+
+## Measures of dispersion^[Also called *variability*, *scatter*, or *spread*.] {.smaller background-color="aquamarine"}
+
+Goal: We want to measure 
+
+- How spread out values are around the central tendency. 
+- How stretched or squeezed is the distribution?
+
+**Variance** is the mean of the squared deviation from the mean:  $\text{Var}(x) = \frac{1}{n}\sum_{i=1}^n(x_i - \mu)^2$ where $\mu$ (mu) is the mean. 
+
+**Standard deviation** is the square root of the variance $\text{SD}(x) = \sqrt{\text{Var}(x)}$. 
+
+The standard deviation is often denoted $\sigma$ (sigma) and the variance $\sigma^2$.
+
+**Mean absolute deviation** (MAD) is the mean of the absolute deviation from the mean:  $\text{MAD}(x) = \frac{1}{n}\sum_{i=1}^n|x_i - \mu|$.
+
+**Range** is the difference of the maximal and the minimal value $\max(x) - \min(x)$.
+
+
+## Examples of measures of dispersion {.smaller background-color="khaki"}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+var(galton$Estimate)
+sd(galton$Estimate)
+mad(galton$Estimate)
+range(galton$Estimate)
+diff(range(galton$Estimate))
+```
+:::
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+var(viertel$Schätzung)
+sd(viertel$Schätzung)
+mad(viertel$Schätzung)
+range(viertel$Schätzung)
+diff(range(viertel$Schätzung))
+```
+:::
+
+::::
+
+:::{.aside}
+Variance (and standard deviation) in statistics is usually computed with $\frac{1}{n-1}$ instead of $\frac{1}{n}$ to provide an unbiased estimator of the potentially underlying population variance. We omit more detail here.  
+:::
+
+## Standardization {.smaller background-color="aquamarine"}
+
+Variables are *standardized* by subtracting their mean and then dividing by their standard deviations. 
+
+A value from a standardized variable is called a **standard score** or **z-score**. 
+
+$z_i = \frac{x_i - \mu}{\sigma}$ 
+
+where $\mu$ is the mean and $\sigma$ the standard deviation of the vector $x$.
+
+- This is a *shift-scale transformation*. We shift by the mean and scale by the standard deviation. 
+- A standard score $z_i$ shows how mean standard deviations $x_i$ is away from the mean of $x$.
+
+
+
+## Achievements and next steps {.smaller}
+
+- We have learned about the data science process
+- You made essential steps in data visualization and data wrangling with New York City Flights in the Homework
+- You can write and render reproducible reports 
+- We had some math refreshment
+- We learned some data science data and programming concepts in R and in Python. Reconsider them in later homework!
+
+Next steps coming (you will receive individual repositories for this):
+
+- Homework mimicking data science projects
+- Some exploratory data analysis in a sandbox
+- Thinking about your own data science project (in groups of 2-3)
+

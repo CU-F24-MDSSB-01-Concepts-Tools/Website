@@ -1,0 +1,843 @@
+---
+title: "W#07: Fitting Linear Models, Interaction Effects, Nonlinear Models, Predicting Categorical Variables "
+author: Jan Lorenz
+format: 
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: true
+    preview-links: true
+    logo: img/ConstructorUniversity.png
+    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+---
+
+# Fitting Models (Part 2)
+
+Today: The linear model. 
+
+```{r}
+#| include: true
+library(tidyverse)
+library(palmerpenguins)
+library(tidymodels)
+```
+
+## Recap: Linear model {.smaller}
+
+**Flipper length** as a function of **body mass**.
+
+```{r}
+#| echo: true
+#| output-location: column
+#| fig-height: 7
+penguins |>
+ ggplot(aes(x = body_mass_g, 
+            y = flipper_length_mm)) +
+ geom_point() +
+ geom_smooth(method = "lm", 
+             se = FALSE) + 
+ theme_classic(base_size = 24)
+```
+
+. . . 
+
+The fitting question: [How can we get this line?]{style='color:red;'}
+
+## Recap: A line {.smaller background-color="aquamarine"}
+
+A *line* is a shift-scale transformation of the identity function usually written in the form 
+
+$$f(x) = a\cdot x + b$$
+
+where [$a$ is the *slope*]{style="color:red;"}, [$b$ is the *intercept*]{style="color:blue;"}.
+
+```{r}
+#| fig-height: 4
+a <- 0.5
+b <- 1
+func <- function(x) a*x + b
+ggplot() + geom_function(fun = func, size = 2) +
+ # Set axis limits and make axis equal
+	xlim(c(-0.5,2)) + ylim(c(0,2)) + coord_fixed() + 
+	geom_line( # intercept line:
+	 data=tibble(x=c(0,0),y=c(0,1)), 
+	 mapping = aes(x,y), 
+	 color = "blue", size = 2) +
+	geom_line( # slope:
+	 data=tibble(x=c(1.5,1.5),y=c(1.25,1.75)), 
+	 mapping = aes(x,y), 
+	 color = "red", size = 2) +
+	geom_line( # x-interval of length one:
+	 data=tibble(x=c(0.5,1.5),y=c(1.25,1.25)), 
+	 mapping = aes(x,y), color = "gray") +
+	theme_classic(base_size = 24)
+```
+
+## Recap: Terminology {.smaller background-color="khaki"}
+
+- **Response variable:**^[Also **dependent variable** in statistics or empirical social sciences.] Variable whose behavior or variation you are trying to understand, on the y-axis
+- **Explanatory variable(s):**^[Also **independent variable(s)** in statistics or empirical social sciences.] Other variable(s) that you want to use to explain the variation in the response, on the x-axis
+- **Predicted value:** Output of the model function. 
+  - The model function gives the **(expected) average value** of the response variable conditioning on the explanatory variables
+  - **Residual(s):** A measure of how far away a case is from its predicted value (based on the particular model)   
+    Residual = Observed value - Predicted value  
+    The residual tells how far above/below the expected value each case is
+
+
+
+## Our goal
+
+Predict flipper length from body mass
+
+average `flipper_length_mm` $= \beta_0 + \beta_1\cdot$ `body_mass_g`
+
+. . . 
+
+$\beta_0$ is the *intercet* of the line
+
+$\beta_1$ is the *slope* of the line 
+
+. . . 
+
+Later we will have $\beta_2, \dots, \beta_m$ as coefficients for more variables. 
+
+
+
+
+## Fitting the model in R {.smaller}
+
+```{r}
+#| echo: true
+linear_reg() |> 
+	set_engine("lm") |> 
+	fit(flipper_length_mm ~ body_mass_g, data = penguins)
+```
+
+average `flipper_length_mm` $= 136.72956 + 0.01528\cdot$ `body_mass_g`
+
+**Interpretation:**   
+The penguins have a flipper length of 136.7 mm plus 0.01528 mm for each gram of body mass (that is 15.28 mm per kg).
+Penguins with zero mass have a flipper length of 136.7 mm. However, this is not in the range where the model was fitted.
+
+## `parsnip` model objects {.smaller}
+
+```{r}
+#| echo: true
+pengmod <- linear_reg() |> 
+	set_engine("lm") |> 
+	fit(flipper_length_mm ~ body_mass_g, data = penguins)
+class(pengmod) # attributes
+typeof(pengmod) 
+names(pengmod)
+```
+
+. . . 
+
+Most interesting for us for now: `$fit`
+
+```{r}
+#| echo: true
+pengmod$fit
+```
+
+. . . 
+
+Notice: `parsnip model object` is now missing in the output.
+
+## `$fit` is the object created by `lm` (base R) {.smaller}
+
+```{r}
+#| echo: true
+names(pengmod$fit)
+pengmod$fit$call
+pengmod$fit$coefficients
+pengmod$fit$fitted.values |> head()
+pengmod$fit$residuals |> head()
+```
+
+## Fitting method: Least squares regression {.smaller background-color="aquamarine"}
+
+- The regression line shall minimize the sum of the squared residuals     
+  (or, identically, their mean). 
+- Mathematically: The residual for case $i$ is $e_i = \hat y_i - y_i$. 
+- Now we want to minimize $\sum_{i=1}^n e_i^2$   
+(or equivalently $\frac{1}{n}\sum_{i=1}^n e_i^2$ the *the mean of squared errors*, which we will look at later). 
+
+## Visualization of residuals {.smaller background-color="aquamarine"}
+
+The residuals are the gray lines between predictid values on the regression line and the actual values. 
+
+```{r}
+pengmod <- 
+  linear_reg() |> 
+  set_engine("lm") |> 
+  fit(flipper_length_mm ~ body_mass_g, data = penguins)
+penguins |> bind_cols(predict(pengmod,penguins)) |> 
+  ggplot(aes(body_mass_g, flipper_length_mm)) +
+  geom_segment(aes(x = body_mass_g, y = flipper_length_mm, xend = body_mass_g, yend = .pred), color = "gray") +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method="lm") + 
+  geom_point(aes(y=.pred), color = "red", alpha =  0.3)
+```
+
+## Check: Fitted values and Residuals {.smaller background-color="aquamarine"}
+
+Recall: **Residual = Observed value - Predicted value**
+
+The *Predicted values* are also called *Fitted values*. Hence: 
+
+Residuals + Fitted values = Observed values
+
+```{r}
+#| echo: true
+(pengmod$fit$residuals + pengmod$fit$fitted.values) |> 
+head()
+```
+
+```{r}
+#| echo: true
+penguins$flipper_length_mm |> head()
+```
+
+
+
+## Proporties of least squares regression  {.smaller background-color="aquamarine"}
+
+The regression lines goes through the point (`mean(x)`, `mean(y)`). 
+
+```{r}
+#| echo: true
+mean(penguins$body_mass_g, na.rm = TRUE)
+mean(penguins$flipper_length_mm, na.rm = TRUE)
+```
+
+```{r}
+penguins |> bind_cols(predict(pengmod,penguins)) |> 
+  ggplot(aes(body_mass_g, flipper_length_mm)) +
+  geom_segment(aes(x = body_mass_g, y = flipper_length_mm, xend = body_mass_g, yend = .pred), color = "gray") +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method="lm") + 
+  geom_point(aes(y=.pred), color = "red", alpha =  0.3) + 
+  geom_point(data = tibble(x = mean(penguins$body_mass_g, na.rm = T), y = mean(penguins$flipper_length_mm, na.rm = T)), 
+  											mapping = aes(x,y), color = "green", size = 5)
+```
+
+
+## Proporties of least squares regression  {.smaller background-color="aquamarine"}
+
+Residuals sum up to zero 
+
+```{r}
+#| echo: true
+pengmod <- linear_reg() |>  set_engine("lm") |> fit(flipper_length_mm ~ body_mass_g, data = penguins)
+pengmod$fit$residuals |> sum()
+```
+
+. . .
+
+There is no correlation between residuals and the explanatory variable 
+
+```{r}
+#| echo: true
+cor(pengmod$fit$residuals, na.omit(penguins$body_mass_g))
+```
+
+. . .
+
+The correlation of $x$ and $y$ is the slope $\beta_1$ corrected by their standard deviations. 
+
+```{r}
+#| echo: true
+correlation <- cor(penguins$flipper_length_mm, penguins$body_mass_g, use = "pairwise.complete.obs")
+sd_flipper <- sd(penguins$flipper_length_mm, na.rm = T)
+sd_mass <- sd(penguins$body_mass_g, na.rm = T)
+c(correlation, sd_flipper, sd_mass)
+
+correlation * sd_flipper / sd_mass
+
+pengmod$fit$coefficients
+```
+
+
+## Correlation and linear regression {.smaller background-color="aquamarine"}
+
+When the two variables in the linear regression are standardized (standard scores)
+
+- the intercept is zero 
+- the coefficient coincides with the correlation
+
+
+
+# Linear Models and Dummy Variables
+
+
+## Explanatory variables are categorical {.smaller}
+
+Let's just try what happens with `species` as explanatory variable. 
+Remember, we have three species: Adelie, Chinstrap, Gentoo.
+
+```{r}
+#| echo: true
+linear_reg() |> 
+	set_engine("lm") |> 
+	fit(flipper_length_mm ~ species, data = penguins) |> 
+	tidy()
+```
+
+What happened? 
+
+. . . 
+
+Two of the three species categories appear as variables now.
+
+- Categorical variables are automatically encoded to **dummy variables**
+- Each coefficient describes the expected difference between flipper length of that particular species compared to the baseline level
+- What is the baseline level? [[The first category!]{style='color:red;'} (Here alphabetically `"Adelie"`)]{.fragment}
+
+
+## How do dummy variables look? {.smaller}
+
+species    | speciesChinstrap | speciesGentoo 
+-----------|------------------|--------------
+Adelie     |      0           | 0
+Chinstrap  |      1           | 0
+Gentoo     |      0           | 1
+
+Then the fitting of the linear model is as before using the zero-one variables. 
+
+## Interpretation {.smaller background-color="khaki"}
+
+```{r}
+#| echo: true
+linear_reg() |> 
+	set_engine("lm") |> 
+	fit(flipper_length_mm ~ species, data = penguins) |> 
+	tidy()
+```
+
+- Flipper length of the baseline species is the intercept.    
+    - Average flipper length of Adelie is 190 mm
+- Flipper length of the two other species add their coefficient
+    - Average flipper length of Chinstrap is 190 + 5.87 mm
+    - Average flipper length of Gentoo is 190 + 27.2 mm
+
+
+## Compare to a visualization {.smaller}
+
+```{r}
+linear_reg() |> 
+	set_engine("lm") |> 
+	fit(flipper_length_mm ~ species, data = penguins) |> 
+	tidy()
+```
+
+```{r}
+#| fig-width: 3
+penguins |> 
+  ggplot(aes(species, flipper_length_mm)) + geom_boxplot() +
+ 	stat_summary(fun.y=mean, geom="point", size=5, color="red")
+```
+
+The red dots are the average values for species. 
+
+# Linear models and R-squared
+
+## Linear model {.smaller} 
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+	fit(flipper_length_mm ~ body_mass_g, data = penguins) |> 
+ tidy()
+```
+average `flipper_length_mm` $= 137 + 0.0153\cdot$ `body_mass_g`
+
+. . .
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+	fit(bill_depth_mm ~ bill_length_mm, data = penguins) |> 
+ tidy()
+```
+
+average `bill_depth_mm` $= 20.9 -0.085\cdot$ `bill_length_mm`
+
+. . .
+
+**Technical:** The idea of the `tidy()` function is to turn an object into a tidy tibble. Here, it extracts the coefficients of the linear model (and more statistical information).
+
+
+
+
+## R-squared of a fitted model {.smaller background-color="aquamarine"}
+
+$R^2$ is the percentage of variability in the response explained by the regression model. 
+
+R-squared is also called **coefficient of determination**. 
+
+**Definition**: 
+
+$R^2 = 1 - \frac{SS_\text{res}}{SS_\text{tot}}$
+
+where $SS_\text{res} = \sum_i(y_i - f_i)^2 = \sum_i e_i^2$ is the *sum of the squared residuals*, and   
+$SS_\text{tot} = \sum_i(y_i - \bar y)^2$ the *total sum of squares* which is proportional to the variance of $y$. ($\bar y$ is the mean of $y$.)
+
+![](https://upload.wikimedia.org/wikipedia/commons/8/86/Coefficient_of_Determination.svg)
+
+
+
+## Linear model R-squared {.smaller}
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g, data = penguins) |>
+ glance()  # glance shows summary statistics of model fit
+```
+
+**Interpretation R-squared?** [75.9% of the variance of flipper length can be explained by a linear relation with body mass. ]{.fragment}
+
+. . .
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+	fit(bill_depth_mm ~ bill_length_mm, data = penguins) |> 
+ glance()
+```
+
+5.52% of the variance of bill depth can be explained by a linear relation with bill length. 
+
+. . . 
+
+**Technical:** The idea of the `glance()` function is to construct a single row summary "glance" of a model, fit, or other object. 
+
+## R-squared and correlation {.smaller}
+
+For a linear model with one predictor, the square of the correlation coefficient is the same as the R-squared of the model. 
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+	fit(flipper_length_mm ~ body_mass_g, data = penguins) |> 
+ glance()
+```
+
+```{r}
+#| echo: true
+cor(penguins$flipper_length_mm, penguins$body_mass_g, use = "pairwise.complete.obs")
+```
+
+```{r}
+#| echo: true
+cor(penguins$flipper_length_mm, penguins$body_mass_g, use = "pairwise.complete.obs")^2
+```
+
+. . . 
+
+Hence, the name $R^2$!
+
+# Linear models with more predictors
+
+## More predictors: Coefficients {.smaller}
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g, data = penguins) |> 
+ tidy()
+```
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g + bill_length_mm, data = penguins) |> 
+ tidy()
+```
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g + bill_length_mm + bill_depth_mm, data = penguins) |> 
+ tidy()
+```
+
+## More predictors: `glance` R-squared {.smaller}
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g, data = penguins) |> 
+ glance()
+```
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g + bill_length_mm, data = penguins) |> 
+ glance()
+```
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g + bill_length_mm + bill_depth_mm, data = penguins) |> 
+ glance()
+```
+
+##  More predictors: Equations {.smaller}
+
+average `flipper_length_mm` $= 137 + 0.0153\cdot$ `body_mass_g`    
+75.9% explained variance
+
+average `flipper_length_mm` $= 122 + 0.0131\cdot$ `body_mass_g` $+ 0.549\cdot$ `bill_length_mm`    
+78.8% explained variance
+
+average `flipper_length_mm` $= 158 + 0.0109\cdot$ `body_mass_g` $+ 0.592\cdot$ `bill_length_mm` $- 1.68\cdot$ `bill_length_mm`   
+83.1% explained variance
+
+
+## Adding a categorical variable as main effect {.smaller}
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g + species, data = penguins) |> 
+ tidy()
+```
+
+A **main effect** by categorical dummy variables allows for different intercepts per species. (However, the slopes are the same.)
+
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g + species, data = penguins) |> 
+ glance()
+```
+
+Adding species increases R-squared better than adding bill length and bill depth together!
+
+
+## Adding as interaction effect {.smaller}
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g * species, data = penguins) |> 
+ tidy()
+```
+
+- Note the `*` for interaction effect!
+- Also main effects for both variables are in as coefficients.
+- Adelie is the baseline species (because it is first in the alphabet).
+- An **interaction effect** allows for different slopes for each species!
+
+
+## Improvement through the interaction effects is small here {.smaller}
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g + species, data = penguins) |> 
+ glance()
+```
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g * species, data = penguins) |> 
+ glance()
+```
+
+
+## Regression lines by species {.smaller}
+
+```{r}
+penguins |> 
+  ggplot(aes(x = body_mass_g, y = flipper_length_mm, color = species)) +
+  geom_point() + geom_smooth(method = "lm") +
+  theme_minimal()
+```
+
+Compare the slopes to the regression output on the slides before!
+
+## Different equations for each species! {.smaller}
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g * species, data = penguins) |> 
+ tidy()
+```
+
+Adelie:   
+average `flipper_length_mm` $= 165 + 0.00668\cdot$ `body_mass_g`    
+
+Chinstrap:   
+average `flipper_length_mm` $= 165 - 13.6 + (0.00668 + 0.00523)\cdot$ `body_mass_g`    
+
+Gentoo:   
+average `flipper_length_mm` $= 165 + 6.06 + (0.00668 + 0.00236)\cdot$ `body_mass_g`    
+
+## Interaction effects more categoricals {.smaller}
+
+Adding products of variables in the linear model 
+$y_i = \beta_0 + \beta_1x_1  + \beta_2x_2 + \beta_{3}x_1x_2 + \dots$. 
+
+For $x_1$ and $x_2$ being dummy variables for *being female* and *having kids* this is for example
+
+```{r}
+tibble(gndr_f = c(0,1,1,0), has_kids = c(1,0,1,0)) |> 
+ mutate(gndr_f_x_has_kids = gndr_f * has_kids) |> 
+ knitr::kable()
+```
+
+- What is the baseline? [*Being male without kids.*]{.fragment}
+
+Thought experiment: 
+
+- When we estimate a model explaining life satisfaction with these. How would we see if being a mother increases life satisfaction more than being a father? [*positiv coefficient for `gndr_f_x_has_kids`*]{.fragment}
+
+
+# Nonlinear Models
+
+## When a linear model is bad
+
+Example: Total corona cases in Germany in the first wave 2020. 
+
+```{r}
+whofull <- read_csv("data/WHO-COVID-19-global-data.csv", show_col_types = FALSE) |> 
+	filter(Country == "Germany") 
+who <- whofull |> 
+	filter(Date_reported < "2020-03-20", Date_reported > "2020-02-25") 
+who |> 
+	ggplot(aes(Date_reported, Cumulative_cases)) + 
+	geom_line() + geom_point() + geom_smooth(method = "lm")
+```
+
+## $\log$ transformation {.smaller}
+
+Instead of `Cumulative_cases` we look at $\log($`Cumulative_cases`$)$
+```{r}
+	who |> 
+	ggplot(aes(Date_reported, log(Cumulative_cases))) + geom_line() + geom_point() +
+	geom_smooth(method = "lm") + theme_minimal(base_size = 20)
+```
+
+Almost perfect fit of the linear model: $\log(y)=\log(\beta_0) + \beta_1\cdot x$   
+($y=$ `Cumulative cases`, $x=$ Days)
+
+. . . 
+
+Exponentiation gives the model: $y=\beta_0 e^{\beta_1\cdot x}$  (Check $e^{\log(\beta_0) + \beta_1\cdot x} = e^{\log(\beta_0)} e^{\beta_1\cdot x} = \beta_0 e^{\beta_1\cdot x}$)
+
+## Exponential growth! {.smaller}
+
+[$y=\beta_0 e^{\beta_1\cdot x}$]{style='color:red;'}  
+For comparison: Logistic function [$y = \frac{N \beta_0 e^{\beta_1\cdot x}}{N + \beta_0 e^{\beta_1\cdot x}}$]{style='color:blue;'}   for $N=200000$
+
+```{r}
+wholm <- 	who |> 
+ lm(log(Cumulative_cases) ~ Date_reported, data = _) 
+who |> 
+	ggplot(aes(Date_reported, Cumulative_cases)) + geom_line() + geom_point() +
+ geom_function(fun = function(x) exp(coef(wholm)[1] + coef(wholm)[2]*as.numeric(x)), color = "red") + 
+ geom_function(
+  fun = function(x) 200000*exp(coef(wholm)[1] + coef(wholm)[2]*as.numeric(x))/(200000 + exp(coef(wholm)[1] + coef(wholm)[2]*as.numeric(x))), color = "blue") +
+ theme_minimal(base_size = 20)
+```
+
+Logistic growth (as in the SI model) mimicks exponential growth initially. 
+ 
+
+## $\log$ transformation {.smaller}
+
+```{r}
+	who |> 
+	ggplot(aes(Date_reported, log10(Cumulative_cases))) + geom_line() + geom_point() +
+	geom_smooth(method = "lm") 
+```
+
+What is the difference to the penguin model?
+
+. . . 
+
+- $x$ has an ordered structure and no duplicates
+
+The fit looks so good. Why?
+
+. . . 
+
+Because there is a *mechanistic explanation* behind: The SI model. 
+
+## However, it works only in a certain range {.smaller}
+
+```{r}
+who |> 
+	ggplot(aes(Date_reported, Cumulative_cases)) + geom_point() +
+ geom_function(fun = function(x) exp(coef(wholm)[1] + coef(wholm)[2]*as.numeric(x)), color = "red") + 
+ geom_function(
+  fun = function(x) 200000*exp(coef(wholm)[1] + coef(wholm)[2]*as.numeric(x))/(200000 + exp(coef(wholm)[1] + coef(wholm)[2]*as.numeric(x))), color = "blue") +
+ theme_minimal(base_size = 20) +
+ geom_line(data = whofull |> filter(Date_reported < "2020-06-30")) + ylim(c(0,300000))
+```
+
+## However, it works only in a certain range (log scale on y) {.smaller}
+
+```{r}
+who |> 
+	ggplot(aes(Date_reported, Cumulative_cases)) + geom_point() +
+ geom_function(fun = function(x) exp(coef(wholm)[1] + coef(wholm)[2]*as.numeric(x)), color = "red") + 
+ geom_function(
+  fun = function(x) 200000*exp(coef(wholm)[1] + coef(wholm)[2]*as.numeric(x))/(200000 + exp(coef(wholm)[1] + coef(wholm)[2]*as.numeric(x))), color = "blue") +
+ theme_minimal(base_size = 20) +
+ geom_line(data = whofull |> filter(Date_reported < "2020-06-30")) + ylim(c(0,300000)) +
+ scale_y_log10()
+```
+
+
+# Predicting Categorical Data
+
+Large part of the content adapted from <http://datasciencebox.org>.
+ 
+## What if response is binary?  {.smaller}
+
+- Example: **Spam filter** for emails
+
+```{r}
+#| echo: true
+library(openintro)
+library(tidyverse)
+glimpse(email)
+```
+
+## Multinomial response variable?
+
+- We will not cover other categorical variables than binary ones here.
+- However, many of the probabilistic concepts transfer. 
+
+
+
+## Variables {.smaller}
+
+`?email` shows all variable descriptions. For example: 
+
+- `spam` Indicator for whether the email was spam.
+- `from` Whether the message was listed as from anyone (this is usually set by default for regular outgoing email).
+- `cc` Number of people cc'ed.
+- `time` Time at which email was sent.
+- `attach` The number of attached files.
+- `dollar` The number of times a dollar sign or the word “dollar” appeared in the email.
+- `num_char` The number of characters in the email, in thousands.
+- `re_subj` Whether the subject started with “Re:”, “RE:”, “re:”, or “rE:”
+
+:::{.aside}
+The development, extraction, or discovery of such variables is called **feature engineering**, **feature extraction** or **feature discovery**. Usually, a combination of *domain knowledge* and *data science* skill is needed to do this. 
+:::
+
+## Data exploration {.smaller}
+
+Would you expect spam to be longer or shorter?
+
+. . . 
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+email |> ggplot(aes(x = num_char, y = spam)) + geom_boxplot()
+```
+
+. . .
+
+Would you expect spam subject to start with "Re:" or the like?
+
+. . . 
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+email |> ggplot(aes(y = re_subj, fill = spam)) + geom_bar()  
+```
+
+## Linear models? {.smaller}
+
+Both seem to give some signal. **How can we model the relationship?**
+
+We focus first on just `num_char`:
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+email |> ggplot(aes(x = num_char, y = as.numeric(spam)-1)) + 
+ geom_point(alpha = 0.2) + geom_smooth(method = "lm")
+```
+
+```{r}
+#| echo: true
+linear_reg() |> fit(as.numeric(spam)-1 ~ num_char, data = email)
+```
+
+We would like to have a better concept!
+
+## A penguins example {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+penguins |> na.omit() |> 
+ ggplot(aes(x = body_mass_g, y = as.numeric(sex)-1)) + 
+ geom_point(alpha = 0.2) + geom_smooth(method = "lm")
+```
+
+[It does not make much sense to predict 0-1-values with a linear model.]{style='color:red;'}
+
+
+
+## A probabilistic concept {.smaller}
+
+- We treat each outcome (spam and not) as successes and failures arising from separate Bernoulli trials
+  - **Bernoulli trial:** a random experiment with exactly two possible outcomes, *success* and *failure*, in which the *probability of success* is the same every time the experiment is conducted
+
+. . .
+
+- Each email is treated as Bernoulli trial with separate probability of success
+
+$$ y_i ∼ \text{Bernoulli}(p_i) $$
+
+. . .
+
+- We use the predictor variables to model the Bernoulli parameter $p_i$
+
+. . .
+
+- Now we conceptualized a continuous response, but still a linear model does not fit perfectly for $p_i$ (since a probability is between 0 and 1). 
+- However, we can transform the linear model to have the appropriate range.
+
+
+
+# Generalized linear models
+
+## Characterising GLMs {.smaller}
+
+- **Generalized linear models (GLMs)** are a way of addressing many problems in regression
+- Logistic regression is one example
+
+All GLMs have the following three characteristics:
+
+1. A **probability distribution** as a generative model for the outcome variable $y_i \sim \text{Distribution}(\text{parameter})$
+
+. . .
+
+2. A **linear model** $\eta = \beta_0 + \beta_1 X_1 + \cdots + \beta_k X_k$  
+where $\eta$ is related to a mean parameter of the distribution by the ...
+
+. . .
+
+3. **Link function** that relates the linear model to the parameter of the outcome distribution. 
+  
+
+
+

@@ -1,0 +1,19 @@
+---
+title: "Homework Topics"
+subtitle: "All other homework repositories"
+---
+
+The following homework repositories are topic specific and cover various methods and tools treated. 
+
+1. `hw-PoliticalAttitudes-USERNAME` (hints for python)
+2. `hw-FuelWatch-USERNAME` (hints for R)
+3. `hw-COVID19-USERNAME` (hints for R)
+4. `hw-Housing-USERNAME` (hints for R)
+
+- **Find the instructions in the README in your repository!**
+- When new content appears new exercises may be added to your repository in files like **README_2** and **README_3**.
+- Regardless of the hints you can solve each homework in R or python. 
+- Exercises marked as *optional* do not count to the requirements for the homework (which is 50% sufficiently solved). 
+
+All these homework mimic to some extent a *data science project* as required as the main assessment in the *Data Science Tools* module. You are invited define a project building on the data and analyses there. 
+

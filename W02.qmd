@@ -1,0 +1,194 @@
+---
+title: "W#02 Data Visualization, Data Formats"
+author: Jan Lorenz
+format: 
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: true
+    preview-links: false
+    logo: img/ConstructorUniversity.png
+    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+    smaller: true
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+```
+
+## Git and GitHub
+
+:::: {.columns}
+
+::: {.column width='50%'}
+![](img/git-logo.png){height=150}
+
+- **Git** the version control system
+    - somehow like *Track Changes* in Microsoft Word
+    - somehow like "Save as ..." for multiple files in a folder (with old versions saved)
+- Developed 2005 by Linus Torvalds to maintain the Linux kernel
+:::
+
+::: {.column width='50%'}
+![](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png){height=150}
+
+- **GitHub** our home for Git-based projects on the internet -- a bit like DropBox but for code files
+- The platform for web hosting, collaboration, and as our course management system in this course
+:::
+
+::::
+
+# Our toolkit once again
+
+## Our *git-GitHub dance*
+
+Happens with thw GitHub-Organization [CU-F23-MDSSB-MET-03-VisCommDataStory](https://github.com/CU-F23-MDSSB-MET-03-VisCommDataStory)
+
+![](img/whole-game-01.png)
+
+::: aside
+From <http://datasciencebox.org/>
+:::
+
+## Our *git-GitHub dance*
+
+We only use only a few of the various `git` commands.^[That is why the resource <http://happygitwithr.com> is more helpful to us compared to the git-documentation.]
+
+![](img/whole-game-02.png)
+
+::: aside
+From <http://datasciencebox.org/>
+:::
+
+## Our *git-GitHub dance*
+
+You `git clone` your private repositories to your computer. 
+
+![](img/whole-game-03.png)
+
+::: aside
+From <http://datasciencebox.org/>
+:::
+
+## Our *git-GitHub dance*
+
+`git add`, `git commit`, `git push` your work, `git pull` other's work
+
+![](img/whole-game-04.png)
+
+::: aside
+From <http://datasciencebox.org/>
+:::
+
+
+## Programming languages {.smaller}
+
+**Definition:** Systems of rules which can process instructions to be executed by the computer.\
+
+Our two programming languages are:
+
+![](img/R_logo.svg.png){height="200"}   ![](img/Python_logo_and_wordmark.svg.png){height="200"}
+
+. . .
+
+::: columns
+::: {.column width="\"50%"}
+In R:
+
+``` r
+do_this(to_this)
+do_that(to_this, with_those)
+to_this |> do_this() |> do_that(with_those) 
+store <- do_that(to_this)
+```
+:::
+
+::: column
+In python:
+
+``` r
+to_this.do_this()
+to_this.do_this(with_those)
+to_this.do_this().do_that(with_those)
+store = do_that(to_this)
+```
+:::
+:::
+
+- The role of brackets, dots, spaces, special words, and so on is the **syntax** of a language. Wrong syntax is a common cause of error. Learning syntax slows you down, but only initially!
+- Essential part of the game: Installing and using **libraries/packages**. In R:  
+`install.packages("tidyverse")` (called once to install) and   
+`library(tidyverse)` (in the code before using its commands)
+
+## Integrated development environment {.smaller}
+
+IDEs provide *terminals*, a *source code editor*, an object browser (the **environment**), output and help view, tools for *rendering* and *version control*, and more to help in the workflow. Our IDEs are:
+
+![](img/RStudio_logo_flat.svg.png){height="200"}   ![](img/Visual_Studio_Code_1.35_icon.svg.png){height="200"} VS Code
+
+. . .
+
+Editors delight us with
+
+-   syntax highlighting *Then we see if code looks good*
+
+``` r
+c(1O, Text, true, 10,"Text",TRUE)
+```
+
+-   code completion *Start writing, and press `Tab` to see options*
+-   automatic indentation, brace matching, keyboard shortcuts, ...
+
+Learn to customize and use IDEs ever better and better!
+
+## Publishing system
+
+Weaves together text and code to produces good-looking formatted scientific or technical output.
+
+![](img/quarto.png){width="25%"}   ![](img/rstudio-qmd-how-it-works.png){width="60%"}
+
+. . .
+
+A **YAML** header and **Markdown** text with code **chunks** is **rendered** to a document in several formats.
+
+. . .
+
+![](img/jupyter.svg){height="\"15%"} 
+
+Notebooks are a similar concept: text and executable code mixed together in a browser tab. Notebooks (e.g. .ipynb-files) Can be rendered by quarto. Popular in the python world.
+
+Main difference between notebook and quarto-output: Code in the notebook can be executed. The page is not static.
+
+## quarto Documents
+
+Header: **YAML** with title, author, document-wide specifications 
+
+Body: 
+
+:::{.incremental}
+- Parts of **plain text** with formatting syntax like `**bold**` for **bold**, and other for headers, lists, and so on. Good idea: Occassionally spend a few minutes to look up and learn some formatting rules for markdown.
+- **Code chunks** where the programming happens!
+    - Beginning with ```` ```{r} ````
+    - Then optional chunk specifications. For example
+        - `#| label: NAME` to cross-reference to it in the text
+        - `#| echo: false` to not show (or show if `true`) code in output
+        - `#| warning: false` to not show (or show if `true`) the the warnings you would see in the Console
+    - Then comes the code itself. By default, every command which creates some print output or shows a graphic will make this appear in your output-document. 
+    - Ending with ```` ``` ````
+:::
+ 
+
+    
+## What is an Enviroment, and why you should know it 
+
+- Environment can be understood as the surrounding conditions in which code is executed. 
+    - In RStudio: There is an **Environment**-Tab. 
+    - Most important: Shows the variables currently accessible from the **Console**. 
+- [The environment of your quarto document is different for that of the Console!]{style='color:red;'} Remember this! It will be a source of confusion.
+
+
+
+
+
+

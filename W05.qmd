@@ -1,0 +1,937 @@
+---
+title: "W#05: Summary Statistics, Exploratory Data Analysis, Principal Component Analysis"
+author: Jan Lorenz
+format: 
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: true
+    preview-links: true
+    logo: img/ConstructorUniversity.png
+    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(readxl)
+galton <- read_excel("data/galton_data.xlsx")
+viertel <- read_csv("data/Viertelfest.csv")
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+```
+
+# Summary Statistics (continued)
+
+## Data Sets 1a and 1b: Widsom of Crowd {.smaller}
+
+1a: Ox weigh guessing competition 1907 (collected by **Galton**)
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5)
+```
+
+1b: **Viertelfest** "guess the number of sold lots"-competition 2009
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+viertel |> filter(Schätzung<100000) |> ggplot(aes(`Schätzung`)) + geom_histogram(binwidth = 500)
+```
+
+## Data Set 2: Palmer Penguins {.scrollable .smaller}
+
+[Palmer Penguins](https://allisonhorst.github.io/palmerpenguins/)
+
+Chinstrap, Gentoo, and Adélie Penguins
+
+![](https://upload.wikimedia.org/wikipedia/commons/0/08/South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg){height=200}
+![](https://upload.wikimedia.org/wikipedia/commons/0/00/Brown_Bluff-2016-Tabarin_Peninsula%E2%80%93Gentoo_penguin_%28Pygoscelis_papua%29_03.jpg){height=200}
+![](https://upload.wikimedia.org/wikipedia/commons/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg){height=200}
+![](http://r.qcbs.ca/workshop03/book-en/images/culmen_depth.png){height=200}  
+
+```{r}
+library(palmerpenguins)
+penguins
+```
+
+## `summary` from base R {.smaller}
+
+:::: {.columns}
+
+::: {.column width='65%'}
+Shows summary statistics for the values in a vector
+
+```{r}
+#| echo: true
+summary(galton$Estimate)
+```
+```{r}
+#| echo: true
+summary(viertel$Schätzung)
+```
+
+Or for all columns in a data frame
+
+```{r}
+#| echo: true
+summary(penguins)
+```
+:::
+
+::: {.column width='35%'}
+
+[Question]{style='color:red;'}
+
+What does   
+`1st Qu.` and   
+`3rd Qu.` mean?
+
+:::
+
+::::
+
+
+
+
+## Quantiles {.smaller  background-color="khaki"}
+ 
+Cut points specifying intervals which contain equal amounts of values of the distribution. 
+
+**$q$-quantiles** divide numbers into $q$ intervals covering all values. 
+
+The quantiles are the cut points: For $q$ intervals there are $q-1$ cut points of interest. 
+
+- The one 2-quantile is the median
+- The three 4-quantiles are called **quartiles**
+    - `1st Qu.` is the first quartile
+    - The second quartile is the median
+    - `3rd Qu.` is the third quartile
+- 100-quantiles are called **percentiles**
+
+::: {.aside}
+We omit problems of estimating quantiles from a sample where the number of estimates does not fit to a desired partition of equal size here. 
+:::
+
+
+## 1a Galton: Quartiles {.smaller}
+
+```{r}
+#| echo: true
+# Min, 3 Quartiles, Max
+quantile(galton$Estimate, prob = seq(0, 1, by = 0.25))
+```
+
+Interpretation: What does the value at 25% mean?
+
+. . . 
+
+The 25% of all values are lower than the value. 75% are larger. 
+
+. . .
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + 
+ geom_vline(xintercept = quantile(galton$Estimate, prob = seq(0, 1, by = 0.25)), color = "red")
+```
+
+
+## 1a Galton: 20-quantiles {.smaller}
+
+```{r}
+#| echo: true
+# Min, 3 Quartiles, Max
+quantile(galton$Estimate, prob = seq(0, 1, by = 0.05))
+```
+```{r}
+#| echo: true
+#| fig-height: 1.5
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + 
+ geom_vline(xintercept = quantile(galton$Estimate, prob = seq(0, 1, by = 0.05)), color = "red")
+```
+
+
+
+## 1b Viertelfest: Quartiles {.smaller}
+
+```{r}
+#| echo: true
+quantile(viertel$Schätzung, prob = seq(0, 1, by = 0.25))
+```
+```{r}
+#| echo: true
+#| fig-height: 1.5
+viertel |> filter(Schätzung<100000) |> ggplot(aes(`Schätzung`)) + geom_histogram(binwidth = 500) + 
+ geom_vline(xintercept = quantile(viertel$`Schätzung`, prob = seq(0, 1, by = 0.25))[1:4], color = "red")
+```
+
+## 1b Viertelfest: 20-quantiles {.smaller}
+
+```{r}
+#| echo: true
+quantile(viertel$Schätzung, prob = seq(0, 1, by = 0.05))
+```
+```{r}
+#| echo: true
+#| fig-height: 1.5
+viertel |> filter(Schätzung<100000) |> ggplot(aes(`Schätzung`)) + geom_histogram(binwidth = 500) + 
+ geom_vline(xintercept = quantile(viertel$`Schätzung`, prob = seq(0, 1, by = 0.05))[1:19], color = "red")
+```
+
+## 2 Palmer Penguins Flipper Length: Quartiles {.smaller}
+
+```{r}
+#| echo: true
+quantile(penguins$flipper_length_mm, prob = seq(0, 1, by = 0.25), na.rm = TRUE)
+```
+```{r}
+#| echo: true
+#| fig-height: 1.5
+penguins |> ggplot(aes(flipper_length_mm)) + geom_histogram(binwidth = 1) + 
+ geom_vline(xintercept = quantile(penguins$flipper_length_mm, prob = seq(0, 1, by = 0.25), na.rm = TRUE), color = "red")
+```
+
+
+## 2 Palmer Penguins Flipper Length: 20-quantiles {.smaller}
+
+```{r}
+#| echo: true
+quantile(penguins$flipper_length_mm, prob = seq(0, 1, by = 0.05), na.rm = TRUE)
+```
+```{r}
+#| echo: true
+#| fig-height: 1.5
+penguins |> ggplot(aes(flipper_length_mm)) + geom_histogram(binwidth = 1) + 
+ geom_vline(xintercept = quantile(penguins$flipper_length_mm, prob = seq(0, 1, by = 0.05), na.rm = TRUE), color = "red")
+```
+
+
+
+## Interquartile range (IQR) {.smaller background-color="khaki"}
+
+The difference between the 1st and the 3rd quartile. Alternative **dispersion measure**.   
+The range in which the middle 50% of the values are located.
+
+Examples: 
+
+
+:::: {.columns}
+
+::: {.column width='40%'}
+```{r}
+#| echo: true
+# Min, 3 Quartiles, Max
+IQR(galton$Estimate)
+sd(galton$Estimate) # for comparison
+IQR(viertel$Schätzung)
+sd(viertel$Schätzung) # for comparison
+IQR(penguins$flipper_length_mm, na.rm = TRUE)
+sd(penguins$flipper_length_mm, na.rm = TRUE) # for comparison
+```
+:::
+
+::: {.column width='60%'}
+```{r}
+#| fig-height: 1.8
+q <- quantile(galton$Estimate, prob = seq(0, 1, by = 0.25))
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + 
+ geom_vline(xintercept = q, color = "red") +
+ annotate("segment", x = q[2], xend = q[4], y = 0, yend = 0, color = "blue", size = 4) + 
+ theme_grey(base_size = 20)
+```
+
+```{r}
+#| fig-height: 1.8
+q <- quantile(viertel$`Schätzung`, prob = seq(0, 1, by = 0.25))
+viertel |> filter(Schätzung<100000) |> ggplot(aes(`Schätzung`)) + geom_histogram(binwidth = 500) + 
+ geom_vline(xintercept = q[1:4], color = "red") +
+ annotate("segment", x = q[2], xend = q[4], y = 0, yend = 0, color = "blue", size = 4) + 
+ theme_grey(base_size = 20)
+```
+
+```{r}
+#| fig-height: 1.8
+q <- quantile(penguins$flipper_length_mm, prob = seq(0, 1, by = 0.25), na.rm = TRUE)
+penguins |> ggplot(aes(flipper_length_mm)) + geom_histogram(binwidth = 1) + 
+ geom_vline(xintercept = q, color = "red") +
+ annotate("segment", x = q[2], xend = q[4], y = 0, yend = 0, color = "blue", size = 4) + 
+ theme_grey(base_size = 20)
+```
+:::
+
+::::
+
+
+
+## Boxplots {.smaller}
+
+A condensed visualization of a distribution showing location, spread, skewness and outliers. 
+
+```{r}
+#| echo: true
+#| fig-height: 1
+galton |> ggplot(aes(x = Estimate)) + geom_boxplot()
+```
+
+- The **box** shows the median in the middle and the other two quartiles as their borders.
+- **Whiskers**: From above the upper quartile, a distance of 1.5 times the IQR is measured out and a whisker is drawn up to the largest observed data point from the dataset that falls within this distance. Similarly, for the lower quartile. 
+- Whiskers must end at an observed data point! (So lengths can differ.) 
+- All other values outside of box and whiskers are shown as points and often called **outliers**. (There may be none.)
+
+## Boxplots vs. histograms {.smaller}
+
+- Histograms can show the shape of the distribution well, but not the summary statistics like the median.
+
+```{r}
+#| echo: true
+#| fig-height: 1
+galton |> ggplot(aes(x = Estimate)) + geom_boxplot()
+```
+
+```{r}
+#| echo: true
+#| fig-height: 2
+galton |> ggplot(aes(x = Estimate)) + geom_histogram(binwidth = 5)
+```
+
+
+
+## Boxplots vs. histograms {.smaller}
+
+- Boxplots [can not]{style='color:red;'} show the patterns of **bimodal or multimodal** distributions. 
+
+```{r}
+#| echo: true
+#| fig-height: 1
+palmerpenguins::penguins |> ggplot(aes(x = flipper_length_mm)) + geom_boxplot()
+```
+
+```{r}
+#| echo: true
+#| fig-height: 2
+palmerpenguins::penguins |> ggplot(aes(x = flipper_length_mm)) + geom_histogram(binwidth = 1)
+```
+
+
+## Minimizing proporties of Mean and Median { background-color="aquamarine"}
+
+*Mean* minimizes the mean of squared deviations from it. No other value $a$ has a lower mean of square distances from the data points. $\frac{1}{n}\sum_{i=1}^n(x_i - a)^2$.
+
+. . .
+
+*Median* minimizes the sum of the absolute deviation. No other value $a$ has a lower mean of absolute distances from the data points. $\frac{1}{n}\sum_{i=1}^n|x_i - a|$.
+
+
+## Two families of summary statistics  {background-color="khaki"}
+
+- Measures based on **sums** (related to *mathematical moments*)
+  - Mean
+  - Standard deviation
+- Measures based on the **ordered** sequence of these observations (*order statistics*)
+  - Median (and all quantiles)
+  - Interquartile range
+
+
+# Bivariate Summary Statistics
+
+## Covariance  {.smaller background-color="khaki"}
+
+Goal: We want to measure the joint variation in numerical observations of two variables $x_1,\dots,x_n$ and $y_1, \dots, y_n$. 
+
+**Covariance** 
+
+$\text{cov}(x,y) = \frac{1}{n}\sum_{i=1}^n(x_i - \mu_x)(y_i - \mu_y)$
+
+where $\mu_x$ and $\mu_y$ are the arithmetic means of $x$ and $y$. 
+
+. . .
+
+Note: $\text{cov}(x,x) = \frac{1}{n}\sum_{i=1}^n(x_i - \mu_x)(x_i - \mu_x) = \frac{1}{n}\sum_{i=1}^n(x_i - \mu_x)^2 = \text{Var}(x)$
+
+
+## Correlation {.smaller background-color="khaki"}
+
+Goal: We want to measure the linear correlation in numerical observations of two variables $x_1,\dots,x_n$ and $y_1, \dots, y_n$. 
+
+**Pearson correlation coefficient**
+$r_{xy} = \frac{\sum_{i=1}^n(x_i - \mu_x)(y_i - \mu_y)}{\sqrt{\sum_{i=1}^n(x_i - \mu_x)^2}\sqrt{\sum_{i=1}^n(y_i - \mu_y)^2}}$ 
+
+. . . 
+
+Relation to covariance: $r_{xy} = \frac{\text{cov}(x,y)}{\sigma_x\sigma_y}$
+
+where $\sigma_x$ and $\sigma_y$ are the standard deviations of $x$ and $y$.
+
+Relation to standard scores:  
+When $x$ and $y$ are standard scores (each with mean zero and standard deviation one), then $\text{cov}(x,y) = r_{xy}$. 
+
+
+:::{.aside}
+There are other correlation coefficients which we omit here. 
+:::
+
+
+## Interpretation of correlation {.smaller}
+
+Correlation between two vectors $x$ and $y$ is "normalized". 
+
+- The maximal possible values is $r_{xy} = 1$ 
+  - $x$ and $y$ are *fully correlated*
+- The minimal values is $r_{xy} = -1$
+  - $x$ and $y$ are *anticorrelated*
+- $r_{xy} \approx 0$ mean 
+  - the variables are *uncorrelated*
+
+- $r_{xy} = r_{yx}$
+
+## Correlation matrix {.smaller}
+
+Using `corrr` from the packages`tidymodels`
+
+```{r}
+#| echo: true
+library(corrr)
+penguins |> select(-species, -island, -sex) |> 
+ correlate()
+```
+
+
+## Correlation table {.smaller}
+
+Using `correlation` from the packages`correlation`
+
+```{r}
+#| echo: true
+library(correlation)
+results <- palmerpenguins::penguins |> 
+ select(-species, -island, -sex) |> 
+ correlation()
+results
+```
+
+::: aside
+What do the stars mean? Statistical significance automatically added by the . We treat that later. 
+:::
+
+## Correlation visualization {.smaller}
+
+```{r}
+#| echo: true
+results %>%
+  summary(redundant = TRUE) %>%
+  plot()
+```
+
+
+
+
+
+
+
+# Exploratory Data Analysis {background-color="khaki"}
+
+## Exploratory Data Analysis {background-color="khaki" .smaller}
+
+![](img/data-science-explore.png)
+
+EDA is the systematic exploration of data using
+
+- visualization
+- transformation
+- computation of characteristic values
+- modeling
+
+
+:::{.aside}
+Computation of characteristic values: Functions like mean, median, mode, standard deviation, or interquartile range  
+Modeling: Operations like linear regression or dimensionality reduction. We haven't talked about it, but will do soon.   
+:::
+
+
+## Systematic but no standard routine {background-color="khaki"}
+
+> “There are no routine statistical questions, only questionable statistical routines.” — Sir David Cox
+
+> “Far better an approximate answer to the right question, which is often vague, than an exact answer to the wrong question, which can always be made precise.” — John Tukey 
+
+## Systematic but no standard routine {background-color="khaki"}
+
+- Goal of EDA: Develop understanding of your data.
+- EDA's iterative cycle
+    1. Generate questions about your data.
+    2. Search for answers by visualizing, transforming, and modelling your data.
+    3. Use what you learn to refine your questions and/or generate new questions.
+- EDA is fundamentally a creative process.
+
+## Questions {background-color="khaki"}
+
+- The way to ask quality questions:
+  - Generate many questions!
+  - You cannot come up with most interesting questions when you start. 
+- There is no rule which questions to ask. These are useful
+    1. What type of **variation** occurs within my variables?  
+    (Barplots, Histograms,...)
+    2. What type of **covariation** occurs between my variables?   
+    (Scatterplots, Timelines,...)
+
+## EDA embedded in a *statistical* data science project {background-color="khaki"}
+
+1.  Stating and refining the question
+2.  **Exploring the data**
+3.  Building formal statistical models
+4.  Interpreting the results
+5.  Communicating the results
+
+:::{.aside}
+Roger D. Peng and Elizabeth Matsui.
+"The Art of Data Science." A Guide for Anyone Who Works with Data.
+Skybrude Consulting, LLC (2015).
+:::
+
+## Example EDA: Strange Airports {.smaller background-color="khaki"}
+
+From Homework 02: 
+
+```{r}
+#| fig-height: 4
+#| fig-weight: 10
+#| echo: true
+library(nycflights13)
+ggplot(data = airports, mapping = aes(x = lon, y = lat)) + geom_point(aes(color = tzone)) 
+```
+
+```{r}
+#| echo: true
+airports %>% filter(lon >= 0) 
+```
+
+
+## Airport errors {.smaller background-color="khaki"}
+
+```{r}
+airports %>% filter(lon >= 0)
+```
+
+. . . 
+
+Correct locations (internet research and location of maps):
+
+:::: {.columns}
+::: {.column width='55%'}
+- Deer Valley Municipal Airport: Phoenix   
+33°41′N 112°05′W [Missing minus for lon (W)]{style='color:red;'}
+- Dillant Hopkins Airport: New Hampshire   
+42°54′N 72°16′W [lon-lat switched, minus (W)]{style='color:red;'}
+- Montgomery Field: San Diego   
+32°44′N 117°11″W [Missing minus for lon (W)]{style='color:red;'}
+- Eareckson As: Alaska    
+52°42′N 174°06′E [No error: Too west,it's east!]{style='color:red;'}
+:::
+
+::: {.column width='45%'}
+![](https://upload.wikimedia.org/wikipedia/commons/e/ef/FedStats_Lat_long.svg)
+:::
+
+::::
+
+## Conclusions on data errors {.smaller background-color="khaki"}
+
+- In real-world datasets errors like the 3 airport are quite common.
+- Errors of this type are often hard to detect and remain unnoticed. 
+  - This can (but need not) change results drastically!
+
+. . .
+
+Conclusions
+
+- Always remain **alert for inconsistencies** and be ready to check the **plausibility** of results. 
+- Skills in **exploratory data analysis** (EDA) are essential to find errors and explore their nature and implication
+- Errors are unpredictable, of diverse types, and are often deeply related to the reality the data presents. 
+  - This is one reason why EDA can not be a fully formalized and automatized process. 
+
+
+
+
+# Data science projects {background-color="khaki"}
+
+Outline of question-driven data work
+
+## Six types of questions {background-color="khaki" .smaller}
+
+1.  **Descriptive:** summarize a characteristic of a set of data
+2.  **Exploratory:** analyze to see if there are patterns, trends, or relationships between variables (hypothesis generating)
+3.  **Inferential:** analyze patterns, trends, or relationships in representative data from a population
+4.  **Predictive:** make predictions for individuals or groups of individuals
+5.  **Causal:** whether changing one factor will change another factor, on average, in a population
+6.  **Mechanistic:** explore "how" one factor (probably/most likely/potentially) changes another
+
+. . . 
+
+*We only did 1 and 2, so far.*
+
+:::{.aside}
+Leek, Jeffery T., and Roger D. Peng. 2015. “What Is the Question?” Science 347 (6228): 1314–15. <https://doi.org/10.1126/science.aaa6146>.
+:::
+
+
+## Descriptive Projects {background-color="khaki"}
+
+![](img/DescripitiveResearch_Dubin1969.png)
+
+::: aside
+Dubin (1969). Theory Building - A Practical Guide to the Construction and Testing of Theoretical Models
+:::
+
+
+## Data Analysis Flowchart {background-color="khaki"}
+
+![](img/DataAnalysisFlowChart_LeekPeng.jpeg){fig-align="center" height="550"}
+
+## Example: COVID-19 and Vitamin D  {background-color="khaki" .smaller}
+
+::: {.incremental}
+1. **Descriptive:** frequency of hospitalisations due to COVID-19 in a set of data collected from a group of individuals
+2. **Exploratory:** examine relationships between a range of dietary factors and COVID-19 hospitalisations
+3.  **Inferential:** examine whether any relationship between taking Vitamin D supplements and COVID-19 hospitalisations found in the sample hold for the population at large
+4. **Predictive:** what types of people will take Vitamin D supplements during the next year
+5. **Causal:** whether people with COVID-19 who were randomly assigned to take Vitamin D supplements or those who were not are hospitalised 
+6.  **Mechanistic:** how increased vitamin D intake leads to a reduction in the number of viral illnesses
+:::
+
+## Questions to questions  {background-color="khaki"}
+
+-   Do you have appropriate data to answer your question?
+-   Do you have information on confounding variables?
+-   Was the data you're working with collected in a way that introduces bias?
+
+:::{.aside}
+**Example**  
+I want to estimate the average number of children in households in Bremen.
+I conduct a survey at an elementary school and ask pupils how many children, including themselves, live in their house.
+Then, I take the average of the responses.
+
+- Is this a biased or an unbiased estimate of the number of children in households in Bremen?
+- If biased, will the value be an overestimate or underestimate?
+:::
+
+
+## Context Information is important! {background-color="khaki" .smaller}
+
+- Not all information is in the data!
+- Potential confounding variables you infer from general knowledge
+- Information about data collection you may receive from an accompanying report
+- Information about computed variables you may need to look up in accompanying documentation
+- Information about certain variables you may find in an accompanying **codebook**. For example the exact wording of questions in survey data. 
+
+## Data Science Projects in the Course {.smaller}
+
+::: {.incremental}
+- A project report is the main assessment for the Data Science Tools module. 
+- This week more **homework repositories** will be released. 
+- These homework repositories may be updated with new tasks once new concepts have been treated. 
+- Topics will for example be
+    - COVID-19
+    - Germany's income distribution and income tax
+    - Fuel prices in Western Australia
+    - Political Attitudes in Germany
+    - ...
+- The repositories mimick data science projects. Later you will choose a data science project on your own. It can build on these topics or on different datasets which you find interesting.
+:::
+
+
+
+# Principal component analysis (PCA)
+
+A typical part of Exploratory Data Analysis. 
+
+## PCA Description {.smaller}
+
+Principle component analysis 
+
+- is a **dimensionality-reduction** technique, that means it can be used to reduce the number of variables
+- computes new variables which represent the data in a different way
+- transforms the data **linearly** to a new coordinate system where most of the variation in the data can be described with fewer variables than the original data
+
+**Today:** Quick walk through how to use and interpret it. 
+
+
+## Example: Numerical variables of penguins {.smaller}
+
+```{r}
+#| echo: true
+peng <- 
+ penguins |> 
+ select(species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g) |> 
+ na.omit()
+peng |> count(species)
+```
+
+We have `r nrow(peng)` penguins and `r ncol(peng) - 1` numeric variables.
+
+
+## Two Variables {.smaller}
+
+Example for the new axes. 
+
+```{r}
+#| fig-height: 4
+pca1 <- peng |> select(flipper_length_mm, bill_length_mm) |> 
+ prcomp(~., data = _, scale = FALSE)
+pca_vec <- t(pca1$rotation) |> as_tibble() # Vectors with x = flipper_length, y = bill_length
+ggplot(peng) +
+ geom_point(aes(x = flipper_length_mm, y = bill_length_mm, color = species)) +
+ geom_segment(
+  data = pca_vec, 
+  aes(x = mean(peng$flipper_length_mm), 
+      y = mean(peng$bill_length_mm), 
+      xend = c(pca1$sdev)*flipper_length_mm + mean(peng$flipper_length_mm), 
+      yend = c(pca1$sdev)*bill_length_mm + mean(peng$bill_length_mm)), 
+  arrow = arrow(length = unit(0.3, "cm"))) +
+ coord_fixed()
+```
+
+::: aside
+The two arrows show the two eigenvectors of the covariance matrix of the two variables scaled by the square root of the corresponding eigenvalues, and shifted so their origins are at the means of both variables. 
+:::
+
+
+## Computation in R {.smaller}
+
+The basic function is base-R's `prcomp` (there is an older `princomp` which is not advisable to use). 
+
+```{r}
+#| echo: true
+# prcomp can take a data frame with all numerical vectors as 1st argument
+P <- peng |> select(flipper_length_mm, bill_length_mm) |> prcomp()
+```
+
+:::: {.columns}
+
+::: {.column width='50%'}
+The base output
+
+```{r}
+#| echo: true
+P
+```
+:::
+
+::: {.column width='50%'}
+The summary output
+```{r}
+#| echo: true
+summary(P)
+```
+:::
+
+::::
+
+
+
+## The `prcomp` object {.smaller}
+
+Includes 4 different related entities.
+
+:::: {.columns}
+
+::: {.column width='50%'}
+The **standard deviations** related to each principal component.   
+```{r}
+#| echo: true
+P$sdev
+```
+
+The matrix of variable **loadings**. (It is also the matrix which rotates the original data vectors.)
+```{r}
+#| echo: true
+P$rotation
+```
+:::
+
+::: {.column width='50%'}
+The means for each original variable. 
+```{r}
+#| echo: true
+P$center
+```
+Note, there are also standard deviations of original variables in `$scale` when this is set to be used.
+
+The centered (scaled, if set) and rotated data.
+```{r}
+#| echo: true
+P$x
+```
+:::
+
+::::
+
+## PCA as Exploratory Data Analysis {.smaller}
+
+Suppose we do a PCA with all `r nrow(peng)` penguins (rows) and all `r ncol(peng)-1` numeric variables.
+
+- *How long will the vector of standard deviations be?* [`r ncol(peng)-1`]{.fragment}  
+- *What dimensions will the rotation matrix have?* [`r ncol(peng)-1` x `r ncol(peng)-1`]{.fragment}  
+- *What dimensions will the rotated data frame have?* [`r nrow(peng)` x `r ncol(peng)-1`]{.fragment}
+
+. . . 
+
+When we do a PCA for exploration there are 3 things to look at: 
+
+1. The data in PC coordinates - the centered (scaled, if set) and rotated data.  
+2. The rotation matrix - the variable loadings.
+3. The variance explained by each PC - based on the standard deviations. 
+
+## All variables {.smaller}
+
+Now, with `scale = TRUE` (recommended). Data will be centered and scaled (a.k.a. standardized) first. 
+
+```{r}
+#| echo: true
+peng_PCA <- peng |> select(-species) |> 
+ prcomp(scale = TRUE)
+peng_PCA
+```
+
+
+## Explore data in PC coordinates {.smaller}
+
+
+:::: {.columns}
+
+::: {.column width='35%'}
+- Start plotting PC1 against PC2. By default these are the most important ones. Drill deeper later. 
+- Append the original data. Here used to color by species. 
+:::
+
+::: {.column width='65%'}
+```{r}
+#| echo: true
+#| fig-height: 5
+plotdata <- peng_PCA$x |> as_tibble() |> bind_cols(peng)
+plotdata |> ggplot(aes(PC1, PC2, color = species)) +
+ geom_point() +
+ coord_fixed() + theme_minimal(base_size = 20)
+```
+:::
+
+::::
+
+
+## Variable loadings {.smaller}
+
+- The columns of the rotation matrix shows how the original variables *load* on the principle components. 
+- We can try to interpret these loadings and give descriptive names to principal components. 
+- `tidy` extracts the rotation matrix in long format with a `PC`, a `column` (for the original variable name), and a `value` variable.
+
+```{r}
+#| echo: true
+#| fig-height: 3
+peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
+ pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
+ ggplot(aes(value, variable)) + geom_col() + geom_vline(xintercept = 0, color = "blue") +
+ facet_wrap(~PC, nrow = 1) + theme_minimal(base_size = 20)
+```
+
+## Variance explained {.smaller}
+
+- Principle components are by default sorted by importance. 
+- The squares of the standard deviation for each component gives its variances and **variances have to sum up to the sum of the variances** of the original variables. 
+    - When original variables were standardized their original variances are all each one. Consequently, the variances of the principal components sum up to the number of original variables.
+- A typical plot to visualize the importance of the components is to plot the percentage of the variance explained by each component.
+
+```{r}
+#| echo: true
+#| fig-height: 3
+tibble(PC = 1:4, sdev = peng_PCA$sdev) |> 
+ mutate(percent = sdev^2/sum(sdev^2) * 100) |>
+ ggplot(aes(PC, percent)) + geom_col() + theme_grey(base_size = 20)
+```
+
+
+## Interpretations (1) {.smaller}
+
+```{r}
+#| fig-height: 3
+tibble(PC = 1:4, sdev = peng_PCA$sdev) |> 
+ mutate(percent = sdev^2/sum(sdev^2) * 100,
+        cum_percent = cumsum(percent)) |>
+ ggplot(aes(PC, percent)) + geom_col() + 
+ geom_line(aes(y = cum_percent), color = "blue") +
+ geom_point(aes(y = cum_percent), color = "blue") + 
+ scale_y_continuous(breaks = seq(0,100,20))
+```
+
+- The first component explains almost 70% of the variance. So most emphasize should be on this. 
+- The first two explain about 88% of the total variance. 
+
+
+## Interpretations (2) {.smaller}
+
+```{r}
+#| fig-height: 3
+peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
+ pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
+ ggplot(aes(value, variable)) + geom_col() + geom_vline(xintercept = 0, color = "blue") +
+ facet_wrap(~PC, nrow = 1) 
+```
+
+1. To score high on PC1 a penguin needs to be generally large but with low bill depth.
+2. Penguins scoring high on PC2 are penguins with generally small bills.  
+
+## Interpretations (3) {.smaller}
+
+```{r}
+#| fig-height: 4
+
+g1 <- plotdata |> ggplot(aes(PC1, PC2, color = species)) +
+ geom_point() + coord_fixed()
+g2 <- peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
+ pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
+ filter(PC=="PC2" | PC == "PC1") |> 
+ ggplot(aes(value, variable)) + geom_col() +
+ facet_wrap(~PC, nrow = 1)
+library(patchwork)
+g1 + g2
+```
+
+![](https://upload.wikimedia.org/wikipedia/commons/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg){height=120}
+![](https://upload.wikimedia.org/wikipedia/commons/0/08/South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg){height=120}
+![](https://upload.wikimedia.org/wikipedia/commons/0/00/Brown_Bluff-2016-Tabarin_Peninsula%E2%80%93Gentoo_penguin_%28Pygoscelis_papua%29_03.jpg){height=120}
+
+
+
+## Apply PCA {.smaller}
+
+- Besides standardization, PCA may benefit by **preprocessing** steps of **data transformation** with variables with skew distributions (log, square-root, or Box-Cox transformation). This may result in less outliers.
+- PCA is a often a useful step of **exploratory data analysis** when you have a large number of numerical variables to show the empirical *dimensionality* of the data and its structure
+- Limitation: PCA is only sensitive for linear relation ships (no U-shaped) or the like
+- The principal components can be used **as predictors** in a model instead of the raw variables. 
+
+## Properties of PCA {.smaller}
+
+::: {.incremental}
+- The principal components (the columns of the rotation matrix) are maximally *uncorrelated* (actually they are even *orthogonal*).
+- This also holds for the columns of the rotated data. 
+- The total variances of all prinicipal components sum up to the number of variables (when variables are standardized)
+- The PCA is unique. All principle components together are a complete representation of the data. (Unlike other technique of dimensionality reduction which may rely on starting values, random factors, or tuning parameters)
+:::
+
+
+## Relations of PCA {.smaller}
+
+::: {.incremental}
+- A technique similar in spirit is *factor analysis* (e.g. `factanal`). It is more theory based as it requires to specify to the theoriezed number of factors up front. 
+- PCA is an example of the importance of linear algebra ("matrixology") in data science techniques. 
+  - PCA is based on the **eigenvalue decomposition** of the covariance matrix (or correlation matrix in the standardized case) of the data.
+:::
+
+
+
+

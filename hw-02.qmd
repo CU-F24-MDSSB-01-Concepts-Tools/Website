@@ -1,0 +1,20 @@
+---
+title: "Homework 02"
+subtitle: "Data Visualization and Data Wrangling, R and python "
+---
+
+The goal of this assignment is to introduce you to **Data Visualization** and **Data Wrangling** in **R** and **python**.
+
+
+To that end, we provide the repository `hw2-USERNAME` two starter quarto documents
+
+- one for R
+- one for python
+
+First, solve the exercises in RStudio with R.   
+Once you had the introduction to python you do the same in python. 
+
+The learning goal is to see the differences but, more important, the similarity of how the concepts are implemented. 
+
+**Find the instructions in the README in your repository!**
+

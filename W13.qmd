@@ -1,0 +1,1315 @@
+---
+title: "W#13: Random Variables, Probability Distributions, Central Limit Theorem"
+author: Jan Lorenz
+format: 
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: true
+    preview-links: false
+    logo: img/ConstructorUniversity.png
+    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+execute: 
+  cache: true
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(palmerpenguins)
+library(tidymodels)
+data(penguins)
+```
+
+
+# Random variables { background-color="aquamarine"}
+
+## How to think about random variables {.smaller  background-color="aquamarine"}
+
+In [**statistics**]{style='color:blue;'} (that means, in **data**):   
+A theoretical assumption about a *numerical variable* in a data frame.
+
+. . .
+
+In [**probability**]{style='color:blue;'} (that means, in **theory**):   
+A mapping of events (subsets of a sample space of atomic events) to *numerical values*. 
+
+. . . 
+
+[**Why?**]{style='color:blue;'}  
+For random variables we can:   
+
+- Conceptualize meaningful values to random events like payoffs, costs, or grades
+- Compute probabilities of these numerical values
+- Compute the *expected value* of a numerical variable
+- Theorize about their distribution and their distribution and density functions (e.g. binomial, normal, lognormal, etc.)
+
+## Random variable mathematically {.smaller background-color="aquamarine"}
+
+A [**random variable**]{style='color:blue;'} is
+
+- a function $X: S \to \mathbb{R}$ from a sample space $S$ to the real numbers $\mathbb{R}$, 
+- which assigns a value to each atomic event in the sample space. 
+
+Together with a probability function $\text{Pr}: \mathcal{F}(S)\to [0,1]$ probabilities can be assigned to values of the random variable (see the *probability mass function* in explained later).
+
+::: aside
+**Fun fact:** The *random variable* is neither *random* nor a *variable* but a function. 
+:::
+
+## Examples of random variables {.smaller  background-color="aquamarine"}
+
+3 random processes spaces and an example of a random variable $X$:
+
+**Two coin tosses:**  
+Sample space: $\{HH, HT, TH, TT\}$   
+We define $X$ as the **number of HEADS**.   
+Values of $X$: $HH \to 2$, $HT \to 1$, $TH \to 1$, and $TT \to 0$.
+
+. . .
+
+**62 randomly selected organ donations:**  
+Sample space: All possibilities to select 62 organ donations    
+We define $X$ to be **the number of complications** (compare Hypothesis Testing material).   
+Values of $X$: 0, 1, 2,..., 61, 62
+
+. . .
+
+**Select a random palmer penguin:**     
+We define $X$ as its flipper length.    
+Sample space: All penguins in dataset   
+Values of $X$: `flipper_length_mm`
+
+. . . 
+
+**Summary:** A random variable is a way to look at a numerical aspect of a sample space. It often *simplfies* because more atomic events may be mapped to the same number.
+
+## Discrete vs. continuous  {.smaller  background-color="aquamarine"}
+
+A random variable $X$ can be either
+
+[**Discrete**]{style='color:blue;'}: $X$ can take only a finite number of possible numeric values. Or:
+
+[**Continuous**]{style='color:blue;'}: $X$ can take values from an infinite set of real numbers (for example an interval or all positive real numbers)
+
+. . . 
+
+**Are these random variables discrete or continuous?**
+
+1. Number of HEADs of two coin tosses: [**Discrete**]{.fragment}
+2. Number of complications in 62 organ donations: [**Discrete**]{.fragment}
+3. Flipper length of a random row in palmer penguins data frame: [**Discrete**]{.fragment}
+4. Flipper length of a random penguin in the world: [**Continuous**]{.fragment}
+
+. . . 
+
+[**For working with data:**]{style='color:blue;'} Every data frame is finite, so every random variable built on data variable dataset is technically discrete. However, it can make sense to assume it as continuous because of its *continuous nature*. (In variables of continuous nature, many or all values are unique.)
+
+
+## Probability mass function (pmf) {.smaller  background-color="aquamarine"}
+
+For 
+
+- a *discrete random variable* $X$ and 
+- a *probability function* $\text{Pr}$ 
+
+the [**probability mass function**]{style='color:blue;'} $f_X: \mathbb{R} \to [0,1]$ is defined as
+
+$$f_X(x) = \text{Pr}(X=x),$$ 
+
+where $\text{Pr}(X=x)$ is an abbreviation for $\text{Pr}(\{a\in S\text{ for which } X(a) = x\})$. 
+
+## Example pmf for 2 coin tosses {.smaller  background-color="aquamarine"}
+
+Two coin tosses $S = \{HH, HT, TH, TT\}$   
+
+  - We define $X$ to be the number of heads:   
+  $X(HH) = 2$, $X(TH) = 1$, $X(HT) = 1$, and $X(TT) = 0$.   
+  - We assume the probability function $\text{Pr}$ assigns for each atomic event a probability of 0.25. 
+  - Then the probability mass function is
+$$\begin{align} f_X(0) = & \text{Pr}(X=0) = \text{Pr}(\{TT\}) & = 0.25 \\ 
+f_X(1) = & \text{Pr}(X=1) = \text{Pr}(\{HT,TH\}) & = 0.25 + 0.25 = 0.5 \\
+f_X(2) = &\text{Pr}(X=2) = \text{Pr}(\{HH\}) & = 0.25\end{align}$$
+  - Note that  $\text{Pr}(\{HT,TH\}) = \text{Pr}(\{HT\}) + \text{Pr}(\{HT\})$ by adding the probabilities of the atomic events. 
+  - For all $x$ which are not 0, 1, or 2: Obviously, $f_X(x) = 0$.
+
+<!-- In a data frame `D` with $m$ cases, we can consider a variable `"varname"` (of type numeric) as a random variable with -->
+<!-- $X: \{1,2,\dots,m\} \to \mathbb{R}$ and $X(i) =$`D[i,"varname"]`.   -->
+
+<!-- Let us consider for that data frame that $X$ is the height of $m$ people measured very precisely. Then, the probability of a certain height, e.g. 1.6782, is $\text{Pr}(X=1.6782) = \frac{1}{m}$ as for any other height. This is not very interesting. More interesting is the probability that the height is between 1.6 and 1.7. Of course, these values can be computed for a data frame. Mathematically, we like to have a formal treatment for such continuous random variables. To that end, we will generalize the probability mass function to a *probability density function* later.  -->
+
+## Example: Roll two dice 🎲 🎲{.smaller  background-color="aquamarine"}
+
+**Random variable:** The sum of both dice. 
+
+. . .
+
+**Events:** All 36 combinations of rolls 1+1, 1+2, 1+3, 1+4, 1+5, 1+6, 2+1, 2+2, 2+3, 2+4, 2+5, 2+6, 3+1, 3+2, 3+3, 3+4, 3+5, 3+6, 4+1, 4+2, 4+3, 4+4, 4+5, 4+6, 5+1, 5+2, 5+3, 5+4, 5+5, 5+6, 6+1, 6+2, 6+3, 6+4, 6+5, 6+6     
+
+. . . 
+
+**Possible values of the random variable: **
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 (These are numbers.)
+
+. . .
+
+**Probability mass function:**
+(Assuming each number has probability of $\frac{1}{6}$ for each die.)
+
+:::: {.columns}
+
+::: {.column width='40%'}
+$\text{Pr}(2) = \text{Pr}(12) = \frac{1}{36}$  
+$\text{Pr}(3) = \text{Pr}(11) = \frac{2}{36}$  
+$\text{Pr}(4) = \text{Pr}(10) = \frac{3}{36}$  
+$\text{Pr}(5) = \text{Pr}(9) = \frac{4}{36}$  
+$\text{Pr}(6) = \text{Pr}(8) = \frac{5}{36}$  
+$\text{Pr}(7) = \frac{6}{36}$  
+:::
+
+::: {.column width='60%'}
+```{r}
+#| echo: true
+#| fig-height: 2.5
+tibble(Value = 0:15, 
+       pmf=c(0,0,1,2,3,4,5,6,5,4,3,2,1,0,0,0)/36) |> 
+ ggplot(aes(Value,pmf)) + geom_line() + geom_point() +
+ theme_minimal(base_size = 20)
+```
+
+:::
+
+::::
+
+## Expected value {.smaller  background-color="aquamarine"}
+
+- For a discrete random variable $X$, there is only a finite set of number $X$ can take:  $\{x_1,\dots,x_k\}$.   
+- So, the probability mass function has maximally $k$ positive probabilities: $p_1,\dots,p_k$
+- Recall $p_i = f_X(x_i) = \text{Pr}(X=x_i) = \text{Pr}(\{a \in S \text{ for which } X(a) = x_i \})$.   
+
+The [**expected value**]{style='color:blue;'} of $X$ is defined as $E(X) = \sum_{i=1}^k p_i x_i = p_1x_1 + \dots + p_kx_k.$
+
+*Think of $E(X)$ as the probability weighted arithmetic mean of all possible values of $X$.*
+
+. . . 
+
+**Examples:** $X$ one roll of a die 🎲.    
+[$E(X) = 1\cdot\frac{1}{6} + 2\cdot\frac{1}{6} + 3\cdot\frac{1}{6} + 4\cdot\frac{1}{6} + 5\cdot\frac{1}{6} + 6\cdot\frac{1}{6} = \frac{21}{6} = 3.5$]{.fragment}    
+
+$X$ sum of two die rolls 🎲🎲.    
+[$E(X) = 2\cdot\frac{1}{36} + 3\cdot\frac{2}{36} + 4\cdot\frac{3}{36} + 5\cdot\frac{4}{36} + \dots + 10\cdot\frac{3}{36} + 11\cdot\frac{2}{36} + 12\cdot\frac{1}{36} = 7$]{.fragment}
+
+$X$ flipper length in `penguins` from Palmer penguins: [$E(X) = `r mean(penguins$flipper_length_mm, na.rm = TRUE)`$  
+`mean(penguins$flipper_length_mm, na.rm = TRUE)`]{.fragment}
+
+
+## Distributions of Random Variables {.smaller  background-color="aquamarine"}
+
+- The **distribution** of a random variable $X$ is a *table*, *graph*, or *formula* that gives the probabilities of all its possible values.
+
+Type of Random Variable | Table | Graph | Formula |
+---:|:---:|:---:|:---:|
+Discrete | &check; | &check; | &check; |
+Continuous | &cross; | &check; | &check; |
+
+- The **probability mass function** $f_X$ defines the distribution of a random variable $X$ that is discrete.
+
+- The **probability density function** $f_X$ defines the distribution of a random variable $X$ that is continuous. (Details later)
+
+- For a column in a data frame the distribution is typically visualized by 
+    - a bar plot of counts or frequencies for discrete variables
+    - a histogram for continuous variables (note, depending on the binwidth this gives a more or less detailed impression of the distribution)
+ 
+## Examples of data distributions {.smaller  background-color="aquamarine"}
+
+:::: {.columns}
+
+::: {.column width='33%'}
+**Discrete**
+```{r}
+#| echo: true
+#| fig-height: 3
+penguins |> 
+ ggplot(aes(island)) + 
+ geom_bar() + 
+ theme_minimal(base_size = 30)
+```
+
+Technically `island` is cannot be interpreted as a random variable because its values are not numbers, but we also speak about the *distribution* of the variables.
+:::
+
+::: {.column width='33%'}
+::: {.fragment}
+**Continuous** in nature   
+(technically still discrete)
+```{r}
+#| echo: true
+#| fig-height: 3.5
+penguins |> 
+ ggplot(aes(flipper_length_mm)) + 
+ geom_histogram() + theme_minimal(base_size = 30)
+``` 
+
+
+Larger bin width
+```{r}
+#| echo: true
+#| fig-height: 3.5
+penguins |> 
+ ggplot(aes(flipper_length_mm)) + 
+ geom_histogram(binwidth = 10) + theme_minimal(base_size = 30)
+```
+:::
+:::
+
+::: {.column width='33%'}
+::: {.fragment}
+Smallest bin width
+```{r}
+#| echo: true
+#| fig-height: 3.5
+penguins |> 
+ ggplot(aes(flipper_length_mm)) + 
+ geom_histogram(binwidth = 1) + theme_minimal(base_size = 20)
+```
+
+**Density** plot
+```{r}
+#| echo: true
+#| fig-height: 3.5
+penguins |> 
+ ggplot(aes(flipper_length_mm)) + 
+ geom_density() + theme_minimal(base_size = 30)
+```
+:::
+:::
+
+::::
+
+## Density plot {.smaller  background-color="aquamarine"}
+
+- The density plot is a smoothed version of the histogram.
+- Each data point is replaced by a *kernel* (e.g. a normal distribution, see later) and the sum of all kernels is plotted.
+
+:::: {.columns}
+
+::: {.column width='33%'}
+With automatic bandwidth (`bw`)
+```{r}
+#| echo: true
+#| fig-height: 4.5
+penguins |> 
+ ggplot(aes(flipper_length_mm)) + 
+ geom_density() + 
+ theme_minimal(base_size = 30)
+```
+:::
+::: {.column width='33%'}
+::: {.fragment}
+`bw = 0.5` means kernel has standard deviation 0.5
+```{r}
+#| echo: true
+#| fig-height: 4.5
+penguins |> 
+ ggplot(aes(flipper_length_mm)) + 
+ geom_density(bw = 0.5) + 
+ theme_minimal(base_size = 30)
+```
+:::
+:::
+
+::: {.column width='33%'}
+::: {.fragment}
+For demonstration:   
+2 penguins only   
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+penguins |> slice(1:2) |> 
+ ggplot(aes(flipper_length_mm)) + 
+ geom_density(bw = 0.5) + xlim(c(170,230)) + 
+ theme_minimal(base_size = 30)
+```
+See the two kernels
+:::
+:::
+
+::::
+
+
+# Binomial distribution { background-color="aquamarine"}
+
+A first example for a theoretical random variable. 
+
+## Binomial distribution {.smaller  background-color="aquamarine"}
+
+The *number of HEADS in several coin tosses* and the *number of complications in randomly selected organ donations* are examples of random variable which have a *binomial distribution*. 
+
+. . .
+
+**Definition:**   
+The [**binomial distribution**]{style='color:blue;'} 
+with *parameters* $n$ and $p$ is   
+the *number of successes* in a sequence of $n$ independent *Bernoulli trials*    
+which each delivers a *success* with probability $p$ and a *failure* with probability $(1-p)$. 
+
+<!-- - The default model for the number of successes drawn from a sample of size $n$ drawn from a population of size $N$ with replacement.  -->
+<!-- - When $N$ is much larger than $n$ it is also a good approximation for drawing without replacement.  -->
+
+
+## Binomial probability mass function {.smaller  background-color="aquamarine"}
+
+$$f(k,n,p) = \Pr(k;n,p) = \Pr(X = k) = \binom{n}{k}p^k(1-p)^{n-k}$$
+
+where $k$ is the number of successes, $n$ is the number of Bernoulli trials, and $p$ the success probability. 
+
+Probability to have *exactly* 3 complications in 62 randomly selected organ donations with complication probability $p=0.1$ is
+
+```{r}
+#| echo: true
+# x represents k, and size represents n
+dbinom(x = 3, size = 62, prob = 0.1)
+```
+
+The probability to have 3 complications *or less* can be computed as
+
+```{r}
+#| echo: true
+dbinom(3, 62, 0.1) + dbinom(2, 62, 0.1) + dbinom(1, 62, 0.1) + dbinom(0, 62, 0.1)
+```
+
+. . . 
+
+[This was the p-value we computed with simulation for the hypothesis testing example.]{style='color:blue;'} 
+
+
+## Expected value binomial distribution {.smaller background-color="aquamarine"}
+
+For $X \sim \text{Binom}(n,p)$ (read "$X$ has a binomial distribution with samplesize $n$ and success probability $p$")
+
+The expected value of $X$ is by definition
+
+$$E(X) = \underbrace{\sum_{k = 0}^n k}_{\text{sum over successes}} \cdot \underbrace{\binom{n}{k}p^k(1-p)^{n-k}}_{\text{probability of successes}}$$
+
+Computation shows that $E(X) = p\cdot n$.
+
+**Example:** For $n = 62$ organ donations with complication probability $p=0.1$, the expected number of complications is $E(X) = 6.2$. 
+
+
+## Distribution functions are vectorized! {.smaller  background-color="aquamarine"}
+
+Compute the p-value:
+
+```{r}
+#| echo: true
+dbinom(0:3, 62, 0.1) 
+dbinom(0:3, 62, 0.1) |> sum()
+```
+
+Plotting the probability mass function
+
+```{r}
+#| echo: true
+#| fig-height: 4.5
+#| output-location: column
+tibble(k = 0:62) |> 
+ mutate(probability = dbinom(k, 
+                             size = 62, 
+                             prob = 0.1)) |> 
+ ggplot(aes(k, probability)) + 
+ geom_col() + 
+ theme_minimal(base_size = 24) + 
+ scale_x_continuous(breaks = seq(0, 62, 5))
+```
+
+See that the highest probability is achieved for $k=6$ which is close to the expected value of successes $E(X) = 6.2$ for $X \sim \text{Binom}(62,0.1)$.
+
+
+## Other plots of binomial mass function {.smaller  background-color="aquamarine"}
+
+Changing the sample size $n$ when the success probability $p = 0.1$ and the number of successes $k=3$ is fixed:
+
+```{r}
+#| echo: true
+#| fig-height: 4.5
+#| output-location: column
+tibble(samplesize = 0:62) |> 
+ mutate(probability = dbinom(3, 
+                             size = samplesize, 
+                             prob = 0.1)) |> 
+ ggplot(aes(samplesize, probability)) + 
+ geom_col() + 
+ theme_minimal(base_size = 24) +
+ scale_x_continuous(breaks = seq(0, 62, 5))
+```
+
+[The probability of 3 successes is most likely for sample sizes around 30. Does is make sense?]{style='color:blue;'}
+
+. . . 
+
+Yes, because for $n=30$ the expected value for probability $p=0.1$ is $3 = pn = 0.1\cdot 30$.
+
+## Other plots of binomial mass function {.smaller  background-color="aquamarine"}
+
+Changing the sample size $p$ when the sample size $n = 62$ and the number of successes $k=3$ is fixed:
+```{r}
+#| echo: true
+#| fig-height: 4.5
+#| output-location: column
+tibble(probs = seq(0,0.3,0.001)) |> 
+ mutate(probability = dbinom(3, 
+                             size = 62, 
+                             prob = probs)) |> 
+ ggplot(aes(probs, probability)) + 
+ geom_line() +
+ scale_x_continuous(breaks = seq(0,0.3,0.05)) + 
+ theme_minimal(base_size = 24)
+```
+
+[The probability of 3 successes in 62 draws is most likely for success probabilities around 0.05.]{style='color:blue;'}
+
+. . .
+
+For $p=0.05$ the expected value for $n=62$ is $pn = 0.05\cdot 62 = 3.1$.
+
+
+# Distribution Functions
+
+## General systematic of functions for distributions in R {.smaller}
+
+In R we usually have 4 function for each distribution: The `d`, `p`, `q`, and `r` version. For the binomial distribution: 
+
+- `dbinom` the density function (more on the name later)
+
+- `pbinom` distribution function 
+
+- `qbinom` the quantile function, and 
+
+- `rbinom` random number generator.
+
+
+## Probability mass function `d`... {.smaller}
+
+- The **mass function** (or *density function*, more on this later) `dbinom`
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+#| output-location: column
+k <- 0:10
+tibble(k, 
+       probability = dbinom(k, 
+                            size = 10, 
+                            prob = 0.5)) |> 
+ ggplot(aes(k, probability)) + geom_col() + theme_minimal(base_size = 24)
+```
+
+[Gives the probability for the number $x$: $\text{Pr}(X = x)$ or $f_X(x)$.]{style='color:blue;'}
+
+
+## Distribution function `p`... {.smaller}
+
+- The **distribution function**, or cumulative probability function `pbinom`
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+#| output-location: column
+k <- 0:10
+tibble(k, 
+       probability = pbinom(k, 
+                            size = 10, 
+                            prob = 0.5))  |> 
+ ggplot(aes(k, probability)) + 
+ geom_col() + 
+ theme_minimal(base_size = 24)
+```
+
+[Gives the probability that the random variable is less or equal to $x$:  
+$\text{Pr}(X \leq x)$.]{style='color:blue;'}
+
+
+## Quantile function `q`... {.smaller}
+
+- The **quantile function**, `qbinom` with argument $p$ representing the fraction of lowest values of $X$ among all values for which we want the $k$ value for. 
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+#| output-location: column
+probs <- seq(0, 1, by = 0.01)
+tibble(p = probs) |> 
+ mutate(k = qbinom(p, size = 10, prob = 0.5)) |> 
+ ggplot(aes(p, k)) + 
+ geom_line() + 
+ scale_y_continuous(breaks = seq(0, 10, 2)) +
+ theme_minimal(base_size = 24)
+```
+
+[A point $(p,k)$ means: When we want a $p$-fraction of the probability mass, we need all events with values lower or equal to $k$.]{style='color:blue;'}
+
+
+
+## Calculus relations {.smaller}
+
+- Quantile, distribution and mass function all carry the *full information* about the distribution of a random variable $X$. 
+
+- The *mass function* is the **derivative** of the *distribution function*.   
+(The *distribution function* is the anti-derivative of the *mass function*.)
+
+```{r}
+#| echo: true
+pbinom(0:5, size = 5, prob = 0.5) 
+# Next comes its derivative (have to append a 0 before first)
+pbinom(0:5, size = 5, prob = 0.5) |> append(0, after = 0) |> diff()
+dbinom(0:5, size = 5, prob = 0.5)
+# Next comes its anti-derivative
+dbinom(0:5, size = 5, prob = 0.5) |> cumsum()
+```
+
+
+## More calculus relations {.smaller}
+
+- The quantile function is the inverse of the distribution function.
+- We plot the inverse function by interchanging the `x` and `y` aesthetic.
+
+```{r}
+#| echo: true
+#| output-location: column
+#| fig-height: 8
+probs <- seq(0, 1, by = 0.01)
+k <- 0:10
+q <- tibble(p = probs) |> mutate(k = qbinom(p, size = 10, prob = 0.5)) 
+p <- tibble(k) |> mutate(p = pbinom(k, size = 10, prob = 0.5)) 
+q_plot <- q |> ggplot(aes(p, k)) + geom_line() + theme_minimal(base_size = 24) + scale_y_continuous(breaks = seq(0, 10, 2)) + ggtitle("qbinom")
+qinv_plot <- q |> ggplot(aes(k, p)) + geom_line() + theme_minimal(base_size = 24) + scale_x_continuous(breaks = seq(0, 10, 2)) + ggtitle("qbinom inverse")
+p_plot <- p |> ggplot(aes(k, p)) + geom_col() + theme_minimal(base_size = 24) + scale_x_continuous(breaks = seq(0, 10, 2)) + ggtitle("pbinom")
+pinv_plot <- p |> ggplot(aes(p, k)) + geom_col(orientation = "y") + theme_minimal(base_size = 24) + scale_y_continuous(breaks = seq(0, 10, 2)) + ggtitle("pbinom inverse")
+library(patchwork)
+(q_plot | p_plot) / (pinv_plot | qinv_plot)
+```
+
+
+## Random number generator `r`... {.smaller}
+
+- Random binomial numbers are drawn with `rbinom`
+
+```{r}
+#| echo: true
+# 10 random binomial numbers for 62 trials with success probability 0.1
+rbinom(10, size = 62, prob = 0.1)
+```
+
+- We can reproduce the null distribution from hypothesis testing with 62 organ donations and 10% complication probability this way.
+  - We produce 100,000 random consultants
+  - Then we compute the fraction of  which have 3 or less complications
+
+```{r}
+#| echo: true
+set.seed(2022)
+s <- rbinom(100000, size = 62, prob = 0.1)
+sum(s<=3)/100000
+# Two other samples
+sum(rbinom(100000, size = 62, prob = 0.1)<=3)/100000
+sum(rbinom(100000, size = 62, prob = 0.1)<=3)/100000
+```
+
+## Empirical distributions {.smaller}
+
+```{r}
+ess_raw <- read_csv("data/ESS-Data-Wizard-subset-2022-09-17.csv",
+                col_types = cols(
+                 name = col_character(),
+                 essround = col_double(),
+                 edition = col_double(),
+                 proddate = col_character(),
+                 idno = col_double(),
+                 cntry = col_character(),
+                 dweight = col_double(),
+                 pspwght = col_double(),
+                 pweight = col_double(),
+                 euftf = col_double(),
+                 gincdif = col_double(),
+                 lrscale = col_double(),
+                 polintr = col_double(),
+                 stflife = col_double(),
+                 trstplc = col_double(),
+                 vote = col_double(),
+                 imueclt = col_double(),
+                 atchctr = col_double(),
+                 atcherp = col_double(),
+                 crmvct = col_double(),
+                 pray = col_double(),
+                 rlgdgr = col_double(),
+                 gndr = col_double(),
+                 age = col_double()
+                ))
+ess <- ess_raw |> filter(essround == 9) |>
+ mutate(atchctr = atchctr |> na_if(77) |> na_if(88) |> na_if(99),
+        atcherp = atcherp |> na_if(77) |> na_if(88) |> na_if(99),
+        euftf = euftf |> na_if(77) |> na_if(88) |> na_if(99),
+        lrscale = lrscale |> na_if(77) |> na_if(88) |> na_if(99),
+        imueclt = imueclt |> na_if(77) |> na_if(88) |> na_if(99))
+```
+
+- $X$: select a random person from Europe (in 2018, willing to answer survey) and ask its attitude towards the European union from 0 to 10
+
+
+:::: {.columns}
+
+::: {.column width='40%'}
+- What is the distribution of the answer?
+
+```{r}
+#| echo: true
+#| fig-height: 2
+eu <- ess |> select(euftf) |> drop_na() |> 
+ count(euftf) |> mutate(prob = n/sum(n)) 
+eu
+```
+:::
+
+::: {.column width='60%'}
+Mass function and distribution function
+```{r}
+#| echo: true
+#| fig-height: 4
+eu_mass <- eu |> ggplot(aes(euftf, prob)) + geom_col() + theme_minimal(base_size = 24) + scale_x_continuous(breaks = seq(0, 10, 2))
+eu_distr <- eu |> mutate(cumprob = cumsum(prob)) |> 
+ ggplot(aes(euftf, cumprob)) + geom_col() + theme_minimal(base_size = 24) + scale_x_continuous(breaks = seq(0, 10, 2))
+eu_mass | eu_distr
+```
+
+:::
+
+::::
+
+
+##  Theoretical examples {.smaller}
+
+```{r}
+library(tidymodels)
+library(readxl)
+galton <- read_excel("data/galton_data.xlsx") |> mutate(true_value = 1198)
+viertelfest <- read_csv("data/Viertelfest.csv") |> mutate(true_value = 10788)
+owid <- read_csv("data/owid-covid-data.csv")
+owid_inds <- owid |> 
+ # Filter for one day and remove rows where continent is NA
+ # These are rows with data for continents or world regions
+ filter(date == "2022-10-01", !is.na(continent)) |> 
+ # These are the "Other" variables
+ select(iso_code, continent, location, 
+        population:human_development_index) |>
+ # We remove the ones with many NA's
+ select(-handwashing_facilities, -male_smokers, 
+        - female_smokers, -extreme_poverty) |> 
+ drop_na()
+ess_raw <- read_csv("data/ESS-Data-Wizard-subset-2022-09-17.csv",
+                col_types = cols(
+                 name = col_character(),
+                 essround = col_double(),
+                 edition = col_double(),
+                 proddate = col_character(),
+                 idno = col_double(),
+                 cntry = col_character(),
+                 dweight = col_double(),
+                 pspwght = col_double(),
+                 pweight = col_double(),
+                 euftf = col_double(),
+                 gincdif = col_double(),
+                 lrscale = col_double(),
+                 polintr = col_double(),
+                 stflife = col_double(),
+                 trstplc = col_double(),
+                 vote = col_double(),
+                 imueclt = col_double(),
+                 atchctr = col_double(),
+                 atcherp = col_double(),
+                 crmvct = col_double(),
+                 pray = col_double(),
+                 rlgdgr = col_double(),
+                 gndr = col_double(),
+                 age = col_double()
+                ))
+ess <- ess_raw |> filter(essround == 9) |>
+ mutate(atchctr = atchctr |> na_if(77) |> na_if(88) |> na_if(99),
+        atcherp = atcherp |> na_if(77) |> na_if(88) |> na_if(99),
+        euftf = euftf |> na_if(77) |> na_if(88) |> na_if(99),
+        lrscale = lrscale |> na_if(77) |> na_if(88) |> na_if(99),
+        imueclt = imueclt |> na_if(77) |> na_if(88) |> na_if(99))
+```
+
+
+:::: {.columns}
+
+::: {.column width='48%'}
+**Discrete random variable**
+
+*Atomic event:* 20 (unfair) coin flips with HEADS probability 40%.   
+*Random Variable:* Number of HEADS. 
+
+[**Binomial** distribution function]{style='color:blue;'}
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+ggplot() + 
+ geom_function(fun = pbinom, args = list(size = 20, prob = 0.4)) + 
+ xlim(c(0,20)) + theme_minimal(base_size = 24)
+```
+
+
+:::
+
+::: {.column width='48%'}
+**Continuous random variable**
+
+*Atomic event:* Point on a ruler of 1 meter length. Each point is equally likely.   
+*Random Variable:* The marking on the ruler in meters (number from 0 to 1). 
+
+[*Uniform* distribution function]{style='color:blue;'}
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+ggplot() + 
+ geom_function(fun = punif) + 
+ xlim(c(-0.5,1.5)) + theme_minimal(base_size = 24)
+```
+:::
+
+::::
+
+Interpret a point of these graphs: $y$-value is the probability of the event $X \leq x$.
+
+
+
+
+## Theoretical examples {.smaller}
+
+Corresponding mass functions:
+
+:::: {.columns}
+
+::: {.column width='48%'}
+**Discrete random variable**
+
+*Atomic event:* 20 (unfair) coin flips with HEADS probability 40%.   
+*Random Variable:* Number of HEADS. 
+
+[**Binomial** density function]{style='color:blue;'}
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+ggplot() + 
+ geom_function(fun = dbinom, args = list(size = 20, prob = 0.4)) + 
+ xlim(c(0,20)) + theme_minimal(base_size = 24)
+```
+:::
+
+::: {.column width='48%'}
+**Continuous random variable**
+
+*Atomic event:* Point on a ruler of 1 meter length. Each point is equally likely.   
+*Random Variable:* The marking on the ruler in meters (number from 0 to 1). 
+
+[*Uniform* density function]{style='color:blue;'}
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+ggplot() + 
+ geom_function(fun = dunif) + 
+ xlim(c(-0.5,1.5)) + theme_minimal(base_size = 24)
+```
+:::
+
+::::
+
+Note: A more formal treatment of density functions on later slides!
+
+
+## Empirical examples {.smaller}
+
+
+:::: {.columns}
+
+::: {.column width='48%'}
+**Discrete random variable**
+
+*Atomic event:* Ask a European about attitude towards the EU.  
+*Random Variable:* The answer on the scale 0 to 10. 
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+ess |> count(euftf) |> drop_na() |> mutate(freq = n/sum(n)) |>
+ add_row(euftf = -4, freq = 0, .before = TRUE) |> add_row(euftf = 14, freq = 0) |> 
+ ggplot(aes(euftf,cumsum(freq))) + geom_step() + 
+ scale_x_continuous(breaks = 0:10) + theme_minimal(base_size = 24)
+```
+:::
+
+::: {.column width='48%'}
+**Continuous random variable**
+
+*Atomic event:* A visitors estimates the weight of the meat of an ox.   
+*Random Variable:* The estimated value converted to pounds. 
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+galton |> mutate(freq = 1/n()) |>  
+ add_row(Estimate = 800, freq = 0, .before = TRUE) |> add_row(Estimate = 1600, freq = 0) |>
+ ggplot(aes(Estimate, cumsum(freq))) + geom_step() +
+ theme_minimal(base_size = 24)
+```
+:::
+
+::::
+
+
+## Distributions based on empirical data {.smaller}
+
+[Empirical data is always finite, so why bother with theoretical continuous distributions?]{style='color:blue;'}
+
+. . .
+
+- Each new data point would usually create a new discrete value. 
+- A discrete view is conceptually (theoretically) unfavorable. 
+- We assume that there is a continuous distribution underlying. 
+
+
+## Probability mass function (pmf) {.smaller}
+
+For discrete random variables the *probability mass function* gives us the probabilities for each number. Mathematically it is 
+
+$f_X(x) = \text{Pr}(X = x)$ while $F_X(x) = \text{Pr}(X \leq x)$
+
+Assume the discrete values with positive probability are $x_1 < x_2 < \dots < x_n$.
+
+Then it is easy to see the *probability mass function* is the **diff**-function of the *distribution function*. 
+
+$f_X(x_i) = F_X(x_i) - F_X(x_{i-1})$
+
+
+
+## Uniform distribution theoretical vs. samples {.smaller}
+
+:::: {.columns}
+
+The distribution function of a sample of 50 random numbers from a uniform distribution.
+
+::: {.column width='48%'}
+
+Empirical and theoretical distribution function
+
+```{r}
+#| echo: true
+unif <- runif(50) 
+unif_cdf <- tibble(x = unif) %>% 
+  arrange(x) %>% # We sort the data by size
+  mutate(cdf = (1:length(unif))/length(unif)) # cumulative probabilities
+unif_cdf |> ggplot(aes(x, y = cdf)) + geom_step() +
+ geom_function(fun = punif, color = "red") + theme_minimal(base_size = 24)
+```
+:::
+
+::: {.column width='48%'}
+Empirical pmf approached with a histogram with small binwidth.  
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+unif_cdf|> 
+ ggplot(aes(x)) + 
+ geom_histogram(binwidth = 0.005) + theme_minimal(base_size = 24)
+```
+
+:::
+
+::::
+::::
+
+
+## Normal distribution theoretical vs. samples {.smaller}
+
+:::: {.columns}
+
+The distribution function of a sample of 50 random numbers from a normal distribution.
+
+::: {.column width='48%'}
+
+Empirical and theoretical distribution function
+
+```{r}
+#| echo: true
+normal <- rnorm(50) 
+normal_cdf <- tibble(x = normal) %>% 
+  arrange(x) %>% # We sort the data by size
+  mutate(cdf = (1:length(normal))/length(normal)) # cumulative probabilities
+normal_cdf |> ggplot(aes(x, y = cdf)) + geom_step() +
+ geom_function(fun = pnorm, color = "red") + xlim(c(-3,3)) + theme_minimal(base_size = 24)
+```
+:::
+
+::: {.column width='48%'}
+Empirical pmf approached with a histogram with small binwidth.  
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+normal_cdf |> 
+ ggplot(aes(x)) + 
+ geom_histogram(binwidth = 0.005)  + theme_minimal(base_size = 24)
+```
+
+[This type of pmf does not show the characteristics of the distribution well.]{style='color:red;'}
+:::
+
+::::
+::::
+
+## Approaching a solution {.smaller}
+
+The theoretical distribution is approached better with 
+
+- larger samples and
+- larger (but not too large) binwidth
+
+. . . 
+
+:::: {.columns}
+
+::: {.column width='48%'}
+
+```{r}
+#| echo: true
+normal <- rnorm(5000) 
+normal_cdf <- tibble(x = normal) %>% 
+  arrange(x) %>% # We sort the data by size
+  mutate(cdf = (1:length(normal))/length(normal)) # cumulative probabilities
+normal_cdf |> ggplot(aes(x, y = cdf)) + geom_step() +
+ geom_function(fun = pnorm, color = "red") + xlim(c(-4,4)) + theme_minimal(base_size = 24)
+```
+:::
+
+::: {.column width='48%'}
+```{r}
+#| echo: true
+normal_cdf |> 
+ ggplot(aes(x)) + 
+ geom_histogram(binwidth = 0.01) + theme_minimal(base_size = 24)
+```
+:::
+
+::::
+::::
+
+
+## Solution: Probability density function {.smaller backround-color="aquamarine"}
+
+- When we have a functional form, the *derivative* of the *distribution function* is the [**probability density function**]{style='color:blue;'} (pdf) $f_X(x) = \frac{d}{dx}F_X(x)$. 
+- Consequently, $F_X(x) = \int_{-\infty}^x f_X(\xi)d\xi$. 
+- $\int_a^bf(x)dx$ is the probability that a value from the random variable $X$ lies between $a$ and $b$: $\text{Pr}(X \geq a \ \&\ X \leq b)$ or $\text{Pr}(X \in [a,b])$
+
+. . . 
+
+**The *pdf* is the analog of the *pmf* for continuous random variables.**
+
+Instead of the probability that $X$ takes a specific value $a$, we are interested in the probability that $X$ takes a value in an interval $[a,b]$.
+
+
+
+## Distribution Functions in R {.smaller}
+
+Identifiers for distributions:  
+`unif` uniform distribution    
+`norm` normal distribution   
+`lnorm` lognormal distribution  
+`binom` binomial distribution
+
+##  Normal distribution in R {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 4
+tibble(x = rnorm(1000)) |> 
+ ggplot(aes(x)) + 
+ geom_histogram(aes(y =..density..), binwidth = 0.1) + 
+ geom_density() + 
+ geom_function(fun = dnorm, color = "red") +
+ xlim(c(-5,5)) 
+```
+
+
+## Lognormal distribution {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 4
+tibble(x = rlnorm(1000)) |> 
+  ggplot(aes(x)) + geom_histogram(aes(y =..density..), binwidth = 0.1) + geom_density() +
+  geom_function(fun = dlnorm, color = "red") +
+  xlim(c(-1,10)) 
+```
+
+
+## Distribution parameters {.smaller}
+
+As empirical samples of numbers also theoretical distributions have an **expected value** or **mean** and a **variance** (and a **standard deviation**). In theoretical distributions they often become (related to) parameters of the distribution.
+
+The normal distribution has the parameters `mean` and `sd`
+```{r}
+#| echo: true
+#| fig-width: 20 
+ggplot() + 
+  geom_function(fun = function(x) dnorm(x, mean = 2, sd = 1)) +
+  geom_function(fun = function(x) dnorm(x, mean = -3, sd = 3), color = "red") +
+  geom_function(fun = function(x) dnorm(x, mean = 7, sd = 0.5), color = "blue") +
+  geom_function(fun = function(x) dnorm(x, mean = -1, sd = 6), color = "green") +
+  xlim(-15,15) + theme_minimal(base_size = 24)
+```
+
+
+## Measures of samples {.smaller}
+
+Here are some examples of mean and standard deviation:
+
+```{r}
+#| echo: true
+x <- rnorm(1000, mean = 2, sd =5)
+mean(x)
+sd(x)
+x <- rnorm(10000, mean = 2, sd =5)
+mean(x)
+sd(x)
+x <- runif(10000)
+mean(x) # This should be 0.5
+sd(x) # This should be 1/sqrt(12) = 0.2886751
+```
+
+## Galtons data {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 4
+#| fig-width: 10
+gal_mean <- mean(galton$Estimate)
+gal_sd <- sd(galton$Estimate)
+galton |> ggplot(aes(Estimate)) + 
+ geom_histogram(aes(y =..density..), binwidth = 5) + 
+ geom_density(color = "blue") +
+ geom_function(fun = dnorm, args = list(mean = gal_mean, sd = gal_sd), color = "red") + theme_minimal(base_size = 24)
+```
+
+A normal distribution fits OK. 
+
+
+
+## The zoo of distributions {.smaller}
+
+There are many probability distributions (implemented in R or not):  
+<https://en.wikipedia.org/wiki/List_of_probability_distributions>
+
+. . . 
+
+With interesting relations: (
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/69/Relationships_among_some_of_univariate_probability_distributions.jpg){width=60%}
+
+Source: <https://en.wikipedia.org/wiki/Relationships_among_probability_distributions>)
+
+
+## The zoo of distributions {.smaller}
+
+- More important than knowing many distribution is to learn how to extract the idea of the **underlying probabilistic model**.
+  - Examples: 
+      - *Binomial distribution* as the number of successes in repeated Bernoulli trials.
+      - *Poisson distribution* as the number of events in a given time interval.
+      - *Normal distribution* as the sum of many independent random variables.
+      - *Lognormal distribution* as the product of many independent random variables.
+
+[What does the underlying model of a normal distribution mean?]{style='color:blue;'}
+
+# Central Limit Theorem {.smaller}
+
+- Why is the normal distribution so central in theory? 
+- Because of the central limit theorem, which is a great mathematical insights. 
+
+**Central Limit Theorem** (colloquial version) The sum of many independent random variables (which can have various distributions) approaches the normal distribution (for ever larger sums and proper normalization).
+
+. . . 
+
+$Y = X_1 + X_2 + \dots + X_n \to \text{Normal distribution}$ for large $n$
+
+- This holds for $X_i$ with any distributions (except with fat tails)!
+- The mean of the evolving normal distribution of $Y$ is the sum of the expected values of the $X_i$
+- The same holds for the variance
+
+## Test with sum of uniform samples {.smaller}
+
+```{r}
+#| echo: true
+n <- 10000
+tibble(X1 = runif(n),X2 = runif(n),X3 = runif(n),X4 = runif(n),X5 = runif(n),
+       X6 = runif(n),X7 = runif(n),X8 = runif(n),X9 = runif(n)) %>% 
+ mutate(S2 = X1 + X2,
+        S5 = X1 + X2 + X3 + X4 + X5,
+        S9 = X1 + X2 + X3 + X4 + X5 + X6 + X7 + X8 + X9 ) %>% 
+ ggplot() +
+ geom_histogram(aes(x = X1, y =..density..), binwidth = 0.1, alpha = 0.5) +
+ geom_histogram(aes(x = S2, y =..density..), binwidth = 0.1, fill = "green", alpha = 0.5) + 
+ geom_histogram(aes(x = S5, y =..density..), binwidth = 0.1, fill = "red", alpha = 0.5) + 
+ geom_histogram(aes(x = S9, y =..density..), binwidth = 0.1, fill = "blue", alpha = 0.5) +   xlim(c(-0.5,9)) 
+```
+
+## Sums of random variables important? {.smaller}
+
+Why are sums of random variables important?
+
+- Sums of random variables are the theoretical foundation of linear models  $Y = \beta_0 + \beta_1X_1 + \dots + \beta_nX_n$
+- They appear also in generalized linear models as for the logistic regression. 
+
+
+## Products of Random Variables? {.smaller}
+
+What when $Y$ is the product of many positive-valued random variable?
+
+$Y = X_1 \cdot X_2 \cdot \dots \cdot X_n$
+
+. . . 
+
+Then
+
+$\log(Y) = \log(X_1) + \log(X_2) + \dots + \log(X_n) \to \text{Normal distribution}$ for large $n$ (central limit theorem)
+
+So, $\log(Y)$ tends to become normally distributed. 
+
+$Y$ is called to have a [**lognormal distribution**]{style='color:blue;'}.
+
+## Test with product of uniform samples {.smaller}
+
+```{r}
+#| echo: true
+n <- 10000
+g <- tibble(X1 = 2*runif(n),X2 = 2*runif(n),X3 = 2*runif(n),X4 = 2*runif(n),X5 = 2*runif(n),
+            X6 = 2*runif(n),X7 = 2*runif(n),X8 = 2*runif(n),X9 = 2*runif(n)) %>% 
+ mutate(S2 = X1 * X2,
+        S5 = X1 * X2 * X3 * X4 * X5,
+        S9 = X1 * X2 * X3 * X4 * X5 * X6 * X7 * X8 * X9 ) %>% 
+ ggplot() +
+ geom_histogram(aes(x = X1, y =..density..), binwidth = 0.1, alpha = 0.5) +
+ geom_histogram(aes(x = S2, y =..density..), binwidth = 0.1, fill = "green", alpha = 0.5) + 
+ geom_histogram(aes(x = S5, y =..density..), binwidth = 0.1, fill = "red", alpha = 0.5) + 
+ geom_histogram(aes(x = S9, y =..density..), binwidth = 0.1, fill = "blue", alpha = 0.5) +   xlim(c(-0.5,9)) 
+g
+```
+
+## Different distributions {.smaller}
+
+Distributions "live" on different domains. This determines which values for random numbers are theoretically possible.
+
+- What is the domain of *Binomially distributed* random numbers? [$\{0, ..., n\}$]{.fragment}
+- What is the domain of *Normally distributed* random numbers? [$(-\infty, +\infty$)]{.fragment}
+- What is the domain of *Lognormally distributed* random numbers? [$(0, +\infty$)]{.fragment}
+- What is the domain of *Uniformly distributed* random numbers? [$[0, 1]$]{.fragment}
+
+**Take away:**  
+For many variables there are better or worse candidates for a theoretical distribution to assume. 
+
+- Look at the empirical range and empircal distrbution of the variable
+- Think about the data generating process and how it may fit to a probability model
+
+
+<!-- **Conclusions:**  -->
+
+<!-- - When the response variable $Y$ is really a sum of several features (which all have relevant/non-zero coefficients) then $Y$ should look normally distributed (when predictors and response are not too correlated).  -->
+<!-- - If $Y$ strongly deviates from normality this is a sign that this model is not a really well representation of reality. This does not exclude using a linear model for prediction, but probably these can be improved. -->
+
+<!-- ## -->
+
+<!-- Options -->
+<!-- Normal distribution and binomial distributions are related -->
+<!-- Lognormal distribution as the product of many independent random variabl -->
+
+<!-- ## Next -->
+
+<!-- - In some statistical model, we consider variables in a data frame as *random variables*, for example the response variable in a generalized linear model.  -->
+
+<!-- Formally, a **random variable** is -->
+
+<!-- - a function $X: S \to \mathbb{R}$  -->
+<!-- - which assigns a value to each atomic event in the sample space.  -->
+
+<!-- Together with a probability function $\text{Pr}: \mathcal{F}(S)\to [0,1]$ probabilities can be assigned to values of the random variable (see the *probability mass function* explained later). -->
+
+
+
+<!--   * Probabilistic simulations. For example bootstrapping.  -->
+<!--   Galton or Viertelfest: Quick Bootstrap examples following datascience box -->
+
+<!--   * Conditional probabilities and their relation to the confusion matrix. -->
+<!--   Quick difference between independence uncorrelated -->
+<!--   Conditional probability and relation to confusion matrix.  -->
+
+<!--   * Continuous random variables and some theoretical distributions. -->
+<!--   Normal and Lognormal, what do they mean.  -->
+
+<!--   * The central limit theorem. -->
+<!--   Sum of random variables.  -->
+<!--   Products of random variables.  -->
+
+
+
+<!-- Matrices: -->
+
+<!-- - Matrix multiplication -->
+<!-- - Ax = b -->
+<!-- - Ax = lambda x -->
+<!-- - SVD A = QDP -->
+
+
+  
+  
+
+
+
+
+
+<!-- ```{r} -->
+<!-- library(rworldmap) -->
+<!-- w <- assignments |> filter(k==5) |>  -->
+<!--  mutate(iso = owid_inds$iso_code, continent = owid_inds$continent, location = owid_inds$location, -->
+<!--         hcluster = factor(cutree(hc_owid, k = 5))) |>  -->
+<!--  select(iso, hcluster) -->
+<!-- jw <- joinCountryData2Map( w, joinCode = "ISO3", nameJoinColumn = "iso") -->
+<!-- mapCountryData( jw, nameColumnToPlot="hcluster" ) -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- ess_sel <- ess |>  -->
+<!--  select(cntry, gndr, atchctr, atcherp, euftf, lrscale, imueclt) |> na.omit()  -->
+<!-- ess_kmeans <- ess_sel |> select(-cntry, - gndr) |> kmeans(center = 5) -->
+<!-- ess_kmeans |> tidy() -->
+
+<!-- ctry <- ess_kmeans |> augment(ess_sel) |> count(.cluster,cntry) |>  -->
+<!--  group_by(cntry) |> mutate(freq = n/sum(n)) |> select(-n) |>  -->
+<!--  pivot_wider(names_from = .cluster, values_from = freq) -->
+
+<!-- ess_kmeans |> augment(ess_sel) -->
+
+<!-- ess_pca <- ess_sel |> select(-cntry, -gndr) |>  -->
+<!--  prcomp(~., data = _ , scale = TRUE) -->
+
+<!-- ess_pca |> augment(ess_sel) -->
+<!-- augment(ess_pca, ess_sel) |> mutate(.cluster = ess_kmeans$cluster) |>  -->
+<!--  ggplot(aes(.fittedPC1, .fittedPC2, color = factor(.cluster))) + geom_point(alpha =  0.1) -->
+<!-- ess_kmeans |> tidy() -->
+<!-- ess_pca -->
+<!-- ``` -->
+

@@ -1,0 +1,12 @@
+---
+title: "Need help for Homework?"
+subtitle: "Good ways to get help with your homework"
+---
+
+- Do homework together with other students. **Working together is encouraged!**
+- **Commit and push** your intermediate results often, instructors may check your code directly.
+- Read error messages carefully! Often they are informative or even tell you what to do! (Hint: Uninformative error messages are also common. Maybe you get at least a hint where the problem lies. You will become more advanced on this, error messages which are not helpful now may become helpful in the future.)
+- Do the homework before the next Data Science Tools Session and prepare questions to ask in class. 
+- It is absolutely OK to decide to ask instructors for help outside of class. We try to care, if we are not too busy with other things. If you do, please do first: **Document and describe where you get stuck as precise as possible.** Try to find out **why** as much as possible. 
+    - The instructors prefer that you ask for help in the **Discussions** section of the Organization repo **<https://github.com/CU-F23-MDSSB-01-Concepts-Tools/Organization/discussions>**. Only registered students and instructors can see these discussions. Maybe, there is already an answer. 
+    - You can also write to instructors directly. Use a Teams chat! You can also write an email.

@@ -1,0 +1,899 @@
+---
+title: "W#11: Bootstrapping, Cross validation (idea), Clustering"
+author: Jan Lorenz
+format: 
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: true
+    preview-links: false
+    logo: img/ConstructorUniversity.png
+    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+execute:
+  cache: true
+---
+
+# Bootstrapping
+
+## Purpose: Quantify uncertainty {.smaller}
+
+- **Uncertainty** is a central concern in **inferential data analysis**. 
+- We want to **estimate** a **parameter** of a **population** from a **sample**.
+
+. . .
+
+Central inferential assumption: 
+
+- Our data is a **random sample** from the **population** we are interested in. 
+    - No **selection biases**.
+
+Examples:
+
+- We want to know **average height** of **all people** but we only have a sample of people. 
+- We want know the **mean estimate** of all possible participants of the ox meat weigh guessing competition from the **sample ballots** of participants we have.
+- We want to learn something about penguins from the data of the penguins in `palmerpenguins::penguins`
+
+## Practical example: Galton's Data {.smaller}
+
+Competition: Guess the weight of the meat of an Ox? (Galton, 1907)
+
+*What is the mean of all possible participants $\mu$?* 
+
+. . . 
+
+```{r}
+#| echo: true
+#| fig-height: 2
+library(tidyverse)
+library(readxl)
+galton <- read_excel("data/galton_data.xlsx")
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5)
+```
+
+The (arithmetic) mean of the `r nrow(galton)` estimates is $\hat\mu =$ `r round(mean(galton$Estimate), digits = 2)`. 
+
+*How sure can we be that $\hat\mu$ is close to $\mu$ and how can we quantify?*^[We already assume that we have an unbiased sample of all possible participants!]
+
+## Practical example: Palmer Penguins {.smaller}
+
+A linear model for body mass of penguins: $y_i = \beta_0 + \beta_1 x_i + \dots + \beta_m x_m  + \varepsilon_i$.
+
+. . .
+
+```{r}
+#| echo: true
+library(tidymodels)
+library(palmerpenguins)
+peng_workflow <- workflow() |> add_recipe(recipe(body_mass_g ~ ., data = penguins) |> step_rm(year)) |> 
+  add_model(linear_reg() |> set_engine("lm"))
+peng_fit <- peng_workflow |> fit(data = penguins)
+peng_fit |> tidy() |> mutate_if(is.numeric, round, 7)
+```
+
+. . . 
+
+The column `estimate` shows the coefficients $\hat\beta_0, \hat\beta_1, \dots, \hat\beta_m$ of the linear model for the variables named in `term`
+
+*How sure can we be that the $\hat\beta$'s are close to the $\beta$'s we are interested in?*^[We already assume that we have an unbiased sample of all penguins!]
+
+## Bootstrapping^[The name comes from the saying "pull oneself up by one's bootstrap". It refers to the somehow *magical* idea that we can use our small sample to *mimic* the whole population.] idea {.smaller}
+
+1. Take a **bootstrap sample**: a random sample taken with replacement from the original sample with the same size. 
+2. Calculate the *statistics* for the bootstrap sample. 
+3. Repeat steps 1. and 2. many times to create a **bootstrap distribution** - a distribution of bootstrap statistics
+4. Use the bootstrap distribution to quantify the uncertainty. 
+
+What is the statistic in the Galton example? [The mean]{.fragment}   
+What are the statistics in the penguins example? [The coefficients]{.fragment}
+
+## Bootstrapping in practice {.smaller}
+
+- You can do the bootstrapping procedure in various ways (including programming in base R or python). 
+- We will use convenient functions from `rsample` form the `tidymodels` packages.
+
+## Resamplings: Galton's Data {.smaller}
+
+:::: {.columns}
+
+::: {.column width='35%'}
+The function `sample` selects `size` random elements from a vector `x` with or without `replace`. 
+
+```{r}
+#| echo: true
+set.seed(224)
+sample(galton$Estimate, size = 3, replace = TRUE)
+sample(galton$Estimate, size = 3, replace = TRUE)
+```
+
+For tibbles we can use `slice_sample`.
+
+```{r}
+#| echo: true
+galton |> slice_sample(n = 3, replace = TRUE)
+```
+:::
+
+::: {.column width='35%'}
+::: {.fragment}
+A **bootstrap sample** is with replace and of the same size as the original sample: 
+
+```{r}
+#| echo: true
+nrow(galton)
+galton |> slice_sample(n = 787, replace = TRUE)
+```
+:::
+:::
+
+::: {.column width='30%'}
+::: {.fragment}
+Do some mean bootstrapping manually:
+
+```{r}
+#| echo: true
+galton |> slice_sample(n = 787, replace = TRUE) |> 
+ summarize(mean(Estimate))
+galton |> slice_sample(n = 787, replace = TRUE) |> 
+ summarize(mean(Estimate))
+galton |> slice_sample(n = 787, replace = TRUE) |> 
+ summarize(mean(Estimate))
+```
+:::
+:::
+
+::::
+
+## Bootstrap set: Galton's Data {.smaller}
+
+The function `bootstraps` from `rsample` does this type of bootstrapping for us. 
+
+:::: {.columns}
+
+::: {.column width='50%'}
+1,000 resamples:
+
+```{r}
+#| echo: true
+boots_galton <- galton |> bootstraps(times = 1000)
+boots_galton
+```
+
+The column `splits` contains a list of split objects. 
+
+```{r}
+boots_galton$splits[[1]]
+```
+:::
+
+::: {.column width='50%'}
+::: {.fragment}
+From each split we can extract the bootstrapped resample with `analysis`. 
+```{r}
+#| echo: true
+
+boots_galton$splits[[1]] |> analysis()
+```
+
+(The `assessment` set contains the observations that were not selected randomly in the resample. We do not use it in the following.)
+:::
+:::
+
+::::
+
+## Bootstrap distribution: Galton's Data {.smaller}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+We iterate with a `map` function^[Here we use `map_dbl` which iterates over the list of splits and reports the values as a vector of doubles (numbers), the default of `map` would be to report also a list.] over the splits and extract the analysis set and calculate the mean. 
+
+```{r}
+#| echo: true
+
+boots_galton_mean <- boots_galton |> 
+  mutate(
+   mean = map_dbl(splits, 
+                  \(x) analysis(x)$Estimate |> mean()))
+boots_galton_mean
+```
+:::
+
+::: {.column width='50%'}
+::: {.fragment}
+Plot the bootstrap distribution of the mean. 
+
+```{r}
+#| echo: true
+#| fig.height: 2
+boots_galton_mean |> 
+ ggplot(aes(x = mean)) + geom_histogram() +
+ theme_minimal(base_size = 24)
+```
+:::
+
+::: {.fragment}
+Compare distribution of estimates
+```{r}
+#| echo: true
+#| fig.height: 2
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) +
+ theme_minimal(base_size = 24)
+```
+:::
+:::
+
+::::
+
+## Quantify uncertainty? Standard error {.smaller}
+
+Compute the standard deviation of the bootstrap distribution. 
+
+```{r}
+#| echo: true
+sd(boots_galton_mean$mean)
+```
+
+. . . 
+
+The standard deviation of the bootstrap distribution is called the **standard error** of the statistic.
+
+[Do not confuse standard error (of a statistic) and standard deviation (of a variable).]{style='color:red;'}
+
+The **standard error of the mean** can also be estimated directly from the original sample $x$ as $\frac{\text{sd}(x)}{\sqrt{n}}$ where $n$ is the sample size. 
+
+```{r}
+#| echo: true
+sd(galton$Estimate) / sqrt(nrow(galton))
+```
+
+. . . 
+
+[Insight:]{style='color:blue;'} The standard error decreases with sample size! However, it decreases only with the square root of the sample size.
+
+[Question:]{style='color:blue;'} You want to shrink the standard error by half. How much larger does the sample size need to be? [4 times]{.fragment}
+
+## Confidence interval {.smaller}
+
+Another way to quantify uncertainty is to compute a **confidence interval** (CI) for a certain **confidence level**:   
+The true value of the statistic is expected to lie with the CI with certain probability (the confidence level).
+
+. . .
+
+:::: {.columns}
+
+::: {.column width='30%'}
+Compute the 95% confidence interval of the bootstrap distribution with `quantile`-functions:
+
+```{r}
+#| echo: true
+boots_galton_mean |> 
+  summarize(
+    lower = quantile(mean, 0.025),
+    upper = quantile(mean, 0.975))
+```
+:::
+
+::: {.column width='60%'}
+::: {.fragment}
+```{r}
+#| echo: true
+boots_galton_mean |> 
+ ggplot(aes(x = mean)) + geom_histogram() +
+ geom_vline(xintercept = quantile(boots_galton_mean$mean, 0.025), color = "red") +
+ geom_vline(xintercept = quantile(boots_galton_mean$mean, 0.975), color = "red") +
+ annotate("text", x = 1197, y = 10, label = "95% of estimates", color = "white", size = unit(12, "pt")) +
+ theme_minimal(base_size = 24)
+```
+:::
+:::
+
+::::
+
+## Confidence Interval: Meaning {.smaller}
+
+```{r}
+#| echo: true
+boots_galton_mean |> 
+  summarize(
+    lower = quantile(mean, 0.025),
+    upper = quantile(mean, 0.975))
+```
+
+What is the correct interpretation? 
+
+1. 95% of the estimates in this sample lie between 1191 and 1202.
+2. We are 95% confident that the mean estimate of all potential participants is between 1191 and 1202.
+3. We are 95% confident that the mean estimate of this sample is between 1191 and 1202.
+
+. . . 
+
+Correct: 2.
+
+## CI: Precision vs. Confidence {.smaller}
+
+- Can't we increase the confidence level to 99% to get a more precise estimate with a more narrow confidence interval?
+
+. . . 
+
+```{r}
+#| echo: true
+boots_galton_mean |> 
+  summarize(
+    lower = quantile(mean, 0.005),
+    upper = quantile(mean, 0.995))
+```
+
+[No, it is the other way round:]{style='color:red;'} The smaller and more precise the confidence interval, the lower must the confidence level be.
+
+
+## Bootstrap linear model coefficients {.smaller}  
+
+```{r}
+#| echo: true
+peng_workflow <- workflow() |> add_recipe(recipe(body_mass_g ~ ., data = penguins) |> step_rm(year)) |> 
+  add_model(linear_reg() |> set_engine("lm"))
+peng_fit <- peng_workflow |> fit(data = penguins)
+peng_fit |> tidy() |> mutate_if(is.numeric, round, 7)
+```
+
+. . .
+
+Let us now bootstrap whole models instead of just mean values!
+
+```{r}
+#| echo: true
+
+# A function to fit a model to a bootstrap sample and tidy the coefficients
+fit_split <- function(split) peng_workflow |> fit(data = analysis(split)) |> tidy() 
+# Make 1000 bootstrap samples and fit a model to each
+boots_peng <- bootstraps(penguins, times = 1000) |> 
+  mutate(coefs = map(splits, fit_split))
+```
+
+## Bootstrap data frame {.smaller .scrollable}
+
+Now we have a column `coefs` with a list of data frames, each containing the fitted coefficients.  
+
+```{r}
+#| echo: true
+boots_peng
+```
+
+We can `unnest` the list column to make a much longer but unnested data frame:
+
+```{r}
+#| echo: true
+boots_peng |> unnest(coefs)
+```
+
+## Some coefficient distributions {.smaller}
+
+```{r}
+#| echo: true
+#| fig.width: 18
+library(patchwork)
+g1 <- boots_peng |> unnest(coefs) |> filter(term == "islandDream") |> 
+  ggplot(aes(x = estimate)) + geom_histogram() + xlab("coefficients islandDream") +
+  geom_vline(xintercept = 0, color = "red") + theme_minimal(base_size = 24)
+g2 <- boots_peng |> unnest(coefs) |> filter(term == "bill_length_mm") |> 
+  ggplot(aes(x = estimate)) + geom_histogram() + xlab("coefficients bill_length_mm") +
+  geom_vline(xintercept = 0, color = "red") + theme_minimal(base_size = 24)
+g3 <- boots_peng |> unnest(coefs) |> filter(term == "flipper_length_mm") |> 
+  ggplot(aes(x = estimate)) + geom_histogram() + xlab("coefficients flipper_length_mm") +
+  geom_vline(xintercept = 0, color = "red") + theme_minimal(base_size = 24)
+g1 + g2 + g3
+```
+
+- We could derive *bootstrapped p-values* from these distributions.
+
+
+## computed p-values from each fit {.smaller}
+
+- Each bootstrap fit also delivers computed p-values for each coefficient.^[These are computed based on theoretical assumptions with the help of t-tests and t-distributions.]
+
+```{r}
+#| echo: true
+#| fig.width: 18
+#| fig.height: 4
+g1 <- boots_peng |> unnest(coefs) |> filter(term == "islandDream") |> ggplot(aes(x = p.value)) + geom_histogram() + xlab("coefficients islandDream") + theme_minimal(base_size = 24)
+g2 <- boots_peng |> unnest(coefs) |> filter(term == "bill_length_mm") |> ggplot(aes(x = p.value)) + geom_histogram() + xlab("coefficients bill_length_mm") + theme_minimal(base_size = 24)
+g3 <- boots_peng |> unnest(coefs) |> filter(term == "flipper_length_mm") |> ggplot(aes(x = p.value)) + geom_histogram() + xlab("coefficients flipper_length_mm") + theme_minimal(base_size = 24)
+g1 + g2 + g3
+```
+
+- computed p-values in resamples vary widely (see `islandDream`) when *bootstrapped p-values* show insignificance.
+
+
+
+# Another resampling method
+
+
+## How to evaluate performance on training data only? {.smaller}
+
+- Model performance changes with the random selection of the training data. How can we then reliably compare models?
+- Anyway, the training data is not a good source for model performance. It is not an independent piece of information. Predicting the training data only reveals what the model already "knows". 
+- Also, we should save the testing data only for the final validation, so we should not use it systematically to compare models.
+
+A solution: **Cross validation**
+
+## Cross validation {.smaller}
+
+More specifically, **$v$-fold cross validation**:
+
+- Shuffle your data and make a partition with $v$ parts
+  - Recall from set theory: A **partition** is a division of a set into mutually disjoint parts which union cover the whole set. Here applied to observations (rows) in a data frame.
+- Use 1 part for validation, and the remaining $v-1$ parts for training
+- Repeat $v$ times
+
+## Cross validation
+
+![](img/cross-validation.png)
+
+Today only the concept on this no details how to do it. 
+
+
+# Cluster Analysis
+
+## 3 common data analysis tasks {.smaller}
+
+1. **Regression:** We want to *explain/predict* a **numerical** variable.    
+Example: In a linear regression, we model a numerical response variable as a linear combination of predictors and estimate the coefficients with data. 
+2. **Classification:** We want to *explain/predict* a **nominal** (often binary) variable.  
+Example: In a logistic regression, we assume the binary outcomes are realized randomly based on a probability which is a the logistic transformation of a linear combination of predictors and estimate the coefficients with data. 
+3. [**Clustering:**]{style='color:red;'} We want label cases in data. 
+
+**Classification and clustering** are about producing new nominal data. In classification the categories are already know from the training data. [Clustering algorithms produces the categories without training data.]{style='color:blue;'}
+
+
+## Supervised vs. unsupervised statistical learning {.smaller}
+
+- Regression and classification problems are solved by **supervised** algorithms. 
+  - That means they receive *training data* which includes the outcome variable (which is often made by humans) and should perform on new test data. 
+  - *Prediction questions* can be:
+    - What is a house worth?
+    - Which emails are spam?
+- A clustering problems is a problem of **unsupervised** learning. 
+  - The algorithm shall generate labels for the cases as a new variable.  
+  - *Prediction questions* can be:
+    - What different types of customers exist and how can each one be labelled?
+    - Which players in a sport league are similar and how can we label them?
+  
+## Cluster analysis and PCA {.smaller}
+
+Solving a clustering problem is also called **cluster analysis**. 
+
+- **Cluster analysis** and **principle component analysis** (PCA) both extract information from existing rectangular data without specifying predictors and response. 
+  - PCA extracts relations based on linear correlations between numerical **variables** (columns). These principle components can be used to create *new numerical variables* (and thereby reduce the number of variables).
+  - Cluster analysis tries to group **cases** (rows) into clusters such that cases in a cluster are similar. 
+    - When clusters are found they are labelled and a *new nominal variable* in the data set is created. Each case receives a nominal label to which cluster it belongs. 
+
+## Two clustering methods {.smaller}
+
+Today, we do a quick tour through two methods focusing on 
+
+- the general idea, and
+- how to apply, interpret, and look at the results. 
+
+The two paradigms are 
+ 
+ - centroid based clustering
+ - connectivity based hierarchical clustering
+
+# k-means clustering
+
+
+## Centroid based: k-means clustering {.smaller}
+
+k-means clustering aims to *partition* $n$ observations into $k$ clusters in which 
+each observation belongs to the cluster with the nearest mean (*cluster centers* or *cluster centroid*) serving as a *prototype* of the cluster.
+
+::: {style='color:blue;'}
+**Important** 
+
+- We must specify **how many** ($k$) clusters we want to have.
+- We need a measure of **distance** between cases. How far is one case from each other?
+- A cluster is characterized by its **centroid**. 
+:::
+ 
+ 
+## Measuring distance between cases {.smaller background-color="aquamarine"} 
+
+Assume we have $m$ numerical variables.  
+$\to$ Every case is a **point** in $m$-dimensional space.
+
+In the following we will use the *Euclidean distance* in $m$ dimensions:
+
+For two points $(x_1, x_2, \dots, x_m)$ and  $(y_1, y_2, \dots, y_m)$ it is 
+
+$$\sqrt{(x_1-y_1)^2 +(x_2-y_2)^2 + \dots + (x_m-y_m)^2}$$
+
+- In $m=2$ or $3$ dimensions it is what we would measure with a ruler. ]
+- Note, the points represents rows in a dataset.
+
+[There are many more useful distance measures! It is a field to constantly learn about. Two visual examples: Manhattan distance, French railway metric]{style='color:green;'}
+
+## k-means algorithm: Start
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/ee71c89f-04e1-48f1-9ebc-350c8c872bf7.jpg?h=6b41c8a833b6137f529d59170ea90533)
+
+::: aside
+From <https://allisonhorst.com/k-means-clustering>
+:::
+
+
+## k-means algorithm: Iteration step 1
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/05cc17da-8ad7-4095-ba40-e0e492f2fd2b_rw_1920.jpg?h=500cfd89f65f6ec23eb6bf47c00bf1a2)
+
+::: aside
+From <https://allisonhorst.com/k-means-clustering>
+:::
+
+
+## k-means algorithm: Iteration step 2
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/caaad9b0-398b-4edb-92b6-25a224ae05bc_rw_1920.jpg?h=bf56b093b88b6b0e435cf2ffcfa91c18)
+
+::: aside
+From <https://allisonhorst.com/k-means-clustering>
+:::
+
+
+
+## Why we need iteration:
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/2f2e8dff-bcb4-4623-a38d-3cc71fba24c3_rw_1920.jpg?h=0fbd4da2938d4f69c91df95c842b942b)
+
+::: aside
+From <https://allisonhorst.com/k-means-clustering>
+:::
+
+
+## Iterate steps 1 and 2
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/f97bc420-d704-4bbe-ad00-28678e9c58cb_rw_1920.jpg?h=1cdfcef8903f8d8be17404ed6bd7aba1)
+
+::: aside
+From <https://allisonhorst.com/k-means-clustering>
+:::
+
+## k-means algorithm: Stop
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/614b8766-c72d-4c8f-9fd3-d738c36b073f.jpg?h=ae43d74e48e4d472a06dbee511e773af)
+
+::: aside
+From <https://allisonhorst.com/k-means-clustering>
+:::
+
+## Clustering penguins: Preprocessing {.smaller}
+
+- Standardization (shift-scale transformation by mean and standard deviation)
+    - When we measure distance between cases it is desireable that variables are of the same scale.
+    - If we do not standardize, body mass will dominate the distance measure!
+
+```{r}
+#| echo: true
+peng_rec <- penguins |> recipe() |> # No model specification to distinguish response ond predictor!
+ step_rm(all_nominal(), year) |> # Keep only numeric variables
+ step_center(all_numeric()) |> # shift by mean
+ step_scale(all_numeric()) 
+# Call prep to calculate transformed variables
+peng_prepped <- peng_rec |> prep(penguins |> drop_na())
+```
+
+## Whats in the `prep`ed object? {.smaller .scrollable}
+
+A lot!
+
+```{r}
+#| echo: true
+glimpse(peng_prepped)
+```
+
+
+## Preprocessing in a list in `$steps`  {.smaller .scrollable}
+
+```{r}
+#| echo: true
+glimpse(peng_prepped$steps)
+```
+
+## Parameters of Standardization {.smaller}
+
+```{r}
+#| echo: true
+peng_prepped$steps[[2]]$means # Shifting was step 2
+peng_prepped$steps[[3]]$sds # Scaling was step 3
+```
+
+Transformed data in `$template`
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+
+peng_transformed <- peng_prepped$template
+peng_transformed
+```
+
+## k-means for $k=3$ clusters {.smaller .scrollable}
+
+- `kmean` from base-R
+- Output: *Cluster means* are the centroids, *Cluster vector* are the labels for the cases, *Within cluster sum of squares by cluster* are performance measures
+- [Warning:]{style='color:red;'} In principle, k-means can results in different clusters for different initial starting positions of clusters. 
+
+```{r}
+#| echo: true
+peng_transformed |> kmeans(centers = 3)
+```
+
+## How many clusters should we ask for? {.smaller .scrollable}
+
+- Computer solutions for different numbers of cluster $k$ 
+
+```{r}
+#| echo: true
+set.seed(2023)
+kclusts <- tibble(k = 1:9) |>
+  mutate(
+    kclust = map(k, \(x) kmeans(peng_transformed, x)), # kmeans for k=1:9
+    tidied = map(kclust, tidy), # tidy extracts the centroids here 
+    glanced = map(kclust, glance), # 
+    augmented = map(kclust, augment, peng_transformed) # add cluster labels to data
+  ) # This is large data frame with nested objects as entries. We unnest next
+
+clusters <- kclusts |> unnest(cols = c(tidied))
+clusters
+
+clusterings <- kclusts |> unnest(cols = c(glanced))
+clusterings
+
+assignments <- kclusts |> unnest(cols = c(augmented))
+assignments
+```
+
+
+## Total within sum of squares to decide {.smaller}
+
+```{r}
+#| echo: true
+ggplot(clusterings, aes(k, tot.withinss)) +
+  geom_line() + geom_point() + scale_x_continuous(breaks = 1:9) + theme_minimal(base_size = 20)
+```
+
+- From 3 to 4 clusters there is little improvement
+- From 6 to more clusters there is very little improvement (or worsening)
+
+[Warning:]{style='color:red;'} Better do more clusterings for each $k$ and average `tot.withness` to see if the graph is stable!
+
+## Visualization: Cluster centroids {.smaller}
+
+```{r}
+#| echo: true
+#| fig-width: 18
+library(patchwork)
+g_3clusters <- clusters |> filter(k==3) |> 
+ select(bill_length_mm:body_mass_g, cluster) |> 
+ pivot_longer(bill_length_mm:body_mass_g) |> 
+ ggplot(aes(value,name)) + geom_col() + facet_grid(~cluster) + geom_vline(xintercept = 0, color = "blue") + theme_minimal(base_size = 16)
+g_6clusters <- clusters |> filter(k==6) |> 
+ select(bill_length_mm:body_mass_g, cluster) |> 
+ pivot_longer(bill_length_mm:body_mass_g) |> 
+ ggplot(aes(value,name)) + geom_col() + facet_grid(~cluster) + geom_vline(xintercept = 0, color = "blue") + theme_minimal(base_size = 16)
+g_3clusters + g_6clusters
+```
+
+## Visualization: Scatter plot {.smaller}
+
+```{r}
+#| echo: true
+library(patchwork) 
+g1 <- assignments |> filter(k==3) |> 
+ ggplot(aes(bill_length_mm, bill_depth_mm, color = .cluster)) +  geom_point()
+g2 <- assignments |> filter(k==6) |> mutate(species = na.omit(penguins)$species) |> 
+ ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) +  geom_point()
+g1 + g2
+```
+
+- This 3-cluster solution finds the species fairly well! 
+- [Attention:]{style='color:red;'} These are just two out of four variables!
+
+
+
+## Visualization: Clusters and species {.smaller}
+
+```{r}
+#| echo: true
+clustspecies <- assignments |> filter(k==6) |> 
+ mutate(species = na.omit(penguins)$species) |> 
+ select(.cluster, species) |> arrange(.cluster, species)
+g1 <- clustspecies |> ggplot(aes(.cluster, fill = species)) + geom_bar()
+g1 + g_6clusters
+```
+
+
+
+
+
+## It can go differently... {.smaller}
+
+```{r}
+#| echo: true
+set.seed(2)
+peng_transformed |> 
+ mutate(cluster = kmeans(peng_transformed, 3)$cluster) |> 
+ ggplot(aes(bill_length_mm, bill_depth_mm, color = factor(cluster))) +  geom_point()
+```
+
+This 3-cluster solution divides the Gentoo penguins into two clusters and keeps most Adelie and Chinstrap in one cluster.
+
+Why? Different random starting positions of the cluster centroids!
+
+
+# Hierarchical clustering
+
+## Connectivity based: Hierarchical clustering {.smaller}
+
+Hierarchical clustering seeks to build a *hierarchy* of clusters. 
+
+Here, we use a bottom up approach:
+
+- We start with every case building its own cluster
+- Then we iteratively join clusters which are close to each other to form a cluster
+
+To that end we first build the **distance matrix**. It is a symmetric $n \times n$ matrix where each entry is the **Euclidean distance** between two cases. 
+
+## Hierarchical clustering: Step 1
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/a8deb407-0aac-4eec-bf06-9eff89ec60f4_rw_1920.jpg?h=ba48313c2b9793700c204592c545d366)
+
+::: aside
+From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
+:::
+
+
+## Hierarchical clustering: Step 2
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/23f5ebe7-5108-43d4-8ee3-e21bcc90368c_rw_1920.jpg?h=dfefdbcba3b07bbd3b21847d6989878e)
+
+::: aside
+From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
+:::
+
+## Hierarchical clustering: Step 3
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/8be02f8f-296d-4b8d-9bd1-b05f9b82bd0e_rw_1920.jpg?h=f28b9120a354e7ffebec309fecf6cd42)
+
+::: aside
+From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
+:::
+
+## Hierarchical clustering: Step 4
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/55463c7d-d414-49ac-a229-23420caf6a17_rw_1920.jpg?h=5e9f3867df8550e0b013cf82009f0002)
+
+::: aside
+From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
+:::
+
+
+## Hierarchical clustering: Step 5
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/393b3b7a-47d9-47b7-8e39-61264d37561a_rw_1920.jpg?h=8c22aaae3262f253cb7ca2ab23be3085)
+
+::: aside
+From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
+:::
+
+
+## Hierarchical clustering: Step 6
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/aa0be35e-89c6-4b82-8aba-d261c2c2d061_rw_1920.jpg?h=6a93d982b2832cc53fa3e207fa9243bc)
+
+::: aside
+From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
+:::
+
+
+
+## Hierarchical clustering: Step 7
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/0310beae-ab04-49a8-ab09-ba73d727ed02_rw_1920.jpg?h=65b0e4106a62ecea3476414db247dfdf)
+
+::: aside
+From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
+:::
+
+
+## Calculate hierarchical clustering in R {.smaller}
+
+- First compute the distance matrix (entry $i,j$ is the distance between case $i$ and case $j$)
+
+```{r}
+#| echo: true 
+peng_transformed |> dist(method = "euclidean") 
+```
+
+## Calculate hierarchical clustering in R {.smaller}
+
+- `hclust` from base-R
+
+```{r}
+#| echo: true 
+peng_df <- as.data.frame(peng_transformed) # base-R data.frame 
+#row.names(peng_df) <- peng_df$iso_code # base-R way to have row names for hclust
+hc_peng <- peng_df |> dist(method = "euclidean") |> hclust()
+hc_peng
+glimpse(hc_peng)
+```
+
+
+## Plot the dendrogram {.smaller}
+
+```{r}
+#| echo: true 
+plot(hc_peng, cex = 0.4) # base-R way of plotting hclust object
+```
+
+## Plot height of hierarchy steps {.smaller}
+
+- Now we start looking at the *height* from the top.
+- Height at $x$ is the Euclidean distance which needs to be bridged to join the closest two clusters from the $x+1$-cluster solution to get the $x$-cluster solution. We should not cut where the increase in height is marginal.
+
+
+```{r}
+#| echo: true 
+tibble(height = hc_peng$height |> tail(10), # last ten values of height
+       num_cluster = 10:1) |> 
+ ggplot(aes(num_cluster,height)) + geom_point() + geom_line()
+```
+
+- Empirically, we do not see clear cut points in this case. 
+
+
+## Dendrogram with cutpoints {.smaller}
+
+```{r}
+#| echo: true 
+plot(hc_peng, cex = 0.4) # base-R way of plotting hclust object
+rect.hclust(hc_peng, k = 3) # base-R way of plotting in an existing plot
+rect.hclust(hc_peng, k = 6)
+```
+
+## Visualization: Clusters and continents {.smaller}
+
+Use `cutree`. 
+
+```{r}
+#| echo: true
+peng_transformed |> mutate(species = na.omit(penguins)$species,
+                           sex = na.omit(penguins)$sex,
+                           hclust3 = cutree(hc_peng, k = 3),
+                           hclust4 = cutree(hc_peng, k = 4),
+                           hclust6 = cutree(hc_peng, k = 6)) |> 
+ pivot_longer(c(hclust3,hclust4,hclust6)) |> 
+ ggplot(aes(value, fill = species, alpha = sex)) + geom_bar() + 
+ facet_wrap(~name, scales = "free_x") + 
+ scale_alpha_discrete(range = c(0.6,1)) + theme_minimal(base_size = 24)
+```
+
+## Clustering Summary {.smaller}
+
+::: {.incremental}
+- We have seen two clustering methods: k-means and hierarchical clustering.
+- k-means is a partitioning method, hierarchical clustering is a nested method.
+- k-means clusterings may differ from run to run, hierarchical clusterings uniquely deliver a hierarchy of clusters
+- However, hierarchical clusterings may change substantially with time changes in the data (not practically shown here)
+- The choice of the number of clusters is a difficult one. There are some quantitative methods (not shown in detail), but in the end it often involves qualitative criteria.
+:::
+
+. . .
+
+Tip: For visualization purposes it could make sense to plot the data in principal component space with dimensions PC1 and PC2 and on top show the clustering with colors. 
+
+
+
+
+
+

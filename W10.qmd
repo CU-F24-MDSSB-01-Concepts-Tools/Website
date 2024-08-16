@@ -1,0 +1,1161 @@
+---
+title: "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom"
+author: Jan Lorenz
+format: 
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: true
+    preview-links: false
+    logo: img/ConstructorUniversity.png
+    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+---
+
+
+# Hypothesis testing and the p-value
+Large part of the content adapted from <http://datasciencebox.org>.
+
+
+## Organ donors {.smaller}
+
+**Consultant:**   
+*I can help find a liver donor for your transplant surgery. From my donating clients only 4.8% (3 out of 62) had complications which is way below the national average of 10%!*
+
+**Question:** *Is this evidence that the consultant's work meaningfully contributes to reducing complications?*
+
+### Correlation vs. causation 
+
+**Epistemologic question:** *Is it possible to assess the consultant's claim using the data?*
+
+No. The causal claim we can not analyze, the data is observational. Reasons can be outside of the numbers: For example, patients who can afford a medical consultant can afford better medical care, which could lead to a lower complication rate.
+
+**Statistics Question:** *Could the low complication rate of 4.8% be due to chance?*
+
+## Parameter vs. statistic, Hypotheses {.smaller}
+
+:::: {.columns}
+
+::: {.column width='40%'}
+**Data**
+
+```{r}
+#| echo: true
+library(tidyverse)
+organ_donor <- tibble(outcome = 
+ c(rep("complication", 3), 
+   rep("no complication", 59)))
+organ_donor
+```
+
+```{r }
+#| echo: true
+organ_donor |>
+  count(outcome)
+```
+:::
+
+::: {.column width='60%'}
+In a test, a **parameter** is the "true" value of interest.   
+We typically estimate the parameter using a **sample statistic** as a **point estimate**.
+
+$p$: true rate of complication, here 10%
+
+$\hat{p}$: rate of complication in the sample = $\frac{3}{62}$ = 
+`r round(3/62, 3)`
+
+**Two claims:**
+
+[**Null hypothesis $H_0$:**]{style='color:blue;'} *There is nothing going on*   
+Complication rate for this consultant is no different than the US average of 10%
+
+[**Alternative hypothesis $H_A$:**]{style='color:blue;'} *There is something going on*  
+Complication rate for this consultant is **lower** than the US average of 10%
+:::
+
+::::
+
+
+## Hypothesis testing as a court trial {.smaller}
+
+- **Null hypothesis**, $H_0$: Defendant is innocent
+- **Alternative hypothesis**, $H_A$: Defendant is guilty
+
+
+- **Present the evidence:** Collect data
+
+- **Judge the evidence:** "Could these data plausibly have happened by chance if the null hypothesis were true?"
+    * Yes: Fail to reject $H_0$
+    * No: Reject $H_0$
+    
+
+## Hypothesis testing framework {.smaller}
+
+- Start with a null hypothesis, $H_0$, that represents the status quo
+
+- Set an alternative hypothesis, $H_A$, that represents the research question, i.e. what we are testing for
+
+- Conduct a hypothesis test under the assumption that the null hypothesis is true and calculate a **p-value**.    
+**Definition:** *Probability of the observed outcome or a more extreme one given that the null hypothesis is true.*
+    - if the test results suggest that the data do not provide convincing evidence for the alternative hypothesis, stick with the null hypothesis
+    - if they do, then reject the null hypothesis in favor of the alternative
+
+
+## Setting the hypotheses {.smaller}
+
+**In the following $p$ is the "true" rate of complication of the consultant.**
+
+$H_0: p = 0.10$ In the long run the consultant would also have a 10% complication rate. 
+
+$H_A: p < 0.10$ Also in the long run the consultant would have a complication rate less than 10%. (We would still not know if it is because of the consultant's work or for something else!)
+
+
+## Simulating the null distribution {.smaller}
+
+Since $H_0: p = 0.10$, we need to simulate a null distribution where the probability of success (complication) for each trial (patient) is 0.10.
+
+**How should we simulate the null distribution for this study using a bag of chips?**
+
+- How many chips? [For example 10 which makes 10% choices possible]{.fragment style='color:red;'}
+- How many colors? [2]{.fragment style='color:red;'}
+- What should colors represent? ["complication", "no complication"]{.fragment style='color:red;'}
+- How many draws?  [62 as the data]{.fragment style='color:red;'}
+- With replacement or without replacement? [With replacement]{.fragment style='color:red;'}
+
+When sampling from the null distribution, what would be the expected proportion of "complications"?  [0.1]{.fragment  style='color:red;'}
+
+
+## Simulation! {.smaller}
+
+```{r}
+#| echo: true
+set.seed(1234)
+outcomes <- c("complication", "no complication")
+sim1 <- sample(outcomes, size = 62, prob = c(0.1, 0.9), replace = TRUE)
+sim1
+sum(sim1 == "complication")/62
+```
+
+Oh OK, this is the same as the consultant's rate. But maybe it was a rare event?
+
+## More simulation! {.smaller}
+
+```{r}
+#| echo: true
+one_sim <- function() sample(outcomes, size = 62, prob = c(0.1, 0.9), replace = TRUE)
+
+sum(one_sim() == "complication")/62
+sum(one_sim() == "complication")/62
+sum(one_sim() == "complication")/62
+sum(one_sim() == "complication")/62
+sum(one_sim() == "complication")/62
+sum(one_sim() == "complication")/62
+sum(one_sim() == "complication")/62
+```
+
+Oh OK, our fist simulation with `r sum(sim1 == "complication")/62` seems to be comparably low.
+
+
+## Automating with `tidymodels`^[Of course, you can also do it in your own way without packages.] {.smaller}
+
+
+:::: {.columns}
+
+::: {.column width='40%'}
+```{r}
+#| echo: true
+organ_donor
+```
+:::
+
+::: {.column width='60%'}
+```{r}
+#| echo: true
+library(tidymodels)
+set.seed(10)
+null_dist <- organ_donor |>
+  specify(response = outcome, success = "complication") |>
+  hypothesize(null = "point", 
+              p = c("complication" = 0.10, "no complication" = 0.90)) |> 
+  generate(reps = 100, type = "draw") |> 
+  calculate(stat = "prop")
+null_dist
+```
+:::
+
+::::
+
+
+
+## Visualizing the null distribution {.smaller}
+
+```{r}
+#| echo: true
+ggplot(data = null_dist, mapping = aes(x = stat)) +
+  geom_histogram(binwidth = 0.005) +
+  labs(title = "Null distribution")
+```
+
+
+## Calculating the p-value, visually {.smaller}
+
+**What is the p-value:**^[[Warning:]{style='color:red;'} The name p-value has nothing to do with the value $p$ we are currently trying to use as population parameter.] *How often was the simulated sample proportion at least as extreme as the observed sample proportion?*
+
+```{r}
+#| echo: true
+#| fig.height: 3
+ggplot(data = null_dist, mapping = aes(x = stat)) +
+  geom_histogram(binwidth = 0.005) +
+  labs(title = "Null distribution")  +
+ geom_vline(xintercept = 3/62, color = "red")
+```
+
+
+## Calculating the p-value directly {.smaller}
+
+```{r}
+#| echo: true
+null_dist |>
+ summarise(p_value = sum(stat <= 3/62)/n())
+```
+
+This is the fraction of simulations where the rate of complications was equal or below $\frac{3}{62} =$ `r 3/62`. 
+
+
+## Significance level  {.smaller}
+
+- A **significance level** $\alpha$ is a threshold we make up to make our judgment about the plausibility of the null hypothesis being true given the observed data. 
+
+- We often use $\alpha = 0.05 = 5\%$ as the cutoff for whether the p-value is low enough that the data are unlikely to have come from the null model. 
+
+- If p-value < $\alpha$, reject $H_0$ in favor of $H_A$: The data provide convincing evidence for the alternative hypothesis.
+
+- If p-value > $\alpha$, fail to reject $H_0$ in favor of $H_A$: The data do not provide convincing evidence for the alternative hypothesis.
+
+**What is the conclusion of the hypothesis test?**
+
+Since the p-value is greater than the significance level, we fail to reject the null hypothesis. 
+These data do not provide convincing evidence that this consultant incurs a lower complication rate than the 10% overall US complication rate.
+
+## 100 simulations is not sufficient {.smaller}
+
+- We simulate 15,000 times to get an accurate distribution.
+
+```{r}
+#| echo: true
+null_dist <- organ_donor |>
+  specify(response = outcome, success = "complication") |>
+  hypothesize(null = "point", 
+              p = c("complication" = 0.10, "no complication" = 0.90)) |> 
+  generate(reps = 15000, type = "simulate") |> 
+  calculate(stat = "prop")
+ggplot(data = null_dist, mapping = aes(x = stat)) +
+  geom_histogram(binwidth = 0.005) +
+  geom_vline(xintercept = 3/62, color = "red")
+```
+
+
+## Our more robust p-value {.smaller}
+
+For the null distribution with 15,000 simulations
+
+```{r}
+#| echo: true
+null_dist |>
+  filter(stat <= 3/62) |>
+  summarise(p_value = n()/nrow(null_dist))
+```
+
+
+## p-value in model outputs {.smaller}
+
+
+:::: {.columns}
+
+::: {.column width='50%'}
+Model output for a linear model with palmer penguins.
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+	fit(bill_length_mm ~ bill_depth_mm, data = penguins) |> tidy()
+```
+:::
+
+::: {.column width='50%'}
+Model output for a logistic regression model with email from [openintro](https://www.openintro.org/data/index.php?data=email)
+
+```{r}
+#| echo: true
+library(openintro)
+logistic_reg() |>  set_engine("glm") |>
+  fit(spam ~ from + cc, data = email, family = "binomial") |> tidy()
+```
+:::
+
+::::
+
+*What do the p-values for coefficients mean? What is the null hypothesis?*
+
+- Null-Hypothesis: No relationship predictor and response. Coefficient could be zero. 
+- Alternative Hypothesis: The coefficient is away from zero. 
+- Small p-value: evidence for rejecting the hypothesis that there is no effect. 
+- Technically: The statistic (which we do not treat now) is sufficiently away from zero. 
+
+
+
+## xkcd on p-values {.smaller}
+
+:::: {.columns}
+
+::: {.column width='60%'}
+[![](https://imgs.xkcd.com/comics/p_values_2x.png){height="500px"}](https://xkcd.com/1478/)
+[![](https://imgs.xkcd.com/comics/significant.png){height="500px"}](https://xkcd.com/882/)
+:::
+
+::: {.column width='40%'}
+:::{.fragment}
+- Significance levels are fairly arbitrary. Sometimes they are used (wrongly) as definitive judgments
+- They can even be used to do *p-hacking*: Searching for "significant" effects in observational data
+- In parts of science it has become a "gamed" performance metric.
+- The p-value says nothing about effect size!
+:::
+:::
+
+::::
+
+## p-value misinterpretation {.smaller}
+
+p-values do not measure^[From the American Statistical Association (ASA) 2016]
+
+- the probability that the studied hypothesis is true
+- the probability that the data were produced by random chance alone
+- the size of an effect
+- the importance of a result" or "evidence regarding a model or hypothesis" (it is only against the null hypothesis).
+
+. . .
+
+**Correct explanation:**   
+The p-value is the probability of obtaining test results at least as extreme as the result actually observed, under the assumption that the null hypothesis is correct.
+
+p-values and significance tests, when properly applied and interpreted, increase the rigor of the conclusions drawn from data.^[From the American Statistical Association (ASA) 2019]
+
+
+# Classification: Compare logistic regression and decision tree
+
+## Purpose of the section {.smaller}
+
+- Go again through the modeling workflow (with `tidymodels`) and see that large parts are identical
+- Look again at the coefficients of a logistic regression model
+- Learn the basic idea of a decision tree (you will not learn the details here)
+- Do the classification with both models and compare the confusion matrices
+
+## Specify recipe and models {.smaller}
+
+For both logistic regression and decision tree:
+
+```{r}
+#| echo: true
+library(tidymodels)
+library(palmerpenguins)
+peng_recipe <- recipe(sex ~ ., data = penguins) |> 
+ step_rm(year)
+```
+
+. . .
+
+- We specify a recipe to predict `sex` with all available variables in `penguins`
+    - Typically, more pre-processing steps are specified here, but we are mostly fine
+
+. . .
+
+:::: {.columns}
+
+::: {.column width='50%'}
+
+**Logistic Regression**
+
+```{r}
+#| echo: true
+peng_logreg <- logistic_reg() |>
+ set_engine("glm")
+```
+
+`peng_logreg` specifies to fit with `glm` (generalized linear model from `base` R) 
+:::
+
+::: {.column width='50%'}
+
+**Decision Tree**
+
+```{r}
+#| echo: true
+peng_tree <- decision_tree() |>
+ set_engine("rpart") |>
+ set_mode("classification")
+```
+
+`peng_tree` specifies to fit  for `classification` with the `rpart`^[`rpart` is a package for *recursive partitioning and regression trees*. Different decision tree procedures are subsumed as **classification and regression trees (CART)**] as engine. 
+
+:::
+::::
+
+
+## Split and fit {.smaller}
+
+For logistic regression and decision tree:
+
+Split into test and training data
+
+```{r}
+#| echo: true
+set.seed(1)
+penguins_split <- initial_split(penguins, prop = 0.7, strata = sex)
+peng_train <- training(penguins_split)
+peng_test <- testing(penguins_split)
+peng_workflow <- workflow() |> add_recipe(peng_recipe)
+```
+
+. . .
+
+:::: {.columns}
+
+::: {.column width='50%'}
+**Logistic Regression**
+
+```{r}
+#| echo: true
+peng_logreg_fit <- peng_workflow |> 
+ add_model(peng_logreg) |> 
+ fit(data = peng_train)
+```
+
+:::
+
+::: {.column width='50%'}
+**Decision Tree**
+
+```{r}
+#| echo: true
+peng_tree_fit <- peng_workflow |> 
+ add_model(peng_tree) |> 
+ fit(data = peng_train)
+```
+:::
+
+::::
+
+
+## Look at fitted logistic regression {.smaller}
+
+:::: {.columns}
+
+::: {.column width='60%'}
+```{r}
+#| echo: true
+peng_logreg_fit |> tidy()
+```
+:::
+
+::: {.column width='40%'}
+- What do the categorical predictors tell us? Which are signigficant?
+- What do the numerical predictors tell us? Which are signigficant?
+- Why is the coefficient for `body_mass_g` so small, but highly significant?
+:::
+
+::::
+ 
+. . . 
+
+
+**Categorical predictors:** We have 3 `species`, 3 `island`. So, we see
+4 new variables, 2 for `species` and 2 for `island` (the third is the reference category). Species are significant (p < 0.05), but islands not.
+
+**Numerical predictors:** `flipper_length_mm` is insignificant, though its coefficient is larger than for `body_mass_g`. Reason: values of `body_mass_g` are larger than those of `flipper_length_mm`. Body mass differs by much more grams than flipper length differs by millimeters. 
+
+
+## What is a decision tree? {.smaller}
+
+```{r}
+#| echo: true
+peng_tree_fit
+```
+
+- A sequence of rules for yes/no decisions
+- Selects variables and thresholds which separate the data to predict (here `sex`) best 
+- Further details are not the scope of this course
+
+
+## Show rules {.smaller}
+
+We "dig out" the original fitted `rpart`-object from the `workflow`-object with `peng_tree_fit$fit$fit$fit` and plot it:
+
+```{r}
+#| echo: true
+library(rpart.plot)
+rpart.rules(peng_tree_fit$fit$fit$fit, roundint=FALSE)
+```
+
+- The first three rules would predict `female` for all observations
+- The last five rules would predict `male` for all observations
+
+The order of `male` and `female` is because `sex` is a factor with the first level `female` and the second level `male`. The probabilities in front of the rule-text are for the second level: `male`.
+
+## Visualize tree {.smaller}
+
+```{r}
+#| echo: true
+library(rpart.plot)
+rpart.plot(peng_tree_fit$fit$fit$fit, 
+           roundint=FALSE, tweak=1.5)
+```
+
+How to read?
+
+- The percentage is the fraction of the total cases in this group
+- The probability-number is the fraction of observations which are male in the group
+- `male` of `female` and color would match the predicted outcome at this decision node
+
+
+## Make predictions for test data {.smaller}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+peng_logreg_pred <- 
+ predict(peng_logreg_fit, peng_test) |> 
+ bind_cols(peng_test) 
+peng_logreg_pred |> 
+ conf_mat(truth = sex, estimate = .pred_class)
+```
+:::
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+peng_tree_pred <- 
+ predict(peng_tree_fit, peng_test) |> 
+ bind_cols(peng_test)
+peng_tree_pred |> 
+ conf_mat(truth = sex, estimate = .pred_class)
+```
+:::
+
+::::
+
+- The logistic regression has more correct predictions. 
+- [Warning:]{style='color:red;'} The function `conf_mat` (from `yardstick` of `tidymodels`) shows the transposed confusion matrix compared with [Wikipedia:Confusion Matrix](https://en.wikipedia.org/wiki/Confusion_matrix). In `conf_mat`, the *true conditions* are in columns. The wikipedia convention is that columns are the *predicted conditions*. 
+
+
+# What is a model? Terminological confusion...
+
+## "Model" in Statistical Learning {.smaller}
+
+We already had the difference between *variable-based* and *agent-based* models in earlier lectures.
+
+But even in the variable-based model setting of **statistical learning**, the term *model* can be more or less abstract:
+
+1. Very general: $Y = f(X_1, \dots, X_m) + \varepsilon$ where $Y$ is the response variable and $X_i$ are features which we put in our **model**: the abstract and unknown function $f$. $\varepsilon$ is the error which can never explain and which we also usually do not know. 
+2. More specific: The **model** $f$ could already be of a specific type, like *linear regression*, *logistic regression*, or a *decision tree* or other functional forms. As this need not be the *real* function we may call it *assumed model* $\hat f$   For example a linear model $\hat f(X_1, \dots, X_m) = \beta_0 + \beta_1 X_1 + \dots + \beta_m X_m + \varepsilon$. Now, the model has specified parameters which values are unknown. 
+
+
+## More specific: Fitted model {.smaller}
+
+3. Fitted model: When we have a data set with values for $Y, X_1, \dots, X_m$ we can fit values for the parameters $\hat\beta_0, \dots, \hat\beta_m$ to the data. This is the *fitted model* $\hat f$. This is called parameter estimation: We estimate $\hat\beta_0, \dots, \hat\beta_m$ with the hope that they match the *real* values $\beta_0, \dots, \beta_m$ and that the linear model $\hat f$ matches the *real* function $f$. 
+4. Now we could specify further to fit a specific parameterized model with a specific algorithm, and a specific set of hyperparameters, and maybe more ...
+    
+Sometimes model means only a certain aspect of all these, for example the *formula* like `sex ~ bill_length_mm + bill_depth_mm + flipper_length_mm + body_mass_g + species + island`
+
+. . .
+
+[Take away:]{style='color:blue;'} "Model" can mean things with very different granularity. That is OK because they are all related and all fit the definition of being a **simplified representation of reality**. 
+
+[**Be prepared to specify what you mean when you are talking about a model.**]{style='color:blue;'}
+
+
+# Regression: Compare linear regression and decision tree
+
+## Purpose of the section {.smaller}
+
+- Go again through the modeling workflow (with `tidymodels`) and see that large parts are identical
+- Look again at the coefficients of a linear model
+- See how the decision tree looks like for a regression problem
+- Compare the two most common performance measures for regression models: Root Mean Squared Error (RMSE) and R-squared
+
+## Specify recipe and models {.smaller}
+
+- We specify a recipe to predict `body_mass_g` with all available variables in `penguins` and put it in a workflow
+    - Typically, more pre-processing steps are specified here, but we are mostly fine
+
+```{r}
+#| echo: true
+peng_recipe2 <- recipe(body_mass_g ~ ., data = penguins) |> 
+ step_rm(year)
+peng_workflow2 <- workflow() |> 
+ add_recipe(peng_recipe2)
+```
+
+We can re-use the split and the training and test set. 
+
+
+. . .
+
+:::: {.columns}
+
+::: {.column width='50%'}
+
+**Linear Regression**
+
+```{r}
+#| echo: true
+peng_linreg <- linear_reg() |>
+ set_engine("lm")
+```
+:::
+
+::: {.column width='50%'}
+
+**Decision Tree**
+
+```{r}
+#| echo: true
+peng_regtree <- decision_tree() |>
+ set_engine("rpart") |>
+ set_mode("regression")
+```
+:::
+::::
+
+
+## Fit Regression Models {.smaller}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+**Linear Regression**
+
+```{r}
+#| echo: true
+peng_linreg_fit <- peng_workflow2 |> 
+ add_model(peng_linreg) |> 
+ fit(data = peng_train)
+```
+
+:::
+
+::: {.column width='50%'}
+**Decision Tree**
+
+```{r}
+#| echo: true
+peng_regtree_fit <- peng_workflow2 |> 
+ add_model(peng_regtree) |> 
+ fit(data = peng_train)
+```
+:::
+
+::::
+
+
+## Look at fitted linear regression {.smaller}
+
+:::: {.columns}
+
+::: {.column width='60%'}
+```{r}
+#| echo: true
+peng_linreg_fit |> tidy() 
+```
+:::
+
+::: {.column width='40%'}
+- What do the categorical predictors tell us? Which are signigficant?
+- What do the numerical predictors tell us? Which are signigficant?
+:::
+
+::::
+ 
+. . . 
+
+
+**Categorical predictors:** We 3 `species`, 3 `island` and 2 `sex`. So, we see
+5 new variables. Species and sex are significant, but islands not.
+
+**Numerical predictors:** All 3 are significant.
+
+
+## Show rules {.smaller}
+
+```{r}
+#| echo: true
+library(rpart.plot)
+rpart.rules(peng_regtree_fit$fit$fit$fit, roundint=FALSE)
+```
+
+- For each terminal node a certain value is predicted (the mean of the remaining penguins)
+
+
+## Visualize tree {.smaller}
+
+```{r}
+#| echo: true
+library(rpart.plot)
+rpart.plot(peng_regtree_fit$fit$fit$fit, 
+           roundint=FALSE, tweak=1.5)
+```
+
+How to read?
+
+- The percentage is the fraction of the total cases in this group
+- The number is the predicted outcome (mean body mass) at this decision node
+
+
+## Make predictions for test data {.smaller}
+
+:::: {.columns}
+
+::: {.column width='65%'}
+**Linear Regression**
+
+```{r}
+#| echo: true
+peng_linreg_pred <- 
+ predict(peng_linreg_fit, peng_test) |> 
+ bind_cols(peng_test) 
+peng_linreg_pred |> 
+ select(.pred, body_mass_g, everything()) |> 
+ slice(10*(1:10)) # show selected rows
+```
+:::
+
+::: {.column width='35%'}
+**Decision Tree**
+
+```{r}
+#| echo: true
+peng_regtree_pred <- 
+ predict(peng_regtree_fit, peng_test) |> 
+ bind_cols(peng_test)
+peng_regtree_pred |> 
+ select(.pred, body_mass_g, species, sex) |> 
+ slice(10*(1:10)) # show same selected rows
+```
+:::
+
+::::
+
+## Regression Performance Evaluation {.smaller}
+
+[**R-squared**]{style='color:blue;'}: Percentage of variability in `body_mass_g` explained by the model
+
+:::: {.columns}
+
+::: {.column width='50%'}
+**Linear Regression**
+
+```{r}
+#| echo: true
+rsq(peng_linreg_pred, 
+    truth = body_mass_g, estimate = .pred)
+```
+:::
+
+::: {.column width='50%'}
+**Decision Tree**
+```{r}
+#| echo: true
+rsq(peng_regtree_pred, 
+    truth = body_mass_g, estimate = .pred)
+```
+
+:::
+
+::::
+
+[**Root Mean Squared Error (RMSE)**:]{style='color:blue;'} $\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i = 1}^n (y_i - \hat{y}_i)^2}$  
+where $\hat{y}_i$ is the predicted value and $y_i$ the true value. (The name RMSE is descriptive.)
+
+:::: {.columns}
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+rmse(peng_linreg_pred, 
+     truth = body_mass_g, 
+     estimate = .pred)
+```
+:::
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+rmse(peng_regtree_pred, 
+     truth = body_mass_g, 
+     estimate = .pred)
+```
+
+:::
+
+::::
+
+Which model is better in prediction? [**Linear regression.** The R-squared is higher.]{.fragment}
+
+
+## What RMSE is better? {.smaller}
+
+. . .
+
+**Lower. The lower the error, the better the model's prediction.**
+
+It is the other way round than R-squared! Do not confuse them.
+
+. . .
+
+Notes: 
+
+- The common method to fit a linear model is the *ordinary least squares* (OLS) method
+- That means the fitted parameters should deliver the lowest possible sum of squared errors (SSE) between predicted and observed values. 
+- Minimizing the sum of squared errors (SSE) is identical to minimizing the mean of squared errors (MSE) because it only adds the factor $1/n$.
+- Minimizing the mean of squared errors (MSE) is identical to minimizing the root mean of squared errors (RMSE) because the square root is strictly monotone function.
+
+Conclusion: RMSE can be seen as a definition of the OLS optimization goal. 
+
+## Interpreting RMSE {.smaller}
+
+In contrast to R-squared, RMSE can only be interpreted with knowledge about the range and of the response variable! It also has the same unit (grams for `body_mass_g`).
+
+
+```{r}
+#| echo: true
+#| output-location: column
+#| fig-height: 1.8
+peng_test |> 
+ ggplot(aes(x=body_mass_g, fill = species)) + 
+ geom_histogram(binwidth = 50) + 
+ theme_minimal(base_size = 20)
+```
+```{r}
+#| echo: true
+#| output-location: column
+#| fig-height: 1.8
+peng_linreg_pred |> 
+ ggplot(aes(x=.pred, fill = species)) + 
+ geom_histogram(binwidth = 50) + 
+ theme_minimal(base_size = 20)
+```
+```{r}
+#| echo: true
+#| output-location: column
+#| fig-height: 1.8
+peng_regtree_pred |> 
+ ggplot(aes(x=.pred, fill = species)) + 
+ geom_histogram(binwidth = 50) + 
+ theme_minimal(base_size = 20)
+```
+
+
+
+The RMSE shows many grams predicted values deviate from the true value on average. (Taking the squaring of differences and root of the average into account.)
+
+
+# Overfitting with decision trees
+
+## Compare training and test data {.smaller}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+
+**Linear Regression**
+
+Predict with testing data:
+```{r}
+#| echo: true
+predict(peng_linreg_fit, peng_test) |> bind_cols(peng_test) |> 
+ metrics(truth = body_mass_g, estimate = .pred) |> slice(1:2)
+```
+
+Predict with training data:
+```{r}
+#| echo: true
+predict(peng_linreg_fit, peng_train) |> bind_cols(peng_train) |> 
+ metrics(truth = body_mass_g, estimate = .pred) |> slice(1:2)
+```
+:::
+
+::: {.column width='50%'}
+
+**Decision Tree Regression**
+
+Predict with testing data:
+```{r}
+#| echo: true
+predict(peng_regtree_fit, peng_test) |> bind_cols(peng_test) |> 
+ metrics(truth = body_mass_g, estimate = .pred) |> slice(1:2)
+```
+
+Predict with training data:
+```{r}
+#| echo: true
+predict(peng_regtree_fit, peng_train) |> bind_cols(peng_train) |> 
+ metrics(truth = body_mass_g, estimate = .pred) |> slice(1:2)
+```
+:::
+
+::::
+
+Where is the prediction better? (Lower RMSE, higher R-squared)
+
+. . . 
+
+Performance is better for training data (compare values to testing data of the same model). Why? It was used to fit. The model is optimized to predict the training data.
+
+
+## Make a deeper tree {.smaller}
+
+- In `decision_tree()` we can set the maximal depth of the tree to 30.   
+- The trees we had before were also automatically *pruned* by sensible defaults.  
+- By setting the cost complexity parameter to -1 we avoid pruning.^[The details of this go beyond the scope of this course.]  
+
+```{r}
+#| echo: true
+peng_regtree_deep <- decision_tree(
+ cost_complexity = -1,
+ tree_depth = 30
+) |>
+ set_engine("rpart") |>
+ set_mode("regression")
+peng_regtree_deep_fit <- peng_workflow2 |> add_model(peng_regtree_deep) |> 
+ fit(data = peng_train)
+```
+
+## The deep tree
+
+```{r}
+rpart.plot(peng_regtree_deep_fit$fit$fit$fit, 
+           roundint=FALSE, tweak=1)
+```
+
+
+
+
+## Compare pruned and deep tree {.smaller}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+
+**Pruned decision tree**
+
+Predict with **training data**:
+```{r}
+#| echo: true
+peng_regtree_fit |> 
+ predict(new_data = peng_train) |> bind_cols(peng_train) |> 
+ metrics(truth = body_mass_g, estimate = .pred) |> slice(1:2)
+```
+
+Predict with **testing data**:
+```{r}
+#| echo: true
+peng_regtree_fit |> 
+ predict(peng_test) |> bind_cols(peng_test) |> 
+ metrics(truth = body_mass_g, estimate = .pred) |> slice(1:2)
+```
+
+:::
+
+::: {.column width='50%'}
+
+**Deep decision tree**
+
+Predict with **training data**:
+```{r}
+#| echo: true
+peng_regtree_deep_fit |> 
+ predict(new_data = peng_train) |> bind_cols(peng_train) |> 
+ metrics(truth = body_mass_g, estimate = .pred) |> slice(1:2)
+```
+
+Predict with **testing data**:
+```{r}
+#| echo: true
+peng_regtree_deep_fit |> 
+ predict(peng_test) |> bind_cols(peng_test) |> 
+ metrics(truth = body_mass_g, estimate = .pred) |> slice(1:2)
+```
+:::
+
+::::
+
+
+## More in an R-script
+
+- Overfitting in a spam prediciton model
+
+- From decision trees to random forrests. 
+
+
+
+
+
+
+
+
+
+
+# The wisdom of the crowd, "Diversity!", and the Bias-Variance-Decomposition
+
+## Galton's data {.smaller}
+
+*What is the weight of the meat of this ox?*
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+library(readxl)
+galton <- read_excel("data/galton_data.xlsx")
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + geom_vline(xintercept = 1198, color = "green") + 
+ geom_vline(xintercept = mean(galton$Estimate), color = "red")
+```
+
+`r nrow(galton)` estimates, [true value]{style="color:green;"} 1198, [mean]{style="color:red;"} `r round(mean((galton$Estimate)), digits=1)`
+
+::: aside
+We focus on the arithmetic mean as aggregation function for the wisdom of the crowd here. 
+:::
+
+
+## RMSE Galton's data {.smaller}
+
+Describe the estimation game as a predictive model:
+
+- All *estimates* are made to predict the same value: the truth. 
+  - In contrast to the regression model, the estimate come from people and not from a regression formula.
+- The *truth* is the same for all.
+  - In contrast to the regression model, the truth is one value and not a value for each prediction
+
+```{r}
+#| echo: true
+rmse_galton <- galton |> 
+ mutate(true_value = 1198) |>
+ rmse(truth = true_value, Estimate)
+rmse_galton
+```
+
+<!-- ## Regression vs. crowd estimation {.smaller} -->
+
+<!-- The linear regression and the crowd estimation problems are similar but not identical! -->
+
+<!-- |Variable      | Linear Regression Model                       | Crowd estimation -->
+<!-- |--------------|-----------------------------------------------|-------------------------------------------- -->
+<!-- | $y_i$        | Data point of response variable               | True value, uniform for all estimators $y_i = y$ -->
+<!-- | $\hat{y}_i$  | Predicted value $\hat{y}_i=b_0+b_1+x_1+\dots$ | Estimate of one estimator -->
+<!-- | $\bar{y}$    | Mean of response variable                     | Mean of estimates  -->
+
+
+## MSE, Variance, and Bias of estimates {.smaller}
+
+In a crowd estimation, $n$ estimators delivered the estimates $\hat{y}_1,\dots,\hat{y}_n$. 
+Let us look at the following measures
+
+- $\bar{y} = \frac{1}{n}\sum_{i = 1}^n \hat{y}_i^2$ is the mean estimate, it is the aggregated estimate of the crowd
+
+- $\text{MSE} = \text{RMSE}^2 = \frac{1}{n}\sum_{i = 1}^n (\text{truth} - \hat{y}_i)^2$
+  
+- $\text{Variance} = \frac{1}{n}\sum_{i = 1}^n (\hat{y}_i - \bar{y})^2$ 
+
+- $\text{Bias-squared} = (\bar{y} - \text{truth})^2$ which is the square difference between truth and mean estimate. 
+
+There is a mathematical relation (a math exercise to check):
+
+$$\text{MSE} = \text{Bias-squared} + \text{Variance}$$
+
+## Testing for Galton's data {.smaller}
+
+$$\text{MSE} = \text{Bias-squared} + \text{Variance}$$
+
+```{r}
+#| echo: true
+MSE <- (rmse_galton$.estimate)^2 
+MSE
+Variance <- var(galton$Estimate)*(nrow(galton)-1)/nrow(galton)
+# Note, we had to correct for the divisor (n-1) in the classical statistical definition
+# to get the sample variance instead of the estimate for the population variance
+Variance
+Bias_squared <- (mean(galton$Estimate) - 1198)^2
+Bias_squared
+
+Bias_squared + Variance
+```
+
+::: aside
+Such nice mathematical properties are probably one reason why these squared measures are so popular. 
+:::
+
+
+## The diversity prediction theorem^[Notion from: Page, S. E. (2007). The Difference: How the Power of Diversity Creates Better Groups, Firms, Schools, and Societies. Princeton University Press.] {.smaller}
+
+- *MSE* is a measure the average **individuals error**
+- *Bias-squared* is a measure the **collective error**
+- *Variance* is a measure for the **diversity** of estimates around the mean
+
+The mathematical relation $$\text{MSE} = \text{Bias-squared} + \text{Variance}$$ can be formulated as 
+
+**Collective error = Individual error - Diversity**
+
+Interpretation: *The higher the diversity the lower the collective error!*
+
+
+## Why is this message a bit suggestive? {.smaller}
+
+The mathematical relation $$\text{MSE} = \text{Bias-squared} + \text{Variance}$$ can be formulated as 
+
+**Collective error = Individual error - Diversity**
+
+Interpretation: *The higher the diversity the lower the collective error!*
+
+. . . 
+
+- $\text{MSE}$ and $\text{Variance}$ are not independent! 
+- Activities to increase diversity (Variance) typically also increase the average individual error (MSE).
+- For example, if we just add more random estimates with same mean but wild variance to our sample we increase both and do not gain any decrease of the collective error.
+
+
+## Accuracy for numerical estimate {.smaller}
+
+- For binary classifiers **accuracy** has a simple definition: Fraction of correct classifications. 
+  - It can be further informed by other more specific measures taken from the confusion matrix (sensitivity, specificity)
+
+How about numerical estimators?   
+For example outcomes of estimation games, or linear regression models. 
+
+- Accuracy is for example measured by (R)MSE
+- $\text{MSE} = \text{Bias-squared} + \text{Variance}$ shows us that we can make a  
+**bias-variance decomposition**
+- That means some part of the error is a systematic (the bias) and another part due to random variation (the variance).
+- Learn more about the bias-variance tradeoff in statistical learning independently! It is an important concept to understand predictive models. 
+
+
+## 2-d Accuracy: Trueness and Precision {.smaller}
+
+According to ISO 5725-1 Standard: *Accuracy (trueness and precision) of measurement methods and results - Part 1: General principles and definitions.* there are two dimension of accuracy of numerical measurement. 
+
+![](https://upload.wikimedia.org/wikipedia/commons/9/92/Accuracy_%28trueness_and_precision%29.svg) ![](img/accuracy_trueness_precision.png){height="300px"}
+
+
+
+## What is a wise crowd? {.smaller}
+
+Assume the dots are estimates. **Which is a wise crowd?**
+
+![](img/accuracy_trueness_precision.png){height="300px"}
+
+. . . 
+
+- Of course, high trueness and high precision! But, ...
+- Focusing on the **crowd** being wise instead of its **individuals**: High trueness, low precision. 
+
+

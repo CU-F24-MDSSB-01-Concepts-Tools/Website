@@ -1,0 +1,1108 @@
+---
+title: "W#08: Logistic Regression, Classification Problems, Prediction"
+author: Jan Lorenz
+format: 
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: true
+    preview-links: true
+    logo: img/ConstructorUniversity.png
+    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(palmerpenguins)
+library(tidymodels)
+library(openintro)
+```
+
+# Logistic regression
+
+## Logistic regression {.smaller}
+
+- **Logistic regression** is a GLM used to model a binary categorical outcome using numerical and categorical predictors.
+- The *distribution* is the Bernoulli distribution with parameter $p$ (success probability). 
+- As *link function* connecting $\eta_i$ to $p_i$ we use the **logit function**.
+
+. . .
+
+- **Logit function:** $\text{logit}: [0,1] \to \mathbb{R}$
+
+$$\text{logit}(p) = \log\left(\frac{p}{1-p}\right)$$
+
+- $\frac{p}{1-p}$ is called the **odds** of a success which happens with probability $p$.  
+Example: Roll a six with a die has $p=1/6$. Thus, the odds are $\frac{1/6}{5/6} = 1/5$. Sometimes written as 1:5. *"The odds of success are one to five."*
+
+
+## Properties of the logit {.smaller}
+
+- Logit takes values between 0 and 1 and returns values between $-\infty$ and $\infty$
+- The inverse of the logit function if the **logistic function** (mapping values from $-\infty$ and $\infty$ to values between 0 and 1):
+$$\text{logit}^{-1}(x) = \text{logistic}(x) = \frac{e^x}{1+e^x} = \frac{1}{1+e^{-x}}$$
+- Logit can be interpreted as the log odds of a success -- more on this later.
+
+:::{.aside}
+- The logistic function is the solution of the differential equation $\frac{d}{dx}f(x) = f(x)(1-f(x))$ which also appears in the SI-model of epidemics (and other models of exponential growth with saturation).
+- Good exercises to check your math skills:
+  1. Show that $\text{logit}^{-1}(x) = \text{logistic}(x)$ or the other way round. 
+  2. Transform $\frac{e^x}{1+e^x}$ into $\frac{1}{1+e^{-x}}$.
+  3. Check that $\text{logistic}(x)$ is a solution to $\frac{d}{dx}f(x) = f(x)(1-f(x))$.
+- You can request hints from me when you get stuck.
+:::
+
+
+## Logit and [logistic]{style='color:red;'} function {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 5
+ggplot() + 
+ geom_function(fun = function(x) log(x/(1-x)), xlim=c(0.001,0.999), n = 500) + 
+ geom_function(fun = function(x) 1/(1 + exp(-x)), color = "red") +
+ scale_x_continuous(breaks = seq(-5,5,1), limits = c(-5,5)) +
+ scale_y_continuous(breaks = seq(-5,5,1), limits = c(-5,5)) +
+ coord_fixed() + theme_minimal(base_size = 24) + labs(x = "x")
+```
+
+
+## The logistic regression model
+
+- Based on the three GLM criteria we have
+  - $y_i \sim \text{Bernoulli}(p_i)$
+  - $\eta_i = \beta_0+\beta_1 x_{1,i} + \cdots + \beta_n x_{n,i}$
+  - $\text{logit}(p_i) = \eta_i$
+
+. . .
+
+- From which we get
+
+$$p_i = \frac{e^{\beta_0+\beta_1 x_{1,i} + \cdots + \beta_k x_{k,i}}}{1 + e^{\beta_0+\beta_1 x_{1,i} + \cdots + \beta_k x_{k,i}}}$$
+
+
+## Modeling spam {.smaller}
+
+With `tidymodels` we fit a GLM in the same way as a linear model except we
+
+- specify the model with `logistic_reg()`
+- use `"glm"` instead of `"lm"` as the engine 
+- define `family = "binomial"` for the link function to be used in the model
+
+```{r}
+#| echo: true
+spam_fit <- logistic_reg() |>
+  set_engine("glm") |>
+  fit(spam ~ num_char, data = email, family = "binomial")
+tidy(spam_fit)
+```
+
+:::{.aside}
+- The family is *binomial* because the Bernoulli distribution is a special case of the binomial distribution $\text{Binomial}(n,p)$ with $n=1$. 
+- The binomial distribution specifies the probability to have $k$ successes in $n$ Bernoulli trials with the same success probability $p$. 
+:::
+
+## Spam model  {.smaller}
+
+```{r}
+tidy(spam_fit)
+```
+
+Model:
+$$\log\left(\frac{p}{1-p}\right) = -1.80-0.0621\cdot \text{num_char}$$
+
+
+
+## Predicted probability: Examples {.smaller}
+
+We can compute the **predicted probability** that an email with 2000 character is spam as follows:
+
+$$\log\left(\frac{p}{1-p}\right) = -1.80-0.0621\cdot 2 = -1.9242$$
+
+(Note: `num_char` is in thousands.)
+
+$$\frac{p}{1-p} = e^{-1.9242} = 0.15 \Rightarrow p = 0.15 \cdot (1 - p)$$
+
+$$p = 0.15 - 0.15\cdot p \Rightarrow 1.15\cdot p = 0.15$$
+
+$$p = 0.15 / 1.15 = 0.13$$
+
+
+## Predicted probability {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+logistic <- function(t) 1/(1+exp(-t))
+preds <- tibble(x=c(2,15,40), y = logistic(-1.80-0.0621*x))
+email |> ggplot(aes(x = num_char, y = as.numeric(spam)-1)) + 
+ geom_point(alpha = 0.2) + 
+ geom_function(fun = function(x) logistic(-1.80-0.0621*x),color="red") +
+ geom_point(data = preds, mapping = aes(x,y), color = "blue", size = 3)
+```
+
+Spam probability 2,000 characters: `r preds[1,2]`  
+Spam probability 15,000 characters: `r preds[2,2]`  
+Spam probability 40,000 characters: `r preds[3,2]`
+
+## Interpretation of coefficients {.smaller}
+
+$$\log\left(\frac{p}{1-p}\right) = -1.80-0.0621\cdot \text{num_char}$$
+
+What does an increase by thousand characters (`num_char + 1`) imply?
+
+. . .
+
+Let us assume the predicted probability of an email is $p_0$. Then an increase of `num_char` by one implied that the log-odds become 
+
+$$\log\left(\frac{p_0}{1-p_0}\right) - 0.0621 = \log\left(\frac{p_0}{1-p_0}\right) - \log(e^{0.0621})$$
+
+$$ = \log\left(\frac{p_0}{1-p_0}\right) + \log(\frac{1}{e^{0.0621}}) = \log\left(\frac{p_0}{1-p_0} \frac{1}{e^{0.0621}}\right) = \log\left(\frac{p_0}{1-p_0} 0.94\right)$$ 
+
+That means the odds of being spam decrease by 6%. 
+
+
+## Penguins example {.smaller}
+
+```{r}
+#| echo: true
+library(palmerpenguins)
+sex_fit <- logistic_reg() |>
+  set_engine("glm") |>
+  fit(sex ~ body_mass_g, data = na.omit(penguins), family = "binomial")
+tidy(sex_fit)
+```
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+na.omit(penguins) |> ggplot(aes(x = body_mass_g, y = sex)) + 
+ geom_point(alpha = 0.2) + 
+ geom_function(fun = function(x) logistic(-5.16+0.00124*x) + 1,color="red") +
+ xlim(c(2000,7000))
+```
+
+
+## Summarizing the Idea of Logistic Regression {.smaller}
+
+- We want to explain/predict a binary response variable. 
+- We want to use the concept of linear models.
+- To that end we first interprete each outcome as the outcome of a probabilisitic event happening with probability $p_i$. That way we transform the problem from modeling a binary outcome to a numerical outcome.
+- However, probabilities are bounded between 0 and 1.
+- We use the logit function to map probabilities to the real line. That means we predict the log-odds of the probability.
+- We model the log-odds with a linear model.
+
+
+
+
+
+
+
+
+
+# Sensitivity and specificity
+
+## False positive and negative {.smaller}
+
+|                         | Email labelled spam           | Email labelled not spam       |
+|-------------------------|-------------------------------|-------------------------------|
+| **Email is spam**       | True positive                 | False negative (Type 2 error) |
+| **Email is not spam**   | False positive (Type 1 error) | True negative                 |
+
+
+## Confusion matrix
+
+More general: [**Confusion matrix**](https://en.wikipedia.org/wiki/Confusion_matrix)
+of statistical classification: 
+
+![](img/confusion_small.png)
+
+## Sensitivity and specificity {.smaller}
+
+:::: {.columns}
+
+::: {.column width='40%'}
+![](img/confusion_small.png)
+:::
+
+::: {.column width='60%'}
+**Sensitivity** is the *true positive rate*: TP / (TP + FN)  
+**Specificity** is the *true negative rate*: TN / (TN + FP)
+:::
+
+::::
+
+
+For spam a *positive* case is an email labelled as *spam*: 
+
+**Sensitivity:** Fraction of emails *labelled as* spam among all emails which *are* spam.  
+Low sensitivity $\to$ More false negatives $\to$ More spam in you inbox!
+
+**Specificity:** Fraction of emails *labelled as not* spam among all emails which *are not* spam.  
+Low specificity $\to$ More false positives $\to$ More relevant emails in spam folder!
+
+. . .
+
+If you were designing a spam filter, would you want sensitivity and specificity to be high or low? 
+What are the trade-offs associated with each decision? 
+
+
+## COVID-19 tests {.smaller}
+
+A COVID-19 test is called *positive* when it indicates the presence of the virus.
+
+*What is the sensitivity of a test?*
+
+. . . 
+
+Probability the test is positive when the tested person has COVID-19. (The true positive rate.)
+
+. . .
+
+*What is the specificity of a test?*
+
+. . . 
+
+Probability the test is negative when the tested person does not have COVID-19. (The true negative rate.)
+
+Often the sensitivity is around 90% and the specificity is around 99%. What does that mean?  
+
+. . .
+
+- When you do not have COVID the test is more likely to be correct, than when you do have COVID. However, specificity and sensitivity do not tell something about the probability to have COVID when the test is positive, or to not have COVID when the test is negative.
+
+
+## Another view
+
+![](https://upload.wikimedia.org/wikipedia/commons/5/5a/Sensitivity_and_specificity_1.01.svg)
+
+# Prediction
+
+## Prediction vs. Explanation {.smaller}
+
+**Explanation** and **Prediction** are different **Modelling Mindsets**^[From Molnar, C. (2022). Modeling mindsets: The many cultures of learning from data. Christoph Molnar c/o Mucbook Clubhouse.].
+
+- With an *Explanatory Mindset* we want to understand the relationship between the predictors and the outcome.
+    - We interpret coefficients
+    - We ask what variance can be explained by a linear model or a PCA
+- With a *Predictive Mindset* we want to predict the outcome for new observations.
+    - We use the model to predict the outcome for new observations
+    - We ask how well we can predict the outcome for new observations
+    - We may ignore why the model works
+    
+Important: The mindsets are very different but they may use the same models!
+
+
+
+
+
+## Prediction Example: Building a spam filter {.smaller}
+
+- Data: Set of emails and we know
+    - if each email is spam or not 
+    -  several other features 
+- Use logistic regression to predict the probability that an incoming email is spam
+- Use model selection to pick the model with the best predictive performance
+
+. . .
+
+- Building a model to predict the probability that an email is spam is only half of the battle! We also need a decision rule about which emails get flagged as spam (e.g. what probability should we use as out cutoff?)
+
+. . .
+
+- A simple approach: choose a single threshold probability and any email that exceeds that probability is flagged as spam
+
+## Emails: Use all predictors {.smaller}
+
+```{r}
+#| echo: true
+#| warning: true
+logistic_reg() |>
+  set_engine("glm") |>
+  fit(spam ~ ., data = email, family = "binomial") |>
+  tidy() |> print(n = 22)
+```
+
+:::{.aside}
+We treat the warning later.
+:::
+
+## The prediction task
+
+- The mechanics of prediction is **easy**:
+  - Plug in values of predictors to the model equation
+  - Calculate the predicted value of the response variable, $\hat{y}$
+
+. . . 
+
+- Getting it right is **harder**
+  - There is no guarantee the model estimates you have are correct
+  - Or that your model will perform as well with **new data** as it did with your sample data
+
+
+
+
+## Balance Over- and Underfitting
+
+In a one predictor model we can show both visually:
+
+```{r}
+lm_fit <- linear_reg() |>
+  set_engine("lm") |>
+  fit(y4 ~ x2, data = association)
+
+loess_fit <- loess(y4 ~ x2, data = association)
+
+loess_overfit <- loess(y4 ~ x2, span = 0.05, data = association)
+
+association |>
+  select(x2, y4) |>
+  mutate(
+    Underfit = augment(lm_fit$fit) |> select(.fitted) |> pull(),
+    OK       = augment(loess_fit) |> select(.fitted) |> pull(),
+    Overfit  = augment(loess_overfit) |> select(.fitted) |> pull(),
+  ) |>
+  pivot_longer(
+    cols      = Underfit:Overfit,
+    names_to  = "fit",
+    values_to = "y_hat"
+  ) |>
+  mutate(fit = fct_relevel(fit, "Underfit", "OK", "Overfit")) |>
+  ggplot(aes(x = x2)) +
+  geom_point(aes(y = y4), color = "darkgray") +
+  geom_line(aes(y = y_hat, group = fit, color = fit), size = 1) +
+  labs(x = NULL, y = NULL, color = NULL) +
+  scale_color_viridis_d(option = "plasma", end = 0.7)
+```
+
+:::{.aside}
+This is simulated data. 
+:::
+
+## Spending our data
+
+**Problem:** 
+
+- There are several steps to create a useful prediction model: parameter estimation, model selection, performance assessment, etc.
+- Doing all of this on the entire data we have available can lead to **overfitting**.
+
+
+**Solution:** We subsets our data for different tasks, as opposed to allocating all data to parameter estimation (as we have done so far). 
+
+
+# Splitting Data
+
+## Splitting data {.smaller}
+
+- **Training set:**
+  - Sandbox for model building 
+  - Spend most of your time using the training set to develop the model
+  - Majority of the data (usually 80%)
+  
+- **Testing set:**
+  - Held in reserve to determine efficacy of one or two chosen models
+  - Critical to look at it once, otherwise it becomes part of the modeling process
+  - Remainder of the data (usually 20%)
+  
+
+
+[Sidenote:]{style='color:blue;'} Splitting data is very important for the predictive questions, because we want to know how well our model performs on new data. It is not relevant for explanatory questions where we want to interpret coefficients and infer about the underlying population.
+
+
+
+## Performing the split {.smaller}
+
+```{r}
+#| echo: true
+# Fix random numbers by setting the seed 
+# Enables analysis to be reproducible when random numbers are used 
+set.seed(1116)
+
+# Put 80% of the data into the training set 
+email_split <- initial_split(email, prop = 0.80)
+
+# Create data frames for the two sets:
+train_data <- training(email_split)
+test_data  <- testing(email_split)
+```
+
+**A note on the seed:** The seed is an arbitrary number that is used to initialize a pseudorandom number generator. The same seed will always result in the same sequence of pseudorandom numbers. This is useful for reproducibility.
+
+## Peek at the split {.smaller}
+
+:::: {.columns}
+::: {.column width='50%'}
+```{r}
+#| echo: true
+glimpse(train_data)
+```
+:::
+::: {.column width='50%'}
+```{r}
+#| echo: true
+glimpse(test_data)
+```
+:::
+::::
+
+
+# Workflow of Predictive Modeling
+
+## Fit a model to the training dataset 
+
+```{r}
+#| echo: true
+#| warning: true
+email_fit <- logistic_reg() |>
+  set_engine("glm") |>
+  fit(spam ~ ., data = train_data, family = "binomial")
+```
+
+We get a warning and should explore the reasons for 0 or 1 probability. 
+
+::: aside
+- A deeper looking into the predicted probabilities (not shown here) shows that 4 cases are predicted to be spam with 100% probability, as well as 864 cases are predicted to be not spam with 100% probability. 
+- Note: The `dplyr` function `near` was used to assess if predicted probabilities were one. 
+- This is usually undesirable. Hence the warning. 
+:::
+
+## Look at categorical predictors
+
+```{r}
+factor_predictors <- train_data |>
+  select(where(is.factor), -spam) |>
+  names()
+
+p_to_multiple <- ggplot(train_data, aes(x = to_multiple, fill = spam)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#E48957", "#CA235F"))
+
+p_from <- ggplot(train_data, aes(x = from, fill = spam)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#E48957", "#CA235F"))
+
+p_sent_email <- ggplot(train_data, aes(x = sent_email, fill = spam)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#E48957", "#CA235F"))
+
+p_winner <- ggplot(train_data, aes(x = winner, fill = spam)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#E48957", "#CA235F"))
+
+p_format <- ggplot(train_data, aes(x = format, fill = spam)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#E48957", "#CA235F"))
+
+p_re_subj <- ggplot(train_data, aes(x = re_subj, fill = spam)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#E48957", "#CA235F"))
+
+p_urgent_subj <- ggplot(train_data, aes(x = urgent_subj, fill = spam)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#E48957", "#CA235F"))
+
+p_number <- ggplot(train_data, aes(x = number, fill = spam)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#E48957", "#CA235F"))
+
+library(patchwork)
+p_to_multiple + p_from + p_sent_email + p_winner + p_format + p_re_subj + p_urgent_subj + p_number +
+  plot_layout(ncol = 4, guides = "collect") & 
+  theme(axis.title.y = element_blank())
+```
+
+Closer look at `from` and `sent_email`. 
+
+## Counting cases {.smaller}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+`from`: Whether the message was listed as from anyone (this is usually set by default for regular outgoing email). 
+```{r}
+#| echo: true
+train_data |> count(spam, from)
+```
+*No non-spam mails without `from`.*
+:::
+
+::: {.column width='50%'}
+`sent_mail`: Indicator for whether the sender had been sent an email from the receiver in the last 30 days.
+```{r}
+#| echo: true
+train_data |> count(spam, sent_email)
+```
+*No spam mails with `sent_email`.*
+:::
+
+::::
+
+- There is *incomplete separation* in the data for those variables. 
+- That mean we have a *sure* prediction probabilities (0 or 1). (That is the warning. Also, these variables have the highest coefficients.)
+- This is not what we assume about reality. Maybe our sample is too small to see it. 
+- Therefore we exclude these variables.
+
+## Look at numerical variables {.smaller}
+
+```{r}
+#| echo: true
+#| output-location: column
+train_data |>
+ group_by(spam) |>
+ select(where(is.numeric)) |> 
+ pivot_longer(-spam) |> 
+ group_by(name, spam) |> 
+ summarize(mean = mean(value), sd = sd(value)) |> 
+ print(n = 22)
+```
+
+`viagra` has no mentions in non-spam emails.
+
+- We should exclude this variable for the same reason. 
+
+
+## Fit a model to the training dataset {.smaller}
+
+```{r}
+#| echo: true
+#| warning: true
+email_fit <- logistic_reg() |>
+  set_engine("glm") |>
+  fit(spam ~ . - from - sent_email - viagra, data = train_data, family = "binomial") 
+email_fit
+```
+
+We still get a warning, but without very high coefficients. 
+
+::: aside
+A deeper analysis shows that now only two cases are predicted not spam with 100% probability. 
+:::
+
+
+
+## Predict with the testing dataset {.smaller}
+
+Predicting the raw values (log-odds)
+```{r}
+#| echo: true
+predict(email_fit, test_data, type = "raw") |> head() # head prints the first values
+```
+
+:::: {.columns}
+
+::: {.column width='50%'}
+Predicting probabilities
+```{r}
+#| echo: true
+predict(email_fit, test_data, type = "prob") |> head()
+```
+:::
+
+::: {.column width='50%'}
+Predicting spam (default)
+```{r}
+#| echo: true
+predict(email_fit, test_data) # Would be type = "class"
+```
+:::
+
+::::
+
+
+## Relate back to the model concept {.smaller}
+
+```{r}
+#| echo: true
+#| output-location: column
+email_pred <- 
+ predict(email_fit, test_data, type = "prob") |>
+ select(spam_prob = .pred_1) |> 
+ mutate(spam_logodds = 
+         predict(email_fit, test_data, type = "raw"), 
+        spam_odds = exp(spam_logodds)) |> 
+ bind_cols(predict(email_fit, test_data)) |> 
+ # Append real data
+ bind_cols(test_data |> select(spam)) 
+email_pred
+```
+
+- The raw predictions are the log-odds.
+- From which we can compute the odds. 
+- From which the probability is computed. Here it is done by `predict`. 
+- The `.pred_class` prediction is when the probability > 0.5. 
+  - What does it mean for the odds and the log-odds?
+  
+. . . 
+
+Answers: odds > 1, log-odds > 0
+
+## Another look {.smaller}
+
+```{r}
+#| echo: true
+email_pred |> arrange(desc(spam_prob)) |> print(n = 20)
+```
+
+We see false positives and false negatives.
+
+## Evaluate the performance {.smaller}
+
+**Receiver operating characteristic (ROC) curve**^[Originally developed for operators of military radar receivers, hence the odd name.] which plots true positive rate (sensitivity) vs. false positive rate (1 - specificity)
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+email_pred |> roc_curve(
+    truth = spam, spam_prob,
+    event_level = "second" # this adjusts the location above the diagonal
+  ) |> autoplot()
+```
+
+
+## Evaluate the performance  {.smaller}
+
+Find the area under the curve (AUC). 
+
+In calculus language:    
+$\int_0^1 \text{TPR}(\text{FPR}) d\text{FPR}$    
+
+Remember: 
+
+- TPR = True Positive Rate = sensitivity 
+- FPR = False Positive Rate = 1 - specificity
+- specificity is the true negative rate. 
+
+```{r}
+#| echo: true
+email_pred |>
+  roc_auc(
+    truth = spam,
+    spam_prob,
+    event_level = "second" 
+  )
+```
+
+# Feature engineering
+
+## Feature engineering {.smaller}
+
+- We prefer simple models when possible, but **parsimony** does not mean sacrificing accuracy (or predictive performance) in the interest of simplicity
+- Variables that go into the model and how they are represented are critical to the success of the model
+- **Feature engineering** is getting creative with our predictors in an effort to make them more useful for our model (to increase its predictive performance) 
+
+## Modeling workflow, revisited {.smaller}
+
+- Create a **recipe** for feature engineering steps to be applied to the training data
+  - The `tidymodels` way (similar to a pipeline in python's scikit-learn). 
+
+- Fit the model to the training data after these steps have been applied
+
+- Using the model estimates from the training data, predict outcomes for the test data
+
+- Evaluate the performance of the model on the test data
+
+# Recipes
+
+## Initiate a recipe {.smaller}
+
+```{r}
+#| echo: true
+email_rec <- recipe(
+ spam ~ .,          # formula
+ data = train_data  # data to use for cataloguing names and types of variables
+)
+summary(email_rec) |> print(n = 21)
+```
+
+The object `email_rec` only includes *meta-data* (columns names and types)! 
+
+
+
+## Remove certain variables {.smaller}
+
+```{r}
+#| echo: true
+email_rec |>
+  step_rm(from, sent_email, viagra)
+```
+
+
+## Feature engineer date {.smaller}
+
+- The date-time may not be such an interesting predictor. 
+  - It could only bring in a general trend over time
+- Often decomposing the date to the month or the day of the week (dow) is more interesting.
+  - `step_date` can easily extract these
+
+```{r}
+#| echo: true
+email_rec |>
+ step_rm(from, sent_email, viagra) |> 
+ step_date(time, features = c("dow", "month")) |>
+ step_rm(time)
+```
+
+## Create dummy variables {.smaller}
+
+- Use helper functions like `all_nominal` or `all_outcomes` from `tidymodels` for column selection.
+
+```{r}
+#| echo: true
+email_rec |>
+ step_rm(from, sent_email, viagra) |> 
+ step_date(time, features = c("dow", "month")) |>
+ step_rm(time) |> 
+ step_dummy(all_nominal(), -all_outcomes()) 
+```
+
+## Remove zero variance variables {.smaller}
+
+Variables that contain only a single value.
+
+```{r}
+#| echo: true
+email_rec |>
+ step_rm(from, sent_email, viagra) |> 
+ step_date(time, features = c("dow", "month")) |>
+ step_rm(time) |> 
+ step_dummy(all_nominal(), -all_outcomes()) |> 
+ step_zv(all_predictors())
+```
+
+## Full recipe {.smaller}
+
+```{r}
+#| echo: true
+#| warning: true
+email_rec <- recipe(
+ spam ~ .,          # formula
+ data = train_data  # data to use for cataloguing names and types of variables
+) |>
+ step_rm(from, sent_email, viagra) |> 
+ step_date(time, features = c("dow", "month")) |>
+ step_rm(time) |> 
+ step_dummy(all_nominal(), -all_outcomes()) |> 
+ step_zv(all_predictors())
+print(email_rec)
+```
+
+The object `email_rec` only includes *meta-data* of the data frame it shall work on (a formula, columns names and types)!
+
+# Building workflows
+
+
+## Define model {.smaller}
+
+```{r}
+#| echo: true
+email_mod <- logistic_reg() |> 
+  set_engine("glm")
+
+email_mod
+```
+
+## Define workflow {.smaller}
+
+**Workflows** bring together models and recipes so that they can be easily applied to both the training and test data.
+
+```{r}
+#| echo: true
+email_wflow <- workflow() |> 
+  add_model(email_mod) |> 
+  add_recipe(email_rec)
+email_wflow
+```
+
+
+## Fit model to training data {.smaller}
+
+```{r}
+#| echo: true
+email_fit <- email_wflow |> 
+  fit(data = train_data)
+
+tidy(email_fit) |> print(n = 27)
+```
+
+
+
+## Make predictions for test data {.smaller}
+
+```{r}
+#| echo: true
+email_pred <- predict(email_fit, test_data, type = "prob") |> 
+  bind_cols(test_data) 
+
+email_pred
+```
+
+
+## Evaluate the performance {.smaller}
+
+```{r}
+#| echo: true
+email_pred |>
+  roc_curve(
+    truth = spam,
+    .pred_1,
+    event_level = "second"
+  ) |>
+  autoplot()
+```
+
+
+
+## Evaluate the performance  {.smaller}
+
+```{r}
+#| echo: true
+email_pred |>
+  roc_auc(
+    truth = spam,
+    .pred_1,
+    event_level = "second"
+  )
+```
+
+This is better than our former model (without the feature engineering workflow), which had AUC = 0.857. 
+
+# Making decisions {.smaller}
+
+## Cutoff probability: 0.5 {.smaller}
+
+Suppose we decide to label an email as spam if the model predicts the probability of spam to be **more than 0.5**. (That is the default.)
+
+**Confusion matrix:**
+
+```{r}
+#| echo: true
+cutoff_prob <- 0.5
+email_pred |>
+  mutate(
+    spam      = if_else(spam == 1, "Email is spam", "Email is not spam"),
+    spam_pred = if_else(.pred_1 > cutoff_prob, "Email labelled spam", "Email labelled not spam")
+    ) |>
+  count(spam_pred, spam) |>
+  pivot_wider(names_from = spam_pred, values_from = n) |> 
+  select(1,3,2) |> slice(c(2,1)) |> # reorder rows and cols to fit convention
+  knitr::kable()
+```
+
+**Sensitivity:** 14/(14+54) = 0.206   
+**Specificity:** 707/(707+10) = 0.986   
+
+## Cutoff probability: 0.25  {.smaller}
+
+Suppose we decide to label an email as spam if the model predicts the probability of spam to be **more than 0.25**.
+
+**Confusion matrix:**
+
+```{r}
+cutoff_prob <- 0.25
+email_pred |>
+  mutate(
+    spam      = if_else(spam == 1, "Email is spam", "Email is not spam"),
+    spam_pred = if_else(.pred_1 > cutoff_prob, "Email labelled spam", "Email labelled not spam")
+    ) |>
+  count(spam_pred, spam) |>
+  pivot_wider(names_from = spam_pred, values_from = n) |> 
+  select(1,3,2) |> slice(c(2,1)) |> # reorder rows and cols to fit convention
+  knitr::kable()
+```
+
+**Sensitivity:** 32/(32+36) = 0.471   
+**Specificity:** 656/(656 + 61) = 0.915   
+
+
+## Cutoff probability: 0.75 {.smaller}
+
+Suppose we decide to label an email as spam if the model predicts the probability of spam to be **more than 0.75**.
+
+**Confusion matrix:**
+
+```{r}
+cutoff_prob <- 0.75
+email_pred |>
+  mutate(
+    spam      = if_else(spam == 1, "Email is spam", "Email is not spam"),
+    spam_pred = if_else(.pred_1 > cutoff_prob, "Email labelled spam", "Email labelled not spam")
+    ) |>
+  count(spam_pred, spam) |>
+  pivot_wider(names_from = spam_pred, values_from = n) |> 
+  select(1,3,2) |> slice(c(2,1)) |> # reorder rows and cols to fit convention
+  knitr::kable()
+```
+
+**Sensitivity:** 3/(3+65) = 0.044   
+**Specificity:** 716/(716+1) = 0.999
+
+
+## Check our very first model {.smaller}
+
+We make a new simple recipe and draw workflow and fitting re-using the same specified logisitc regression model `email_mod`. 
+
+```{r}
+#| echo: true
+simple_email_rec <- recipe(
+ spam ~ num_char,          # formula
+ data = train_data  # data to use for cataloguing names and types of variables
+)
+simple_email_pred <- 
+ workflow() |> 
+ add_model(email_mod) |> 
+ add_recipe(simple_email_rec) |> 
+ fit(data = train_data) |> 
+ predict(test_data, type = "prob") |> 
+ bind_cols(test_data |> select(spam,num_char,time)) 
+simple_email_pred 
+```
+
+## Evaluate the performance {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+simple_email_pred |> roc_curve(
+    truth = spam, 
+    .pred_1,
+    event_level = "second" # this adjusts the location above the diagonal
+  ) |> autoplot()
+```
+
+
+```{r}
+simple_email_pred |>
+  roc_auc(
+    truth = spam,
+    .pred_1,
+    event_level = "second" 
+  )
+```
+
+**Conclusion:** It is not as good compared to AUC 0.86
+
+
+## Predict Penguins' Sex {.scrollable .smaller}
+
+Following all the steps introduced before:
+
+```{r}
+#| echo: true
+set.seed(1)
+# Put 80% of the data into the training set 
+peng_split <- initial_split(penguins, prop = 0.80)
+# Create data frames for the two sets:
+train_data_peng <- training(peng_split)
+test_data_peng  <- testing(peng_split)
+
+# Create a recipe for the model
+peng_rec <- recipe(
+ sex ~ .,
+ data = train_data_peng 
+) |> 
+ step_naomit(all_predictors()) |> 
+ step_dummy(all_nominal(), -all_outcomes()) |> 
+ step_zv(all_predictors())
+
+# Create a logistic regression model 
+peng_mod <- logistic_reg() |> 
+ set_engine("glm")
+
+# Create a workflow
+peng_wflow <- workflow() |> 
+ add_model(peng_mod) |> 
+ add_recipe(peng_rec)
+
+# Fitting model to training data
+peng_fit <- peng_wflow |> 
+ fit(data = train_data_peng)
+
+# Make predictions for test data
+peng_pred <- peng_fit |> 
+ predict(test_data_peng, type = "prob") |> 
+ bind_cols(test_data_peng)
+```
+
+## Penguins: Evaluate Performance {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 3.5
+peng_pred |> roc_curve(
+    truth = sex,  .pred_male, event_level = "second"
+  ) |>  autoplot()
+```
+
+```{r}
+#| echo: true
+peng_pred |> roc_auc(
+ truth = sex, .pred_male, event_level = "second")
+```
+
+
+
+## Penguins: Cutoff probability 0.5 {.smaller}
+
+**Confusion matrix:**
+
+```{r}
+#| echo: true
+cutoff_prob <- 0.5
+peng_pred |>
+  mutate(
+    sex      = if_else(sex == "male", "Penguin is male", "Penguin is female"),
+    sex_pred = if_else(.pred_male > cutoff_prob, "Penguin labelled male", "Penguin labelled female")
+    ) |>
+  count(sex_pred, sex) |>
+  pivot_wider(names_from = sex_pred, values_from = n) |> 
+  select(1,3,2) |> slice(c(2,1)) |> # reorder rows and cols to fit convention
+  knitr::kable()
+```
+
+**Sensitivity:** 31/(31+4) = 0.886   
+**Specificity:** 28/(28+4) = 0.875
+
+## Penguins: Cutoff probability 0.25 {.smaller}
+
+**Confusion matrix:**
+
+```{r}
+#| echo: true
+cutoff_prob <- 0.25
+peng_pred |>
+  mutate(
+    sex      = if_else(sex == "male", "Penguin is male", "Penguin is female"),
+    sex_pred = if_else(.pred_male > cutoff_prob, "Penguin labelled male", "Penguin labelled female")
+    ) |>
+  count(sex_pred, sex) |>
+  pivot_wider(names_from = sex_pred, values_from = n) |> 
+  select(1,3,2) |> slice(c(2,1)) |> # reorder rows and cols to fit convention
+  knitr::kable()
+```
+
+**Sensitivity:** 34/(34+1) = 0.971   
+**Specificity:** 25/(25+7) = 0.781
+
+
+## Penguins: Cutoff probability 0.75 {.smaller}
+
+**Confusion matrix:**
+
+```{r}
+#| echo: true
+cutoff_prob <- 0.75
+peng_pred |>
+  mutate(
+    sex      = if_else(sex == "male", "Penguin is male", "Penguin is female"),
+    sex_pred = if_else(.pred_male > cutoff_prob, "Penguin labelled male", "Penguin labelled female")
+    ) |>
+  count(sex_pred, sex) |>
+  pivot_wider(names_from = sex_pred, values_from = n) |> 
+  select(1,3,2) |> slice(c(2,1)) |> # reorder rows and cols to fit convention
+  knitr::kable()
+```
+
+**Sensitivity:** 29/(29+6) = 0.829    
+**Specificity:** 30/(30+2) = 0.938

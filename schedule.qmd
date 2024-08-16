@@ -1,0 +1,263 @@
+---
+title: "Schedule"
+---
+
+:::{.callout-important collapse=false appearance='default' icon=true}
+## Developing Schedule
+The schedule is tentative it will be continuously updated also with readings/viewings, homework and learnings.
+
+[Important Links:]{style='color:red;'}    
+GitHub organization of the course: <https://github.com/CU-F23-MDSSB-01-Concepts-Tools>   
+Organization repository with non-public information and FAQ in Discussions: <https://github.com/CU-F23-MDSSB-01-Concepts-Tools/Organization>
+:::
+
+# Tabular Schedule  {.unnumbered}
+
+Week | Dates        | Topic                  | Tools Course   | 
+-----|--------------|------------------------|:--------------:|
+1    | 09-04, 09-07 | What is Data Science? Course Organization, Our software toolkit <br> [Slides Week 1](https://docs.google.com/presentation/d/1NxFoVf7I0wccp5LDLR4wfwclvO61-pSRAscsr1Wzzok/edit?usp=sharing) <br>  [Achievements Week -@sec-week1] | R              |
+2    | 09-11, 09-14 | Data Visualization, Data Formats  <br> [Slides Week 2 Intro](W02.qmd), [Slides Week 2 Main Part](https://docs.google.com/presentation/d/1j3mOeb84NXHv-5__HCvIVM1r1Q8ha67cSAx5nrxl-SM/edit?usp=sharing), [Repo with Example Visualization of our data science profiles](https://github.com/CU-F23-MDSSB-01-Concepts-Tools/hw1-janlorenz)  <br>  [Achievements Week -@sec-week2] | R              |
+3    | 09-18, 09-21 | Data Import, Data Wrangling, Relational Data <br> [Slides Week 3](W03.qmd) - [Achievements Week -@sec-week3] | python         |
+4    | 09-25, 09-28 | Math refresh, Function Programming, Descriptive Statistics <br> [Slides Week 4](W04.qmd)    - [Achievements Week -@sec-week4] | python         |
+5    | 10-02, 10-05 | Summary Statistics, Exploratory Data Analysis, Principle Component Analysis <br> [Slides Week 5](W05.qmd)  [Achievements Week -@sec-week5]  | R              |
+6    | 10-09, 10-12 | Epidemic Modeling, Calculus, Linear Model, Fitting a Linear Model <br> [Slides Week 6](W06.qmd) - [Achievements Week -@sec-week6] | python         |
+7    | 10-16, 10-19 | Fitting Linear Models, Interaction Effects, Nonlinear Models, Predicting Categorical Variables  <br> [Slides Week 7](W07.qmd) - [Achievements Week -@sec-week7] | R              | 
+8    | 10-23, 10-26 | Logistic Regression, Classification Problems, Prediction   <br> [Slides Week 8](W08.qmd)  - [Achievements Week -@sec-week8] | python         |
+9    | 10-30, 11-02 | [Introduction to Project Reports (in Organization repo)](https://github.com/CU-F23-MDSSB-01-Concepts-Tools/Organization/blob/main/PROJECT_GUIDELINES.md) Hypothesis Testing <br> [Slides Week 9](W09.qmd)  - [Achievements Week -@sec-week9]  | R              |
+10   | 11-06, 11-09 | p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom    <br> [Slides Week 10](W10.qmd)  - [Achievements Week -@sec-week10]| python         |
+11   | 11-13, 11-16 | Bootstrapping, Cross validation (idea), Clustering   <br> [Slides Week 11](W11.qmd)  - [Achievements Week -@sec-week11]| R              |
+12   | 11-20, 11-23 | Collaborative Git, Data Science Projects, Probability  <br> [Slides Week 12](W12.qmd)  - [Achievements Week -@sec-week12]| python         |
+13   | 11-27, 11-30 | Your data science questions (Discussion in class); Random VariableS, Probability Distributions, Central Limit Theorem <br> [Slides Week 13](W13.qmd) - [Achievements Week -@sec-week13]| R / python <br> help for project presentations   |
+14   | 12-04, 12-07 | Course Review, Exam Preparation <br> [Notes Week 14](W14.qmd) - [Mock exam](exam-test.qmd) | Student Project Presentations <br> (work in progress) <br> [Schedule](https://github.com/CU-F23-MDSSB-01-Concepts-Tools/Organization/blob/main/TEAMS.md)|
+
+: {tbl-colwidths="[5, 15, 60, 20]"}
+
+:::{.callout-note collapse=false appearance='default' icon=true}
+All topics in the future are subject to change and adaptation to student needs. *Topics in italics are tentative.*
+:::
+
+# Achievements Week 1 {#sec-week1}
+
+You  
+
+- have read the [Syllabus](index.qmd) and understood the course organization
+- have a running R with RStudio installation an you computer
+- have done the *git-GitHub dance* and know what the tools are in principle
+- have rendered quarto documents and understood its idea
+- have made your first steps with R
+- have finished [Homework 01](hw-01.qmd) (double check your if your html-file looks nice and that all files including all necessary figure are also in the repository on GitHub)
+
+Additional reading: 
+
+- Quarto: Watch <https://www.youtube.com/watch?v=_f3latmOhew> from Mine Çetinkaya-Rundel (co-developer of quarto, R for Data Science, datasciencebox). 
+- R: The following sections in [R for Data Science](http://r4ds.hadley.nz) 
+    - [Ch 1:Introduction](https://r4ds.hadley.nz/intro)
+    - [Whole Game (the outline of the part)](https://r4ds.hadley.nz/whole-game)
+    
+# Achievements Week 2 {#sec-week2}
+
+You  
+
+- have understood the *data science process*, in particular you can describe with examples what is understood as *data wrangling* and *data exploration*, and you can describe two different purposes of data visualization in the data science process
+- have identified and can explain when a pie chart is a bad visualization (when the pieces do not add up to 100%) and when a truncated y-axis is a bad visualization (when it is used to make a small difference look big).
+- have understood the basic idea of the grammar of graphics and can explain what the role of a mapping and and geom is
+- have made a bar chart, a scatter plot, and a line plot with ggplot
+- know how many rows and columns an $m\times n$ data frame has
+- can explain the basic data types, in particular `character`, `logical`, and `double` 
+- know what coercion of data is (what happens when different data types are combined in a vector)
+- have understood the concept of the tidy data format and can argue why a certain form of data representation is more or less tidy
+- made a data frame longer and wider 
+
+Additional reading: 
+
+- ggplot: The following sections in [R for Data Science](http://r4ds.hadley.nz) 
+    - [Ch 2: Data Visualization](https://r4ds.hadley.nz/data-visualize)
+    - If you want to go deeper already now, chapter [Ch 10: Layers](https://r4ds.hadley.nz/layers)
+    
+
+# Achievements Week 3 {#sec-week3}
+
+You 
+
+- have read in csv-file, you can interpret the output of column type guessing, and use it to adjust and correct it for your needs if necessary
+- can take a statement with a pipe operator and translate it into a nested function call without the pipe operator (and the other way round)
+- you have used the `dplyr` functions `select`, `slice`, and `filter`
+- you understood the concept of logical indexing, vectorized logical operation (in particular AND, OR, and NOT), and how it relates to filtering data
+- you know if R or python is 0- or 1-indexed and what this means
+- you have used the `dplyr` functions `distinct`, and `arrange`
+- you understood how you use `mutate` and `summarize` to gather with `group_by` to create new variables and  data frames with aggregated data
+- you know about the practical importance of the special data types `factor` and `date`
+- you know the difference between `NaN` and `NA`
+- you have used the `dplyr` functions `left_join`, and `full_join` to combine data frames
+
+
+Additional reading:
+
+The following sections in [R for Data Science](http://r4ds.hadley.nz) 
+
+ - [Ch 6: Tidy Data](https://r4ds.hadley.nz/data-tidy)
+ - [Ch 8: Data Import](https://r4ds.hadley.nz/data-import)
+ - [Ch 20: Joins](https://r4ds.hadley.nz/joins)
+ 
+# Achievements Week 4 {#sec-week4}
+
+You 
+
+- know the difference between a vector (ordered elements, duplicates possible) and a set (no order, no duplicates) and have used the functions `unique`, `union`, `intersect`, and `setdiff`
+- can program a function with various arguments and default values
+- can program a function which does a shift and scale transformation to data
+- can handle computations with exponents and logarithms
+- understood why logarithms appear mostly as the natural logarithm (with base $e = 2.718...$) or the logarithm with base 10
+- can interpret the numbers in a vector after a $\log_{10}$ transformation
+- know about the value of vectorized functions for data operations
+- have used the concept of the function `map` (for iteration over values of a list or vector) and `reduce` (for aggregation over values of a list or vector)
+- can compute and interpret the mean, median, variance, and standard deviation of vector of numbers
+
+Additional reading:
+
+Sections in [R for Data Science](http://r4ds.hadley.nz) 
+
+ - [Ch 26: Functions](https://r4ds.hadley.nz/functions)
+ - [Ch 27: Iteration](https://r4ds.hadley.nz/iteration)
+ 
+
+# Achievements Week 5 {#sec-week5}
+
+You
+
+- can create and interpret histogram plots
+- can compute and interpret quantiles of a data set
+- can create and interpret boxplots
+- can compute and interpret the correlation between two vectors of numbers
+- you have done a first exploratory data analysis and have a first feeling of why it is not a fully standardized process
+- you can classify data science research questions accoring to the six types of questions of Leek and Peng (2015)
+- you can create and interpret a principal component analysis (in particular you can look at the principle components, the data in PCA coordinates, and the explained variance of the principle components and relate them to each other)
+
+
+Additional reading:
+
+Leek, Jeffery T., and Peng, Roger D. 2015. “What Is the Question?” Science 347 (6228): 1314–15. <https://doi.org/10.1126/science.aaa6146>.
+
+Read the following sections in [R for Data Science](http://r4ds.hadley.nz) 
+
+ - [Ch 11: Exploratory Data Analysis](https://r4ds.hadley.nz/eda)
+
+
+# Achievements Week 6 {#sec-week6}
+
+You
+
+- can operationalize the concept of differentiation and integration of calculus to data science operations, e.g. with time series data:
+    - You can visualize on paper the ideas that 
+        - the derivative represents the slope of a function at a certain $x$-value, and 
+        - the integral represents the area under the curve of a function from $x=0$ up to a certain $x$-value.
+    - With time series data you can compute the change and the cumulative sum of a variable over time.
+- know how the fundamental theorem of calculus relates the derivative and the integral of a function and how you can show it with data.
+- can explain, and interpret the coefficients of a linear model
+- can define and fit a linear model (in R and/or python)
+- know which part of a linear model output relates to explanation and prediction 
+- can explain what residuals are
+- have an idea what "All models are wrong, but some are useful" means
+- know the difference between the $\beta$'s (population parameters which we do not know) and the $\hat\beta$'s (the estimated parameters from the data) and how this relates to a *inferential* research questions
+
+Additional reading:
+
+Read the following section in [Introduction to Modern Statistics](https://openintro-ims.netlify.app/):
+
+- [Ch 7: Linear regression with a single predictor](https://openintro-ims.netlify.app/model-slr)
+
+
+# Achievements Week 7 {#sec-week7}
+
+You
+
+- know how the correlation of two variables relates to the slope of a linear model with one variable as predictor and the other as response variable (the slope is the correlation times the ratio of the standard deviations of the two variables)
+- know how to interpret the $R^2$ of a linear model
+- know what dummy variables are and how many you need for a categorical variable with $k$ levels
+- can interpret the coefficients of a linear model with dummy variables as main effects, in particular you 
+    - know what it means that the intercept is the mean of the reference category (the one which is not represented by a dummy variable)
+    - know that the coefficient of a dummy variable is the difference of the mean of the category represented by the dummy variable and the mean of the reference category
+- can interpret the coefficients of interaction effects of dummy variables with a numerical variable
+- can draw example data points in 2-dimensions where a linear model is bad
+- can give an explain where log-transforming the response variable for a linear model is a good idea
+- can explain what a Bernoulli trial is and what the parameter of the Bernoulli distribution is
+
+Read the following section in [Introduction to Modern Statistics](https://openintro-ims.netlify.app/):
+
+- [Ch 8: Linear regression with multiple predictors](https://openintro-ims.netlify.app/model-mlr)
+
+# Achievements Week 8 {#sec-week8}
+
+You 
+
+- know how to compute the odds and the log-odds of a probability and the other way round and how the range of theoretically possible values changes between the three ways to represent the same information
+- can visually sketch the logistic and the logit function within their ranges on the x-axis and y-axis
+- can explain the goal of logistic regression and the conceptual steps such that a linear model can be used=
+- can distinguish the goals and mindsets of prediction and explanation and how a logistic regression or a linear model can be used for both
+- know how a threshold probability can be used to make a classifier for actual binary predictions (yes or no) from the predicted log-odds of a logistic regression (which can be transformed to odds or probabilities)
+- know what the four basic values of the confusion matrix of a classifier are (TP, FN, FP, TN)
+- can make sense of the various derived measures of a classifier like accuracy, sensitivity, specificity, precision, recall (you are not expected to memorize the exact definition you can look them up)
+- can explain why data is split into training and testing data and how this relates to the goals of prediction (but not to explanation)
+- can explain how a classifier can manage the trade-off between sensitivity and specificity from the ROC-curve (by changing the threshold probability) 
+- can explain what the AUC of a ROC-curve is
+
+
+# Achievements Week 9 {#sec-week9}
+
+You 
+
+- can explain what insight a hypothesis test can deliver and how this is different from a causal explanation
+- can explain what a null distribution is and how it is related to the null hypothesis
+- have an idea how a null distribution can be sampled
+- can explain what a p-value is and how it is related to the null distribution
+
+# Achievement Week 10 {#sec-week10}
+
+You
+
+- know what a significance level (e.g. 0.05) means in a the context of a hypothesis test and its p-value
+- can read and interpret p-values for coefficients in a linear model output
+- can explain how a decision tree can make predictions in a classification problem
+- can explain how a decision tree can make predictions in a regression problem
+- you know what can be called a "model" and how this can mean things in different "granularity"
+- can explain and interpret the performance measures for regression problems: 
+    - root mean squared error (RMSE), you also know why the square root is taken
+    - R-squared
+    
+# Achievement Week 11 {#sec-week11}
+
+You
+
+- can explain the idea and process of bootstrapping to quantify the uncertainty of a statistic
+- know the difference between standard error and standard deviation
+- can interpret what 95% confidence interval (or for any other confidence level) means
+- can explain in which situations cross-validation is used
+- can explain the difference between a regression, classification, and clustering problem
+- can distinguish a statistical learning algorithm is supervised or unsupervised
+- you can describe two algorithms of cluster analysis:
+    - k-means
+    - hierarchical clustering
+- you know why k-means can results in different clusterings when run multiple times
+- you now how to extract the cluster assignments for a ecertain number of clusters from a dendrogram of a hierarchical clustering
+
+
+# Achievement Week 12 {#sec-week12}
+
+You
+
+- can name typical operations done during a descriptive, exploratory, inferential, and predictive data analysis
+- can distinguish between a mathematical question of statistics and probability theory
+- you can describe notions derived from the confusion matrix (like sensitivity, specificity, or positive predictive value) in terms of a conditional probability to find a specific cases in a certain sample
+
+
+# Achievement Week 13 {#sec-week13}
+
+You
+
+- can explain what a random variable is with respect to a column in a data frame
+- can distinguish between a discrete and a continuous random variable
+- can explain why any random variable derived from data is "technically" discrete while it can still make sense to treat it as continuous
+- you can name a continuous probability distribution which density function has a domains $[0,1]$, $[0,\infty)$, and $(-\infty,\infty)$. 
+- you know what distribution to expect when several independent random variables are added together
+- you know what distribution to expect when several independent random variables are multiplied together
+   

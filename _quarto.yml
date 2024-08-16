@@ -1,0 +1,39 @@
+project:
+  type: website
+
+execute:
+  freeze: auto  # re-render only when source changes
+
+website:
+  title: "Data Science Concepts / Data Science Tools"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Syllabus
+        
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - text: "Syllabus"
+        file: index.qmd
+      - text: "**Schedule**"
+        file: schedule.qmd
+      - literature.qmd
+      - section: "Homework"
+        contents:
+        - hw-01.qmd
+        - hw-02.qmd
+        - hw-topics.qmd
+        - help.qmd
+        - reports.qmd
+      
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    number-sections: true
+
+
+
