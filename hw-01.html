@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Homework 01 – Data Science Concepts / Data Science Tools</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Data Science Concepts / Data Science Tools</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./hw-01.html">Homework</a></li><li class="breadcrumb-item"><a href="./hw-01.html">Homework 01</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><strong>Schedule</strong></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./literature.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learning Resources</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Homework</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hw-01.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Homework 01</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hw-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 02</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hw-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework Topics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./help.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Need help for Homework?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reports.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Create a homework report</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started"><span class="header-section-number">1</span> Getting started</a>
+  <ul class="collapse">
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites"><span class="header-section-number">1.1</span> Prerequisites</a></li>
+  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology"><span class="header-section-number">1.2</span> Terminology</a></li>
+  <li><a href="#starting-slowly-step-by-step" id="toc-starting-slowly-step-by-step" class="nav-link" data-scroll-target="#starting-slowly-step-by-step"><span class="header-section-number">1.3</span> Starting slowly step by step</a></li>
+  </ul></li>
+  <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow"><span class="header-section-number">2</span> Workflow</a>
+  <ul class="collapse">
+  <li><a href="#step-0.-authenticate-git-to-access-your-github-content" id="toc-step-0.-authenticate-git-to-access-your-github-content" class="nav-link" data-scroll-target="#step-0.-authenticate-git-to-access-your-github-content"><span class="header-section-number">2.1</span> Step 0. Authenticate git to access your GitHub content</a></li>
+  <li><a href="#step-1.-get-url-of-repo-to-be-cloned" id="toc-step-1.-get-url-of-repo-to-be-cloned" class="nav-link" data-scroll-target="#step-1.-get-url-of-repo-to-be-cloned"><span class="header-section-number">2.2</span> Step 1. Get URL of repo to be cloned</a></li>
+  <li><a href="#step-2.-go-to-rstudio" id="toc-step-2.-go-to-rstudio" class="nav-link" data-scroll-target="#step-2.-go-to-rstudio"><span class="header-section-number">2.3</span> Step 2. Go to RStudio</a></li>
+  </ul></li>
+  <li><a href="#hello-rstudio" id="toc-hello-rstudio" class="nav-link" data-scroll-target="#hello-rstudio"><span class="header-section-number">3</span> Hello RStudio!</a></li>
+  <li><a href="#warm-up" id="toc-warm-up" class="nav-link" data-scroll-target="#warm-up"><span class="header-section-number">4</span> Warm up</a>
+  <ul class="collapse">
+  <li><a href="#step-1.-update-the-yaml" id="toc-step-1.-update-the-yaml" class="nav-link" data-scroll-target="#step-1.-update-the-yaml"><span class="header-section-number">4.1</span> Step 1. Update the YAML</a></li>
+  <li><a href="#step-2-commit" id="toc-step-2-commit" class="nav-link" data-scroll-target="#step-2-commit"><span class="header-section-number">4.2</span> Step 2: Commit</a></li>
+  <li><a href="#step-3.-push" id="toc-step-3.-push" class="nav-link" data-scroll-target="#step-3.-push"><span class="header-section-number">4.3</span> Step 3. Push</a></li>
+  <li><a href="#check-what-you-did" id="toc-check-what-you-did" class="nav-link" data-scroll-target="#check-what-you-did"><span class="header-section-number">4.4</span> Check what you did</a></li>
+  </ul></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="header-section-number">5</span> Packages</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">6</span> Data</a></li>
+  <li><a href="#graphic" id="toc-graphic" class="nav-link" data-scroll-target="#graphic"><span class="header-section-number">7</span> Graphic</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./hw-01.html">Homework</a></li><li class="breadcrumb-item"><a href="./hw-01.html">Homework 01</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Homework 01</h1>
+<p class="subtitle lead">Meet the toolkit and your Data Science Profile</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The goal of this assignment is to introduce you to R, RStudio, Git, and GitHub, which you’ll be using throughout the course both to learn the data science concepts discussed in the course and to analyze real data and come to informed conclusions.</p>
+<section id="getting-started" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Getting started</h1>
+<section id="prerequisites" class="level2" data-link="Prerequisites" data-number="1.1">
+<h2 data-link="Prerequisites" data-number="1.1" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">1.1</span> Prerequisites</h2>
+<p>First, you need to achieve the following</p>
+<ul>
+<li>Review the Lecture of Week 1</li>
+<li>Read <a href="https://happygitwithr.com/big-picture">Happy Git with R: Why Git? Why GitHub?</a> (It is OK do a <em>fast read</em> only. You may reconsider later.)</li>
+<li>You have a <a href="https://github.com">GitHub</a> account to become a member of the GitHub organization. If you do not have an account follow the instructions on the front page of <a href="https://github.com/CU-F23-MDSSB-01-Concepts-Tools" class="uri">https://github.com/CU-F23-MDSSB-01-Concepts-Tools</a>.</li>
+<li>You have provided your GitHub username in this form <a href="https://forms.office.com/e/fraU0w0gQq" class="uri">https://forms.office.com/e/fraU0w0gQq</a> (If you provided your name wrongly, write an email to the instructor.)</li>
+<li>Software installations on your computer:
+<ul>
+<li>Read <a href="https://happygitwithr.com/install-r-rstudio.html">Happy Git with R: Install or upgrade R and RStudio</a><br>
+Follow the instructions to install <strong>R</strong> and <strong>RStudio</strong></li>
+<li>Read <a href="https://happygitwithr.com/install-git.html">Happy Git with R: Install Git</a><br>
+Follow the instructions (choose the highly recommended) to install <strong>Git</strong> SCM (= Source Control Managment)</li>
+<li>Install <strong>quarto</strong> CLI (= Command Line Interface) <a href="https://quarto.org/docs/get-started/" class="uri">https://quarto.org/docs/get-started/</a>.<br>
+Note: In the following you will do similar things as described in <a href="https://quarto.org/docs/get-started/hello/rstudio.html">Tutorial: Hello, Quarto</a> and the following two tutorials.</li>
+</ul></li>
+<li>In R, install some packages from the following list. You can use the command <code>install.packages("tidyverse","gitcreds","usethis")</code><br>
+Notes: <strong>tidyverse</strong> is a collection of many packages it can take some time to install. <em>usethis</em> an <em>gitcreds</em> provide convenient functions to tell your git-installation your GitHub-credentials to push your work back to github via a Personal Access Token (PAT). Read <a href="https://happygitwithr.com/https-pat.html">Happy Git with R: Personal access token for HTTPS</a> for how PATs are used similar but not identical to passwords.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+More software
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Soon, we will need more software: <strong>python</strong> using the IDE (integrated development environment) <strong>Visual Studio Code</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="terminology" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="terminology"><span class="header-section-number">1.2</span> Terminology</h2>
+<p>We’ve already thrown around a few new terms, so let’s define them before we proceed.</p>
+<ul>
+<li><p><strong>R</strong> and <strong>python</strong>: Names of the programming language we will be using throughout the course.</p></li>
+<li><p><strong>RStudio:</strong> An integrated development environment developed for R. In other words, a convenient interface for writing and running code.</p></li>
+<li><p><strong>Git:</strong> A version control system.</p></li>
+<li><p><strong>GitHub:</strong> A web platform for hosting version controlled files and facilitating collaboration among users.</p></li>
+<li><p><strong>quarto:</strong> A command line tool which can render (among other things) qmd-files (with text and code chunks) to nice looking html</p></li>
+<li><p><strong>Repository:</strong> A Git repository contains all of your project’s files and stores each file’s revision history.</p>
+<p>It’s common to refer to a repository as a <em>repo</em>.</p>
+<ul>
+<li>In this course, assignment you work on will be contained in a personalized git repo.</li>
+<li>For individual assignments, only you will have access to the repo. For team assignments, all team members will have access to a single repo where they work collaboratively.</li>
+<li>All repos associated with this course are housed in the GitHub organization <a href="https://github.com/CU-F23-MDSSB-01-Concepts-Tools" class="uri">https://github.com/CU-F23-MDSSB-01-Concepts-Tools</a>. The organization is set up such that students can only see repos they have access to, but the course instructors can see all of them.</li>
+</ul></li>
+</ul>
+</section>
+<section id="starting-slowly-step-by-step" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="starting-slowly-step-by-step"><span class="header-section-number">1.3</span> Starting slowly step by step</h2>
+<p>As the course progresses, you are encouraged to explore beyond what the assignments dictate; a willingness to experiment will make you a much better programmer! Before we get to that stage, however, you need to build some basic fluency in the tools and the workflow we use. First, we will explore the fundamental building blocks of all of these tools.</p>
+<p>Before you can get started with the analysis, you need to make sure you:</p>
+<ul>
+<li><p>have a GitHub account</p></li>
+<li><p>are a member of the course GitHub organization <a href="https://github.com/CU-F23-MDSSB-01-Concepts-Tools" class="uri">https://github.com/CU-F23-MDSSB-01-Concepts-Tools</a></p></li>
+<li><p>have the needed software stack installation on your local machine (see the Prerequisites Checklist above)</p></li>
+</ul>
+<p>If you failed to confirm any of these, it means you have not yet completed the prerequisites for this assignment. Please go back to <a href="#prerequisites">Prerequisites</a> and complete them before continuing the assignment.</p>
+</section>
+</section>
+<section id="workflow" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Workflow</h1>
+<p>For each assignment in this course you will start with a GitHub repo that we create for you. This contains the starter documents you will build upon when working on your assignment. The first step is always to bring these files into RStudio so that you can edit them, run them, view your results, and interpret them. This action of bringing the repos content to your machine is called <strong>cloning</strong>.</p>
+<p>Then you will work in RStudio on the data analysis, making <strong>commits</strong> along the way (snapshots of your changes) and finally <strong>push</strong> all your work back to GitHub.</p>
+<p>The next few steps will walk you through the process of getting information of the repo to be cloned, cloning your repo in a new RStudio Cloud project, and getting started with the analysis.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If there is no GitHub repo created for you for this assignment, it means the instructors have not yet created onew. Let us know know your GitHub username asap, and we create your repo.</p>
+</div>
+</div>
+<section id="step-0.-authenticate-git-to-access-your-github-content" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="step-0.-authenticate-git-to-access-your-github-content"><span class="header-section-number">2.1</span> Step 0. Authenticate git to access your GitHub content</h2>
+<p>Before you can clone your repository you need to tell GitHub that you are authorized to do this, and to that end you need to make a Personal Access Token (PAT) in your GitHub account and make this available to git and RStudio on your local machine.</p>
+<p>There are several ways to do this (e.g.&nbsp;from the command line) but as we will use RStudio anyway, we can use a convenient way provided there. Read more about PATs and how to use them in <a href="https://happygitwithr.com/https-pat.html">Happy Git with R: Personal access token for HTTPS</a> (in particular the TL;DR which describes what we use).</p>
+<p>Open RStudio and install the packages <code>usethis</code> and <code>gitcreds</code> if you haven’t done already: Go to the “Console” pane at the bottom left. Type in</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"usethis"</span>,<span class="st">"gitcreds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and hit Enter. Now the packages should be installed.</p>
+<p>Now, use two commands. Copy them to the console and click Enter:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">create_github_token</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This opens <a href="http://github.com" class="uri">http://github.com</a> and you may need to log in. Then you can make the PAT (read more details in “Happy Git with R”). For today, you can go the fast way and do not think about the options and click “Generate token”. (If you feel safe enough you can also go for a token without an expiration day against advise from GitHub, if not you just have to do the “dance” again when the PAT expires.)<br>
+Use the clipboard icon 📋 to copy the PAT. Go back to RStudio and do in the console:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gitcreds<span class="sc">::</span><span class="fu">gitcreds_set</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the dialog in the console paste your PAT from the clipboard and press Enter. That should be it and you do not need to repeat these steps until the PAT expires. (If the PAT expires you have to make a new one in the same way.)</p>
+</section>
+<section id="step-1.-get-url-of-repo-to-be-cloned" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="step-1.-get-url-of-repo-to-be-cloned"><span class="header-section-number">2.2</span> Step 1. Get URL of repo to be cloned</h2>
+<p>On GitHub <a href="https://github.com/CU-F23-MDSSB-01-Concepts-Tools" class="uri">https://github.com/CU-F23-MDSSB-01-Concepts-Tools</a>, open your repository for Homework 1.</p>
+<p><img src="img/clone-repo-link.png" class="img-fluid"></p>
+<p>On GitHub, click on the green <strong>Code</strong> button, select <strong>HTTPS</strong> (this might already be selected by default, and if it is, you’ll see the text <em>Use Git or checkout with SVN using the web URL</em>). Click on the clipboard icon 📋 to copy the repo URL.</p>
+</section>
+<section id="step-2.-go-to-rstudio" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="step-2.-go-to-rstudio"><span class="header-section-number">2.3</span> Step 2. Go to RStudio</h2>
+<p>Go to your RStudio. Select “New Project…” either from the File menu or from the special project menu on the top right of the RStudio window.</p>
+<p><img src="img/rstudio-new-project.png" class="img-fluid"></p>
+<p>In the New Project Wizard, click on “Version Control” and then “Git”.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If “Version Control” or “Git” is not available in your RStudio, then either you haven’t installed git on you computer or your RStudio installation has not recognized it properly. In a correct installation RStudio would recognize git on your machine automatically when started. You have to solve this issue first to continue.</p>
+</div>
+</div>
+<p>Then paste the repositories URL (which should still be in your clipboard) into the “Repository URL:” field. Leave directory name as it is automatically chosen, but make sure that you create the directory in a the folder where you want to store the course material on your computer via the “Browse …” button.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Organize your Computer for your Studies!
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Create a folder for Data Science Concepts and Tools</li>
+<li>Put all repos there</li>
+</ul>
+</div>
+</div>
+</div>
+<p>When you click “Create Project”</p>
+<ul>
+<li>git will create a new directory in the folder, copies all the files from github to it, and initializes your git repository locally</li>
+<li>RStudio will switch to that as the new project</li>
+</ul>
+</section>
+</section>
+<section id="hello-rstudio" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Hello RStudio!</h1>
+<p>RStudio is comprised of four panes.</p>
+<p><img src="img/rstudio-anatomy.png" class="img-fluid"></p>
+<ul>
+<li>On the bottom left is the Console which we already used, this is where you can write code that will be evaluated (REPL in a CLI = Read–eval–print loop in a Command Line Interface). Try typing <code>2 + 2</code> here and hit enter, what do you get?</li>
+<li>On the bottom right is the Files pane, as well as other panes that will come handy as we start our analysis.</li>
+<li>If you click on a file, it will open in the editor, on the top left pane.</li>
+<li>Finally, the top right pane shows your Environment. If you define a variable it would show up there. Try typing <code>x &lt;- 2</code> in the Console and hit enter, what do you get in the <strong>Environment</strong> pane? Importantly, this pane is also where the <strong>Git</strong> interface lives. We will be using that regularly throughout this assignment.</li>
+</ul>
+</section>
+<section id="warm-up" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Warm up</h1>
+<p>Before we introduce the data, let’s warm up with some simple exercises.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The top portion of your quarto file (between the three dashed lines) is called <strong>YAML</strong>. It stands for “YAML Ain’t Markup Language”. It is a human friendly data serialization standard for all programming languages. All you need to know is that this area is called the YAML (we will refer to it as such) and that it contains meta information about your document.</p>
+</div>
+</div>
+<section id="step-1.-update-the-yaml" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="step-1.-update-the-yaml"><span class="header-section-number">4.1</span> Step 1. Update the YAML</h2>
+<p>Open the quarto (qmd) file in your project. In the YAML change the <code>author</code> name to your name, and “Render” the document.</p>
+<p><img src="img/quarto-render.png" class="img-fluid"> This calls <code>quarto</code>, and quarto renders the document. In this case, that means, quarto creates a new file “hw-01-R.md” in the html format as specified in the YAML.</p>
+<p>When the file was rendered successfully, RStudio shows it in the “Viewer” pane at the bottom right. At the same place you can look in the “Files” pane you can check if the file is there. You can click on it an select to show it in your Brwoser.</p>
+<p><em>Now you see a nice html-page in the Browser! You made a page like every ordinary site on the internet. So you made an important step towards publishing you data science work on the internet.</em> However now the html page is only locally on your computer.</p>
+<div class="callout.important">
+<p>If you do not find the “Render” button in your RStudio installation, then either quarto is not installed or RStudio has not recognized. You have to fix this issue first before you can continue. Another source of error while rendering could be that you haven’t installed the <code>tidyverse</code> package.</p>
+</div>
+</section>
+<section id="step-2-commit" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="step-2-commit"><span class="header-section-number">4.2</span> Step 2: Commit</h2>
+<p>Go to the <strong>Git pane</strong> in your RStudio (top right corner).</p>
+<p>You should see that your qmd (quarto) file and its output, your html-file, are listed there as recently changed files.</p>
+<p>Next, click on <strong>Diff</strong>. This will pop open a new window that shows you the <strong>diff</strong>erence between the last committed state of the document and its current state that includes your changes. (Click on the file “hw-01-R.qmd”.) If you’re happy with these changes, click on the checkboxes of all files in the list, and type <em>“Update author name”</em> in the <strong>Commit message</strong> box and hit <strong>Commit</strong> and then close the window.</p>
+<p><img src="img/commit-window.png" class="img-fluid"></p>
+<p>You don’t have to commit after every change, this would get quite cumbersome. You should consider committing states that are <em>meaningful to you</em> for inspection, comparison, or restoration. In the first few assignments we may tell you exactly when to commit and what commit message to use. As the semester progresses we will let you make these decisions.</p>
+</section>
+<section id="step-3.-push" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="step-3.-push"><span class="header-section-number">4.3</span> Step 3. Push</h2>
+<p>Now that you have made an update and committed this change, it’s time to push these changes to the web! Or more specifically, to your repo on GitHub.<br>
+Why?<br>
+So that others can see your changes.<br>
+And by others, we mean the course instructors (your repos in this course are private to you and us, only).</p>
+<p>Go the Git pane and click on <strong>Push</strong>.</p>
+<p><strong>Thought exercise:</strong> Which of the steps “updating the YAML”, “committing”, and “pushing” involves talking to GitHub?<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</section>
+<section id="check-what-you-did" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="check-what-you-did"><span class="header-section-number">4.4</span> Check what you did</h2>
+<p>Go to your repository on <a href="https://github.com/JU-F22-MDSSB-MET-01" class="uri">https://github.com/JU-F22-MDSSB-MET-01</a> and check if the files appear there as in you local folder.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<ul>
+<li>You may wonder why clicking on the the html-file does not show the page as you saw it locally in your browser.</li>
+<li>The reason is, that GitHub is essentially a code editor. So, it shows you the html-code. This code was created by rendering. DO not touch it “by hand”. It will be overwritten every time you render again.</li>
+<li>Viewing the html as in the browser is not possible here. The instructor will clone you repository and can then look at your html locally on their machines.</li>
+<li>Context Information: It is possible to publish webpages from GitHub. You can learn this later.</li>
+<li>Context Information: GitHub provides its own <em>gfm</em> = GitHub Flavoured Markdown. The README.md files are written in this. gfm is very similar to the Markdown language we use.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="packages" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Packages</h1>
+<p>R is an open-source language, and developers contribute functionality to R via packages.</p>
+<p>In this assignment we will use the following packages <strong>tidyverse</strong>, a collection of packages for doing data analysis in a “tidy” way.</p>
+<p>We use the <code>library()</code> function to load packages.</p>
+<p>We use the function <code>read_csv</code> from the tidyverse package <code>readr</code> to read the data in the csv-file “data/ourdatascienceprofiles.csv” which we produced during the first lecture.</p>
+<p>In your R Markdown document you should see an R chunk labelled <code>load-packages-and-data</code> which has the necessary code for loading packages and data.</p>
+<p>You should also load these packages in your Console, which you can do by sending the code to your Console by clicking on the <strong>Run Current Chunk</strong> icon (small green triangle pointing right icon).</p>
+<p><img src="img/run-chunk.png" class="img-fluid"></p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Difference between working and rendering environment!
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<ul>
+<li>This is a typical source of <strong>confusion</strong>.</li>
+<li>When you execute code in the Console objects will be created in your working environment. See the Environment Tab.</li>
+<li>When you render the qmd-file to html, quarto creates a new environment and goes through all the code in the code chunks step by step in an own rendering environment. It can not access, and does not know what you created in the working environment!</li>
+<li>How to use it properly: When you develop code you send code lines to the console repeatedly to workout how your code works. However you have to take care that the code writte there is complete in the right order, that quarto can then do the necessary steps to reproduce what you want it to do.</li>
+<li>You will get used to this workflow.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="data" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Data</h1>
+<p>The dataset is now visible under the name <code>profiles</code> in your Environment pane (top right area). You can view the dataset as a spreadsheet using the <code>View()</code> function.</p>
+<p>Note that you should not put this function in your R Markdown document, but instead type it directly in the Console, as it pops open a new window (and the concept of popping open a window in a static document doesn’t really make sense…).</p>
+<p>When you run this in the console, you’ll see the <strong>data viewer</strong> window pop up. You can also write the object name <code>profiles</code> to the console and get a brief outlook of the data, or you can take a glimpse to get meta-information about dimensions, variable names, and data types. Try all in the Console.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(profiles)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>profiles</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(profiles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="graphic" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Graphic</h1>
+<p>There is another chunk called <code>my-data-science-profile</code>. It has code which</p>
+<ul>
+<li>tidies the data by making it longer and less wide such that the data from the seven dimensions, go to two variables “Dimension” and “value”.</li>
+<li>filters the data of one person</li>
+<li>makes a graphic which is called a barplot of the data science profile of that person</li>
+</ul>
+<p>Run the code in this chunk in the Console and see how the Plots pane pops up to show the graphic.</p>
+</section>
+<section id="exercises" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Exercises</h1>
+<ol type="1">
+<li>Show your data science profile!</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Change the code in the <code>my-data-science-profile</code> chunk such that it shows your profile. Render the document, commit your changes with a commit message that says “Completed Exercise 1”, and push to GitHub. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.</em></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you haven’t entered your data during class, then use the name of another person in the dataset. If you want to have your data included then you can still fill out the survey <a href="https://forms.office.com/e/Uz84tQVNWQ" class="uri">https://forms.office.com/e/Uz84tQVNWQ</a>. We will update the dataset later and inform you when it is ready. For now you have to choose another name.</p>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Write a short text about your data science profile going through the dimensions and tell what is behind that value.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Write your text under the <code>my-data-science-profile</code> chunk. Format some words in bold or italic, e.g., the dimension names. You can find the formatting basic of markdown in quarto here: <a href="https://quarto.org/docs/authoring/markdown-basics.html" class="uri">https://quarto.org/docs/authoring/markdown-basics.html</a>. Render the document, commit with message “Completed Exercise 2”, and push. You can check on GitHub if the file “hw-01-R.md” looks good in the browser.</em></p>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Averaging over all people, what is the Dimension with the most and the least experience in the group?</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Copy this code to your Console and read the output:</em></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>profiles <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="st">`</span><span class="at">Social Science</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">Machine Learning</span><span class="st">`</span>, mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Copy the code and write your answer into the outlined places in the document.</em></p>
+</div>
+</div>
+<ol start="4" type="1">
+<li>How many in the group work on Windows, Mac, and Linux?</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Copy this code to your Console and read the output:</em></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>profiles <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">What is the operating system of your computer?</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Copy the code and write your answer into the outlined places in the document.</em></p>
+<p><em>Render the document, commit with message “Completed up to Exercise 4”, and push. Check on GitHub that the file “hw-01-R.md” looks good in the browser.</em></p>
+</div>
+</div>
+<ol start="5" type="1">
+<li>How is the experience with AI Tools in the group?</li>
+</ol>
+<p><em>This is a more open exercise. Think about how you would like to view this data and try to produce a graphic for each of the three question. Each question would have a new chunk. Try to draft a graphic. Try the <code>geom_bar</code> aesthetic. When your graphs are read, write short text before each graphic and a short summary about the question after all three graphics. Look at the html-output. Can readers extract your insights convincingly?</em></p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Only the push talks to GitHub. Editing and committing happens on your local machine.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/CU-F24-MDSSB-01-Concepts-Tools\.github\.io\/Website\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.5.56">
+
+  <meta name="author" content="Jan Lorenz">
+  <title>Data Science Concepts / Data Science Tools – W#08: Logistic Regression, Classification Problems, Prediction</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">W#08: Logistic Regression, Classification Problems, Prediction</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Jan Lorenz 
+</div>
+</div>
+</div>
+
+</section>
+<section>
+<section id="logistic-regression" class="title-slide slide level1 center">
+<h1>Logistic regression</h1>
+
+</section>
+<section id="logistic-regression-1" class="slide level2 smaller">
+<h2>Logistic regression</h2>
+<ul>
+<li><strong>Logistic regression</strong> is a GLM used to model a binary categorical outcome using numerical and categorical predictors.</li>
+<li>The <em>distribution</em> is the Bernoulli distribution with parameter <span class="math inline">\(p\)</span> (success probability).</li>
+<li>As <em>link function</em> connecting <span class="math inline">\(\eta_i\)</span> to <span class="math inline">\(p_i\)</span> we use the <strong>logit function</strong>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><strong>Logit function:</strong> <span class="math inline">\(\text{logit}: [0,1] \to \mathbb{R}\)</span></li>
+</ul>
+<p><span class="math display">\[\text{logit}(p) = \log\left(\frac{p}{1-p}\right)\]</span></p>
+<ul>
+<li><span class="math inline">\(\frac{p}{1-p}\)</span> is called the <strong>odds</strong> of a success which happens with probability <span class="math inline">\(p\)</span>.<br>
+Example: Roll a six with a die has <span class="math inline">\(p=1/6\)</span>. Thus, the odds are <span class="math inline">\(\frac{1/6}{5/6} = 1/5\)</span>. Sometimes written as 1:5. <em>“The odds of success are one to five.”</em></li>
+</ul>
+</div>
+</section>
+<section id="properties-of-the-logit" class="slide level2 smaller">
+<h2>Properties of the logit</h2>
+<ul>
+<li>Logit takes values between 0 and 1 and returns values between <span class="math inline">\(-\infty\)</span> and <span class="math inline">\(\infty\)</span></li>
+<li>The inverse of the logit function if the <strong>logistic function</strong> (mapping values from <span class="math inline">\(-\infty\)</span> and <span class="math inline">\(\infty\)</span> to values between 0 and 1): <span class="math display">\[\text{logit}^{-1}(x) = \text{logistic}(x) = \frac{e^x}{1+e^x} = \frac{1}{1+e^{-x}}\]</span></li>
+<li>Logit can be interpreted as the log odds of a success – more on this later.</li>
+</ul>
+
+<aside><div>
+<ul>
+<li>The logistic function is the solution of the differential equation <span class="math inline">\(\frac{d}{dx}f(x) = f(x)(1-f(x))\)</span> which also appears in the SI-model of epidemics (and other models of exponential growth with saturation).</li>
+<li>Good exercises to check your math skills:
+<ol type="1">
+<li>Show that <span class="math inline">\(\text{logit}^{-1}(x) = \text{logistic}(x)\)</span> or the other way round.</li>
+<li>Transform <span class="math inline">\(\frac{e^x}{1+e^x}\)</span> into <span class="math inline">\(\frac{1}{1+e^{-x}}\)</span>.</li>
+<li>Check that <span class="math inline">\(\text{logistic}(x)\)</span> is a solution to <span class="math inline">\(\frac{d}{dx}f(x) = f(x)(1-f(x))\)</span>.</li>
+</ol></li>
+<li>You can request hints from me when you get stuck.</li>
+</ul>
+</div></aside></section>
+<section id="logit-and-logistic-function" class="slide level2 smaller">
+<h2>Logit and <span style="color:red;">logistic</span> function</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb1-2"><a></a> <span class="fu">geom_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) <span class="fu">log</span>(x<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>x)), <span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">0.001</span>,<span class="fl">0.999</span>), <span class="at">n =</span> <span class="dv">500</span>) <span class="sc">+</span> </span>
+<span id="cb1-3"><a></a> <span class="fu">geom_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span>x)), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb1-4"><a></a> <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">1</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb1-5"><a></a> <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">1</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb1-6"><a></a> <span class="fu">coord_fixed</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="W08_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<section id="the-logistic-regression-model" class="slide level2">
+<h2>The logistic regression model</h2>
+<ul>
+<li>Based on the three GLM criteria we have
+<ul>
+<li><span class="math inline">\(y_i \sim \text{Bernoulli}(p_i)\)</span></li>
+<li><span class="math inline">\(\eta_i = \beta_0+\beta_1 x_{1,i} + \cdots + \beta_n x_{n,i}\)</span></li>
+<li><span class="math inline">\(\text{logit}(p_i) = \eta_i\)</span></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>From which we get</li>
+</ul>
+<p><span class="math display">\[p_i = \frac{e^{\beta_0+\beta_1 x_{1,i} + \cdots + \beta_k x_{k,i}}}{1 + e^{\beta_0+\beta_1 x_{1,i} + \cdots + \beta_k x_{k,i}}}\]</span></p>
+</div>
+</section>
+<section id="modeling-spam" class="slide level2 smaller">
+<h2>Modeling spam</h2>
+<p>With <code>tidymodels</code> we fit a GLM in the same way as a linear model except we</p>
+<ul>
+<li>specify the model with <code>logistic_reg()</code></li>
+<li>use <code>"glm"</code> instead of <code>"lm"</code> as the engine</li>
+<li>define <code>family = "binomial"</code> for the link function to be used in the model</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>spam_fit <span class="ot">&lt;-</span> <span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a></a>  <span class="fu">fit</span>(spam <span class="sc">~</span> num_char, <span class="at">data =</span> email, <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb2-4"><a></a><span class="fu">tidy</span>(spam_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic   p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)  -1.80     0.0716     -25.1  2.04e-139
+2 num_char     -0.0621   0.00801     -7.75 9.50e- 15</code></pre>
+</div>
+</div>
+
+<aside><div>
+<ul>
+<li>The family is <em>binomial</em> because the Bernoulli distribution is a special case of the binomial distribution <span class="math inline">\(\text{Binomial}(n,p)\)</span> with <span class="math inline">\(n=1\)</span>.</li>
+<li>The binomial distribution specifies the probability to have <span class="math inline">\(k\)</span> successes in <span class="math inline">\(n\)</span> Bernoulli trials with the same success probability <span class="math inline">\(p\)</span>.</li>
+</ul>
+</div></aside></section>
+<section id="spam-model" class="slide level2 smaller">
+<h2>Spam model</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic   p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)  -1.80     0.0716     -25.1  2.04e-139
+2 num_char     -0.0621   0.00801     -7.75 9.50e- 15</code></pre>
+</div>
+</div>
+<p>Model: <span class="math display">\[\log\left(\frac{p}{1-p}\right) = -1.80-0.0621\cdot \text{num_char}\]</span></p>
+</section>
+<section id="predicted-probability-examples" class="slide level2 smaller">
+<h2>Predicted probability: Examples</h2>
+<p>We can compute the <strong>predicted probability</strong> that an email with 2000 character is spam as follows:</p>
+<p><span class="math display">\[\log\left(\frac{p}{1-p}\right) = -1.80-0.0621\cdot 2 = -1.9242\]</span></p>
+<p>(Note: <code>num_char</code> is in thousands.)</p>
+<p><span class="math display">\[\frac{p}{1-p} = e^{-1.9242} = 0.15 \Rightarrow p = 0.15 \cdot (1 - p)\]</span></p>
+<p><span class="math display">\[p = 0.15 - 0.15\cdot p \Rightarrow 1.15\cdot p = 0.15\]</span></p>
+<p><span class="math display">\[p = 0.15 / 1.15 = 0.13\]</span></p>
+</section>
+<section id="predicted-probability" class="slide level2 smaller">
+<h2>Predicted probability</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>logistic <span class="ot">&lt;-</span> <span class="cf">function</span>(t) <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(<span class="sc">-</span>t))</span>
+<span id="cb5-2"><a></a>preds <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">15</span>,<span class="dv">40</span>), <span class="at">y =</span> <span class="fu">logistic</span>(<span class="sc">-</span><span class="fl">1.80-0.0621</span><span class="sc">*</span>x))</span>
+<span id="cb5-3"><a></a>email <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> num_char, <span class="at">y =</span> <span class="fu">as.numeric</span>(spam)<span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb5-4"><a></a> <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb5-5"><a></a> <span class="fu">geom_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) <span class="fu">logistic</span>(<span class="sc">-</span><span class="fl">1.80-0.0621</span><span class="sc">*</span>x),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a></a> <span class="fu">geom_point</span>(<span class="at">data =</span> preds, <span class="at">mapping =</span> <span class="fu">aes</span>(x,y), <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="W08_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"><p>Spam probability 2,000 characters: 0.1273939<br>
+Spam probability 15,000 characters: 0.06114<br>
+Spam probability 40,000 characters: 0.0135999</p>
+</section>
+<section id="interpretation-of-coefficients" class="slide level2 smaller">
+<h2>Interpretation of coefficients</h2>
+<p><span class="math display">\[\log\left(\frac{p}{1-p}\right) = -1.80-0.0621\cdot \text{num_char}\]</span></p>
+<p>What does an increase by thousand characters (<code>num_char + 1</code>) imply?</p>
+<div class="fragment">
+<p>Let us assume the predicted probability of an email is <span class="math inline">\(p_0\)</span>. Then an increase of <code>num_char</code> by one implied that the log-odds become</p>
+<p><span class="math display">\[\log\left(\frac{p_0}{1-p_0}\right) - 0.0621 = \log\left(\frac{p_0}{1-p_0}\right) - \log(e^{0.0621})\]</span></p>
+<p><span class="math display">\[ = \log\left(\frac{p_0}{1-p_0}\right) + \log(\frac{1}{e^{0.0621}}) = \log\left(\frac{p_0}{1-p_0} \frac{1}{e^{0.0621}}\right) = \log\left(\frac{p_0}{1-p_0} 0.94\right)\]</span></p>
+<p>That means the odds of being spam decrease by 6%.</p>
+</div>
+</section>
+<section id="penguins-example" class="slide level2 smaller">
+<h2>Penguins example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb6-2"><a></a>sex_fit <span class="ot">&lt;-</span> <span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a></a>  <span class="fu">fit</span>(sex <span class="sc">~</span> body_mass_g, <span class="at">data =</span> <span class="fu">na.omit</span>(penguins), <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb6-5"><a></a><span class="fu">tidy</span>(sex_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic  p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept) -5.16     0.724        -7.13 1.03e-12
+2 body_mass_g  0.00124  0.000173      7.18 7.10e-13</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="fu">na.omit</span>(penguins) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> sex)) <span class="sc">+</span> </span>
+<span id="cb8-2"><a></a> <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb8-3"><a></a> <span class="fu">geom_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) <span class="fu">logistic</span>(<span class="sc">-</span><span class="fl">5.16+0.00124</span><span class="sc">*</span>x) <span class="sc">+</span> <span class="dv">1</span>,<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a></a> <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">2000</span>,<span class="dv">7000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="W08_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="summarizing-the-idea-of-logistic-regression" class="slide level2 smaller">
+<h2>Summarizing the Idea of Logistic Regression</h2>
+<ul>
+<li>We want to explain/predict a binary response variable.</li>
+<li>We want to use the concept of linear models.</li>
+<li>To that end we first interprete each outcome as the outcome of a probabilisitic event happening with probability <span class="math inline">\(p_i\)</span>. That way we transform the problem from modeling a binary outcome to a numerical outcome.</li>
+<li>However, probabilities are bounded between 0 and 1.</li>
+<li>We use the logit function to map probabilities to the real line. That means we predict the log-odds of the probability.</li>
+<li>We model the log-odds with a linear model.</li>
+</ul>
+</section></section>
+<section>
+<section id="sensitivity-and-specificity" class="title-slide slide level1 center">
+<h1>Sensitivity and specificity</h1>
+
+</section>
+<section id="false-positive-and-negative" class="slide level2 smaller">
+<h2>False positive and negative</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 35%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Email labelled spam</th>
+<th>Email labelled not spam</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Email is spam</strong></td>
+<td>True positive</td>
+<td>False negative (Type 2 error)</td>
+</tr>
+<tr class="even">
+<td><strong>Email is not spam</strong></td>
+<td>False positive (Type 1 error)</td>
+<td>True negative</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="confusion-matrix" class="slide level2">
+<h2>Confusion matrix</h2>
+<p>More general: <a href="https://en.wikipedia.org/wiki/Confusion_matrix"><strong>Confusion matrix</strong></a> of statistical classification:</p>
+
+<img data-src="img/confusion_small.png" class="r-stretch"></section>
+<section id="sensitivity-and-specificity-1" class="slide level2 smaller">
+<h2>Sensitivity and specificity</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><img data-src="img/confusion_small.png"></p>
+</div><div class="column" style="width:60%;">
+<p><strong>Sensitivity</strong> is the <em>true positive rate</em>: TP / (TP + FN)<br>
+<strong>Specificity</strong> is the <em>true negative rate</em>: TN / (TN + FP)</p>
+</div></div>
+<p>For spam a <em>positive</em> case is an email labelled as <em>spam</em>:</p>
+<p><strong>Sensitivity:</strong> Fraction of emails <em>labelled as</em> spam among all emails which <em>are</em> spam.<br>
+Low sensitivity <span class="math inline">\(\to\)</span> More false negatives <span class="math inline">\(\to\)</span> More spam in you inbox!</p>
+<p><strong>Specificity:</strong> Fraction of emails <em>labelled as not</em> spam among all emails which <em>are not</em> spam.<br>
+Low specificity <span class="math inline">\(\to\)</span> More false positives <span class="math inline">\(\to\)</span> More relevant emails in spam folder!</p>
+<div class="fragment">
+<p>If you were designing a spam filter, would you want sensitivity and specificity to be high or low? What are the trade-offs associated with each decision?</p>
+</div>
+</section>
+<section id="covid-19-tests" class="slide level2 smaller">
+<h2>COVID-19 tests</h2>
+<p>A COVID-19 test is called <em>positive</em> when it indicates the presence of the virus.</p>
+<p><em>What is the sensitivity of a test?</em></p>
+<div class="fragment">
+<p>Probability the test is positive when the tested person has COVID-19. (The true positive rate.)</p>
+</div>
+<div class="fragment">
+<p><em>What is the specificity of a test?</em></p>
+</div>
+<div class="fragment">
+<p>Probability the test is negative when the tested person does not have COVID-19. (The true negative rate.)</p>
+<p>Often the sensitivity is around 90% and the specificity is around 99%. What does that mean?</p>
+</div>
+<div class="fragment">
+<ul>
+<li>When you do not have COVID the test is more likely to be correct, than when you do have COVID. However, specificity and sensitivity do not tell something about the probability to have COVID when the test is positive, or to not have COVID when the test is negative.</li>
+</ul>
+</div>
+</section>
+<section id="another-view" class="slide level2">
+<h2>Another view</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Sensitivity_and_specificity_1.01.svg" class="r-stretch"></section></section>
+<section>
+<section id="prediction" class="title-slide slide level1 center">
+<h1>Prediction</h1>
+
+</section>
+<section id="prediction-vs.-explanation" class="slide level2 smaller">
+<h2>Prediction vs.&nbsp;Explanation</h2>
+<p><strong>Explanation</strong> and <strong>Prediction</strong> are different <strong>Modelling Mindsets</strong><sup>1</sup>.</p>
+<ul>
+<li>With an <em>Explanatory Mindset</em> we want to understand the relationship between the predictors and the outcome.
+<ul>
+<li>We interpret coefficients</li>
+<li>We ask what variance can be explained by a linear model or a PCA</li>
+</ul></li>
+<li>With a <em>Predictive Mindset</em> we want to predict the outcome for new observations.
+<ul>
+<li>We use the model to predict the outcome for new observations</li>
+<li>We ask how well we can predict the outcome for new observations</li>
+<li>We may ignore why the model works</li>
+</ul></li>
+</ul>
+<p>Important: The mindsets are very different but they may use the same models!</p>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>From Molnar, C. (2022). Modeling mindsets: The many cultures of learning from data. Christoph Molnar c/o Mucbook Clubhouse.</p></li></ol></aside></section>
+<section id="prediction-example-building-a-spam-filter" class="slide level2 smaller">
+<h2>Prediction Example: Building a spam filter</h2>
+<ul>
+<li>Data: Set of emails and we know
+<ul>
+<li>if each email is spam or not</li>
+<li>several other features</li>
+</ul></li>
+<li>Use logistic regression to predict the probability that an incoming email is spam</li>
+<li>Use model selection to pick the model with the best predictive performance</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Building a model to predict the probability that an email is spam is only half of the battle! We also need a decision rule about which emails get flagged as spam (e.g.&nbsp;what probability should we use as out cutoff?)</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>A simple approach: choose a single threshold probability and any email that exceeds that probability is flagged as spam</li>
+</ul>
+</div>
+</section>
+<section id="emails-use-all-predictors" class="slide level2 smaller">
+<h2>Emails: Use all predictors</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a></a>  <span class="fu">fit</span>(spam <span class="sc">~</span> ., <span class="at">data =</span> email, <span class="at">family =</span> <span class="st">"binomial"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a></a>  <span class="fu">tidy</span>() <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 22 × 5
+   term         estimate std.error statistic  p.value
+   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+ 1 (Intercept)  -9.09e+1   9.80e+3  -0.00928 9.93e- 1
+ 2 to_multiple1 -2.68e+0   3.27e-1  -8.21    2.25e-16
+ 3 from1        -2.19e+1   9.80e+3  -0.00224 9.98e- 1
+ 4 cc            1.88e-2   2.20e-2   0.855   3.93e- 1
+ 5 sent_email1  -2.07e+1   3.87e+2  -0.0536  9.57e- 1
+ 6 time          8.48e-8   2.85e-8   2.98    2.92e- 3
+ 7 image        -1.78e+0   5.95e-1  -3.00    2.73e- 3
+ 8 attach        7.35e-1   1.44e-1   5.09    3.61e- 7
+ 9 dollar       -6.85e-2   2.64e-2  -2.59    9.64e- 3
+10 winneryes     2.07e+0   3.65e-1   5.67    1.41e- 8
+11 inherit       3.15e-1   1.56e-1   2.02    4.32e- 2
+12 viagra        2.84e+0   2.22e+3   0.00128 9.99e- 1
+13 password     -8.54e-1   2.97e-1  -2.88    4.03e- 3
+14 num_char      5.06e-2   2.38e-2   2.13    3.35e- 2
+15 line_breaks  -5.49e-3   1.35e-3  -4.06    4.91e- 5
+16 format1      -6.14e-1   1.49e-1  -4.14    3.53e- 5
+17 re_subj1     -1.64e+0   3.86e-1  -4.25    2.16e- 5
+18 exclaim_subj  1.42e-1   2.43e-1   0.585   5.58e- 1
+19 urgent_subj1  3.88e+0   1.32e+0   2.95    3.18e- 3
+20 exclaim_mess  1.08e-2   1.81e-3   5.98    2.23e- 9
+21 numbersmall  -1.19e+0   1.54e-1  -7.74    9.62e-15
+22 numberbig    -2.95e-1   2.20e-1  -1.34    1.79e- 1</code></pre>
+</div>
+</div>
+
+<aside><div>
+<p>We treat the warning later.</p>
+</div></aside></section>
+<section id="the-prediction-task" class="slide level2">
+<h2>The prediction task</h2>
+<ul>
+<li>The mechanics of prediction is <strong>easy</strong>:
+<ul>
+<li>Plug in values of predictors to the model equation</li>
+<li>Calculate the predicted value of the response variable, <span class="math inline">\(\hat{y}\)</span></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Getting it right is <strong>harder</strong>
+<ul>
+<li>There is no guarantee the model estimates you have are correct</li>
+<li>Or that your model will perform as well with <strong>new data</strong> as it did with your sample data</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="balance-over--and-underfitting" class="slide level2">
+<h2>Balance Over- and Underfitting</h2>
+<p>In a one predictor model we can show both visually:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="W08_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+
+<aside><div>
+<p>This is simulated data.</p>
+</div></aside></section>
+<section id="spending-our-data" class="slide level2">
+<h2>Spending our data</h2>
+<p><strong>Problem:</strong></p>
+<ul>
+<li>There are several steps to create a useful prediction model: parameter estimation, model selection, performance assessment, etc.</li>
+<li>Doing all of this on the entire data we have available can lead to <strong>overfitting</strong>.</li>
+</ul>
+<p><strong>Solution:</strong> We subsets our data for different tasks, as opposed to allocating all data to parameter estimation (as we have done so far).</p>
+</section></section>
+<section>
+<section id="splitting-data" class="title-slide slide level1 center">
+<h1>Splitting Data</h1>
+
+</section>
+<section id="splitting-data-1" class="slide level2 smaller">
+<h2>Splitting data</h2>
+<ul>
+<li><strong>Training set:</strong>
+<ul>
+<li>Sandbox for model building</li>
+<li>Spend most of your time using the training set to develop the model</li>
+<li>Majority of the data (usually 80%)</li>
+</ul></li>
+<li><strong>Testing set:</strong>
+<ul>
+<li>Held in reserve to determine efficacy of one or two chosen models</li>
+<li>Critical to look at it once, otherwise it becomes part of the modeling process</li>
+<li>Remainder of the data (usually 20%)</li>
+</ul></li>
+</ul>
+<p><span style="color:blue;">Sidenote:</span> Splitting data is very important for the predictive questions, because we want to know how well our model performs on new data. It is not relevant for explanatory questions where we want to interpret coefficients and infer about the underlying population.</p>
+</section>
+<section id="performing-the-split" class="slide level2 smaller">
+<h2>Performing the split</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="co"># Fix random numbers by setting the seed </span></span>
+<span id="cb12-2"><a></a><span class="co"># Enables analysis to be reproducible when random numbers are used </span></span>
+<span id="cb12-3"><a></a><span class="fu">set.seed</span>(<span class="dv">1116</span>)</span>
+<span id="cb12-4"><a></a></span>
+<span id="cb12-5"><a></a><span class="co"># Put 80% of the data into the training set </span></span>
+<span id="cb12-6"><a></a>email_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(email, <span class="at">prop =</span> <span class="fl">0.80</span>)</span>
+<span id="cb12-7"><a></a></span>
+<span id="cb12-8"><a></a><span class="co"># Create data frames for the two sets:</span></span>
+<span id="cb12-9"><a></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(email_split)</span>
+<span id="cb12-10"><a></a>test_data  <span class="ot">&lt;-</span> <span class="fu">testing</span>(email_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>A note on the seed:</strong> The seed is an arbitrary number that is used to initialize a pseudorandom number generator. The same seed will always result in the same sequence of pseudorandom numbers. This is useful for reproducibility.</p>
+</section>
+<section id="peek-at-the-split" class="slide level2 smaller">
+<h2>Peek at the split</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">glimpse</span>(train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 3,136
+Columns: 21
+$ spam         &lt;fct&gt; 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ to_multiple  &lt;fct&gt; 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, …
+$ from         &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ cc           &lt;int&gt; 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35, 0, 0, 0, 0, 0,…
+$ sent_email   &lt;fct&gt; 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, …
+$ time         &lt;dttm&gt; 2012-01-25 23:46:55, 2012-01-03 06:28:28, 2012-02-04 17:…
+$ image        &lt;dbl&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ attach       &lt;dbl&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ dollar       &lt;dbl&gt; 10, 0, 0, 0, 0, 0, 13, 0, 0, 0, 2, 0, 0, 0, 14, 0, 0, 0, …
+$ winner       &lt;fct&gt; no, no, no, no, no, no, no, yes, no, no, no, no, no, no, …
+$ inherit      &lt;dbl&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ viagra       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ password     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, …
+$ num_char     &lt;dbl&gt; 23.308, 1.162, 4.732, 42.238, 1.228, 25.599, 16.764, 10.7…
+$ line_breaks  &lt;int&gt; 477, 2, 127, 712, 30, 674, 367, 226, 98, 671, 46, 192, 67…
+$ format       &lt;fct&gt; 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, …
+$ re_subj      &lt;fct&gt; 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, …
+$ exclaim_subj &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, …
+$ urgent_subj  &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ exclaim_mess &lt;dbl&gt; 12, 0, 2, 2, 2, 31, 2, 0, 0, 1, 0, 1, 2, 0, 2, 0, 11, 1, …
+$ number       &lt;fct&gt; small, none, big, big, small, small, small, small, small,…</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a><span class="fu">glimpse</span>(test_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 785
+Columns: 21
+$ spam         &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ to_multiple  &lt;fct&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, …
+$ from         &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ cc           &lt;int&gt; 0, 1, 0, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, …
+$ sent_email   &lt;fct&gt; 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, …
+$ time         &lt;dttm&gt; 2012-01-01 18:55:06, 2012-01-01 20:38:32, 2012-01-02 06:…
+$ image        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, …
+$ attach       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, …
+$ dollar       &lt;dbl&gt; 0, 0, 5, 0, 0, 0, 0, 5, 4, 0, 0, 0, 21, 0, 0, 2, 9, 0, 0,…
+$ winner       &lt;fct&gt; no, no, no, no, no, no, no, no, no, no, no, no, no, no, n…
+$ inherit      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ viagra       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ password     &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, …
+$ num_char     &lt;dbl&gt; 4.837, 15.075, 18.037, 45.842, 11.438, 1.482, 14.431, 0.9…
+$ line_breaks  &lt;int&gt; 193, 354, 345, 881, 125, 24, 296, 13, 192, 14, 32, 30, 55…
+$ format       &lt;fct&gt; 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, …
+$ re_subj      &lt;fct&gt; 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, …
+$ exclaim_subj &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ urgent_subj  &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ exclaim_mess &lt;dbl&gt; 1, 10, 20, 5, 2, 0, 0, 0, 6, 0, 0, 1, 3, 0, 4, 0, 1, 0, 1…
+$ number       &lt;fct&gt; big, small, small, big, small, none, small, small, small,…</code></pre>
+</div>
+</div>
+</div></div>
+</section></section>
+<section>
+<section id="workflow-of-predictive-modeling" class="title-slide slide level1 center">
+<h1>Workflow of Predictive Modeling</h1>
+
+</section>
+<section id="fit-a-model-to-the-training-dataset" class="slide level2">
+<h2>Fit a model to the training dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>email_fit <span class="ot">&lt;-</span> <span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a></a>  <span class="fu">fit</span>(spam <span class="sc">~</span> ., <span class="at">data =</span> train_data, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+</div>
+</div>
+<p>We get a warning and should explore the reasons for 0 or 1 probability.</p>
+
+<aside><div>
+<ul>
+<li>A deeper looking into the predicted probabilities (not shown here) shows that 4 cases are predicted to be spam with 100% probability, as well as 864 cases are predicted to be not spam with 100% probability.</li>
+<li>Note: The <code>dplyr</code> function <code>near</code> was used to assess if predicted probabilities were one.</li>
+<li>This is usually undesirable. Hence the warning.</li>
+</ul>
+</div></aside></section>
+<section id="look-at-categorical-predictors" class="slide level2">
+<h2>Look at categorical predictors</h2>
+
+<img data-src="W08_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><p>Closer look at <code>from</code> and <code>sent_email</code>.</p>
+</section>
+<section id="counting-cases" class="slide level2 smaller">
+<h2>Counting cases</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><code>from</code>: Whether the message was listed as from anyone (this is usually set by default for regular outgoing email).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>train_data <span class="sc">|&gt;</span> <span class="fu">count</span>(spam, from)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  spam  from      n
+  &lt;fct&gt; &lt;fct&gt; &lt;int&gt;
+1 0     1      2837
+2 1     0         3
+3 1     1       296</code></pre>
+</div>
+</div>
+<p><em>No non-spam mails without <code>from</code>.</em></p>
+</div><div class="column" style="width:50%;">
+<p><code>sent_mail</code>: Indicator for whether the sender had been sent an email from the receiver in the last 30 days.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a>train_data <span class="sc">|&gt;</span> <span class="fu">count</span>(spam, sent_email)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  spam  sent_email     n
+  &lt;fct&gt; &lt;fct&gt;      &lt;int&gt;
+1 0     0           1972
+2 0     1            865
+3 1     0            299</code></pre>
+</div>
+</div>
+<p><em>No spam mails with <code>sent_email</code>.</em></p>
+</div></div>
+<ul>
+<li>There is <em>incomplete separation</em> in the data for those variables.</li>
+<li>That mean we have a <em>sure</em> prediction probabilities (0 or 1). (That is the warning. Also, these variables have the highest coefficients.)</li>
+<li>This is not what we assume about reality. Maybe our sample is too small to see it.</li>
+<li>Therefore we exclude these variables.</li>
+</ul>
+</section>
+<section id="look-at-numerical-variables" class="slide level2 smaller">
+<h2>Look at numerical variables</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>train_data <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a></a> <span class="fu">group_by</span>(spam) <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a></a> <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-4"><a></a> <span class="fu">pivot_longer</span>(<span class="sc">-</span>spam) <span class="sc">|&gt;</span> </span>
+<span id="cb23-5"><a></a> <span class="fu">group_by</span>(name, spam) <span class="sc">|&gt;</span> </span>
+<span id="cb23-6"><a></a> <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(value), <span class="at">sd =</span> <span class="fu">sd</span>(value)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-7"><a></a> <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 22 × 4
+# Groups:   name [11]
+   name         spam       mean       sd
+   &lt;chr&gt;        &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+ 1 attach       0       0.124     0.775 
+ 2 attach       1       0.227     0.620 
+ 3 cc           0       0.393     2.62  
+ 4 cc           1       0.388     3.25  
+ 5 dollar       0       1.56      5.33  
+ 6 dollar       1       0.779     3.01  
+ 7 exclaim_mess 0       6.68     50.2   
+ 8 exclaim_mess 1       8.75     88.4   
+ 9 exclaim_subj 0       0.0783    0.269 
+10 exclaim_subj 1       0.0769    0.267 
+11 image        0       0.0536    0.503 
+12 image        1       0.00334   0.0578
+13 inherit      0       0.0352    0.216 
+14 inherit      1       0.0702    0.554 
+15 line_breaks  0     247.      326.    
+16 line_breaks  1     108.      321.    
+17 num_char     0      11.4      14.9   
+18 num_char     1       5.63     15.7   
+19 password     0       0.112     0.938 
+20 password     1       0.0201    0.182 
+21 viagra       0       0         0     
+22 viagra       1       0.0268    0.463 </code></pre>
+</div>
+</div></div>
+<p><code>viagra</code> has no mentions in non-spam emails.</p>
+<ul>
+<li>We should exclude this variable for the same reason.</li>
+</ul>
+</section>
+<section id="fit-a-model-to-the-training-dataset-1" class="slide level2 smaller">
+<h2>Fit a model to the training dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>email_fit <span class="ot">&lt;-</span> <span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-3"><a></a>  <span class="fu">fit</span>(spam <span class="sc">~</span> . <span class="sc">-</span> from <span class="sc">-</span> sent_email <span class="sc">-</span> viagra, <span class="at">data =</span> train_data, <span class="at">family =</span> <span class="st">"binomial"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a>email_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>parsnip model object
+
+
+Call:  stats::glm(formula = spam ~ . - from - sent_email - viagra, family = stats::binomial, 
+    data = data)
+
+Coefficients:
+ (Intercept)  to_multiple1            cc          time         image  
+  -9.867e+01    -2.505e+00     1.944e-02     7.396e-08    -2.854e+00  
+      attach        dollar     winneryes       inherit      password  
+   5.070e-01    -6.440e-02     2.170e+00     4.499e-01    -7.065e-01  
+    num_char   line_breaks       format1      re_subj1  exclaim_subj  
+   5.870e-02    -5.420e-03    -9.017e-01    -2.995e+00     1.002e-01  
+urgent_subj1  exclaim_mess   numbersmall     numberbig  
+   3.572e+00     1.009e-02    -8.518e-01    -1.329e-01  
+
+Degrees of Freedom: 3135 Total (i.e. Null);  3117 Residual
+Null Deviance:      1974 
+Residual Deviance: 1447     AIC: 1485</code></pre>
+</div>
+</div>
+<p>We still get a warning, but without very high coefficients.</p>
+
+<aside><div>
+<p>A deeper analysis shows that now only two cases are predicted not spam with 100% probability.</p>
+</div></aside></section>
+<section id="predict-with-the-testing-dataset" class="slide level2 smaller">
+<h2>Predict with the testing dataset</h2>
+<p>Predicting the raw values (log-odds)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a><span class="fu">predict</span>(email_fit, test_data, <span class="at">type =</span> <span class="st">"raw"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>() <span class="co"># head prints the first values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1         2         3         4         5         6 
+-4.942500 -6.312226 -3.938487 -6.688992 -4.399541 -1.587700 </code></pre>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Predicting probabilities</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a><span class="fu">predict</span>(email_fit, test_data, <span class="at">type =</span> <span class="st">"prob"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  .pred_0 .pred_1
+    &lt;dbl&gt;   &lt;dbl&gt;
+1   0.993 0.00709
+2   0.998 0.00181
+3   0.981 0.0191 
+4   0.999 0.00124
+5   0.988 0.0121 
+6   0.830 0.170  </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Predicting spam (default)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a><span class="fu">predict</span>(email_fit, test_data) <span class="co"># Would be type = "class"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 785 × 1
+   .pred_class
+   &lt;fct&gt;      
+ 1 0          
+ 2 0          
+ 3 0          
+ 4 0          
+ 5 0          
+ 6 0          
+ 7 0          
+ 8 0          
+ 9 0          
+10 0          
+# ℹ 775 more rows</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="relate-back-to-the-model-concept" class="slide level2 smaller">
+<h2>Relate back to the model concept</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a>email_pred <span class="ot">&lt;-</span> </span>
+<span id="cb35-2"><a></a> <span class="fu">predict</span>(email_fit, test_data, <span class="at">type =</span> <span class="st">"prob"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a></a> <span class="fu">select</span>(<span class="at">spam_prob =</span> .pred_1) <span class="sc">|&gt;</span> </span>
+<span id="cb35-4"><a></a> <span class="fu">mutate</span>(<span class="at">spam_logodds =</span> </span>
+<span id="cb35-5"><a></a>         <span class="fu">predict</span>(email_fit, test_data, <span class="at">type =</span> <span class="st">"raw"</span>), </span>
+<span id="cb35-6"><a></a>        <span class="at">spam_odds =</span> <span class="fu">exp</span>(spam_logodds)) <span class="sc">|&gt;</span> </span>
+<span id="cb35-7"><a></a> <span class="fu">bind_cols</span>(<span class="fu">predict</span>(email_fit, test_data)) <span class="sc">|&gt;</span> </span>
+<span id="cb35-8"><a></a> <span class="co"># Append real data</span></span>
+<span id="cb35-9"><a></a> <span class="fu">bind_cols</span>(test_data <span class="sc">|&gt;</span> <span class="fu">select</span>(spam)) </span>
+<span id="cb35-10"><a></a>email_pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 785 × 5
+   spam_prob spam_logodds spam_odds .pred_class spam 
+       &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;       &lt;fct&gt;
+ 1   0.00709        -4.94   0.00714 0           0    
+ 2   0.00181        -6.31   0.00181 0           0    
+ 3   0.0191         -3.94   0.0195  0           0    
+ 4   0.00124        -6.69   0.00124 0           0    
+ 5   0.0121         -4.40   0.0123  0           0    
+ 6   0.170          -1.59   0.204   0           0    
+ 7   0.0410         -3.15   0.0427  0           0    
+ 8   0.139          -1.83   0.161   0           0    
+ 9   0.0617         -2.72   0.0657  0           0    
+10   0.0983         -2.22   0.109   0           0    
+# ℹ 775 more rows</code></pre>
+</div>
+</div></div>
+<ul>
+<li>The raw predictions are the log-odds.</li>
+<li>From which we can compute the odds.</li>
+<li>From which the probability is computed. Here it is done by <code>predict</code>.</li>
+<li>The <code>.pred_class</code> prediction is when the probability &gt; 0.5.
+<ul>
+<li>What does it mean for the odds and the log-odds?</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<p>Answers: odds &gt; 1, log-odds &gt; 0</p>
+</div>
+</section>
+<section id="another-look" class="slide level2 smaller">
+<h2>Another look</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a>email_pred <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(spam_prob)) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 785 × 5
+   spam_prob spam_logodds spam_odds .pred_class spam 
+       &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;       &lt;fct&gt;
+ 1     0.903       2.23       9.29  1           1    
+ 2     0.833       1.60       4.98  1           0    
+ 3     0.825       1.55       4.71  1           1    
+ 4     0.733       1.01       2.75  1           1    
+ 5     0.683       0.766      2.15  1           1    
+ 6     0.626       0.517      1.68  1           1    
+ 7     0.614       0.464      1.59  1           0    
+ 8     0.597       0.392      1.48  1           1    
+ 9     0.538       0.153      1.17  1           1    
+10     0.537       0.148      1.16  1           0    
+11     0.510       0.0404     1.04  1           0    
+12     0.491      -0.0345     0.966 0           0    
+13     0.490      -0.0407     0.960 0           0    
+14     0.489      -0.0453     0.956 0           1    
+15     0.483      -0.0698     0.933 0           1    
+16     0.473      -0.107      0.899 0           0    
+17     0.463      -0.150      0.861 0           0    
+18     0.457      -0.174      0.840 0           0    
+19     0.447      -0.212      0.809 0           0    
+20     0.447      -0.214      0.808 0           1    
+# ℹ 765 more rows</code></pre>
+</div>
+</div>
+<p>We see false positives and false negatives.</p>
+</section>
+<section id="evaluate-the-performance" class="slide level2 smaller">
+<h2>Evaluate the performance</h2>
+<p><strong>Receiver operating characteristic (ROC) curve</strong><sup>1</sup> which plots true positive rate (sensitivity) vs.&nbsp;false positive rate (1 - specificity)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>email_pred <span class="sc">|&gt;</span> <span class="fu">roc_curve</span>(</span>
+<span id="cb39-2"><a></a>    <span class="at">truth =</span> spam, spam_prob,</span>
+<span id="cb39-3"><a></a>    <span class="at">event_level =</span> <span class="st">"second"</span> <span class="co"># this adjusts the location above the diagonal</span></span>
+<span id="cb39-4"><a></a>  ) <span class="sc">|&gt;</span> <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="W08_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>Originally developed for operators of military radar receivers, hence the odd name.</p></li></ol></aside></section>
+<section id="evaluate-the-performance-1" class="slide level2 smaller">
+<h2>Evaluate the performance</h2>
+<p>Find the area under the curve (AUC).</p>
+<p>In calculus language:<br>
+<span class="math inline">\(\int_0^1 \text{TPR}(\text{FPR}) d\text{FPR}\)</span></p>
+<p>Remember:</p>
+<ul>
+<li>TPR = True Positive Rate = sensitivity</li>
+<li>FPR = False Positive Rate = 1 - specificity</li>
+<li>specificity is the true negative rate.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a></a>email_pred <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a></a>  <span class="fu">roc_auc</span>(</span>
+<span id="cb40-3"><a></a>    <span class="at">truth =</span> spam,</span>
+<span id="cb40-4"><a></a>    spam_prob,</span>
+<span id="cb40-5"><a></a>    <span class="at">event_level =</span> <span class="st">"second"</span> </span>
+<span id="cb40-6"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 roc_auc binary         0.857</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="feature-engineering" class="title-slide slide level1 center">
+<h1>Feature engineering</h1>
+
+</section>
+<section id="feature-engineering-1" class="slide level2 smaller">
+<h2>Feature engineering</h2>
+<ul>
+<li>We prefer simple models when possible, but <strong>parsimony</strong> does not mean sacrificing accuracy (or predictive performance) in the interest of simplicity</li>
+<li>Variables that go into the model and how they are represented are critical to the success of the model</li>
+<li><strong>Feature engineering</strong> is getting creative with our predictors in an effort to make them more useful for our model (to increase its predictive performance)</li>
+</ul>
+</section>
+<section id="modeling-workflow-revisited" class="slide level2 smaller">
+<h2>Modeling workflow, revisited</h2>
+<ul>
+<li><p>Create a <strong>recipe</strong> for feature engineering steps to be applied to the training data</p>
+<ul>
+<li>The <code>tidymodels</code> way (similar to a pipeline in python’s scikit-learn).</li>
+</ul></li>
+<li><p>Fit the model to the training data after these steps have been applied</p></li>
+<li><p>Using the model estimates from the training data, predict outcomes for the test data</p></li>
+<li><p>Evaluate the performance of the model on the test data</p></li>
+</ul>
+</section></section>
+<section>
+<section id="recipes" class="title-slide slide level1 center">
+<h1>Recipes</h1>
+
+</section>
+<section id="initiate-a-recipe" class="slide level2 smaller">
+<h2>Initiate a recipe</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a></a>email_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(</span>
+<span id="cb42-2"><a></a> spam <span class="sc">~</span> .,          <span class="co"># formula</span></span>
+<span id="cb42-3"><a></a> <span class="at">data =</span> train_data  <span class="co"># data to use for cataloguing names and types of variables</span></span>
+<span id="cb42-4"><a></a>)</span>
+<span id="cb42-5"><a></a><span class="fu">summary</span>(email_rec) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">21</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 21 × 4
+   variable     type      role      source  
+   &lt;chr&gt;        &lt;list&gt;    &lt;chr&gt;     &lt;chr&gt;   
+ 1 to_multiple  &lt;chr [3]&gt; predictor original
+ 2 from         &lt;chr [3]&gt; predictor original
+ 3 cc           &lt;chr [2]&gt; predictor original
+ 4 sent_email   &lt;chr [3]&gt; predictor original
+ 5 time         &lt;chr [1]&gt; predictor original
+ 6 image        &lt;chr [2]&gt; predictor original
+ 7 attach       &lt;chr [2]&gt; predictor original
+ 8 dollar       &lt;chr [2]&gt; predictor original
+ 9 winner       &lt;chr [3]&gt; predictor original
+10 inherit      &lt;chr [2]&gt; predictor original
+11 viagra       &lt;chr [2]&gt; predictor original
+12 password     &lt;chr [2]&gt; predictor original
+13 num_char     &lt;chr [2]&gt; predictor original
+14 line_breaks  &lt;chr [2]&gt; predictor original
+15 format       &lt;chr [3]&gt; predictor original
+16 re_subj      &lt;chr [3]&gt; predictor original
+17 exclaim_subj &lt;chr [2]&gt; predictor original
+18 urgent_subj  &lt;chr [3]&gt; predictor original
+19 exclaim_mess &lt;chr [2]&gt; predictor original
+20 number       &lt;chr [3]&gt; predictor original
+21 spam         &lt;chr [3]&gt; outcome   original</code></pre>
+</div>
+</div>
+<p>The object <code>email_rec</code> only includes <em>meta-data</em> (columns names and types)!</p>
+</section>
+<section id="remove-certain-variables" class="slide level2 smaller">
+<h2>Remove certain variables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a></a>email_rec <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a></a>  <span class="fu">step_rm</span>(from, sent_email, viagra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="feature-engineer-date" class="slide level2 smaller">
+<h2>Feature engineer date</h2>
+<ul>
+<li>The date-time may not be such an interesting predictor.
+<ul>
+<li>It could only bring in a general trend over time</li>
+</ul></li>
+<li>Often decomposing the date to the month or the day of the week (dow) is more interesting.
+<ul>
+<li><code>step_date</code> can easily extract these</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a>email_rec <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a></a> <span class="fu">step_rm</span>(from, sent_email, viagra) <span class="sc">|&gt;</span> </span>
+<span id="cb45-3"><a></a> <span class="fu">step_date</span>(time, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"dow"</span>, <span class="st">"month"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb45-4"><a></a> <span class="fu">step_rm</span>(time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="create-dummy-variables" class="slide level2 smaller">
+<h2>Create dummy variables</h2>
+<ul>
+<li>Use helper functions like <code>all_nominal</code> or <code>all_outcomes</code> from <code>tidymodels</code> for column selection.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a></a>email_rec <span class="sc">|&gt;</span></span>
+<span id="cb46-2"><a></a> <span class="fu">step_rm</span>(from, sent_email, viagra) <span class="sc">|&gt;</span> </span>
+<span id="cb46-3"><a></a> <span class="fu">step_date</span>(time, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"dow"</span>, <span class="st">"month"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb46-4"><a></a> <span class="fu">step_rm</span>(time) <span class="sc">|&gt;</span> </span>
+<span id="cb46-5"><a></a> <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="remove-zero-variance-variables" class="slide level2 smaller">
+<h2>Remove zero variance variables</h2>
+<p>Variables that contain only a single value.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a>email_rec <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a></a> <span class="fu">step_rm</span>(from, sent_email, viagra) <span class="sc">|&gt;</span> </span>
+<span id="cb47-3"><a></a> <span class="fu">step_date</span>(time, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"dow"</span>, <span class="st">"month"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb47-4"><a></a> <span class="fu">step_rm</span>(time) <span class="sc">|&gt;</span> </span>
+<span id="cb47-5"><a></a> <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb47-6"><a></a> <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="full-recipe" class="slide level2 smaller">
+<h2>Full recipe</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a>email_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(</span>
+<span id="cb48-2"><a></a> spam <span class="sc">~</span> .,          <span class="co"># formula</span></span>
+<span id="cb48-3"><a></a> <span class="at">data =</span> train_data  <span class="co"># data to use for cataloguing names and types of variables</span></span>
+<span id="cb48-4"><a></a>) <span class="sc">|&gt;</span></span>
+<span id="cb48-5"><a></a> <span class="fu">step_rm</span>(from, sent_email, viagra) <span class="sc">|&gt;</span> </span>
+<span id="cb48-6"><a></a> <span class="fu">step_date</span>(time, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"dow"</span>, <span class="st">"month"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb48-7"><a></a> <span class="fu">step_rm</span>(time) <span class="sc">|&gt;</span> </span>
+<span id="cb48-8"><a></a> <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb48-9"><a></a> <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>())</span>
+<span id="cb48-10"><a></a><span class="fu">print</span>(email_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Recipe ──────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Inputs </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of variables by role</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>outcome:    1
+predictor: 20</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Operations </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Variables removed: from, sent_email, viagra</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Date features from: time</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Variables removed: time</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Dummy variables from: all_nominal() and -all_outcomes()</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• Zero variance filter on: all_predictors()</code></pre>
+</div>
+</div>
+<p>The object <code>email_rec</code> only includes <em>meta-data</em> of the data frame it shall work on (a formula, columns names and types)!</p>
+</section></section>
+<section>
+<section id="building-workflows" class="title-slide slide level1 center">
+<h1>Building workflows</h1>
+
+</section>
+<section id="define-model" class="slide level2 smaller">
+<h2>Define model</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a></a>email_mod <span class="ot">&lt;-</span> <span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb62-2"><a></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>)</span>
+<span id="cb62-3"><a></a></span>
+<span id="cb62-4"><a></a>email_mod</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Logistic Regression Model Specification (classification)
+
+Computational engine: glm </code></pre>
+</div>
+</div>
+</section>
+<section id="define-workflow" class="slide level2 smaller">
+<h2>Define workflow</h2>
+<p><strong>Workflows</strong> bring together models and recipes so that they can be easily applied to both the training and test data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a></a>email_wflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb64-2"><a></a>  <span class="fu">add_model</span>(email_mod) <span class="sc">|&gt;</span> </span>
+<span id="cb64-3"><a></a>  <span class="fu">add_recipe</span>(email_rec)</span>
+<span id="cb64-4"><a></a>email_wflow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>══ Workflow ════════════════════════════════════════════════════════════════════
+Preprocessor: Recipe
+Model: logistic_reg()
+
+── Preprocessor ────────────────────────────────────────────────────────────────
+5 Recipe Steps
+
+• step_rm()
+• step_date()
+• step_rm()
+• step_dummy()
+• step_zv()
+
+── Model ───────────────────────────────────────────────────────────────────────
+Logistic Regression Model Specification (classification)
+
+Computational engine: glm </code></pre>
+</div>
+</div>
+</section>
+<section id="fit-model-to-training-data" class="slide level2 smaller">
+<h2>Fit model to training data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a></a>email_fit <span class="ot">&lt;-</span> email_wflow <span class="sc">|&gt;</span> </span>
+<span id="cb66-2"><a></a>  <span class="fu">fit</span>(<span class="at">data =</span> train_data)</span>
+<span id="cb66-3"><a></a></span>
+<span id="cb66-4"><a></a><span class="fu">tidy</span>(email_fit) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">27</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 27 × 5
+   term            estimate std.error statistic  p.value
+   &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+ 1 (Intercept)     -0.651     0.254     -2.57   1.03e- 2
+ 2 cc               0.0214    0.0229     0.936  3.49e- 1
+ 3 image           -2.99      1.31      -2.28   2.28e- 2
+ 4 attach           0.512     0.116      4.41   1.03e- 5
+ 5 dollar          -0.0651    0.0307    -2.12   3.40e- 2
+ 6 inherit          0.440     0.205      2.15   3.14e- 2
+ 7 password        -0.723     0.302     -2.39   1.67e- 2
+ 8 num_char         0.0585    0.0240     2.43   1.50e- 2
+ 9 line_breaks     -0.00548   0.00139   -3.94   8.24e- 5
+10 exclaim_subj     0.0998    0.268      0.373  7.09e- 1
+11 exclaim_mess     0.0103    0.00198    5.20   2.02e- 7
+12 to_multiple_X1  -2.56      0.339     -7.56   4.11e-14
+13 winner_yes       2.24      0.430      5.21   1.90e- 7
+14 format_X1       -0.953     0.157     -6.06   1.38e- 9
+15 re_subj_X1      -3.00      0.444     -6.76   1.39e-11
+16 urgent_subj_X1   3.69      1.15       3.20   1.37e- 3
+17 number_small    -0.840     0.162     -5.20   1.98e- 7
+18 number_big      -0.0915    0.244     -0.375  7.07e- 1
+19 time_dow_Mon    -0.326     0.303     -1.08   2.82e- 1
+20 time_dow_Tue     0.0813    0.275      0.296  7.67e- 1
+21 time_dow_Wed    -0.260     0.275     -0.946  3.44e- 1
+22 time_dow_Thu    -0.220     0.279     -0.788  4.31e- 1
+23 time_dow_Fri    -0.0612    0.275     -0.223  8.24e- 1
+24 time_dow_Sat     0.0646    0.292      0.221  8.25e- 1
+25 time_month_Feb   0.760     0.178      4.26   2.03e- 5
+26 time_month_Mar   0.506     0.178      2.85   4.40e- 3
+27 time_month_Apr -12.0     394.        -0.0306 9.76e- 1</code></pre>
+</div>
+</div>
+</section>
+<section id="make-predictions-for-test-data" class="slide level2 smaller">
+<h2>Make predictions for test data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a></a>email_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(email_fit, test_data, <span class="at">type =</span> <span class="st">"prob"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb68-2"><a></a>  <span class="fu">bind_cols</span>(test_data) </span>
+<span id="cb68-3"><a></a></span>
+<span id="cb68-4"><a></a>email_pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 785 × 23
+   .pred_0  .pred_1 spam  to_multiple from     cc sent_email time               
+     &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt;       &lt;fct&gt; &lt;int&gt; &lt;fct&gt;      &lt;dttm&gt;             
+ 1   0.993 0.00653  0     1           1         0 1          2012-01-01 18:55:06
+ 2   0.998 0.00169  0     0           1         1 1          2012-01-01 20:38:32
+ 3   0.987 0.0127   0     0           1         0 0          2012-01-02 06:42:16
+ 4   0.999 0.000825 0     0           1         1 0          2012-01-02 16:12:51
+ 5   0.991 0.00876  0     0           1         4 0          2012-01-02 17:45:36
+ 6   0.878 0.122    0     0           1         0 0          2012-01-02 22:55:03
+ 7   0.959 0.0414   0     0           1         0 0          2012-01-03 02:07:17
+ 8   0.852 0.148    0     0           1         0 0          2012-01-03 06:41:35
+ 9   0.938 0.0619   0     0           1         0 0          2012-01-03 17:02:35
+10   0.896 0.104    0     0           1         0 0          2012-01-03 12:14:51
+# ℹ 775 more rows
+# ℹ 15 more variables: image &lt;dbl&gt;, attach &lt;dbl&gt;, dollar &lt;dbl&gt;, winner &lt;fct&gt;,
+#   inherit &lt;dbl&gt;, viagra &lt;dbl&gt;, password &lt;dbl&gt;, num_char &lt;dbl&gt;,
+#   line_breaks &lt;int&gt;, format &lt;fct&gt;, re_subj &lt;fct&gt;, exclaim_subj &lt;dbl&gt;,
+#   urgent_subj &lt;fct&gt;, exclaim_mess &lt;dbl&gt;, number &lt;fct&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="evaluate-the-performance-2" class="slide level2 smaller">
+<h2>Evaluate the performance</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a></a>email_pred <span class="sc">|&gt;</span></span>
+<span id="cb70-2"><a></a>  <span class="fu">roc_curve</span>(</span>
+<span id="cb70-3"><a></a>    <span class="at">truth =</span> spam,</span>
+<span id="cb70-4"><a></a>    .pred_1,</span>
+<span id="cb70-5"><a></a>    <span class="at">event_level =</span> <span class="st">"second"</span></span>
+<span id="cb70-6"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb70-7"><a></a>  <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="W08_files/figure-revealjs/unnamed-chunk-36-1.png" width="960" class="r-stretch"></section>
+<section id="evaluate-the-performance-3" class="slide level2 smaller">
+<h2>Evaluate the performance</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a></a>email_pred <span class="sc">|&gt;</span></span>
+<span id="cb71-2"><a></a>  <span class="fu">roc_auc</span>(</span>
+<span id="cb71-3"><a></a>    <span class="at">truth =</span> spam,</span>
+<span id="cb71-4"><a></a>    .pred_1,</span>
+<span id="cb71-5"><a></a>    <span class="at">event_level =</span> <span class="st">"second"</span></span>
+<span id="cb71-6"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 roc_auc binary         0.860</code></pre>
+</div>
+</div>
+<p>This is better than our former model (without the feature engineering workflow), which had AUC = 0.857.</p>
+</section></section>
+<section>
+<section id="making-decisions" class="title-slide slide level1 smaller center">
+<h1>Making decisions</h1>
+
+</section>
+<section id="cutoff-probability-0.5" class="slide level2 smaller">
+<h2>Cutoff probability: 0.5</h2>
+<p>Suppose we decide to label an email as spam if the model predicts the probability of spam to be <strong>more than 0.5</strong>. (That is the default.)</p>
+<p><strong>Confusion matrix:</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a></a>cutoff_prob <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb73-2"><a></a>email_pred <span class="sc">|&gt;</span></span>
+<span id="cb73-3"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb73-4"><a></a>    <span class="at">spam      =</span> <span class="fu">if_else</span>(spam <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"Email is spam"</span>, <span class="st">"Email is not spam"</span>),</span>
+<span id="cb73-5"><a></a>    <span class="at">spam_pred =</span> <span class="fu">if_else</span>(.pred_1 <span class="sc">&gt;</span> cutoff_prob, <span class="st">"Email labelled spam"</span>, <span class="st">"Email labelled not spam"</span>)</span>
+<span id="cb73-6"><a></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb73-7"><a></a>  <span class="fu">count</span>(spam_pred, spam) <span class="sc">|&gt;</span></span>
+<span id="cb73-8"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> spam_pred, <span class="at">values_from =</span> n) <span class="sc">|&gt;</span> </span>
+<span id="cb73-9"><a></a>  <span class="fu">select</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="co"># reorder rows and cols to fit convention</span></span>
+<span id="cb73-10"><a></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">spam</th>
+<th style="text-align: right;">Email labelled spam</th>
+<th style="text-align: right;">Email labelled not spam</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Email is spam</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">54</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Email is not spam</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">707</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Sensitivity:</strong> 14/(14+54) = 0.206<br>
+<strong>Specificity:</strong> 707/(707+10) = 0.986</p>
+</section>
+<section id="cutoff-probability-0.25" class="slide level2 smaller">
+<h2>Cutoff probability: 0.25</h2>
+<p>Suppose we decide to label an email as spam if the model predicts the probability of spam to be <strong>more than 0.25</strong>.</p>
+<p><strong>Confusion matrix:</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">spam</th>
+<th style="text-align: right;">Email labelled spam</th>
+<th style="text-align: right;">Email labelled not spam</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Email is spam</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">36</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Email is not spam</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">656</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Sensitivity:</strong> 32/(32+36) = 0.471<br>
+<strong>Specificity:</strong> 656/(656 + 61) = 0.915</p>
+</section>
+<section id="cutoff-probability-0.75" class="slide level2 smaller">
+<h2>Cutoff probability: 0.75</h2>
+<p>Suppose we decide to label an email as spam if the model predicts the probability of spam to be <strong>more than 0.75</strong>.</p>
+<p><strong>Confusion matrix:</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">spam</th>
+<th style="text-align: right;">Email labelled spam</th>
+<th style="text-align: right;">Email labelled not spam</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Email is spam</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">65</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Email is not spam</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">716</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Sensitivity:</strong> 3/(3+65) = 0.044<br>
+<strong>Specificity:</strong> 716/(716+1) = 0.999</p>
+</section>
+<section id="check-our-very-first-model" class="slide level2 smaller">
+<h2>Check our very first model</h2>
+<p>We make a new simple recipe and draw workflow and fitting re-using the same specified logisitc regression model <code>email_mod</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a></a>simple_email_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(</span>
+<span id="cb74-2"><a></a> spam <span class="sc">~</span> num_char,          <span class="co"># formula</span></span>
+<span id="cb74-3"><a></a> <span class="at">data =</span> train_data  <span class="co"># data to use for cataloguing names and types of variables</span></span>
+<span id="cb74-4"><a></a>)</span>
+<span id="cb74-5"><a></a>simple_email_pred <span class="ot">&lt;-</span> </span>
+<span id="cb74-6"><a></a> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb74-7"><a></a> <span class="fu">add_model</span>(email_mod) <span class="sc">|&gt;</span> </span>
+<span id="cb74-8"><a></a> <span class="fu">add_recipe</span>(simple_email_rec) <span class="sc">|&gt;</span> </span>
+<span id="cb74-9"><a></a> <span class="fu">fit</span>(<span class="at">data =</span> train_data) <span class="sc">|&gt;</span> </span>
+<span id="cb74-10"><a></a> <span class="fu">predict</span>(test_data, <span class="at">type =</span> <span class="st">"prob"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb74-11"><a></a> <span class="fu">bind_cols</span>(test_data <span class="sc">|&gt;</span> <span class="fu">select</span>(spam,num_char,time)) </span>
+<span id="cb74-12"><a></a>simple_email_pred </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 785 × 5
+   .pred_0 .pred_1 spam  num_char time               
+     &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt; &lt;dttm&gt;             
+ 1   0.889  0.111  0        4.84  2012-01-01 18:55:06
+ 2   0.936  0.0644 0       15.1   2012-01-01 20:38:32
+ 3   0.945  0.0547 0       18.0   2012-01-02 06:42:16
+ 4   0.989  0.0113 0       45.8   2012-01-02 16:12:51
+ 5   0.922  0.0784 0       11.4   2012-01-02 17:45:36
+ 6   0.868  0.132  0        1.48  2012-01-02 22:55:03
+ 7   0.933  0.0667 0       14.4   2012-01-03 02:07:17
+ 8   0.864  0.136  0        0.978 2012-01-03 06:41:35
+ 9   0.905  0.0953 0        7.79  2012-01-03 17:02:35
+10   0.864  0.136  0        0.978 2012-01-03 12:14:51
+# ℹ 775 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="evaluate-the-performance-4" class="slide level2 smaller">
+<h2>Evaluate the performance</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a></a>simple_email_pred <span class="sc">|&gt;</span> <span class="fu">roc_curve</span>(</span>
+<span id="cb76-2"><a></a>    <span class="at">truth =</span> spam, </span>
+<span id="cb76-3"><a></a>    .pred_1,</span>
+<span id="cb76-4"><a></a>    <span class="at">event_level =</span> <span class="st">"second"</span> <span class="co"># this adjusts the location above the diagonal</span></span>
+<span id="cb76-5"><a></a>  ) <span class="sc">|&gt;</span> <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="W08_files/figure-revealjs/unnamed-chunk-42-1.png" width="960" class="r-stretch"><div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 roc_auc binary         0.753</code></pre>
+</div>
+</div>
+<p><strong>Conclusion:</strong> It is not as good compared to AUC 0.86</p>
+</section>
+<section id="predict-penguins-sex" class="slide level2 scrollable smaller">
+<h2>Predict Penguins’ Sex</h2>
+<p>Following all the steps introduced before:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb78-2"><a></a><span class="co"># Put 80% of the data into the training set </span></span>
+<span id="cb78-3"><a></a>peng_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> <span class="fl">0.80</span>)</span>
+<span id="cb78-4"><a></a><span class="co"># Create data frames for the two sets:</span></span>
+<span id="cb78-5"><a></a>train_data_peng <span class="ot">&lt;-</span> <span class="fu">training</span>(peng_split)</span>
+<span id="cb78-6"><a></a>test_data_peng  <span class="ot">&lt;-</span> <span class="fu">testing</span>(peng_split)</span>
+<span id="cb78-7"><a></a></span>
+<span id="cb78-8"><a></a><span class="co"># Create a recipe for the model</span></span>
+<span id="cb78-9"><a></a>peng_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(</span>
+<span id="cb78-10"><a></a> sex <span class="sc">~</span> .,</span>
+<span id="cb78-11"><a></a> <span class="at">data =</span> train_data_peng </span>
+<span id="cb78-12"><a></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb78-13"><a></a> <span class="fu">step_naomit</span>(<span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb78-14"><a></a> <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb78-15"><a></a> <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>())</span>
+<span id="cb78-16"><a></a></span>
+<span id="cb78-17"><a></a><span class="co"># Create a logistic regression model </span></span>
+<span id="cb78-18"><a></a>peng_mod <span class="ot">&lt;-</span> <span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb78-19"><a></a> <span class="fu">set_engine</span>(<span class="st">"glm"</span>)</span>
+<span id="cb78-20"><a></a></span>
+<span id="cb78-21"><a></a><span class="co"># Create a workflow</span></span>
+<span id="cb78-22"><a></a>peng_wflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb78-23"><a></a> <span class="fu">add_model</span>(peng_mod) <span class="sc">|&gt;</span> </span>
+<span id="cb78-24"><a></a> <span class="fu">add_recipe</span>(peng_rec)</span>
+<span id="cb78-25"><a></a></span>
+<span id="cb78-26"><a></a><span class="co"># Fitting model to training data</span></span>
+<span id="cb78-27"><a></a>peng_fit <span class="ot">&lt;-</span> peng_wflow <span class="sc">|&gt;</span> </span>
+<span id="cb78-28"><a></a> <span class="fu">fit</span>(<span class="at">data =</span> train_data_peng)</span>
+<span id="cb78-29"><a></a></span>
+<span id="cb78-30"><a></a><span class="co"># Make predictions for test data</span></span>
+<span id="cb78-31"><a></a>peng_pred <span class="ot">&lt;-</span> peng_fit <span class="sc">|&gt;</span> </span>
+<span id="cb78-32"><a></a> <span class="fu">predict</span>(test_data_peng, <span class="at">type =</span> <span class="st">"prob"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb78-33"><a></a> <span class="fu">bind_cols</span>(test_data_peng)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="penguins-evaluate-performance" class="slide level2 smaller">
+<h2>Penguins: Evaluate Performance</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a></a>peng_pred <span class="sc">|&gt;</span> <span class="fu">roc_curve</span>(</span>
+<span id="cb79-2"><a></a>    <span class="at">truth =</span> sex,  .pred_male, <span class="at">event_level =</span> <span class="st">"second"</span></span>
+<span id="cb79-3"><a></a>  ) <span class="sc">|&gt;</span>  <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="W08_files/figure-revealjs/unnamed-chunk-45-1.png" width="960" class="r-stretch"><div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a></a>peng_pred <span class="sc">|&gt;</span> <span class="fu">roc_auc</span>(</span>
+<span id="cb80-2"><a></a> <span class="at">truth =</span> sex, .pred_male, <span class="at">event_level =</span> <span class="st">"second"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 roc_auc binary         0.958</code></pre>
+</div>
+</div>
+</section>
+<section id="penguins-cutoff-probability-0.5" class="slide level2 smaller">
+<h2>Penguins: Cutoff probability 0.5</h2>
+<p><strong>Confusion matrix:</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a></a>cutoff_prob <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb82-2"><a></a>peng_pred <span class="sc">|&gt;</span></span>
+<span id="cb82-3"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb82-4"><a></a>    <span class="at">sex      =</span> <span class="fu">if_else</span>(sex <span class="sc">==</span> <span class="st">"male"</span>, <span class="st">"Penguin is male"</span>, <span class="st">"Penguin is female"</span>),</span>
+<span id="cb82-5"><a></a>    <span class="at">sex_pred =</span> <span class="fu">if_else</span>(.pred_male <span class="sc">&gt;</span> cutoff_prob, <span class="st">"Penguin labelled male"</span>, <span class="st">"Penguin labelled female"</span>)</span>
+<span id="cb82-6"><a></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb82-7"><a></a>  <span class="fu">count</span>(sex_pred, sex) <span class="sc">|&gt;</span></span>
+<span id="cb82-8"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> sex_pred, <span class="at">values_from =</span> n) <span class="sc">|&gt;</span> </span>
+<span id="cb82-9"><a></a>  <span class="fu">select</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="co"># reorder rows and cols to fit convention</span></span>
+<span id="cb82-10"><a></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">sex</th>
+<th style="text-align: right;">Penguin labelled male</th>
+<th style="text-align: right;">Penguin labelled female</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Penguin is male</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Penguin is female</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">28</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Sensitivity:</strong> 31/(31+4) = 0.886<br>
+<strong>Specificity:</strong> 28/(28+4) = 0.875</p>
+</section>
+<section id="penguins-cutoff-probability-0.25" class="slide level2 smaller">
+<h2>Penguins: Cutoff probability 0.25</h2>
+<p><strong>Confusion matrix:</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a></a>cutoff_prob <span class="ot">&lt;-</span> <span class="fl">0.25</span></span>
+<span id="cb83-2"><a></a>peng_pred <span class="sc">|&gt;</span></span>
+<span id="cb83-3"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb83-4"><a></a>    <span class="at">sex      =</span> <span class="fu">if_else</span>(sex <span class="sc">==</span> <span class="st">"male"</span>, <span class="st">"Penguin is male"</span>, <span class="st">"Penguin is female"</span>),</span>
+<span id="cb83-5"><a></a>    <span class="at">sex_pred =</span> <span class="fu">if_else</span>(.pred_male <span class="sc">&gt;</span> cutoff_prob, <span class="st">"Penguin labelled male"</span>, <span class="st">"Penguin labelled female"</span>)</span>
+<span id="cb83-6"><a></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb83-7"><a></a>  <span class="fu">count</span>(sex_pred, sex) <span class="sc">|&gt;</span></span>
+<span id="cb83-8"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> sex_pred, <span class="at">values_from =</span> n) <span class="sc">|&gt;</span> </span>
+<span id="cb83-9"><a></a>  <span class="fu">select</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="co"># reorder rows and cols to fit convention</span></span>
+<span id="cb83-10"><a></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">sex</th>
+<th style="text-align: right;">Penguin labelled male</th>
+<th style="text-align: right;">Penguin labelled female</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Penguin is male</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Penguin is female</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Sensitivity:</strong> 34/(34+1) = 0.971<br>
+<strong>Specificity:</strong> 25/(25+7) = 0.781</p>
+</section>
+<section id="penguins-cutoff-probability-0.75" class="slide level2 smaller">
+<h2>Penguins: Cutoff probability 0.75</h2>
+<p><strong>Confusion matrix:</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a></a>cutoff_prob <span class="ot">&lt;-</span> <span class="fl">0.75</span></span>
+<span id="cb84-2"><a></a>peng_pred <span class="sc">|&gt;</span></span>
+<span id="cb84-3"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb84-4"><a></a>    <span class="at">sex      =</span> <span class="fu">if_else</span>(sex <span class="sc">==</span> <span class="st">"male"</span>, <span class="st">"Penguin is male"</span>, <span class="st">"Penguin is female"</span>),</span>
+<span id="cb84-5"><a></a>    <span class="at">sex_pred =</span> <span class="fu">if_else</span>(.pred_male <span class="sc">&gt;</span> cutoff_prob, <span class="st">"Penguin labelled male"</span>, <span class="st">"Penguin labelled female"</span>)</span>
+<span id="cb84-6"><a></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb84-7"><a></a>  <span class="fu">count</span>(sex_pred, sex) <span class="sc">|&gt;</span></span>
+<span id="cb84-8"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> sex_pred, <span class="at">values_from =</span> n) <span class="sc">|&gt;</span> </span>
+<span id="cb84-9"><a></a>  <span class="fu">select</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="co"># reorder rows and cols to fit convention</span></span>
+<span id="cb84-10"><a></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">sex</th>
+<th style="text-align: right;">Penguin labelled male</th>
+<th style="text-align: right;">Penguin labelled female</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Penguin is male</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Penguin is female</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Sensitivity:</strong> 29/(29+6) = 0.829<br>
+<strong>Specificity:</strong> 30/(30+2) = 0.938</p>
+
+<div class="quarto-auto-generated-content">
+<p><img src="img/ConstructorUniversity.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://github.com/CU-F23-MDSSB-01-Concepts-Tools">CU-F23-MDSSB-DSCO-02: Data Science Concepts</a></p>
+</div>
+</div>
+</section></section>
+
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: true,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp("https:\/\/CU-F24-MDSSB-01-Concepts-Tools\.github\.io\/Website\/");
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
