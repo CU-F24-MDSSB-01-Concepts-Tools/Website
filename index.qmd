@@ -2,7 +2,18 @@
 title: "Data Science Concepts / Data Science Tools"
 ---
 
-:::{.callout-important collapse=false appearance='default' icon=true}
+:::{.callout-warning collapse=true appearance='default' icon=true}
+## Note for students of **Master program: Data Science for Society and Business (online)**
+
+This is NOT the official syllabus of the [Master program: Data Science for Society and Business (online)](https://constructor.university/programs/online-programs/data-science-for-society-and-business)! 
+
+You have modules with the same names in your program and also the instructors are the same, but the Modules are different! Look it up in your [DSSB (online) handbook](https://constructor.university/sites/default/files/2024-06/DSSB_MSc_2024.pdf). Most importantly, your course will give you more ECTS, so do NOT count on the passing and grading requirements communicated here, they are not valid for you!
+
+You are free to also use the material provided here, but look in the handbook and the learning platform for the official information!
+:::
+
+
+:::{.callout-important collapse=true appearance='default' icon=true}
 ## Developing Syllabus
 This syllabus may change during the course of the semester with some additions and clarifications.   
 All substantial changes will marked here with date. 
@@ -37,26 +48,26 @@ The Concepts treated in the lectures are applied in exercises and homework in th
 
 **Data Science Concepts:**   
 Monday **09:45-11:00** and **11:15-12:30**    
-Location: **East Hall Room 1** in-person  
-Video streaming in Teams provided for late-arriving students: Team **F23_MDSSB-DSOC-02_Data Science Concepts**, General Channel
+Location: **East Hall 2** in-person  
+*Video streaming* (self-organized) in Microsoft Teams provided for late-arriving students: Team **F24_MDSSB-DSOC-02_Data Science Concepts**, General Channel 
 
 **Data Science Tools:**   
 Thursday **09:45-11:00** and **11:15-12:30**    
-Location: **East Hall Room 2** in-person  
-Video streaming in Teams provided for late-arriving students: Teams **F23_MDSSB-MET-01-A_Data Science Tools in R** and **F23_MDSSB-MET-01-B_Data Science Tools in python**, General Channel
+Location: **see campusnet** in-person  
+*Video streaming* (self-organized) in Teams provided for late-arriving students: Teams **F24_MDSSB-MET-01-A_Data Science Tools in R** and **F24_MDSSB-MET-01-B_Data Science Tools in python**, General Channel
 
 Note: The R and python courses are provided in the same time slot. Details in the schedule. 
 
 ## Instructors
 
-Concepts:   
+Concepts: 
 [**Jan Lorenz**](http://janlo.de) Email: <jlorenz@constructor.univeristy>
 
-Tools in R:   
+Tools in R and python:   
 [**Armin Müller**](https://info.constructor.university/directory/armm%C3%BCller) Email: <armmueller@constructor.university>
 
-Tools in python:   
-[**Peter Steiglechner**](https://www.leibniz-zmt.de/de/tropenforschung/mitarbeiterinnen-mitarbeiter/peter-steiglechner.html) Email: <psteiglechner@constructor.university>
+Student Assistants: *to be updated when contracted*
+
 
 ## Format and Workload
 
@@ -109,6 +120,12 @@ Our main goal to help you build a good basis for your more and more independent 
 
 ## Examination and Assessment
 
+:::{.callout-warning collapse=true appearance='default' icon=true}
+## For students of DSSB (online)
+These information does NOT apply for you, check your handbook. 
+:::
+
+
 ### *Concepts* Module
 
 Assessment Type: **Written Examination**   
@@ -128,14 +145,14 @@ Programming and analysis assignments will appear step by step during the courses
 To pass the module you have to solve half of them by the end of the semester. 
 
 Assessment Type: **Project Report**   
-Length: 4000 - 5000 words
+Length: 4000 - 5000 words (This is a guideline, not a strict rule! Content counts, we will not count words.)
 Weight: 100%
 Scope: All intended learning outcomes of the module.  
 *More information of project formats and a rubric for the grading will be provided later.*
 
-Bonus option: Students receive **0.33 points** grade improvements on their project grade (on the numerical grade as specified here <https://constructor.university/sites/default/files/2023-02/Grading_Table_2023.pdf>) when all assignments are solved by the end of the semester.  (Note, the bonus is not necessary to reach the best grade in the module.)
+Bonus option: Students receive **0.33 points** grade improvements on their project grade on the numerical grade as specified in the [Grading Table](https://constructor.university/sites/default/files/2023-02/Grading_Table_2023.pdf) when all assignments are solved by the end of the semester.  (Note, the bonus is not necessary to reach the best grade in the module.)
 
-All assignments and the final project must be delivered in personalized repositories in the GitHub organization <https://github.com/CU-F23-MDSSB-01-Concepts-Tools>.
+All assignments and the final project must be delivered in personalized repositories in the [GitHub organization](https://github.com/CU-F24-MDSSB-01-Concepts-Tools).
 
 
 ## Module Policies
@@ -151,8 +168,7 @@ There are no formal requirement about attendance and active participation. Howev
 * Persistence (you don't need to understand everything immediately, but stay engaged, try again, confusion shows that you pay attention)
 
 ## Academic Integrity
-All involved parties (professors and lecturers, instructors and students) are expected to abide by the word and spirit of the "Code of Academic Integrity": 
-<https://constructor.university/student-life/student-services/university-policies/academic-policies/code-of-academic-integrity>. Violations of the Code might be brought to the attention of the Academic Integrity Committee.
+All involved parties (professors and lecturers, instructors and students) are expected to abide by the word and spirit of the ["Code of Academic Integrity"](https://constructor.university/student-life/student-services/university-policies/academic-policies/code-of-academic-integrity). Violations of the Code might be brought to the attention of the Academic Integrity Committee.
 
 ## Artifical Intelligence (AI) Use Policy
 
@@ -160,9 +176,9 @@ This policy covers any generative AI tool, such as ChatGPT, Elicit, etc. This in
 
 We instructors encouraged to using and exploring AI tools for these purposes: 
 
-  - **Learning by dialog with a chatbot.** AI chatbots can be very helpful to explain you concepts *on your desired level* and get a feeling about how certain topics are treated. You can ask for an easier or more detailed explanation or focus on certain aspects. Note: The capabilities are limited and you likely receive a lot of false information! Using chatbots should remain a small part of your learning process. Rule of thumb: Spend not more than 25% of the learning time with chatting. There is no way around reading textbooks, reading software documentation, learning and understanding concepts, searching for help online, asking instructors or fellow students.
-  - **Have code snippets written.** Tools like GitHub Copilot (free to use for students and teachers in VSCode) are heavily used and currently change code-writing. They can speed up writing your code. However, they do not deliver always correct solutions. There is no way around understanding yourself what a code is doing! Do not spend endless hours asking for new code with new prompts, spend time understanding a language and the functions and objects you are using! Copilots can be a great help to get a skeleton of code and an idea how your solution *might* look, they rarely deliver the complete code. Expect that the code does not work, expect that the code seems to works but the results are wrong. You are 100% accountable for the code you produce, with or without the help of a copilot!
-  - **Have a draft text snippet written.** Data science is also about formulating and describing research questions, describing data, documenting code, interpreting results, and deriving conclusion form the results. This is all verbal text and chatbots are good in writing text which often appears well readable. You can use this to inspire yourself and to polish and improve your texts. However, you are 100% accountable for the text you deliver. You are expected to know what your text is about and to be able to answer questions about what your text means! In text generated purely by a chatbot it is often evident that you do not. We consider such cases worse than incomplete but sensible text. Also text written by chatbots is often very generic and less specific. In general, we value more specific text higher than generic text. Large parts of very generic text is considered worse than a shorter more specific text. In extreme case, a long very generic text will be considered worse than no text at all
+  - **Learning by dialog with a chatbot.** AI chatbots can be very helpful to explain you concepts *on your desired level* and get a feeling about how certain topics are treated. You can ask for an easier or more detailed explanation or focus on certain aspects. Note: The capabilities are limited and you likely receive a lot of false information! An AI chat can be a good entry point to learn about a specific topic but the more specific it gets the more likely it is that AI will start to deliver useless or wrong answers. Using chatbots should remain a small part of your learning process. Rule of thumb: Spend not more than 25% of the learning time with chatting. There is no way around reading textbooks, reading software documentation, learning and understanding concepts, searching for help online, asking instructors or fellow students.
+  - **Have code snippets written.** Tools like GitHub Copilot can be a great help in coding! You are encouraged to have them available and try them. The GitHub Copilot is free to use for students and teachers who joined [GitHub Education](https://github.com/education)), they can be integrated in your programming IDE like RStudio and VSCode. Copilots can speed up writing. However, they may deliver bad code. There is no way around understanding yourself what code is doing! Do not spend endless hours asking for new code with new prompts, spend time understanding a language and the functions and objects you are using! AI chatbots and Copilots can also help you to understand code. Copilots can be a great help to get a skeleton of code and an idea how your solution *might* look, they rarely deliver the complete code, expect that the code does not work, expect that the code seems to works but the results are wrong. **You are 100% accountable for the code you produce, with or without the help of a copilot!**
+  - **Have a draft text snippet written.** Formulating and describing research questions, describing data, documenting code, interpreting results, and deriving conclusion form the results is an essential part of data science not direclty related to coding but verbal text. Chatbots are good in writing text which often appears as well readable. You can use this to inspire you and to polish and improve your texts. However, you are 100% accountable for the text you deliver. You are expected to know what your text is about and to be able to answer questions about what your text means! With text generated purely by chatbots, it is oftenn evident for us that students do not understand. We consider such cases worse than incomplete but sensible self-written text. Text written by chatbots is often very generic and not specific. In general, we value more specific text higher than generic text. Large parts of very generic text is considered worse than a shorter more specific text. 
   - Note: **Philosophical and legal questions around the training and use of chatbots and code copilots are controversially contested and re-examined constantly!** We encourage to engage with such questions and become aware of arguments and debates.
 
 If any part of this AI policy is confusing or uncertain, please reach out to us for a conversation before submitting your work.
