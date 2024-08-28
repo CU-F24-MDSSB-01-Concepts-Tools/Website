@@ -20,12 +20,9 @@ website:
       - text: "**Schedule**"
         file: schedule.qmd
       - literature.qmd
-      - section: "Homework"
-        contents:
-        - hw-01.qmd
-        - hw-02.qmd
-        - hw-topics.qmd
-        - help.qmd
+      - text: "Homework"
+      - text: "Help"
+      - file: help.qmd
         - reports.qmd
       
 format:
