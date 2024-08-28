@@ -7,7 +7,7 @@
     "text": "All the materials here are freely accessible, many are community standards. The Schedule might refer to specific sections in these materials.",
     "crumbs": [
       "Syllabus",
-      "Learning Resources"
+      "Literature"
     ]
   },
   {
@@ -18,7 +18,7 @@
     "text": "1 R\n\nR for Data Science (2nd Edition) https://r4ds.hadley.nz// by Hadley Wickham, Garrett Grolemand, Mine Çetinkaya-Rundel and the R data science community around is our core resource for self-learning data science with R using tidyverse tools.\nTidy Modeling with R https://www.tmwr.org/ by Max Kuhn and Julia Silge is the resource for learning to work with tidymodels building upon the tidyverse tools.\nPart of the course builds on or be inspired by material in Data Science in the Box https://datasciencebox.org/ by Mine Çetinkaya-Rundel and the data science education community around. You can also use the website for accompanying self-study on selected topics.",
     "crumbs": [
       "Syllabus",
-      "Learning Resources"
+      "Literature"
     ]
   },
   {
@@ -29,7 +29,7 @@
     "text": "2 python\n\nPython Data Science Handbook https://jakevdp.github.io/PythonDataScienceHandbook/ by Jake VanderPlas is a core resource for data science with python. Also there is a good video playlist https://www.youtube.com/playlist?list=PLWKjhJtqVAbkmRvnFmOd4KhDdlK1oIq23 and a 4-hour “full-course” video https://youtu.be/rfscVS0vtbw.",
     "crumbs": [
       "Syllabus",
-      "Learning Resources"
+      "Literature"
     ]
   },
   {
@@ -40,7 +40,7 @@
     "text": "3 Data Visualization\nggplot2: Elegant Graphics for Data Analysis https://ggplot2-book.org is a resource on understanding the logic of ggplot better.\nA great source for Graphic Design with ggplot2: https://rstudio-conf-2022.github.io/ggplot2-graphic-design/. Look at the Introduction to see what cool things are possible. Work through Concepts of the ggplot2 Package Pt. 1 and Concepts of the ggplot2 Package Pt. 2 for a full introduction to all of ggplot2.\nWebsites on how to decide for what visualization to choose:\nhttps://www.data-to-viz.com/\nhttps://datavizcatalogue.com/search.html",
     "crumbs": [
       "Syllabus",
-      "Learning Resources"
+      "Literature"
     ]
   },
   {
@@ -51,7 +51,7 @@
     "text": "4 Mathematics\nA video on how to read math https://www.youtube.com/watch?v=Kp2bYWRQylk. Essential to start reading text including math.\nAs a data scientist it is necessary to be able to delve into mathematical concepts in some depth. It is not necessary to become a mathematician and proof theorems. A lot can be learned when needed using short videos, wikipedia, and practice and play using your favorite programming environment. However, it makes sense to have an accessible text books to look up and learn some topics in a more systematic way.\nThe Open Intro project and their partner programs provide such math textbooks for free (you may need to “buy” the pdf of 0 EUR or a donation of your choice).\n\nStudy Pre-Calculus to refresh your basic math skill on functions including polynomials; root, radical, and power function, and exponential and logarithmic functions.\nGain the basic concepts of Calculus including limits, derivatives, and integrals.\nGain the basic concepts of Linear Algebra and how to read and understand matrix-language. Linear models, PCA and many other data science tools are most systematically understood using matrix language. On linear algebra this is a good video resource about the essence of linear algebra: https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab.\n\nFor Probability Theory the open textbook for the course Probability for Data Science is very useful.",
     "crumbs": [
       "Syllabus",
-      "Learning Resources"
+      "Literature"
     ]
   },
   {
@@ -62,7 +62,7 @@
     "text": "5 Statistics\nSome statisticians say that data science is statistics. There is some truth in it. However, data science is more than statistics and statiscics has a certain view point. To get a deeper understanding of it is useful to study data science concepts through the lense of statistics.\nThe Open Intro project also provide good open and free statistics textbooks.\nMany concepts in data science can be described as statistical learning. A core and very accessible resource for it is\nAn Introduction to Statistical Learning which provides a version with code in R as well as in python.",
     "crumbs": [
       "Syllabus",
-      "Learning Resources"
+      "Literature"
     ]
   },
   {
@@ -73,7 +73,7 @@
     "text": "6 Project-based learning\nProject-based learning (especially in programming) means to learn things by reproducing a project (or make your own project in a very similar way). This is a resource for various projects in various languages: https://github.com/practical-tutorials/project-based-learning/tree/master",
     "crumbs": [
       "Syllabus",
-      "Learning Resources"
+      "Literature"
     ]
   },
   {
@@ -84,7 +84,7 @@
     "text": "7 The Art of Data Science\nThe Art of Data Science https://bookdown.org/rdpeng/artofdatascience/ is a great resource for learning about the process of data science and how to communicate about it.",
     "crumbs": [
       "Syllabus",
-      "Learning Resources"
+      "Literature"
     ]
   },
   {
@@ -974,7 +974,7 @@
     "text": "In the homework repositories following Homework 02 you are to create reports in quarto yourself.\nThese are suggestions how you create such a report.",
     "crumbs": [
       "Syllabus",
-      "Create a homework report"
+      "Report writing"
     ]
   },
   {
@@ -985,7 +985,7 @@
     "text": "1 YAML\nA useful YAML header for a homework report is\n---\ntitle: \"Homework 02\"\nformat:   \n  html:                     \n    standalone: true        # quarto will render to a html-file with a header \n                            # and all css and javascript included (no extra directory with files for these needed)\n    embed-resources: true   # The html will also embed all figures you produce \n                            # (no extra directory with files for these needed)\n    code-fold: true         # Code does not appear visually in the report, but can be \"folded out\"\n    number-sections: true   # Usually you want to number the sections in a report\n    toc : true              # Table of contents make navigation in longer files easier\n---\n\n\n\n\n\n\nWriting in a jupyter notebook (.ipynb)\n\n\n\n\n\nInstead of a .qmd file you can also write in a jupyter notebook (.ipynb) and render this file with quarto. To that end you start your notebook with the YAML header above in a raw cell.",
     "crumbs": [
       "Syllabus",
-      "Create a homework report"
+      "Report writing"
     ]
   },
   {
@@ -996,7 +996,7 @@
     "text": "2 After the YAML\nTypically, you have a chunk loading your packages directly after the YAML header.\nThis is for an R report:\n```{r}\n#| label: load-packages  \nlibrary(tidyverse) # You always need the tidyverse\n\n# More helpful packages \nlibrary(patchwork) # for combining plots\n```",
     "crumbs": [
       "Syllabus",
-      "Create a homework report"
+      "Report writing"
     ]
   },
   {
@@ -1007,7 +1007,7 @@
     "text": "3 Structuring your report\nMake headers with # and maybe ## for second level headers.",
     "crumbs": [
       "Syllabus",
-      "Create a homework report"
+      "Report writing"
     ]
   },
   {
@@ -1347,7 +1347,7 @@
     "text": "Do homework together with other students. Working together is encouraged!\nCommit and push your intermediate results often, instructors may check your code directly.\nRead error messages carefully! Often they are informative or even tell you what to do! (Hint: Uninformative error messages are also common. Maybe you get at least a hint where the problem lies. You will become more advanced on this, error messages which are not helpful now may become helpful in the future.)\nDo the homework before the next Data Science Tools Session and prepare questions to ask in class.\nIt is absolutely OK to decide to ask instructors for help outside of class. We try to care, if we are not too busy with other things. If you do, please do first: Document and describe where you get stuck as precise as possible. Try to find out why as much as possible.\n\nThe instructors prefer that you ask for help in the Discussions section of the Organization repo https://github.com/CU-F23-MDSSB-01-Concepts-Tools/Organization/discussions. Only registered students and instructors can see these discussions. Maybe, there is already an answer.\nYou can also write to instructors directly. Use a Teams chat! You can also write an email.",
     "crumbs": [
       "Syllabus",
-      "Need help for Homework?"
+      "Help"
     ]
   },
   {
@@ -1358,7 +1358,7 @@
     "text": "Homework Projects are essential for mastering the Data Science Concets and Tools courses!\n\n\n\nRead the following to understand its purpose, format, workflow, and its role in the assessment. Start right a way to work on homework projects! That’s doing data science.",
     "crumbs": [
       "Syllabus",
-      "Homework Projects"
+      "Homework"
     ]
   },
   {
@@ -1369,7 +1369,7 @@
     "text": "1 Purpose\nYou learn to\n\nunderstand and answer data science questions\napply data science concepts and use the basic data science skills\n\nimporting data\ntidying data\ntransforming data\nvisualizing data\napplying models for different purposes like\n\ndescribing, exploring, and predicting data\nunderstanding the data generating process\ninferring insights about the world from data\n\n\ndelve into a certain domain with each project\ndevelop, ask, and answer your own data science questions\ncommunicate your results and insights in a reproducible way with quarto\ncreate a professionally looking Project Report for each Homework Project\nget into the basics of version control with git and GitHub",
     "crumbs": [
       "Syllabus",
-      "Homework Projects"
+      "Homework"
     ]
   },
   {
@@ -1380,7 +1380,7 @@
     "text": "2 Format\nA Homework Project is inbetween of a simple Homework Assignment to apply what you just learned and a fully fledged Data Science Project.\nYou work on projects towards milestones. All projects require some data import, some tidying of data, some exploratory data analysis with visualizations and computations of summary statistics. You will start with basic things as first milestones in more than one project. You do not finish one project after the other but you pick up work on some projects again when you learned new methods. Homework Projects and Milestones will be provided along the course. showing you what you should be able to do when. Finally, a Homework Project develop towards a readable Project Report on a certain topic.\nTask of the Homework can range from\n\nguided tasks to learn basic things, over\ntasks to answer a particular data science question (where you choose analysis, visualization and other output yourself), to\nopen tasks where you formulate data science questions yourself.",
     "crumbs": [
       "Syllabus",
-      "Homework Projects"
+      "Homework"
     ]
   },
   {
@@ -1391,7 +1391,7 @@
     "text": "3 Technical Setup: The data science process in practice!\n\n\n\n\n\n\nNeeded infrastructure\n\n\n\n\n\nOn your computer:\n\nA terminal as Command Line Interface (CLI) where you can run git, quarto, R, and python3\nIntegrated Development Environments (IDE): For R we use RStudio, for python VS Code. When well configured, you run git and quarto mostly within the IDE and only occasionally from the Terminal (also included in your IDE).\n\nIn the cloud: - Be registered in Data Science Concepts and Data Science Tools at Constructor University - Have a GitHub account - Have your GitHub user registered as a member of the GitHub-Organization\n\n\n\n\nHomework Projects are git-repositories hosted GitHub in the GitHub-Organization of the courses.\n\nEvery registered student receives one individual repository for each project. Only the student and the instructors can see these repositories. You need to become a member of the GitHub-Organization!\nThe Tasks and Questions for the project are written in the README.md file in each project repository.\nWorkflow for each project repository:\n\ngit clone the Project Repository to your local computer\nWork and the Project’s main quarto markdown document (.qmd-file)\nWhat does working on the project document mean?\n\nYou structure the markdown document with headlines\nYou draft plain markdown text to explain what you analyze or report your results\nYou write code chunks either for loading packages, importing data and computations, or for producing visualizations and tables in the output document\nWhile you do this you work a lot using the programming console in which you execute part of your written code to test it or modify it to explore other options until you develop something which goes into your file\n\n(Sometimes/Optionally) Create an additional script-file, for example for downloading data, or performing lengthy calculation and creating intermediate datasets.\nquarto render the main Project’s quarto markdown document and create a HTML-file with your Project Report (Guide for RStudio, Guide for VSCode)\nYou repeat step 2.-4. and repeatedly check if your (local) HTML-output looks good. You repeat until you are done for the session. Ideally, you leave the document such that it renders well and with a short list of problems to solve and next steps to do.\n\ngit add your (intermediate) markdown file, your additional scripts, the HTML-file, and (if necessary) all additional automatically created files or directories necessary to view the report properly to the git staging area of your repository on your computer\nCreate a git commit of the (intermediate) state of your project and\ngit push the commit to the remote repository at http://github.com/ such that it can be viewed by the instructors\nRepeat steps 2.-8. until your Project Report reaches a Milestone or is final and end with a commit with commit message “Milestone 1” (or other number), or “Final”.\n\n\nOrganization Advise: Create a folder for all projects on your computer. In this folder you will have all the subfolder created by the cloning of the project repositories.",
     "crumbs": [
       "Syllabus",
-      "Homework Projects"
+      "Homework"
     ]
   },
   {
@@ -1402,7 +1402,7 @@
     "text": "4 Assessment\nHomework Projects are mostly for your learning! Use them as that.\nNevertheless, they also play a role in the assessment of the Module “Data Science Tools” in the following forms:\n\nSome tasks are requirements. You need to have solved more than 50% of these required tasks correctly to be eligible to pass the module! The percentage does not affect the grade, it is a requirement only.\nWhen you solve 100% of the required tasks you can receive a bonus of 0.33 for your grade.\n\nThe grade of the Module “Data Science Tools” is made for your final project. This can depart and build on topics and data of Homework Projects.\n**Whatever the data and topic for your final project will be, it is assumed to have the same format as a Homework Project: A private repository provided by the instructors,\nThe Module “Data Science Concepts” is assessed with an exam. It does not rely on the Homework Projects. However, some examples in the exam maybe relate to content of Homework Projects, so familiarity with Homework content will be of help.",
     "crumbs": [
       "Syllabus",
-      "Homework Projects"
+      "Homework"
     ]
   },
   {
@@ -1413,7 +1413,7 @@
     "text": "5 Feedback\nTogether with Teaching Assistant the instructors will try to give feedback on your work.\nThe preferred way is via GitHub Issues. An Issues-Section is part of every repository. They are used to organize collaborative work and organize user interaction. You can also use issues for yourself as a project-specific To-Do-List.\nInstructors and Teaching Assistants may use Issues to give you some feedback on the current state of your work in the project.\nIf you require feedback:\n\nFile an issue an describe on what you need feedback or help as specific as possible.\nPoint the instructors to your issue.",
     "crumbs": [
       "Syllabus",
-      "Homework Projects"
+      "Homework"
     ]
   },
   {
