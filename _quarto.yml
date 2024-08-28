@@ -19,11 +19,14 @@ website:
         file: index.qmd
       - text: "**Schedule**"
         file: schedule.qmd
-      - literature.qmd
       - text: "Homework"
+      - file: homework.qmd
       - text: "Help"
       - file: help.qmd
-        - reports.qmd
+      - text: "Report writing"
+      - file: reports.qmd
+      - text: "Literature"
+      - file: literature.qmd
       
 format:
   html:
