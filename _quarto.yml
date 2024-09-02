@@ -20,13 +20,13 @@ website:
       - text: "**Schedule**"
         file: schedule.qmd
       - text: "Homework"
-      - file: homework.qmd
+        file: homework.qmd
       - text: "Help"
-      - file: help.qmd
+        file: help.qmd
       - text: "Report writing"
-      - file: reports.qmd
+        file: reports.qmd
       - text: "Literature"
-      - file: literature.qmd
+        file: literature.qmd
       
 format:
   html:
