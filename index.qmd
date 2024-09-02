@@ -188,10 +188,11 @@ If any part of this AI policy is confusing or uncertain, please reach out to us 
 The [**Schedule**](schedule.qmd) is on an extra page and will be updated continuously with 
 
 - Links to slides
-- Note on what homework you are expected to do
-- Some questions which you should be able to answer after each week. Test yourself. 
+- What homework you are expected to do
+- Some questions which you should be able to answer after each week.  
 
-**Homework** page will successively appear as extra pages. See the sidebar to the left. 
+Read about the concepts of our [**Homework Projects**](homework.qmd). 
+
 
 
 
