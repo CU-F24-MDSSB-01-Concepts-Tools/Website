@@ -21,8 +21,8 @@ Date format MM-DD (month-day) (09-05 is Sep, 5)
 | Week | Dates Concepts  | **Concepts Topics**                                                | Dates Tools  | **Tools Topic**    |
 |------|--------|-------------------------------------------------------------|----------|:------------:|
 | 1    | 09-02  | *No class, Academic Opening*                                | 09-05    | R            |
-| 2    | 09-09  | What is Data Science?                                       | 09-12    | R            |
-| 3    | 09-16  | Data Visualization, Data Formats                            | 09-19    | R            |
+| 2    | 09-09  | [What is Data Science?](https://docs.google.com/presentation/d/1xoUAOMptSXCGi3DpaqRmBdNKVcaijT4u7G0R2pvrmBM/pub?start=false&loop=false&delayms=3000) | 09-12    | R            |
+| 3    | 09-16  | Data Visualization, Data Formats [Slides Part 1](https://docs.google.com/presentation/d/1xX06QXjfzI1FXBgJRh0vqsP_TKUutW2gUJTvJfi5krw/pub?start=false&loop=false&delayms=3000) [Slides Part 2](W02.qmd) | 09-19    | R            |
 | 4    | 09-23  | Data Import, Data Wrangling, Relational Data                | 09-26    | R            |
 | 5    | 09-30  | Math refresh, Function Programming, Descriptive Statistics  | 10-03    | *no class, Public Holiday* |
 | 6    | 10-07  | Summary Statistics, Exploratory Data Analysis, Matrices, Principal Component Analysis | 10-10    | R            |

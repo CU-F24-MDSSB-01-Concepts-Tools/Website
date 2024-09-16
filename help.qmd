@@ -7,6 +7,11 @@ subtitle: "Good ways to get help with your homework"
 - **Commit and push** your intermediate results often, instructors may check your code directly.
 - Read error messages carefully! Often they are informative or even tell you what to do! (Hint: Uninformative error messages are also common. Maybe you get at least a hint where the problem lies. You will become more advanced on this, error messages which are not helpful now may become helpful in the future.)
 - Do the homework before the next Data Science Tools Session and prepare questions to ask in class. 
-- It is absolutely OK to decide to ask instructors for help outside of class. We try to care, if we are not too busy with other things. If you do, please do first: **Document and describe where you get stuck as precise as possible.** Try to find out **why** as much as possible. 
-    - The instructors prefer that you ask for help in the **Discussions** section of the Organization repo **<https://github.com/CU-F23-MDSSB-01-Concepts-Tools/Organization/discussions>**. Only registered students and instructors can see these discussions. Maybe, there is already an answer. 
-    - You can also write to instructors directly. Use a Teams chat! You can also write an email.
+- It is absolutely OK to decide to ask instructors for help outside of class. We try to care, if we are not too busy with other things. If you do, please do first: **Document and describe where you get stuck as precise as possible.** Try to find out **why** as much as possible. Use Teams chat! 
+- For problems with the **git-GitHub-dance** [Happy Git with R](https://happygitwithr.com/) is a great resource for helping you practically and learning some concepts better. The site is well suited for our purpose Git was developed for software development and a lot of the advice and good practices you find by searching the internet are targeted for this purpose. Whenever you consult it for solutions for a current problem, try to learn a bit about the basics. Git is not something to learn in one course but step by step while doing. Helpful sections are for example:
+  - Check if your problem are related to the installation of software and connecting git and GitHub by reading Sections 4 - 14.
+  - You want to bring your new versions to GitHub but when you push it does not work: [Dealing with push rejection](https://happygitwithr.com/push-rejected)
+  - You need to pull (to synchronize remote and local) but you 3made changes locally: [Pull, but you have local work](https://happygitwithr.com/pull-tricky)
+  - If you can not properly push and pull anymore and there are conflicts all over the place: Consider [Burn it all down](https://happygitwithr.com/burn) (Meaning to start again by cloning again ...)
+
+
