@@ -1887,7 +1887,7 @@ $class
 <div class="columns">
 <div class="column" style="width:60%;">
 <ul>
-<li>ISO 8601 standard for dates: <strong>YYYY-MM-DD</strong>. Today: 2024-08-17.</li>
+<li>ISO 8601 standard for dates: <strong>YYYY-MM-DD</strong>. Today: 2024-09-16.</li>
 <li>Dates in R are numeric vectors that represent the number of days since 1 January 1970.</li>
 </ul>
 <div class="cell">
@@ -1928,7 +1928,7 @@ $class
 <div class="cell">
 <div class="sourceCode cell-code" id="cb109"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a></a><span class="fu">Sys.Date</span>() <span class="sc">-</span> <span class="fu">as.Date</span>(<span class="st">"1976-01-16"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Time difference of 17746 days</code></pre>
+<pre><code>Time difference of 17776 days</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a></a><span class="co"># Sys.Date() gives as the current day your computer is set to</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1967,7 +1967,7 @@ POSIXct: Portable Operating System Interface, calendar time. Stores date and tim
 <div class="sourceCode cell-code" id="cb118"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a></a><span class="fu">as.double</span>(lubridate<span class="sc">::</span><span class="fu">now</span>()) <span class="sc">-</span> </span>
 <span id="cb118-2"><a></a> <span class="fu">as.double</span>(lubridate<span class="sc">::</span><span class="fu">ymd_hm</span>(<span class="st">"1976-01-16_12:04"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1533265500</code></pre>
+<pre><code>[1] 1535802601</code></pre>
 </div>
 </div>
 </section>
