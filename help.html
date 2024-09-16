@@ -164,8 +164,16 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#good-practices" id="toc-good-practices" class="nav-link active" data-scroll-target="#good-practices"><span class="header-section-number">1</span> Good practices</a></li>
+  <li><a href="#good-ways-to-ask-for-help" id="toc-good-ways-to-ask-for-help" class="nav-link" data-scroll-target="#good-ways-to-ask-for-help"><span class="header-section-number">2</span> Good ways to ask for help</a></li>
+  <li><a href="#problems-with-the-git-github-dance" id="toc-problems-with-the-git-github-dance" class="nav-link" data-scroll-target="#problems-with-the-git-github-dance"><span class="header-section-number">3</span> Problems with the <strong>git-GitHub-dance</strong></a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -173,7 +181,6 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Need help for Homework?</h1>
-<p class="subtitle lead">Good ways to get help with your homework</p>
 </div>
 
 
@@ -190,22 +197,47 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="good-practices" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="good-practices"><span class="header-section-number">1</span> Good practices</h2>
 <ul>
 <li>Do homework together with other students. <strong>Working together is encouraged!</strong></li>
 <li><strong>Commit and push</strong> your intermediate results often, instructors may check your code directly.</li>
 <li>Read error messages carefully! Often they are informative or even tell you what to do! (Hint: Uninformative error messages are also common. Maybe you get at least a hint where the problem lies. You will become more advanced on this, error messages which are not helpful now may become helpful in the future.)</li>
 <li>Do the homework before the next Data Science Tools Session and prepare questions to ask in class.</li>
-<li>It is absolutely OK to decide to ask instructors for help outside of class. We try to care, if we are not too busy with other things. If you do, please do first: <strong>Document and describe where you get stuck as precise as possible.</strong> Try to find out <strong>why</strong> as much as possible. Use Teams chat!</li>
-<li>For problems with the <strong>git-GitHub-dance</strong> <a href="https://happygitwithr.com/">Happy Git with R</a> is a great resource for helping you practically and learning some concepts better. The site is well suited for our purpose Git was developed for software development and a lot of the advice and good practices you find by searching the internet are targeted for this purpose. Whenever you consult it for solutions for a current problem, try to learn a bit about the basics. Git is not something to learn in one course but step by step while doing. Helpful sections are for example:
+</ul>
+</section>
+<section id="good-ways-to-ask-for-help" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="good-ways-to-ask-for-help"><span class="header-section-number">2</span> Good ways to ask for help</h2>
 <ul>
-<li>Check if your problem are related to the installation of software and connecting git and GitHub by reading Sections 4 - 14.</li>
-<li>You want to bring your new versions to GitHub but when you push it does not work: <a href="https://happygitwithr.com/push-rejected">Dealing with push rejection</a></li>
-<li>You need to pull (to synchronize remote and local) but you 3made changes locally: <a href="https://happygitwithr.com/pull-tricky">Pull, but you have local work</a></li>
-<li>If you can not properly push and pull anymore and there are conflicts all over the place: Consider <a href="https://happygitwithr.com/burn">Burn it all down</a> (Meaning to start again by cloning again …)</li>
+<li>Ask your fellow students, but show willingness to learn by being prepared. Do not “abuse” your students to fix your computer problems.<br>
+</li>
+<li>It is absolutely OK to ask instructors for help outside of class. We try to care, if we are not too busy with other things. If you do, please do first: <strong>Document and describe where you get stuck as precise as possible.</strong> Try to find out <strong>why</strong> as much as possible. Use Teams chat (or email)!</li>
+</ul>
+</section>
+<section id="problems-with-the-git-github-dance" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="problems-with-the-git-github-dance"><span class="header-section-number">3</span> Problems with the <strong>git-GitHub-dance</strong></h2>
+<p><a href="https://happygitwithr.com/">Happy Git with R</a> is a great resource for helping you practically and for learning the version control concepts better. The site is well suited for our purpose of data science! Git was developed for software development and a lot of the advice and good practices you find by searching the internet are targeted for software engineering. Whenever you consult <a href="https://happygitwithr.com/">Happy Git with R</a> for solutions for a problem, try to learn a bit about the basics. Git is not something to learn in one course but step by step while doing.</p>
+<p>Problems with <strong>getting started</strong> are likely related to the installation of software and connecting git and GitHub. Reading in Sections 4 - 14.</p>
+<ul>
+<li>After installing git, you need to <a href="https://happygitwithr.com/hello-git">Introduce yourself to Git</a> (Use the email associated with your GitHub account.)</li>
+<li>Then you have to make the communication with GitHub possible as outlined by the introduction <a href="https://happygitwithr.com/connect-intro">Can you here me now?</a>. The default is to communicate of HTTPS (instead of SSH). choose the h
+<ul>
+<li>In the past you could authenticate via your GitHub-user password, now you need a <em>personal access token</em> which is something like a password created by GitHub which you can see and copy only once. (No worries, if loose the connection you can create a new one.)</li>
+<li>These are the instructions for <a href="https://happygitwithr.com/https-pat">Personal access token for HTTPS</a>. Ideally it works following the instructions in “TL;DR”. (Install the packages <code>usethis</code> and <code>gitcreds</code> in R.)</li>
+<li>Now, you should be able to clone the Homework repos analog to <a href="https://happygitwithr.com/rstudio-git-github">Connect RStudio to Git and GitHub</a>.</li>
+<li>Sometimes you have git installed but RStudio does not find it. Usually it works out of the box. If not, read <a href="https://happygitwithr.com/rstudio-see-git">Detect Git from RStudio</a></li>
+<li>Finally there is a page for problems which appear sometimes which you can scroll through looking if it is related to your problem: <a href="RStudio, Git, GitHub Hell">https://happygitwithr.com/troubleshooting</a></li>
 </ul></li>
+</ul>
+<p>For problems appearing after your first successful git-GitHub-dance operations helpful sections are for example:</p>
+<ul>
+<li>You want to bring your new versions to GitHub but when you push it does not work: <a href="https://happygitwithr.com/push-rejected">Dealing with push rejection</a></li>
+<li>You need to pull (to synchronize remote and local) but you made changes locally and get warnings: <a href="https://happygitwithr.com/pull-tricky">Pull, but you have local work</a></li>
+<li>If you can not properly push and pull anymore and there are conflicts all over the place: Consider <a href="https://happygitwithr.com/burn">Burn it all down</a> (Meaning to start again by cloning again …)</li>
 </ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
