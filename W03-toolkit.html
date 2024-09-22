@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Jan Lorenz">
-  <title>Data Science Concepts / Data Science Tools – W#03 Toolkit</title>
+  <title>Data Science Concepts / Data Science Tools – W#03 Recap: Our Toolkit and the git-GitHub dance</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -393,7 +393,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">W#03 Toolkit</h1>
+  <h1 class="title">W#03 Recap: Our Toolkit and the git-GitHub dance</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -425,37 +425,29 @@ Jan Lorenz
 </ul>
 </div></div>
 </section>
-<section>
-<section id="our-toolkit-once-again" class="title-slide slide level1 center">
-<h1>Our toolkit once again</h1>
-
-</section>
-<section id="our-git-github-dance" class="slide level2">
-<h2>Our <em>git-GitHub dance</em></h2>
-<p>Happens with thw GitHub-Organization <a href="https://github.com/CU-F23-MDSSB-MET-03-VisCommDataStory">CU-F23-MDSSB-MET-03-VisCommDataStory</a></p>
+<section id="the-git-github-dance" class="slide level2">
+<h2>The <em>git-GitHub dance</em></h2>
+<p>Happens with your individual repositories in the GitHub-Organization.</p>
 <p><img data-src="img/whole-game-01.png"></p>
 
 <aside><div>
 <p>From <a href="http://datasciencebox.org/" class="uri">http://datasciencebox.org/</a></p>
 </div></aside></section>
-<section id="our-git-github-dance-1" class="slide level2">
-<h2>Our <em>git-GitHub dance</em></h2>
+<section id="the-git-github-dance-1" class="slide level2">
+<h2>The <em>git-GitHub dance</em></h2>
 <p>We only use only a few of the various <code>git</code> commands.<sup>1</sup></p>
 <p><img data-src="img/whole-game-02.png"></p>
-
-<aside><div>
-<p>From <a href="http://datasciencebox.org/" class="uri">http://datasciencebox.org/</a></p>
-</div><ol class="aside-footnotes"><li id="fn1"><p>That is why the resource <a href="http://happygitwithr.com" class="uri">http://happygitwithr.com</a> is more helpful to us compared to the git-documentation.</p></li></ol></aside></section>
-<section id="our-git-github-dance-2" class="slide level2">
-<h2>Our <em>git-GitHub dance</em></h2>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>That is why <a href="http://happygitwithr.com">Happy git with R</a> is more helpful for us than the git-documentation.</p></li></ol></aside></section>
+<section id="the-git-github-dance-2" class="slide level2">
+<h2>The <em>git-GitHub dance</em></h2>
 <p>You <code>git clone</code> your private repositories to your computer.</p>
 <p><img data-src="img/whole-game-03.png"></p>
 
 <aside><div>
 <p>From <a href="http://datasciencebox.org/" class="uri">http://datasciencebox.org/</a></p>
 </div></aside></section>
-<section id="our-git-github-dance-3" class="slide level2">
-<h2>Our <em>git-GitHub dance</em></h2>
+<section id="the-git-github-dance-3" class="slide level2">
+<h2>The <em>git-GitHub dance</em></h2>
 <p><code>git add</code>, <code>git commit</code>, <code>git push</code> your work, <code>git pull</code> other’s work</p>
 <p><img data-src="img/whole-game-04.png"></p>
 
@@ -467,7 +459,7 @@ Jan Lorenz
 <p><strong>Definition:</strong> Systems of rules which can process instructions to be executed by the computer.<br>
 </p>
 <p>Our two programming languages are:</p>
-<p><img data-src="img/R_logo.svg.png" height="200">   <img data-src="img/Python_logo_and_wordmark.svg.png" height="200"></p>
+<p><img data-src="img/R_logo.svg.png" height="150">   <img data-src="img/Python_logo_and_wordmark.svg.png" height="150"></p>
 <div class="fragment">
 <div class="columns">
 <div class="column" style="width:&quot;50%;">
@@ -478,18 +470,40 @@ Jan Lorenz
 <span id="cb1-4"><a></a>store <span class="ot">&lt;-</span> <span class="fu">do_that</span>(to_this)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <p>In python:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">to_this.do_this</span>()</span>
-<span id="cb2-2"><a></a><span class="fu">to_this.do_this</span>(with_those)</span>
-<span id="cb2-3"><a></a><span class="fu">to_this.do_this</span>()<span class="fu">.do_that</span>(with_those)</span>
-<span id="cb2-4"><a></a>store <span class="ot">=</span> <span class="fu">do_that</span>(to_this)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>to_this.do_this()</span>
+<span id="cb2-2"><a></a>to_this.do_this(with_those)</span>
+<span id="cb2-3"><a></a>to_this.do_this().do_that(with_those)</span>
+<span id="cb2-4"><a></a>store <span class="op">=</span> do_that(to_this)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+</div>
+</section>
+<section id="syntax-and-packages" class="slide level2 smaller">
+<h2>Syntax and Packages</h2>
+<div class="columns">
+<div class="column" style="width:&quot;50%;">
+<p>In R:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">do_this</span>(to_this)</span>
+<span id="cb3-2"><a></a><span class="fu">do_that</span>(to_this, with_those)</span>
+<span id="cb3-3"><a></a>to_this <span class="sc">|&gt;</span> <span class="fu">do_this</span>() <span class="sc">|&gt;</span> <span class="fu">do_that</span>(with_those) </span>
+<span id="cb3-4"><a></a>store <span class="ot">&lt;-</span> <span class="fu">do_that</span>(to_this)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<p>In python:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>to_this.do_this()</span>
+<span id="cb4-2"><a></a>to_this.do_this(with_those)</span>
+<span id="cb4-3"><a></a>to_this.do_this().do_that(with_those)</span>
+<span id="cb4-4"><a></a>store <span class="op">=</span> do_that(to_this)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <ul>
-<li>The role of brackets, dots, spaces, special words, and so on is the <strong>syntax</strong> of a language. Wrong syntax is a common cause of error. Learning syntax slows you down, but only initially!</li>
-<li>Essential part of the game: Installing and using <strong>libraries/packages</strong>. In R:<br>
+<li>The role of brackets <code>{,[,(</code>, dots <code>.</code>, spaces, special words, and so on is the <strong>syntax</strong> of a language.
+<ul>
+<li>Wrong syntax is a common cause of error.</li>
+<li>Learning syntax is annoying, but there is no way around.</li>
+</ul></li>
+<li>Essential part of the game: Installing and using <strong>libraries/packages</strong>.<br>
+In R:<br>
 <code>install.packages("tidyverse")</code> (called once to install) and<br>
 <code>library(tidyverse)</code> (in the code before using its commands)</li>
 </ul>
-</div>
 </section>
 <section id="integrated-development-environment" class="slide level2 smaller">
 <h2>Integrated development environment</h2>
@@ -500,7 +514,7 @@ Jan Lorenz
 <ul>
 <li>syntax highlighting <em>Then we see if code looks good</em></li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">c</span>(<span class="dv">1</span>O, Text, true, <span class="dv">10</span>,<span class="st">"Text"</span>,<span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">c</span>(<span class="dv">1</span>O, Text, true, <span class="dv">10</span>,<span class="st">"Text"</span>,<span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>code completion <em>Start writing, and press <code>Tab</code> to see options</em></li>
 <li>automatic indentation, brace matching, keyboard shortcuts, …</li>
@@ -523,8 +537,7 @@ Jan Lorenz
 </section>
 <section id="quarto-documents" class="slide level2">
 <h2>quarto Documents</h2>
-<p>Header: <strong>YAML</strong> with title, author, document-wide specifications</p>
-<p>Body:</p>
+<p><strong>YAML Header</strong>: with title, author, document-wide specifications. <strong>Body:</strong></p>
 <div>
 <ul>
 <li class="fragment">Parts of <strong>plain text</strong> with formatting syntax like <code>**bold**</code> for <strong>bold</strong>, and other for headers, lists, and so on. Good idea: Occassionally spend a few minutes to look up and learn some formatting rules for markdown.</li>
@@ -533,9 +546,9 @@ Jan Lorenz
 <li class="fragment">Beginning with <code>```{r}</code></li>
 <li class="fragment">Then optional chunk specifications. For example
 <ul>
-<li class="fragment"><code>#| label: NAME</code> to cross-reference to it in the text</li>
-<li class="fragment"><code>#| echo: false</code> to not show (or show if <code>true</code>) code in output</li>
-<li class="fragment"><code>#| warning: false</code> to not show (or show if <code>true</code>) the the warnings you would see in the Console</li>
+<li class="fragment"><code>#| label: NAME</code> to cross-reference it in the text</li>
+<li class="fragment"><code>#| echo: false</code> to not show code in output</li>
+<li class="fragment"><code>#| warning: false</code> to not show the warnings you would see in the Console</li>
 </ul></li>
 <li class="fragment">Then comes the code itself. By default, every command which creates some print output or shows a graphic will make this appear in your output-document.</li>
 <li class="fragment">Ending with <code>```</code></li>
@@ -551,16 +564,16 @@ Jan Lorenz
 <li>In RStudio: There is an <strong>Environment</strong>-Tab.</li>
 <li>Most important: Shows the variables currently accessible from the <strong>Console</strong>.</li>
 </ul></li>
-<li><span style="color:red;">The environment of your quarto document is different for that of the Console!</span> Remember this! It will be a source of confusion.</li>
+<li><span style="color:red;">The environment of your quarto document is different from that of the Console!</span> Remember this! It will be a source of confusion.</li>
 </ul>
 
 <div class="quarto-auto-generated-content">
 <p><img src="img/ConstructorUniversity.png" class="slide-logo"></p>
 <div class="footer footer-default">
-<p>MDSSB-DSCO-02: Data Science Concepts</p>
+
 </div>
 </div>
-</section></section>
+</section>
 
     </div>
   </div>
