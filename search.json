@@ -2448,7 +2448,7 @@
     "href": "W03.html#how-many-seconds-are-you-old",
     "title": "W#03 Data Import, Data Wrangling, Relational Data",
     "section": "How many seconds are you old?",
-    "text": "How many seconds are you old?\n\nas.double(lubridate::now()) - \n as.double(lubridate::ymd_hm(\"1976-01-16_12:04\"))\n\n[1] 1536402101"
+    "text": "How many seconds are you old?\n\nas.double(lubridate::now()) - \n as.double(lubridate::ymd_hm(\"1976-01-16_12:04\"))\n\n[1] 1536434967"
   },
   {
     "objectID": "W03.html#summary-on-factors-and-dates",

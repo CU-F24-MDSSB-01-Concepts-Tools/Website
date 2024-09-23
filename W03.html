@@ -413,8 +413,8 @@ Jan Lorenz
 <li><a href="#/data-subsetting" id="/toc-data-subsetting">Data Subsetting</a></li>
 <li><a href="#/data-transformation" id="/toc-data-transformation">Data Transformation</a></li>
 <li><a href="#/where-to-find-help" id="/toc-where-to-find-help">Where to find help</a></li>
-<li><a href="#/more-under-the-hood" id="/toc-more-under-the-hood">More under the hood</a></li>
-<li><a href="#/augmented-vectors" id="/toc-augmented-vectors">Augmented vectors</a></li>
+<li><a href="#/more-under-the-hood-names-vectors-indexing" id="/toc-more-under-the-hood-names-vectors-indexing">More under the hood: Names vectors, Indexing</a></li>
+<li><a href="#/augmented-vectors-factors-and-dates" id="/toc-augmented-vectors-factors-and-dates">Augmented vectors: Factors and Dates</a></li>
 <li><a href="#/strings" id="/toc-strings">Strings</a></li>
 <li><a href="#/relational-data" id="/toc-relational-data">Relational Data</a></li>
 </ul>
@@ -1573,8 +1573,8 @@ This is identical to the logical AND <code>&amp;</code>.<br>
 </ul>
 </section></section>
 <section>
-<section id="more-under-the-hood" class="title-slide slide level1 center">
-<h1>More under the hood</h1>
+<section id="more-under-the-hood-names-vectors-indexing" class="title-slide slide level1 center">
+<h1>More under the hood: Names vectors, Indexing</h1>
 
 </section>
 <section id="named-vectors" class="slide level2">
@@ -1842,8 +1842,8 @@ $names
 <p><strong>Class</strong> plays a role in specifying <em>augmented vectors</em> like factors, dates, date-times, or tibbles.</p>
 </section></section>
 <section>
-<section id="augmented-vectors" class="title-slide slide level1 center">
-<h1>Augmented vectors</h1>
+<section id="augmented-vectors-factors-and-dates" class="title-slide slide level1 center">
+<h1>Augmented vectors: Factors and Dates</h1>
 
 </section>
 <section id="factors" class="slide level2 smaller">
@@ -2026,7 +2026,7 @@ POSIXct: Portable Operating System Interface, calendar time. Stores date and tim
 <div class="sourceCode cell-code" id="cb121"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a></a><span class="fu">as.double</span>(lubridate<span class="sc">::</span><span class="fu">now</span>()) <span class="sc">-</span> </span>
 <span id="cb121-2"><a></a> <span class="fu">as.double</span>(lubridate<span class="sc">::</span><span class="fu">ymd_hm</span>(<span class="st">"1976-01-16_12:04"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1536402101</code></pre>
+<pre><code>[1] 1536434967</code></pre>
 </div>
 </div>
 </section>
