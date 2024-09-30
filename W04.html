@@ -411,7 +411,6 @@ Jan Lorenz
 <li><a href="#/relational-data" id="/toc-relational-data">Relational Data</a></li>
 <li><a href="#/math-sets-and-vectors" id="/toc-math-sets-and-vectors">Math: Sets and vectors</a></li>
 <li><a href="#/math-functions" id="/toc-math-functions">Math: Functions</a></li>
-<li><a href="#/math-exponentiations-and-logarithms" id="/toc-math-exponentiations-and-logarithms">Math: Exponentiations and logarithms</a></li>
 <li><a href="#/functions-in-programming" id="/toc-functions-in-programming">Functions in Programming</a></li>
 <li><a href="#/descriptive-statistics" id="/toc-descriptive-statistics">Descriptive Statistics</a></li>
 <li><a href="#/measures-of-central-tendency" id="/toc-measures-of-central-tendency">Measures of central tendency</a></li>
@@ -1680,170 +1679,6 @@ You can think of the <em>coordinate system being stretched</em> multiplicatively
 <img data-src="W04_files/figure-revealjs/unnamed-chunk-58-1.png" width="960" class="r-stretch"><p><strong>For <span class="math inline">\(x\to\infty\)</span>, any exponential will finally “overtake” any polynomial.</strong></p>
 </section></section>
 <section>
-<section id="math-exponentiations-and-logarithms" class="title-slide slide level1 center">
-<h1>Math: Exponentiations and logarithms</h1>
-
-</section>
-<section id="rules-for-exponentiation" class="slide level2" data-background-color="aquamarine">
-<h2>Rules for exponentiation</h2>
-<div class="columns">
-<div class="column" style="width:20%;">
-<p><span class="math inline">\(x^0\)</span></p>
-<p><span class="math inline">\(0^x\)</span></p>
-<p><span class="math inline">\(0^0\)</span></p>
-<p><span class="math inline">\((x\cdot y)^a\)</span></p>
-<p><span class="math inline">\(x^{-a}\)</span>, <span class="math inline">\(x^{-1}\)</span></p>
-<p><span class="math inline">\(x^\frac{a}{b}\)</span>, <span class="math inline">\(x^\frac{1}{2}\)</span></p>
-<p><span class="math inline">\((x^a)^b\)</span></p>
-</div><div class="column">
-<div class="fragment" data-fragment-index="1">
-<p><span class="math inline">\(x^0 = 1\)</span></p>
-</div>
-<div class="fragment" data-fragment-index="2">
-<p><span class="math inline">\(0^x = 0\)</span> for <span class="math inline">\(x\neq 0\)</span></p>
-</div>
-<div class="fragment" data-fragment-index="3">
-<p><span class="math inline">\(0^0 = 1\)</span> (discontinuity in <span class="math inline">\(0^x\)</span>)</p>
-</div>
-<div class="fragment" data-fragment-index="4">
-<p><span class="math inline">\((x\cdot y)^a = x^a\cdot x^b\)</span></p>
-</div>
-<div class="fragment" data-fragment-index="5">
-<p><span class="math inline">\(x^{-a} = \frac{1}{x^a}\)</span>, <span class="math inline">\(x^{-1} = \frac{1}{x}\)</span></p>
-</div>
-<div class="fragment" data-fragment-index="6">
-<p><span class="math inline">\(x^\frac{a}{b} = \sqrt[b]{x^a} = (\sqrt[b]{x})^a,\ x^\frac{1}{2} = \sqrt{x}\)</span></p>
-</div>
-<div class="fragment" data-fragment-index="7">
-<p><span class="math inline">\((x^a)^b = x^{a\cdot b} = (x^b)^a \neq x^{a^b} = x^{(a^b)}\)</span><br>
-Example: <span class="math inline">\((4^3)^2 = 64^2 = 4096 \qquad 4^{3^2} = 4^9 = 262144\)</span></p>
-</div>
-</div></div>
-</section>
-<section id="more-rules-for-exponentiation" class="slide level2 smaller" data-background-color="aquamarine">
-<h2>More rules for exponentiation</h2>
-<div class="columns">
-<div class="column" style="width:20%;">
-<p><span class="math inline">\(x^a\cdot x^b\)</span></p>
-</div><div class="column" style="width:79%;">
-<div class="fragment">
-<p><span class="math inline">\(x^a\cdot x^b = x^{a+b}\)</span> Multiplication of powers (with same base <span class="math inline">\(x\)</span>) becomes addition of exponents.</p>
-</div>
-</div></div>
-<div class="fragment">
-<div class="columns">
-<div class="column" style="width:20%;">
-<p><span class="math inline">\((x+y)^a\)</span></p>
-</div><div class="column" style="width:79%;">
-<div class="fragment">
-<p>No “simple” form! For <span class="math inline">\(a\)</span> integer use <em>binomial expansion</em>. <span class="math inline">\((x+y)^2 = x^2 + 2xy + y^2\)</span><br>
-<span class="math inline">\((x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3\)</span><br>
-<span class="math inline">\((x+y)^n = \sum_{k=0}^n {n \choose k} x^{n-k}y^k\)</span></p>
-</div>
-</div></div>
-</div>
-<div class="fragment">
-<p><strong>Pascal’s triangle</strong></p>
-<div class="columns">
-<div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif" height="200"></p>
-<figcaption>From wikipedia</figcaption>
-</figure>
-</div>
-</div><div class="column">
-<p>We meet it again in <strong>Probability</strong>:<br>
-A row represents a <em>binomial distribution</em><br>
-Which tends to mimics the <em>normal distribution</em> more and more<br>
-and is related to the <em>central limit theorem</em></p>
-</div></div>
-</div>
-</section>
-<section id="logarithms" class="slide level2 smaller" data-background-color="aquamarine">
-<h2>Logarithms</h2>
-<p><strong>Definition:</strong> A <em>logarithm</em> of <span class="math inline">\(a\)</span> for some base <span class="math inline">\(b\)</span> is the value of the exponent which brings <span class="math inline">\(b\)</span> to <span class="math inline">\(a\)</span>: <span class="math inline">\(\log_b(a) = x\)</span> means that <span class="math inline">\(b^x =a\)</span></p>
-<p><strong>Most common:</strong></p>
-<ul>
-<li><span class="math inline">\(\log_{10}\)</span> useful for plotting data in logarithmic scales because the numbers can be interpreted easiest (number of decimals of the original values)</li>
-<li><span class="math inline">\(\log_{e}\)</span> <em>natural logarithm</em> (also <span class="math inline">\(\log\)</span> or <span class="math inline">\(\ln\)</span>) useful in calculus and statistics because of nice mathematical properties</li>
-</ul>
-<div class="fragment">
-<div class="columns">
-<div class="column" style="width:30%;">
-<p><span class="math inline">\(\log_{10}(100) =\)</span></p>
-</div><div class="column">
-<div class="fragment">
-<p><span class="math inline">\(2\)</span></p>
-</div>
-</div></div>
-</div>
-<div class="fragment">
-<div class="columns">
-<div class="column" style="width:30%;">
-<p><span class="math inline">\(\log_{10}(1) =\)</span></p>
-</div><div class="column">
-<div class="fragment">
-<p><span class="math inline">\(0\)</span></p>
-</div>
-</div></div>
-</div>
-<div class="fragment">
-<div class="columns">
-<div class="column" style="width:30%;">
-<p><span class="math inline">\(\log_{10}(6590) =\)</span></p>
-</div><div class="column">
-<div class="fragment">
-<p><span class="math inline">\(3.818885\)</span></p>
-</div>
-</div></div>
-</div>
-<div class="fragment">
-<div class="columns">
-<div class="column" style="width:30%;">
-<p><span class="math inline">\(\log_{10}(0.02) =\)</span></p>
-</div><div class="column">
-<div class="fragment">
-<p><span class="math inline">\(-1.69897\)</span></p>
-</div>
-</div></div>
-</div>
-</section>
-<section id="rules-for-logarithms" class="slide level2 smaller" data-background-color="aquamarine">
-<h2>Rules for logarithms</h2>
-<p>Usually only one base is used in the same context, because changing base is easy:</p>
-<p><span class="math inline">\(\log_c(x) = \frac{\log_b(x)}{\log_b(c)} = \frac{\log(x)}{\log(c)}\)</span></p>
-<div class="columns">
-<div class="column" style="width:20%;">
-<p><span class="math inline">\(\log(x\cdot y)\)</span></p>
-</div><div class="column" style="width:79%;">
-<div class="fragment">
-<p><span class="math inline">\(= \log(x) + \log(y)\)</span> Multiplication <span class="math inline">\(\to\)</span> addition.</p>
-</div>
-</div></div>
-<div class="fragment">
-<div class="columns">
-<div class="column" style="width:20%;">
-<p><span class="math inline">\(\log(x^y)\)</span></p>
-</div><div class="column" style="width:75%;">
-<div class="fragment">
-<p><span class="math inline">\(= y\cdot\log(x)\)</span></p>
-</div>
-</div></div>
-<div class="columns">
-<div class="column" style="width:20%;">
-<p><span class="math inline">\(\log(x+y)\)</span></p>
-</div><div class="column" style="width:75%;">
-<div class="fragment">
-<p>complicated!</p>
-</div>
-</div></div>
-</div>
-<div class="fragment">
-<p>Also changing bases for powers is easy: <span class="math inline">\(x^y = (e^{\log(x)})^y = e^{y\cdot\log(x)}\)</span></p>
-</div>
-</section></section>
-<section>
 <section id="functions-in-programming" class="title-slide slide level1 center">
 <h1>Functions in Programming</h1>
 
@@ -1883,7 +1718,7 @@ and is related to the <em>central limit theorem</em></p>
 <pre><code>function (x, na.rm = FALSE) 
 sqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x), 
     na.rm = na.rm))
-&lt;bytecode: 0x638d96f90bc0&gt;
+&lt;bytecode: 0x5820d755a270&gt;
 &lt;environment: namespace:stats&gt;</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb143"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a></a>c <span class="co"># This function is not written in R but is a R primitive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1896,7 +1731,7 @@ sqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x),
 {
     UseMethod("ggplot")
 }
-&lt;bytecode: 0x638d9374db70&gt;
+&lt;bytecode: 0x5820d4af4850&gt;
 &lt;environment: namespace:ggplot2&gt;</code></pre>
 </div>
 </div>

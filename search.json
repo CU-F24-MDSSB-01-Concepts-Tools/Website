@@ -232,6 +232,34 @@
     "text": "The following homework repositories are topic specific and cover various methods and tools treated.\n\nhw-PoliticalAttitudes-USERNAME (hints for python)\nhw-FuelWatch-USERNAME (hints for R)\nhw-COVID19-USERNAME (hints for R)\nhw-Housing-USERNAME (hints for R)\n\n\nFind the instructions in the README in your repository!\nWhen new content appears new exercises may be added to your repository in files like README_2 and README_3.\nRegardless of the hints you can solve each homework in R or python.\nExercises marked as optional do not count to the requirements for the homework (which is 50% sufficiently solved).\n\nAll these homework mimic to some extent a data science project as required as the main assessment in the Data Science Tools module. You are invited define a project building on the data and analyses there."
   },
   {
+    "objectID": "W05.html#rules-for-exponentiation",
+    "href": "W05.html#rules-for-exponentiation",
+    "title": "W#05: Summary Statistics, Exploratory Data Analysis, Principal Component Analysis",
+    "section": "Rules for exponentiation",
+    "text": "Rules for exponentiation\n\n\n\\(x^0\\)\n\\(0^x\\)\n\\(0^0\\)\n\\((x\\cdot y)^a\\)\n\\(x^{-a}\\), \\(x^{-1}\\)\n\\(x^\\frac{a}{b}\\), \\(x^\\frac{1}{2}\\)\n\\((x^a)^b\\)\n\n\n\\(x^0 = 1\\)\n\n\n\\(0^x = 0\\) for \\(x\\neq 0\\)\n\n\n\\(0^0 = 1\\) (discontinuity in \\(0^x\\))\n\n\n\\((x\\cdot y)^a = x^a\\cdot x^b\\)\n\n\n\\(x^{-a} = \\frac{1}{x^a}\\), \\(x^{-1} = \\frac{1}{x}\\)\n\n\n\\(x^\\frac{a}{b} = \\sqrt[b]{x^a} = (\\sqrt[b]{x})^a,\\ x^\\frac{1}{2} = \\sqrt{x}\\)\n\n\n\\((x^a)^b = x^{a\\cdot b} = (x^b)^a \\neq x^{a^b} = x^{(a^b)}\\)\nExample: \\((4^3)^2 = 64^2 = 4096 \\qquad 4^{3^2} = 4^9 = 262144\\)"
+  },
+  {
+    "objectID": "W05.html#more-rules-for-exponentiation",
+    "href": "W05.html#more-rules-for-exponentiation",
+    "title": "W#05: Summary Statistics, Exploratory Data Analysis, Principal Component Analysis",
+    "section": "More rules for exponentiation",
+    "text": "More rules for exponentiation\n\n\n\\(x^a\\cdot x^b\\)\n\n\n\\(x^a\\cdot x^b = x^{a+b}\\) Multiplication of powers (with same base \\(x\\)) becomes addition of exponents.\n\n\n\n\n\n\\((x+y)^a\\)\n\n\nNo “simple” form! For \\(a\\) integer use binomial expansion. \\((x+y)^2 = x^2 + 2xy + y^2\\)\n\\((x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3\\)\n\\((x+y)^n = \\sum_{k=0}^n {n \\choose k} x^{n-k}y^k\\)\n\n\n\n\nPascal’s triangle\n\n\n\n\n\nFrom wikipedia\n\n\n\nWe meet it again in Probability:\nA row represents a binomial distribution\nWhich tends to mimics the normal distribution more and more\nand is related to the central limit theorem"
+  },
+  {
+    "objectID": "W05.html#logarithms",
+    "href": "W05.html#logarithms",
+    "title": "W#05: Summary Statistics, Exploratory Data Analysis, Principal Component Analysis",
+    "section": "Logarithms",
+    "text": "Logarithms\nDefinition: A logarithm of \\(a\\) for some base \\(b\\) is the value of the exponent which brings \\(b\\) to \\(a\\): \\(\\log_b(a) = x\\) means that \\(b^x =a\\)\nMost common:\n\n\\(\\log_{10}\\) useful for plotting data in logarithmic scales because the numbers can be interpreted easiest (number of decimals of the original values)\n\\(\\log_{e}\\) natural logarithm (also \\(\\log\\) or \\(\\ln\\)) useful in calculus and statistics because of nice mathematical properties\n\n\n\n\n\\(\\log_{10}(100) =\\)\n\n\n\\(2\\)\n\n\n\n\n\n\n\\(\\log_{10}(1) =\\)\n\n\n\\(0\\)\n\n\n\n\n\n\n\\(\\log_{10}(6590) =\\)\n\n\n\\(3.818885\\)\n\n\n\n\n\n\n\\(\\log_{10}(0.02) =\\)\n\n\n\\(-1.69897\\)"
+  },
+  {
+    "objectID": "W05.html#rules-for-logarithms",
+    "href": "W05.html#rules-for-logarithms",
+    "title": "W#05: Summary Statistics, Exploratory Data Analysis, Principal Component Analysis",
+    "section": "Rules for logarithms",
+    "text": "Rules for logarithms\nUsually only one base is used in the same context, because changing base is easy:\n\\(\\log_c(x) = \\frac{\\log_b(x)}{\\log_b(c)} = \\frac{\\log(x)}{\\log(c)}\\)\n\n\n\\(\\log(x\\cdot y)\\)\n\n\n\\(= \\log(x) + \\log(y)\\) Multiplication \\(\\to\\) addition.\n\n\n\n\n\n\\(\\log(x^y)\\)\n\n\n\\(= y\\cdot\\log(x)\\)\n\n\n\n\n\\(\\log(x+y)\\)\n\n\ncomplicated!\n\n\n\n\nAlso changing bases for powers is easy: \\(x^y = (e^{\\log(x)})^y = e^{y\\cdot\\log(x)}\\)"
+  },
+  {
     "objectID": "W05.html#data-sets-1a-and-1b-widsom-of-crowd",
     "href": "W05.html#data-sets-1a-and-1b-widsom-of-crowd",
     "title": "W#05: Summary Statistics, Exploratory Data Analysis, Principal Component Analysis",
@@ -3148,34 +3176,6 @@
     "text": "Math: Polynomials and exponentials\nA polynomial is a function which is composed of (many) addends of the form \\(ax^n\\) for different values of \\(a\\) and \\(n\\).\nIn an exponential the \\(x\\) appears in the exponent.\n\\(f(x) = x^3\\) vs. \\(f(x) = e^x\\)\n\nFor \\(x\\to\\infty\\), any exponential will finally “overtake” any polynomial."
   },
   {
-    "objectID": "W04.html#rules-for-exponentiation",
-    "href": "W04.html#rules-for-exponentiation",
-    "title": "W#04: Relational Data, Math refresh, Function Programming, Descriptive Statistics",
-    "section": "Rules for exponentiation",
-    "text": "Rules for exponentiation\n\n\n\\(x^0\\)\n\\(0^x\\)\n\\(0^0\\)\n\\((x\\cdot y)^a\\)\n\\(x^{-a}\\), \\(x^{-1}\\)\n\\(x^\\frac{a}{b}\\), \\(x^\\frac{1}{2}\\)\n\\((x^a)^b\\)\n\n\n\\(x^0 = 1\\)\n\n\n\\(0^x = 0\\) for \\(x\\neq 0\\)\n\n\n\\(0^0 = 1\\) (discontinuity in \\(0^x\\))\n\n\n\\((x\\cdot y)^a = x^a\\cdot x^b\\)\n\n\n\\(x^{-a} = \\frac{1}{x^a}\\), \\(x^{-1} = \\frac{1}{x}\\)\n\n\n\\(x^\\frac{a}{b} = \\sqrt[b]{x^a} = (\\sqrt[b]{x})^a,\\ x^\\frac{1}{2} = \\sqrt{x}\\)\n\n\n\\((x^a)^b = x^{a\\cdot b} = (x^b)^a \\neq x^{a^b} = x^{(a^b)}\\)\nExample: \\((4^3)^2 = 64^2 = 4096 \\qquad 4^{3^2} = 4^9 = 262144\\)"
-  },
-  {
-    "objectID": "W04.html#more-rules-for-exponentiation",
-    "href": "W04.html#more-rules-for-exponentiation",
-    "title": "W#04: Relational Data, Math refresh, Function Programming, Descriptive Statistics",
-    "section": "More rules for exponentiation",
-    "text": "More rules for exponentiation\n\n\n\\(x^a\\cdot x^b\\)\n\n\n\\(x^a\\cdot x^b = x^{a+b}\\) Multiplication of powers (with same base \\(x\\)) becomes addition of exponents.\n\n\n\n\n\n\\((x+y)^a\\)\n\n\nNo “simple” form! For \\(a\\) integer use binomial expansion. \\((x+y)^2 = x^2 + 2xy + y^2\\)\n\\((x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3\\)\n\\((x+y)^n = \\sum_{k=0}^n {n \\choose k} x^{n-k}y^k\\)\n\n\n\n\nPascal’s triangle\n\n\n\n\n\nFrom wikipedia\n\n\n\nWe meet it again in Probability:\nA row represents a binomial distribution\nWhich tends to mimics the normal distribution more and more\nand is related to the central limit theorem"
-  },
-  {
-    "objectID": "W04.html#logarithms",
-    "href": "W04.html#logarithms",
-    "title": "W#04: Relational Data, Math refresh, Function Programming, Descriptive Statistics",
-    "section": "Logarithms",
-    "text": "Logarithms\nDefinition: A logarithm of \\(a\\) for some base \\(b\\) is the value of the exponent which brings \\(b\\) to \\(a\\): \\(\\log_b(a) = x\\) means that \\(b^x =a\\)\nMost common:\n\n\\(\\log_{10}\\) useful for plotting data in logarithmic scales because the numbers can be interpreted easiest (number of decimals of the original values)\n\\(\\log_{e}\\) natural logarithm (also \\(\\log\\) or \\(\\ln\\)) useful in calculus and statistics because of nice mathematical properties\n\n\n\n\n\\(\\log_{10}(100) =\\)\n\n\n\\(2\\)\n\n\n\n\n\n\n\\(\\log_{10}(1) =\\)\n\n\n\\(0\\)\n\n\n\n\n\n\n\\(\\log_{10}(6590) =\\)\n\n\n\\(3.818885\\)\n\n\n\n\n\n\n\\(\\log_{10}(0.02) =\\)\n\n\n\\(-1.69897\\)"
-  },
-  {
-    "objectID": "W04.html#rules-for-logarithms",
-    "href": "W04.html#rules-for-logarithms",
-    "title": "W#04: Relational Data, Math refresh, Function Programming, Descriptive Statistics",
-    "section": "Rules for logarithms",
-    "text": "Rules for logarithms\nUsually only one base is used in the same context, because changing base is easy:\n\\(\\log_c(x) = \\frac{\\log_b(x)}{\\log_b(c)} = \\frac{\\log(x)}{\\log(c)}\\)\n\n\n\\(\\log(x\\cdot y)\\)\n\n\n\\(= \\log(x) + \\log(y)\\) Multiplication \\(\\to\\) addition.\n\n\n\n\n\n\\(\\log(x^y)\\)\n\n\n\\(= y\\cdot\\log(x)\\)\n\n\n\n\n\\(\\log(x+y)\\)\n\n\ncomplicated!\n\n\n\n\nAlso changing bases for powers is easy: \\(x^y = (e^{\\log(x)})^y = e^{y\\cdot\\log(x)}\\)"
-  },
-  {
     "objectID": "W04.html#input-to-output",
     "href": "W04.html#input-to-output",
     "title": "W#04: Relational Data, Math refresh, Function Programming, Descriptive Statistics",
@@ -3187,7 +3187,7 @@
     "href": "W04.html#function-as-objects-in-r",
     "title": "W#04: Relational Data, Math refresh, Function Programming, Descriptive Statistics",
     "section": "Function as objects in R",
-    "text": "Function as objects in R\nfunction is a class of an object in R\n\nclass(c)\n\n[1] \"function\"\n\nclass(ggplot2::ggplot)\n\n[1] \"function\"\n\n\nCalling the function without brackets writes its code or some information.\n\nsd # This function is written in R, and we see its code\n\nfunction (x, na.rm = FALSE) \nsqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x), \n    na.rm = na.rm))\n&lt;bytecode: 0x638d96f90bc0&gt;\n&lt;environment: namespace:stats&gt;\n\nc # This function is not written in R but is a R primitive\n\nfunction (...)  .Primitive(\"c\")\n\nggplot2::ggplot # This function is not written solely in R\n\nfunction (data = NULL, mapping = aes(), ..., environment = parent.frame()) \n{\n    UseMethod(\"ggplot\")\n}\n&lt;bytecode: 0x638d9374db70&gt;\n&lt;environment: namespace:ggplot2&gt;"
+    "text": "Function as objects in R\nfunction is a class of an object in R\n\nclass(c)\n\n[1] \"function\"\n\nclass(ggplot2::ggplot)\n\n[1] \"function\"\n\n\nCalling the function without brackets writes its code or some information.\n\nsd # This function is written in R, and we see its code\n\nfunction (x, na.rm = FALSE) \nsqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x), \n    na.rm = na.rm))\n&lt;bytecode: 0x5820d755a270&gt;\n&lt;environment: namespace:stats&gt;\n\nc # This function is not written in R but is a R primitive\n\nfunction (...)  .Primitive(\"c\")\n\nggplot2::ggplot # This function is not written solely in R\n\nfunction (data = NULL, mapping = aes(), ..., environment = parent.frame()) \n{\n    UseMethod(\"ggplot\")\n}\n&lt;bytecode: 0x5820d4af4850&gt;\n&lt;environment: namespace:ggplot2&gt;"
   },
   {
     "objectID": "W04.html#define-your-own-functions-in-r",
