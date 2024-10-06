@@ -1,16 +1,19 @@
 ---
-title: "W#03 Data Import, Data Wrangling, Relational Data, Exploratory Data Analysis"
+title: "W#03 Data Import, Data Wrangling"
 subtitle: "With material adopted from [Data Science in a Box](https://datasciencebox.org) and [R4DS](https://r4ds.hadley.nz)"
 author: Jan Lorenz
 format: 
   revealjs: 
+    toc: true
+    toc-depth: 1
     slide-number: true
     chalkboard: 
       buttons: true
     preview-links: true
     logo: img/ConstructorUniversity.png
-    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
-bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+    footer: "MDSSB-DSCO-02: Data Science Concepts"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -18,12 +21,19 @@ bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
 library(tidyverse)
 ```
 
-# Data Import - short version
+
+
+# Data Import
+
+![](img/data-science-explore.png){height=250}
+
 
 ## `readr` and `readxl` {.smaller}
 
 ::: columns
 ::: {.column width="60%"}
+`readr` is loaded with `tidyverse`
+
 ![](img/readr.png){height=150}
 
 - `read_csv()` - comma delimited files
@@ -35,6 +45,8 @@ library(tidyverse)
 :::
 
 ::: {.column width="30%"}
+`readxl` has to be installed and loaded separately
+
 ![](img/readxl.png){height=150}
 
 - `read_excel()` read xls or xlsx files from MS Excel
@@ -47,28 +59,29 @@ library(tidyverse)
 There are also packages to write data from R to excel files (`writexl`, `openxlsx`, `xlsx`, ...).
 :::
 
-## Other data formats {.smaller}
+## Importing data from other sources {.smaller}
 
-R packages, analog libraries will exist for python
+**R packages** for some cases. They provide function to read from the source into dataframes. 
 
-- **googlesheets4:** Google Sheets
-- **haven**: SPSS, Stata, and SAS files
-- **DBI**, along with a database specific backend (e.g. RMySQL, RSQLite, RPostgreSQL etc): allows you to run SQL queries against a database and return a data frame
-- **jsonlite**: JSON
-- **xml2**: xml
-- **rvest**: web scraping
-- **httr**: web APIs
-- ...
+- Data collected in a [**Google Spreadsheet**]{style='color:darkred;'}:  `googlesheets4` 
+- Data in native formats of [**SPSS**, **Stata**, or **SAS**]{style='color:darkred;'}: `haven` 
+- Data in [**SQL Databases**]{style='color:darkred;'}: `DBI`, together with a database specific backend (`RMySQL`, `RSQLite`, `RPostgreSQL`)
+- Data in [**JSON**]{style='color:darkred;'} or [**XML**]{style='color:darkred;'} format as often used by web applications (e.g. written in JavaScript): `jsonlite` and `xml2`
+- [**Scraping**]{style='color:darkred;'} data directly from websites: `rvest`
+- Using [Appache Arrow](https://arrow.apache.org/), e.g. `.parquet` files: `arrow`
+
+::: aside
+Analog libraries will exist for python
+:::
+
 
 
 ## Comma-separated values (CSV) {.smaller}
 
-We use CSV file when there is no certain reason to do otherwise.^[Potential reasons are: CSV being not provided, or the dataset being very larger and hard-disk storage is an issue. Other formats or more space efficient.]
-
 CSV files are delimited text file
 
 - Can be viewed with any text editor
-- Show each row of the data frame in a line
+- Show each row of the dataframe in a line
 - Separates the content of columns by commas (or the delimiter character)
 - Each cell could be surrounded by quotes (when long text with commas (!) is in cells)
 - The first line is interpreted as listing the variable names by default
@@ -76,6 +89,10 @@ CSV files are delimited text file
 `readr` tries to guess the data type of variables
 
 You can also customize it yourself! 
+
+
+We use CSV file when there is no certain reason to do otherwise.
+Reasons are: CSV is not provided or the dataset being very larger and hard-disk storage is an issue. Other formats or more space efficient.
 
 
 
@@ -100,6 +117,7 @@ This downloads data only if the file does not exist. Then it loads it.
 #| echo: true
 #| message: true
 
+library(tidyverse)
 if (!file.exists("data/hotels.csv")) {
   download.file(url = "https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d06-grammar-wrangle/data/hotels.csv", 
                 destfile = "data/hotels.csv")
@@ -204,7 +222,7 @@ hotels <- read_csv("data/hotels.csv", col_types = cols(
 
 ## First look on data
 
-Type the name of the data frame
+Type the name of the dataframe
 
 ```{r}
 #| echo: true
@@ -230,6 +248,11 @@ Now, comes the data wrangling, transformation, ...
 
 # Data Wrangling
 
+Wrangling = Import + Tidy + Transform (first iteration) 
+
+![](img/data-science-explore.png){height=250}
+
+
 ## Grammar of Data Wrangling {.smaller}
 
 :::{.columns{}
@@ -248,7 +271,7 @@ mpg |>
 :::
 :::
 
-Similar in `python`:  Make a chain using `.` to apply `pandas` methods for data frames one after the other.
+Similar in `python`:  Make a chain using `.` to apply `pandas` methods for dataframes one after the other.
 
 
 Similar in `ggplot2`: Creating a ggplot object, then add graphical layers (`geom_` functions) with `+` (instead of a pipe)
@@ -294,7 +317,7 @@ You still find it in a lot of code out in the wild. It is almost the same.
 - `group_by`: for grouped operations
 - ... (many more)
 
-# Data subsetting
+# Data Subsetting
 
 ## `select` a single column {.smaller}
 
@@ -317,8 +340,8 @@ Why does piping `|>` work?
 
 Every `dplyr` function
 
-   - takes a data frame (tibble) as first argument
-   - outputs a (manipulated) data frame (tibble)
+   - takes a dataframe (tibble) as first argument
+   - outputs a (manipulated) dataframe (tibble)
 
 :::
 
@@ -336,7 +359,7 @@ In hotel business, lead time is the time betweeen booking and arrival.
 hotels |> select(hotel, lead_time)     
 ```
   
-Note that `hotel` is a variable, but `hotels` the data frame object name
+Note that `hotel` is a variable, but `hotels` the dataframe object name
 
 
 ## Select helper `starts_with`  {.smaller}
@@ -394,17 +417,18 @@ hotels |> filter(hotel == "City Hotel")
 #| output-location: fragment
 hotels |> filter(
   babies >= 1,
-  children >= 1, 
+  children >= 1
   ) |> 
   select(hotel, adults, babies, children)
 ```
 
 Comma-separated conditions are interpreted as all these should be fulfilled.   
 This is identical to the logical AND `&`.    
-`hotels |> filter(babies >= 1 & children >= 1)`
+`hotels |> filter(babies >= 1 & children >= 1)`  
+delivers the same. (Spot the tiny difference!)
 
 
-## `filter` for complexer criteria {.smaller}
+## `filter` for more complex criteria {.smaller}
 
 ```{r} 
 #| echo: true
@@ -430,10 +454,6 @@ operator      | definition
 `!=`          |	not equal to                 
 `x & y`       | `x` AND `y`                  
 `x | y`       | `x` OR `y` 
-`is.na(x)`    | test if `x` is `NA` (missing data)
-`!is.na(x)`   | test if `x` is not `NA` (not missing data)
-`x %in% y`    | test if `x` is in `y` (often used for strings)
-`!(x %in% y)` | test if `x` is not in `y`
 `!x`          | not `x`
 
 
@@ -470,11 +490,11 @@ hotels[c(1:3,100232),c(5:7,1)]
 **Analogy:** In mathematics there is an unsettled debate if $0 \in \mathbb{N}$ or $0 \notin \mathbb{N}$
 
 
-## Excursion: The Concept of Logical Indexing
+## Excursion: Logical Indexing {.smaller}
 
-With logical vectors you can select rows and columns
+With logical vectors you can select rows and columns. 
 
-```{r}
+We create a small sample data frame
 
 ```{r} 
 #| echo: true
@@ -484,6 +504,8 @@ data
 ```
 
 . . . 
+
+Now, we select some rows and a column with logical index vectors
 
 ```{r} 
 #| echo: true
@@ -557,6 +579,18 @@ hotels |>
   arrange(n)
 ```
 
+## Counting, arrange descending
+
+`count`, `arrange`, `desc` 
+
+```{r} 
+#| echo: true
+#| output-location: fragment
+hotels |> 
+  count(hotel, market_segment) |>      # This produces a new variable n
+  arrange(desc(n))
+```
+
 
 # Data Transformation
 
@@ -592,7 +626,7 @@ hotels |>
   summarize(mean_adr = mean(adr))
 ```
 
-- That shrinks the data frame to one row!
+- That shrinks the dataframe to one row!
 - Don't forget to name the new variable (here `mean_adr`)
 - You can use any function you can apply to a vector!  
   (Sometimes you may need to write your own one.)
@@ -634,6 +668,19 @@ hotels |>
   geom_line()
 ```
 
+
+## Grouping alternative {.smaller}
+
+Instead of a `group_by(...)` you can also use the `.by = ...` argument in `summarize` (or `mutate`) 
+
+```{r} 
+#| echo: true
+hotels |>
+  summarise(mean_adr = mean(adr), .by = c(hotel, arrival_date_week_number)) |> 
+  ggplot(aes(x = arrival_date_week_number, y = mean_adr, color = hotel)) +
+  geom_line()
+```
+
 # Where to find help
 
 ## Resources {.smaller}
@@ -651,7 +698,7 @@ hotels |>
 * Talk to ChatGPT? *Does it work?*
   
 
-# More under the hood
+# More under the hood: Names vectors, Indexing
 
 ## Named vectors
 
@@ -745,14 +792,14 @@ attributes(airports)
 
 ## Three important attributes {.smaller}
 
-- **Names** are used to name element of a vector, also works for lists and therefore also data frames (lists of atomic vectors of the same length)
+- **Names** are used to name element of a vector, also works for lists and therefore also dataframes (lists of atomic vectors of the same length)
 - **Dimensions** (`dim()`) is a short numeric vector making a vector behave as a matrix or a higher dimensional array. A vector `1:6` together with `dim` being `c(2,3)` is a matrix with 2 rows and 3 columns  
 $\begin{bmatrix} 1 & 3 & 5 \\ 2 & 4 & 6 \end{bmatrix}$
 - **Class** is used to implement the S3 object oriented system. We don't need to know the details here. The class system makes it for example possible that the same function, e.g. `print()` behaves differently for objects of a different class.
 
 **Class** plays a role in specifying *augmented vectors* like factors, dates, date-times, or tibbles. 
 
-# Augmented vectors
+# Augmented vectors: Factors and Dates
 
 ## Factors {.smaller}
 
@@ -903,541 +950,4 @@ as.double(lubridate::now()) -
     - Use the `lubridate` package. Usually you just need one command to convert a character vector to a date or date-time vector, but you have to customize correctly. 
 
 Read the chapter of factors and dates in [R for Data Science](https://r4ds.hadley.nz)
-
-# Strings
-
-## String modification {.smaller}
-
-We modify strings with the [`stringr`](https://stringr.tidyverse.org/) package from the tidyverse core. 
-All functions from `stringr` start with `str_`. 
-
-Very few examples:
-
-```{r}
-#| echo: true
-#| 
-c("x","y")
-str_c("x","y")
-str_c("x","y","z", sep=",")
-length(c("x","y","z"))
-str_length(c("x","y","z"))
-str_length(c("This is a string.","z"))
-```
-
-## String wrangling with variable names {.smaller}
-
-```{r}
-#| echo: true
-data <- tibble(Name = c("A","B","C"), Age_2020 = c(20,30,40), Age_2021 = c(21,31,41), Age_2022 = c(22,32,42))
-data
-```
-
-We tidy that data set by creating a year variable.
-
-. . .
-
-```{r}
-#| echo: true
-#| output-location: fragment
-data |> pivot_longer(c("Age_2020", "Age_2021", "Age_2022"), names_to = "Year", values_to="Age")
-```
-
-. . . 
-
-OK, but the year variable is a string but we want numbers.
-
-## Use `word` {.smaller}
-
-`word` extracts words from a sentence. However, the separator need not be `" "` but can be any character.
-
-```{r}
-#| echo: true
-word("This is a string.", start=2, end=-2) 
-#Selects from the second to the second last word.
-word("Age_2022", start=2, sep = "_")
-```
-
-. . .
-
-It also works vectorized. 
-
-```{r}
-#| echo: true
-#| output-location: fragment
-data |> pivot_longer(c("Age_2020", "Age_2021", "Age_2022"), names_to = "Year", values_to="Age") |> 
-  mutate(Year = word(Year, start = 2, sep = "_") |> as.numeric())
-```
-
-
-## String detection and regular expressions {.smaller}
-
-```{r}
-#| echo: true
-fruits <- c("apple", "pineapple", "Pear", "orange", "peach", "banana")
-str_detect(fruits,"apple")
-str_extract(fruits,"apple")
-```
-
-Regular expressions are useful because strings usually contain unstructured or semi-structured data, and regexps are a concise language for describing patterns in strings. When you first look at a regexp, you'll think a cat walked across your keyboard, but as your understanding improves they will start to make sense.
-
-``"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"``
-
-``"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"``
-
-``""^[[:alnum:].-_]+@[[:alnum:].-]+$""``
-
-. . . 
-
-These are all regular expressions for email addresses.
-
-
-## Special values  {.smaller}
-
-- `NA`: Not available
-- `NaN`: Not a number
-- `Inf`: Positive infinity
-- `-Inf`: Negative infinity
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
-1/0
-```
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
--1/0
-```
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
-0/0
-```
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
-1/0 + 1/0
-```
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
-1/0 - 1/0
-```
-
-## `NA`s  {.smaller}
-
-Instead of `NaN`, `NA` stands for genuinely unknown values.   
-It can also be in a character of logical vector.
-
-```{r}
-#| echo: true
-x = c(1, 2, 3, 4, NA)
-mean(x)
-mean(x, na.rm = TRUE)
-summary(x)
-```
-
-The type of `NA` is logical. 
-
-```{r}
-#| echo: true
-typeof(NA)
-typeof(NaN)
-```
-
-Does it make sense?
-
-## `NA`s in logical operations
-
-`NA` can be TRUE or FALSE. 
-
-Usually operations including `NA` results again in `NA`, but some not!
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
-NA & TRUE
-```
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
-NA | TRUE
-```
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
-NA & FALSE
-```
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
-NA | FALSE
-```
-
-Understanding logical operations is important!
-
-
-## `NULL` is the null object {.smaller}
-
-- used to represent lists with zero length
-
-```{r}
-#| echo: true
-x <- 1:10
-attributes(x)
-```
-
-- used as a placeholder for missing values in lists and data frames
-
-```{r}
-#| echo: true
-L <- list(a = 1)
-L[[3]] <- 5
-L
-```
-
-# Relational Data
-
-## Working with more data frames {.smaller}
-
-- Data can be distributed in several data frames which have relations which each other. 
-- For example, they share variables as the five data frames in `nycflights13`.
-
-![](img/nycflights13_data.png){height=300}
-
-:::{.aside}
-Often variables in different data frame have the same name, but that need not be the case! See the variable `faa` in `airports` matches `origin` and `dest` in `flights`.
-:::
-
-
-## Data: Women in science {.smaller}
-
-10 women in science who changed the world: 
-`r read_csv("data/scientists/professions.csv") |> pull(name) |> paste(collapse=", ")`
-
-```{r}
-professions <- read_csv("data/scientists/professions.csv")
-dates <- read_csv("data/scientists/dates.csv")
-works <- read_csv("data/scientists/works.csv")
-```
-
-::: {.panel-tabset}
-
-#### Professions
-
-```{r}
-#| echo: true
-professions <- read_csv("data/scientists/professions.csv")
-professions
-```
-
-#### Dates
-
-```{r}
-#| echo: true
-dates <- read_csv("data/scientists/dates.csv")
-dates
-```
-
-#### Works
-
-```{r}
-#| echo: true
-works <- read_csv("data/scientists/works.csv")
-works
-```
-:::
-
-
-:::{.aside}
-Source: [Discover Magazine](https://www.discovermagazine.com/the-sciences/meet-10-women-in-science-who-changed-the-world)
-
-The data can be downloaded: [professions.csv](https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/scientists/professions.csv), [dates.csv](https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/scientists/dates.csv), 
-[works.csv](https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/scientists/works.csv)
-:::
-
-## We want this data frame {.smaller}
-
-```{r}
-professions  |> left_join(dates) |> left_join(works)
-```
-
-## Joining data frames {.smaller}
-
-`something_join(x, y)`^[The notion *join* comes from SQL database. In other data manipulation frameworks joining is called *merging*.] for data frames `x` and `y` which have a *relation*
-
-- `left_join()`: all rows from x
-- `right_join()`: all rows from y
-- `full_join()`: all rows from both x and y
-- `inner_join()`: all rows from x where there are matching values in y, return all combination of multiple matches in the case of multiple matches
-- ...
-
-## Simple setup for `x` and `y` {.smaller}
-
-```{r}
-#| echo: true
-x <- tibble(
-  id = c(1, 2, 3),
-  value_x = c("x1", "x2", "x3")
-  )
-y <- tibble(
-  id = c(1, 2, 4),
-  value_y = c("y1", "y2", "y4")
-  )
-x
-y
-```
-
-## `left_join()`
-
-:::{.columns}
-:::{.column width=50%}
-![](img/left-join.gif)
-:::
-:::{.column}
-```{r}
-#| echo: true
-left_join(x, y)
-```
-:::
-:::
-
-## `right_join()`
-
-:::{.columns}
-:::{.column width=50%}
-![](img/right-join.gif)
-:::
-:::{.column}
-```{r}
-#| echo: true
-right_join(x, y)
-```
-:::
-:::
-
-
-## `full_join()`
-
-:::{.columns}
-:::{.column width=50%}
-![](img/full-join.gif)
-:::
-:::{.column}
-```{r}
-#| echo: true
-full_join(x, y)
-```
-:::
-:::
-
-
-## `inner_join()`
-
-:::{.columns}
-:::{.column width=50%}
-![](img/inner-join.gif)
-:::
-:::{.column}
-```{r}
-#| echo: true
-inner_join(x, y)
-```
-:::
-:::
-
-## Women in science {.smaller}
-
-:::{.panel-tabset}
-
-#### `left_join`
-
-```{r}
-#| echo: true
-professions |> left_join(works)
-```
-
-#### `right_join`
-
-```{r}
-#| echo: true
-professions |> right_join(works)
-```
-
-#### `full_join`
-
-```{r}
-#| echo: true
-dates |> full_join(works)
-```
-
-#### `inner_join`
-
-```{r}
-#| echo: true
-dates |> inner_join(works)
-```
-
-
-#### Final
-
-```{r}
-#| echo: true
-professions |> left_join(dates) |> left_join(works)
-```
-
-:::
-
-## Keys {.smaller}
-
-- A **key** is a variable or a set of variables which uniquely identifies observations
-- What was the key in the data frame of women in science?
-
-. . . 
-
-- Switching back to `nycflights13` as example
-- In simple cases, a single variable is sufficient to identify an observation, e.g. each plane in `planes` is identified by `tailnum`.
-- Sometimes, multiple variables are needed; e.g. to identify an observation in
-`weather` you need five variables: `year`, `month`, `day`, `hour`, and `origin`
-
-## How can we check? {.smaller .scrollable}
-
-Counting observation and filter those more than one
-
-```{r}
-#| echo: true
-library(nycflights13)
-planes |> count(tailnum) |> filter(n > 1)
-weather |> count(year, month, day, hour, origin) |> filter(n > 1) 
-# OK, here 3 observations are twice. Probably a data error.
-# Example: Without hour it is not a key
-weather |> count(year, month, day, origin) |> filter(n > 1) 
-```
-
-## Terminology: Primary and foreign keys  {.smaller}
-
-- A **primary key** uniquely identifies an observation in its own table. E.g,
-`planes$tailnum` in `planes`. 
-- A **foreign key** uniquely identifies an observation in another data frame E.g.
-`flights$tailnum` is a foreign key in `flights` because it matches each flight to a unique plane in `planes`.
-- Data frames need not have a key and the joins will still do their work. 
-
-- A primary key and a foreign key form a relation. 
-- Relations are typically 1-to-many. Each plane has many flights
-- Relations can also be many-to-many. Airlines can fly to many airports; airport can host many airplanes.
-
-
-## Joining when key names differ? {.smaller .scrollable}
-
-We have to specify the key relation with a named vector in the `by` argument. 
-
-```{r}
-#| echo: true
-dim(flights)
-flights |> left_join(airports, by = c("dest" = "faa"))
-
-# New version
-flights |> left_join(airports, join_by("dest" == "faa"))
-```
-
-**Why does the number of rows stays the same after joining?**
-
-. . .
-
-`faa` is a primary key in `airports`. 
-
-
-
-## `left_join` *essentially* `right_join` with switched data frames {.smaller .scrollable}
-
-```{r}
-#| echo: true
-airports_right_flights <- airports |> right_join(flights, by = c("faa" = "dest"))
-airports_right_flights 
-```
-
-Differences 
-
-- In a join where keys have different column names the name of the first data frame survives (unless you use `keep = TRUE`). Here, `faa` instead of `dest`
-- The columns from the first data frame come first
-- The order of rows is taken from the first data frame, while duplication and dropping of variables is determined by the second data frame (because it is a `right_join`)
-
-Using the fact that flights seem to be ordered by `year`, `month`, `day`, `dep_time` we can re-arrange:
-
-```{r}
-#| echo: true
-airports_right_flights |> 
-  rename(dest = faa) |> 
-  select(names(flights)) |> # Use order of flights
-  arrange(year, month, day, dep_time)
-```
-
-Note of caution: A deeper analysis shows that the order is still not exactly the same. 
-
-## `left_join` with reversed data frames {.smaller .scrollable}
-
-
-```{r}
-#| echo: true
-dim(airports)
-dim(flights)
-airports |> 
-  left_join(flights, by = c("faa" = "dest"))
-```
-
-**Why does the number of rows changes after joining?**
-
-`dest` is not a primary key in `flights`. There are more flights with the same destination so rows of `airports` get duplicated.  
-
-**Why is the number of rows then less than the number of rows in flights?**
-
-Let us do some checks:
-
-```{r}
-#| echo: true
-length(unique(airports$faa)) # Unique turns out to be redundant because faa is a primary key
-length(unique(flights$dest))
-
-# There are much more airports then destinations in flights!
-# ... but the rows of airports prevail when it is the first in a left_join.
-# So, the data frame should even increase because 
-# we get several rows of airports without flights
-# Let us dig deeper.
-
-setdiff( unique(airports$faa), unique(flights$dest)) |> length()
-# 1,357 airports have no flights. But also:
-setdiff( unique(flights$dest), unique(airports$faa)) |> length()
-# There are four destinations in flights, which are not in the airports list!
-
-# How many flights are to these?
-flights |> 
-  filter(dest %in% setdiff( unique(flights$dest), unique(airports$faa))) |> 
-  nrow()
-# 7,602 flights go to destinations not listed as airport
-
-# Check
-nrow(airports |> left_join(flights, by = c("faa" = "dest"))) == nrow(flights) - 7602 + 1357
-# OK, now we have a clear picture
-# airport with left_joined flights duplicates the rows an airports for each flight flying to it
-# So the total number of rows is the number of flights plus the number of airport which do not 
-# appear as a destination minus the flights which go to destinations which are not listed in airports
-```
-
-**Learning:** The new number of observation after a join can be a complex combination of duplication and dropping. It is your responsibility to understand what is happening. 
-
-
-# Next Steps
-
-- This and next week: Introduction to `python`
-
-- Then you should be able to do wrangle, transform, and basically visualize data how you want. (Usually some self-study is necessary when new problems pop up. )
-
-- Expect and update of a few questions in Homework 2 for exploratory data analysis.
 
