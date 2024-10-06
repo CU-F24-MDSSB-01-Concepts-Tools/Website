@@ -1,30 +1,474 @@
 ---
-title: "W#05: Summary Statistics, Exploratory Data Analysis, Principal Component Analysis"
+title: "W#05: Descriptive Statistics, Exploratory Data Analysis"
 author: Jan Lorenz
 format: 
   revealjs: 
+    toc: true
+    toc-depth: 1
     slide-number: true
     chalkboard: 
       buttons: true
     preview-links: true
     logo: img/ConstructorUniversity.png
-    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+    footer: "MDSSB-DSCO-02: Data Science Concepts"
 bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+editor_options: 
+  chunk_output_type: console
 ---
 
+## Preliminaries {.smaller}
+
+In this lectures we will use these packages and datasets. You need to do this code in the Console to download data and play with some of the code in this lecture.
+
 ```{r}
-#| include: false
+#| echo: true
 library(tidyverse)
 library(readxl)
+library(palmerpenguins)
+if (!file.exists("data/galton_data.xlsx")) {
+  download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/galton_data.xlsx", 
+                destfile = "data/galton_data.xlsx")
+} 
+if (!file.exists("data/Viertelfest.csv")) {
+  download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/Viertelfest.csv", 
+                destfile = "data/Viertelfest.csv")
+} 
 galton <- read_excel("data/galton_data.xlsx")
 viertel <- read_csv("data/Viertelfest.csv")
+```
+
+::: aside
+Tip: Run the script in an R-project and have a folder `data/` in it such that the local path works!
+:::
+
+
+# Descriptive Statistics 
+
+
+## Descriptive vs. Inferential Statistics {background-color="khaki"}
+
+- The process of using and analyzing [**summary statistics**]{style='color:red;'}
+  - Solely concerned with properties of the **observed data**.
+
+- Distinct from [**inferential statistics**]{style='color:red;'}: 
+  - Inference of properties of an underlying distribution given sampled observations from a larger population. 
+  
+  
+**Summary Statistics** are used to summarize a set of observations to communicate the largest amount of information as simple as possible. 
+
+
+## Summary statistics {background-color="khaki"}
+
+*Univariate* (for one variable)
+
+- Measures of **location**, or *central tendency*
+- Measures of statistical **dispersion** 
+- Measure of the **shape** of the distribution like skewness or kurtosis
+
+*Bivariate* (for two variables)
+
+- Measures of statistical dependence or **correlation**
+
+# Measures of central tendency 
+
+## Measures of central tendency {.smaller background-color="aquamarine"}
+
+Goal: For a sequence of numerical observations $x_1,\dots,x_n$ we want to measure
+
+- the "typical" value.
+- a value summarizing the **location** of values on the numerical axis.
+
+Three different ways:
+
+1. **Arithmetic mean** (also *mean*, *average*): Sum of the all observations divided by the number of observations $\frac{1}{n}\sum_{i=1}^n x_i$
+2. **Median**: Assume $x_1 \leq x_2 \leq\dots\leq x_n$. Then the median is middlemost values in the sequence $x_\frac{n+1}{2}$ when $n$ odd. For $n$ even there are two middlemost values and the median is $\frac{x_\frac{n}{2} + x_\frac{n+1}{2}}{2}$
+3. **Mode**: The value that appears most often in the sequence. 
+
+
+## Measures of central tendency: Examples {.smaller background-color="aquamarine"}
+
+
+:::: {.columns}
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+#| output-location: fragment
+x <- c(1, 2, 4, 10, 300)
+mean(x) 
+```
+
+```{r}
+#| echo: true
+#| output-location: fragment
+median(x)
+```
+
+```{r}
+#| echo: true
+#| output-location: fragment
+y <- c(-2, -2, 4, 7, 7, 7)
+mean(y)
+```
+
+
+```{r}
+#| echo: true
+#| output-location: fragment
+median(y)
+```
+
+Median of an even number of numbers: Mean of two most central numbers. 
+:::
+
+::: {.column width='50%'}
+There is no function for the *Mode* in R. 
+
+```{r}
+#| echo: true
 Mode <- function(x) {
   ux <- unique(x)
   ux[which.max(tabulate(match(x, ux)))]
 }
 ```
 
-# Summary Statistics (continued)
+```{r}
+#| echo: true
+#| output-location: fragment
+Mode(y)
+```
+
+```{r}
+#| echo: true
+#| output-location: fragment
+Mode(x)
+```
+
+Warning: Mode is not unique and there is no fix like for the Median. 
+:::
+
+::::
+
+
+
+
+## Philosophy of aggregation {.smaller background-color="khaki"}
+
+::: {.incremental}
+- The **mean** represents *total value* per value.   
+[Example: *per capita income* in a town is the total income per individual]{style="color:blue;"}
+- The **median** represents the value such that half of the values are lower *and* higher.    
+[In a *democracy* where each value is represented by one voter preferring it, the median is the value which is *unbeatable* by an *absolute majority*. Half of the people prefer higher the other half lower values. ([Median voter model](https://en.wikipedia.org/wiki/Median_voter_theorem))]{style='color:blue;'}
+- The **mode** represents the most common value.  
+[In a *democracy*, the mode represents the winner of a *plurality vote* where each value runs as a candidate and the winner is the one with the most votes.]{style='color:blue;'}
+:::
+
+## Mean, Median, Mode properties  {.smaller background-color="aquamarine"}
+
+**Do they deliver one unambiguous answer for any sequence?**
+
+. . . 
+
+Mean and median, yes.   
+The mode has no rules for a tie. 
+
+. . . 
+
+**Can they by generalized to variables with ordered or even unordered categories?**
+
+. . .
+
+Mean: No.   
+Median: For ordered categories (except when even number and the two middlemost are not the same)   
+Mode: For any categorical variable.
+
+. . .
+
+**Is the measure always also in the data sequence?**
+
+. . . 
+
+Mean: No.   
+Median: Yes, for sequences of odd length.   
+Mode: Yes. 
+
+
+## Generalized means^[Also called *power mean* or *$p$-mean*. ] {.smaller background-color="aquamarine"}
+
+For $x_1, \dots, x_n > 0$ and $p\in \mathbb{R}_{\neq 0}$ the generalized mean is
+
+$$M_p(x_1, \dots, x_n) = (\frac{1}{n}\sum_{i=1}^n x_i^p)^\frac{1}{p}$$
+
+For $p = 0$ it is $M_0(x_1, \dots, x_n) = (\prod_{i=1}^n x_i)^\frac{1}{n}$. 
+
+$M_1$ is the arithmetic mean. $M_0$ is called the **geometric mean**. $M_{-1}$ the **harmonic mean**. 
+
+Note: Generalized means are often only reasonable when all values are positive $x_i > 0$.
+
+::: aside
+$M_0$ can also be expressed as the exponential ($\exp(x) = e^x$) of the mean of the the $\log$'s of the $x_i$'s: $\exp(\log((\prod_{i=1}^n x_i)^\frac{1}{n})) = \exp(\frac{1}{n}\sum_{i=1}^n\log(x_i))$. 
+:::
+
+## Box-Cox transformation function  {.smaller background-color="aquamarine" .scrollable}
+
+For $p \in \mathbb{R}$: $f(x) = \begin{cases}\frac{x^p - 1}{p} & \text{for $p\neq 0$} \\ \log(x) & \text{for $p= 0$}\end{cases}$
+
+::: {.columns}
+
+::: {.column width='60%' .smaller}
+The $p$-mean is
+
+$$M_p(x) = f^{-1}(\frac{1}{n}\sum_{i=1}^n f(x_i))$$
+
+with $x = [x_1, \dots, x_n]$. $f^{-1}$ is the **inverse** of $f$.
+
+
+- **Inverse** means $f^-1(f(x)) = x =f(f^-1(x))$.  
+- Box-Cox is a common transformation in data pre-processing to make the variable's (arithmetic) mean being a "good" measure of central tendency.
+:::
+
+::: {.column width='40%'}
+```{r}
+#| fig-width: 4
+#| echo: true
+pfun <- function(x, p) (x^p-1)/p
+ipfun <- function(x, p) (p*x + 1)^(1/p)
+ggplot() + 
+	geom_function(fun = pfun, args = list(p = 1), color="red", size = 1.5) +
+	geom_function(fun = pfun, args = list(p = 2), color = "red", alpha=0.6) + 
+	geom_function(fun = pfun, args = list(p = 3), color = "red", alpha=0.3) +  
+	geom_function(fun = pfun, args = list(p = 1/2), color = "red3") + 
+	geom_function(fun = pfun, args = list(p = 1/3), color = "red4") + 
+	geom_function(fun = pfun, args = list(p = -1), color = "blue", size = 1.5) +  
+	geom_function(fun = pfun, args = list(p = -1/2), color = "blue3") + 
+	geom_function(fun = pfun, args = list(p = -1/3), color = "blue4") + 
+	geom_function(fun = pfun, args = list(p = -2), color = "blue", alpha=0.6) + 
+	geom_function(fun = pfun, args = list(p = -3), color = "blue", alpha=0.3) + 
+	geom_function(fun = log, color = "black", size = 1.5) + coord_fixed() +
+	xlim(c(0.01,4)) + ylim(c(-2,2)) + 
+	labs(x="x", y = "f(x)", title = "p = -1 (blue), 0 (black), +1 (red)") + 
+	theme(title = element_text(size = 2)) +
+	theme_minimal() 
+```
+:::
+
+:::
+
+
+
+# Measures of central tendency and the Wisdom of the Crowd 
+
+## Application: The Wisdom of the Crowd {.smaller background-color="khaki"}
+
+::: {.columns}
+
+::: {.column width='80%'}
+- **Phenomenon:** When collective estimate of a diverse group of independent individuals is better than that of single experts. 
+- The classical wisdom-of-the-crowds finding is about **point estimation** of a continuous quantity.
+- Popularized by James Surowiecki (2004).
+- The opening anecdote is about Francis Galton's^[Galton (1822-1911) was a half-cousin to Charles Darwin and one of the founding fathers of statistics. He also was a scientific racist, see <https://twitter.com/kareem_carr/status/1575506343401775104?s=20&t=8T5TzrayAWNShmOSzJgCJQ.>.] surprise in 1907 that the crowd at a county fair accurately guessed the weight of an ox's meat when their individual guesses were averaged.
+:::
+
+::: {.column width='20%'}
+
+![](https://upload.wikimedia.org/wikipedia/en/9/95/Wisecrowds.jpg) 
+
+![](https://upload.wikimedia.org/wikipedia/commons/a/ae/Sir_Francis_Galton_by_Charles_Wellington_Furse.jpg){width=150}  
+:::
+
+:::
+
+## Galton's data^[Kenneth Wallis dug out the data from Galton's notebook and put it here <https://warwick.ac.uk/fac/soc/economics/staff/kfwallis/publications/galton_data.xlsx>] {.smaller background-color="aquamarine"}
+
+*What is the weight of the meat of this ox?*
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+galton <- read_excel("data/galton_data.xlsx")
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + 
+ geom_vline(xintercept = 1198, color = "green") + 
+ geom_vline(xintercept = mean(galton$Estimate), color = "red") + 
+ geom_vline(xintercept = median(galton$Estimate), color = "blue") + 
+ geom_vline(xintercept = Mode(galton$Estimate), color = "purple")
+```
+
+`r nrow(galton)` estimates, [true value]{style="color:green;"} 1198, [mean]{style="color:red;"} `r round(mean((galton$Estimate)), digits=1)`, [median]{style="color:blue;"} `r median((galton$Estimate))`, [mode]{style="color:purple;"} `r Mode((galton$Estimate))`
+
+
+## Viertelfest Bremen 2008^[Data collected as additional guessing game at the Lottery "Haste mal 'nen Euro?", data provided by Jan Lorenz  <https://docs.google.com/spreadsheets/d/1HiYhUrYrsbeybJ10mwsae_hQCawZlUQFOOZzcugXzgA/edit#gid=0>] {.smaller background-color="aquamarine"}
+
+*How many lots will be sold by the end of the festival?*
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+viertel <- read_csv("data/Viertelfest.csv")
+viertel |> ggplot(aes(`Schätzung`)) + geom_histogram() +
+ geom_vline(xintercept = 10788, color = "green") + 
+ geom_vline(xintercept = mean(viertel$Schätzung), color = "red") + 
+ geom_vline(xintercept = median(viertel$Schätzung), color = "blue") + 
+ geom_vline(xintercept = Mode(viertel$Schätzung), color = "purple")
+```
+
+`r nrow(viertel)` estimates, the maximal value is `r format(max(viertel$Schätzung))`!  We should filter ... 
+
+
+## Viertelfest Bremen 2008 {.smaller background-color="aquamarine"}
+
+*How many lots will be sold by the end of the festival?*
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+viertel <- read_csv("data/Viertelfest.csv")
+viertel |> filter(Schätzung<100000) |> ggplot(aes(`Schätzung`)) + geom_histogram(binwidth = 500) +  
+ geom_vline(xintercept = 10788, color = "green") +
+ geom_vline(xintercept = mean(viertel$Schätzung), color = "red") + 
+ geom_vline(xintercept = median(viertel$Schätzung), color = "blue") + 
+ geom_vline(xintercept = Mode(viertel$Schätzung), color = "purple") + 
+ geom_vline(xintercept = exp(mean(log(viertel$Schätzung))), color = "orange")
+```
+
+`r nrow(viertel)` estimates, [true value]{style="color:green;"} 10788, [mean]{style="color:red;"} `r format(round(mean(viertel$Schätzung), digits=1))`, [median]{style="color:blue;"} `r median(viertel$Schätzung)`, [mode]{style="color:purple;"} `r format(Mode(viertel$Schätzung))`,   
+[geometric mean]{style="color:orange;"} `r format(round(exp(mean(log(viertel$Schätzung))), digits=1))`
+
+
+## $\log_{10}$ transformation Viertelfest {.smaller background-color="aquamarine"}
+
+```{r}
+#| echo: true
+#| fig-height: 2.5
+viertel |> mutate(log10Est = log10(Schätzung)) |> ggplot(aes(log10Est)) + geom_histogram(binwidth = 0.05) +
+ geom_vline(xintercept = log10(10788), color = "green") + 
+ geom_vline(xintercept = log10(mean(viertel$Schätzung)), color = "red") + 
+ geom_vline(xintercept = log10(median(viertel$Schätzung)), color = "blue") + 
+ geom_vline(xintercept = log10(Mode(viertel$Schätzung)), color = "purple") + 
+ geom_vline(xintercept = mean(log10(viertel$Schätzung)), color = "orange")
+```
+
+`r nrow(viertel)` estimates, [true value]{style="color:green;"} 10788, [mean]{style="color:red;"} `r format(round(mean(viertel$Schätzung), digits=1))`, [median]{style="color:blue;"} `r median(viertel$Schätzung)`, [mode]{style="color:purple;"} `r format(Mode(viertel$Schätzung))`,   
+[geometric mean]{style="color:orange;"} `r format(round(exp(mean(log(viertel$Schätzung))), digits=1))`
+
+
+## Wisdom of the crowd insights {.smaller background-color="aquamarine"}
+
+::: {.incremental}
+- In Galton's sample the different measures do not make a big difference
+- In the Viertelfest data the arithmetic mean performs very bad!
+- The mean is *vulnerable to extreme values*.   
+Quoting Galton on the mean as a democratic aggregation function:   
+*"The mean gives voting power to the cranks in proportion to their crankiness."*
+- The mode tends to be on *focal* values as round numbers (10,000). In Galton's data this is not so pronounced beause estimators used several weight units (which Galton converted to pounds). 
+- **How to choose a measure to aggregate the wisdom?**
+  - By the nature of the estimate problem? Is the scale mostly clear? (Are we in the hundreds, thousands, ten thousands, ...)
+  - By the nature of the distribution?
+  - There is no real insurance against a systematic bias in the population.
+:::
+  
+
+# Measures of dispersion
+
+## Measures of dispersion^[Also called *variability*, *scatter*, or *spread*.] {.smaller background-color="aquamarine"}
+
+Goal: We want to measure 
+
+- How spread out values are around the central tendency. 
+- How stretched or squeezed is the distribution?
+
+**Variance** is the mean of the squared deviation from the mean:  $\text{Var}(x) = \frac{1}{n}\sum_{i=1}^n(x_i - \mu)^2$ where $\mu$ (mu) is the mean. 
+
+. . .
+
+**Standard deviation** is the square root of the variance $\text{SD}(x) = \sqrt{\text{Var}(x)}$. 
+
+The standard deviation is often denoted $\sigma$ (sigma) and the variance $\sigma^2$.
+
+. . .
+
+**Mean absolute deviation** (MAD) is the mean of the absolute deviation from the mean:  $\text{MAD}(x) = \frac{1}{n}\sum_{i=1}^n|x_i - \mu|$.
+
+. . .
+
+**Range** is the difference of the maximal and the minimal value $\max(x) - \min(x)$.
+
+
+## Examples of measures of dispersion {.smaller background-color="khaki"}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+var(galton$Estimate)
+sd(galton$Estimate)
+mad(galton$Estimate)
+range(galton$Estimate)
+diff(range(galton$Estimate))
+```
+:::
+
+::: {.column width='50%'}
+```{r}
+#| echo: true
+var(viertel$Schätzung)
+sd(viertel$Schätzung)
+mad(viertel$Schätzung)
+range(viertel$Schätzung) # Oh, range in R gives us a vector of min and max. So, we diff
+diff(range(viertel$Schätzung))
+```
+:::
+
+::::
+
+:::{.aside}
+Variance (and standard deviation) in statistics is usually computed with $\frac{1}{n-1}$ instead of $\frac{1}{n}$ to provide an unbiased estimator of the potentially underlying population variance. We omit more detail here.  
+:::
+
+## Normalization of variables {.smaller background-color="aquamarine"}
+
+In Machine Learning, Statistics, and Descripitve Analysis we often want to bring different variables to **common scales**. We want to make the *dispersion* and the *location* comparable.  
+
+To that end, some linear transformation are common:
+
+- Standardization
+- Min-max Feature Scaling
+
+When we normalize a variable we receive a dimensionless variable. It does not have a unit.   
+Example: We measure height in $m$ meters. When we standardize are scale by min-max the new variable has no unit. Mathematically it cancels out.
+
+ 
+
+## Standardization {.smaller background-color="aquamarine"}
+
+Variables are *standardized* by subtracting their mean and then dividing by their standard deviations. 
+
+A value from a standardized variable is called a **standard score** or **z-score**. 
+
+$z_i = \frac{x_i - \mu}{\sigma}$ 
+
+where $\mu$ is the mean and $\sigma$ the standard deviation of the vector $x$.
+
+- This is a *shift-scale transformation*. We shift each value by the mean and scale by the standard deviation. 
+- A standard score $z_i$ represents how many standard deviations $x_i$ is away from the mean of $x$.
+- The standard scores $z_i$'s have a mean of zero and a standard deviation of one (by construction). 
+
+
+## Min-max Feature Scaling  {.smaller background-color="aquamarine"}
+
+When we want to make the values of the scaled variable to range from zero to one. 
+
+The transformed variable values $y_i$'s are
+
+$$y_i = \frac{x_i - \min(x)}{\max(x) - \min(x)}.$$
+
+We shift by the minimum $\min(x)$ and scale by the range $\max(x) - \min(x)$.
+
+- What are mean and standard deviation of $y$? [We do not know, but less than one.]{.fragment}
+- Caution: The new values are heavily dependent of the actual values of $\min$ and $\max$! 
+
+
+# Data Overview with `summary`
 
 ## Data Sets 1a and 1b: Widsom of Crowd {.smaller}
 
@@ -56,7 +500,6 @@ Chinstrap, Gentoo, and Adélie Penguins
 ![](http://r.qcbs.ca/workshop03/book-en/images/culmen_depth.png){height=200}  
 
 ```{r}
-library(palmerpenguins)
 penguins
 ```
 
@@ -96,8 +539,7 @@ What does
 
 ::::
 
-
-
+# Quantiles
 
 ## Quantiles {.smaller  background-color="khaki"}
  
@@ -319,8 +761,9 @@ palmerpenguins::penguins |> ggplot(aes(x = flipper_length_mm)) + geom_boxplot()
 palmerpenguins::penguins |> ggplot(aes(x = flipper_length_mm)) + geom_histogram(binwidth = 1)
 ```
 
+# More Summary Statistics
 
-## Minimizing proporties of Mean and Median { background-color="aquamarine"}
+## Minimizing proporties of Mean and Median { background-color="aquamarine" .smaller}
 
 *Mean* minimizes the mean of squared deviations from it. No other value $a$ has a lower mean of square distances from the data points. $\frac{1}{n}\sum_{i=1}^n(x_i - a)^2$.
 
@@ -329,7 +772,7 @@ palmerpenguins::penguins |> ggplot(aes(x = flipper_length_mm)) + geom_histogram(
 *Median* minimizes the sum of the absolute deviation. No other value $a$ has a lower mean of absolute distances from the data points. $\frac{1}{n}\sum_{i=1}^n|x_i - a|$.
 
 
-## Two families of summary statistics  {background-color="khaki"}
+## Two families of summary statistics {background-color="aquamarine" .smaller}
 
 - Measures based on **sums** (related to *mathematical moments*)
   - Mean
@@ -337,6 +780,43 @@ palmerpenguins::penguins |> ggplot(aes(x = flipper_length_mm)) + geom_histogram(
 - Measures based on the **ordered** sequence of these observations (*order statistics*)
   - Median (and all quantiles)
   - Interquartile range
+  
+## A hierarchy of moments {background-color="aquamarine" .smaller}
+
+$n$th raw moment: $\frac{1}{n}\sum_i^n x_i^n$.  
+
+1. The *mean* is the *1st raw moment* (because no exponents appear in formula)
+2. The *variance* is the *2nd raw moment* the mean-shifted $x$
+3. The *3rd moment* appears in the definition of the **skewness** of $x$
+4. The *4th moment* appears in the definition of the **kurtosis** of $x$ 
+
+## Skewness {background-color="aquamarine" .smaller}
+
+The skewness of a distribution is a measure of its asymmetry.
+
+Equation: $\text{skewness} = \frac{\frac{1}{n}\sum_{i=1}^n(x_i - \mu)^3}{\left(\frac{1}{n}\sum_{i=1}^n(x_i - \mu)^2\right)^{3/2}}$
+
+- **Positive skewness**: The right tail is longer or fatter than the left tail.
+- **Negative skewness**: The left tail is longer or fatter than the right tail.
+
+![](https://upload.wikimedia.org/wikipedia/commons/c/cc/Relationship_between_mean_and_median_under_different_skewness.png)
+
+The relation of *mean* and *median* can give a hint on skewness!
+
+
+
+## Kurtosis {background-color="aquamarine" .smaller}
+
+The kurtosis of a distribution is a measure of the "tailedness" of the distribution. It often goes along with also higher "peakedness". 
+
+Equation: $\text{kurtosis} = \frac{\frac{1}{n}\sum_{i=1}^n(x_i - \mu)^4}{\left(\frac{1}{n}\sum_{i=1}^n(x_i - \mu)^2\right)^{2}}$
+
+- **Leptokurtic**: Fatter tails and a higher peak than the normal distribution.
+- **Platykurtic**: Thinner tails and a lower peak than the normal distribution.
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Standard_symmetric_pdfs.svg/1920px-Standard_symmetric_pdfs.svg.png){height=200}
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Standard_symmetric_pdfs_logscale.svg/1920px-Standard_symmetric_pdfs_logscale.svg.png){height=200} 
+A logarithmic y-axis shows the fatter tails!
 
 
 # Bivariate Summary Statistics
@@ -644,294 +1124,6 @@ Then, I take the average of the responses.
     - ...
 - The repositories mimick data science projects. Later you will choose a data science project on your own. It can build on these topics or on different datasets which you find interesting.
 :::
-
-
-
-# Principal component analysis (PCA)
-
-A typical part of Exploratory Data Analysis. 
-
-## PCA Description {.smaller}
-
-Principle component analysis 
-
-- is a **dimensionality-reduction** technique, that means it can be used to reduce the number of variables
-- computes new variables which represent the data in a different way
-- transforms the data **linearly** to a new coordinate system where most of the variation in the data can be described with fewer variables than the original data
-
-**Today:** Quick walk through how to use and interpret it. 
-
-
-## Example: Numerical variables of penguins {.smaller}
-
-```{r}
-#| echo: true
-peng <- 
- penguins |> 
- select(species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g) |> 
- na.omit()
-peng |> count(species)
-```
-
-We have `r nrow(peng)` penguins and `r ncol(peng) - 1` numeric variables.
-
-
-## Two Variables {.smaller}
-
-Example for the new axes. 
-
-```{r}
-#| fig-height: 4
-pca1 <- peng |> select(flipper_length_mm, bill_length_mm) |> 
- prcomp(~., data = _, scale = FALSE)
-pca_vec <- t(pca1$rotation) |> as_tibble() # Vectors with x = flipper_length, y = bill_length
-ggplot(peng) +
- geom_point(aes(x = flipper_length_mm, y = bill_length_mm, color = species)) +
- geom_segment(
-  data = pca_vec, 
-  aes(x = mean(peng$flipper_length_mm), 
-      y = mean(peng$bill_length_mm), 
-      xend = c(pca1$sdev)*flipper_length_mm + mean(peng$flipper_length_mm), 
-      yend = c(pca1$sdev)*bill_length_mm + mean(peng$bill_length_mm)), 
-  arrow = arrow(length = unit(0.3, "cm"))) +
- coord_fixed()
-```
-
-::: aside
-The two arrows show the two eigenvectors of the covariance matrix of the two variables scaled by the square root of the corresponding eigenvalues, and shifted so their origins are at the means of both variables. 
-:::
-
-
-## Computation in R {.smaller}
-
-The basic function is base-R's `prcomp` (there is an older `princomp` which is not advisable to use). 
-
-```{r}
-#| echo: true
-# prcomp can take a data frame with all numerical vectors as 1st argument
-P <- peng |> select(flipper_length_mm, bill_length_mm) |> prcomp()
-```
-
-:::: {.columns}
-
-::: {.column width='50%'}
-The base output
-
-```{r}
-#| echo: true
-P
-```
-:::
-
-::: {.column width='50%'}
-The summary output
-```{r}
-#| echo: true
-summary(P)
-```
-:::
-
-::::
-
-
-
-## The `prcomp` object {.smaller}
-
-Includes 4 different related entities.
-
-:::: {.columns}
-
-::: {.column width='50%'}
-The **standard deviations** related to each principal component.   
-```{r}
-#| echo: true
-P$sdev
-```
-
-The matrix of variable **loadings**. (It is also the matrix which rotates the original data vectors.)
-```{r}
-#| echo: true
-P$rotation
-```
-:::
-
-::: {.column width='50%'}
-The means for each original variable. 
-```{r}
-#| echo: true
-P$center
-```
-Note, there are also standard deviations of original variables in `$scale` when this is set to be used.
-
-The centered (scaled, if set) and rotated data.
-```{r}
-#| echo: true
-P$x
-```
-:::
-
-::::
-
-## PCA as Exploratory Data Analysis {.smaller}
-
-Suppose we do a PCA with all `r nrow(peng)` penguins (rows) and all `r ncol(peng)-1` numeric variables.
-
-- *How long will the vector of standard deviations be?* [`r ncol(peng)-1`]{.fragment}  
-- *What dimensions will the rotation matrix have?* [`r ncol(peng)-1` x `r ncol(peng)-1`]{.fragment}  
-- *What dimensions will the rotated data frame have?* [`r nrow(peng)` x `r ncol(peng)-1`]{.fragment}
-
-. . . 
-
-When we do a PCA for exploration there are 3 things to look at: 
-
-1. The data in PC coordinates - the centered (scaled, if set) and rotated data.  
-2. The rotation matrix - the variable loadings.
-3. The variance explained by each PC - based on the standard deviations. 
-
-## All variables {.smaller}
-
-Now, with `scale = TRUE` (recommended). Data will be centered and scaled (a.k.a. standardized) first. 
-
-```{r}
-#| echo: true
-peng_PCA <- peng |> select(-species) |> 
- prcomp(scale = TRUE)
-peng_PCA
-```
-
-
-## Explore data in PC coordinates {.smaller}
-
-
-:::: {.columns}
-
-::: {.column width='35%'}
-- Start plotting PC1 against PC2. By default these are the most important ones. Drill deeper later. 
-- Append the original data. Here used to color by species. 
-:::
-
-::: {.column width='65%'}
-```{r}
-#| echo: true
-#| fig-height: 5
-plotdata <- peng_PCA$x |> as_tibble() |> bind_cols(peng)
-plotdata |> ggplot(aes(PC1, PC2, color = species)) +
- geom_point() +
- coord_fixed() + theme_minimal(base_size = 20)
-```
-:::
-
-::::
-
-
-## Variable loadings {.smaller}
-
-- The columns of the rotation matrix shows how the original variables *load* on the principle components. 
-- We can try to interpret these loadings and give descriptive names to principal components. 
-- `tidy` extracts the rotation matrix in long format with a `PC`, a `column` (for the original variable name), and a `value` variable.
-
-```{r}
-#| echo: true
-#| fig-height: 3
-peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
- pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
- ggplot(aes(value, variable)) + geom_col() + geom_vline(xintercept = 0, color = "blue") +
- facet_wrap(~PC, nrow = 1) + theme_minimal(base_size = 20)
-```
-
-## Variance explained {.smaller}
-
-- Principle components are by default sorted by importance. 
-- The squares of the standard deviation for each component gives its variances and **variances have to sum up to the sum of the variances** of the original variables. 
-    - When original variables were standardized their original variances are all each one. Consequently, the variances of the principal components sum up to the number of original variables.
-- A typical plot to visualize the importance of the components is to plot the percentage of the variance explained by each component.
-
-```{r}
-#| echo: true
-#| fig-height: 3
-tibble(PC = 1:4, sdev = peng_PCA$sdev) |> 
- mutate(percent = sdev^2/sum(sdev^2) * 100) |>
- ggplot(aes(PC, percent)) + geom_col() + theme_grey(base_size = 20)
-```
-
-
-## Interpretations (1) {.smaller}
-
-```{r}
-#| fig-height: 3
-tibble(PC = 1:4, sdev = peng_PCA$sdev) |> 
- mutate(percent = sdev^2/sum(sdev^2) * 100,
-        cum_percent = cumsum(percent)) |>
- ggplot(aes(PC, percent)) + geom_col() + 
- geom_line(aes(y = cum_percent), color = "blue") +
- geom_point(aes(y = cum_percent), color = "blue") + 
- scale_y_continuous(breaks = seq(0,100,20))
-```
-
-- The first component explains almost 70% of the variance. So most emphasize should be on this. 
-- The first two explain about 88% of the total variance. 
-
-
-## Interpretations (2) {.smaller}
-
-```{r}
-#| fig-height: 3
-peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
- pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
- ggplot(aes(value, variable)) + geom_col() + geom_vline(xintercept = 0, color = "blue") +
- facet_wrap(~PC, nrow = 1) 
-```
-
-1. To score high on PC1 a penguin needs to be generally large but with low bill depth.
-2. Penguins scoring high on PC2 are penguins with generally small bills.  
-
-## Interpretations (3) {.smaller}
-
-```{r}
-#| fig-height: 4
-
-g1 <- plotdata |> ggplot(aes(PC1, PC2, color = species)) +
- geom_point() + coord_fixed()
-g2 <- peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
- pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
- filter(PC=="PC2" | PC == "PC1") |> 
- ggplot(aes(value, variable)) + geom_col() +
- facet_wrap(~PC, nrow = 1)
-library(patchwork)
-g1 + g2
-```
-
-![](https://upload.wikimedia.org/wikipedia/commons/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg){height=120}
-![](https://upload.wikimedia.org/wikipedia/commons/0/08/South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg){height=120}
-![](https://upload.wikimedia.org/wikipedia/commons/0/00/Brown_Bluff-2016-Tabarin_Peninsula%E2%80%93Gentoo_penguin_%28Pygoscelis_papua%29_03.jpg){height=120}
-
-
-
-## Apply PCA {.smaller}
-
-- Besides standardization, PCA may benefit by **preprocessing** steps of **data transformation** with variables with skew distributions (log, square-root, or Box-Cox transformation). This may result in less outliers.
-- PCA is a often a useful step of **exploratory data analysis** when you have a large number of numerical variables to show the empirical *dimensionality* of the data and its structure
-- Limitation: PCA is only sensitive for linear relation ships (no U-shaped) or the like
-- The principal components can be used **as predictors** in a model instead of the raw variables. 
-
-## Properties of PCA {.smaller}
-
-::: {.incremental}
-- The principal components (the columns of the rotation matrix) are maximally *uncorrelated* (actually they are even *orthogonal*).
-- This also holds for the columns of the rotated data. 
-- The total variances of all prinicipal components sum up to the number of variables (when variables are standardized)
-- The PCA is unique. All principle components together are a complete representation of the data. (Unlike other technique of dimensionality reduction which may rely on starting values, random factors, or tuning parameters)
-:::
-
-
-## Relations of PCA {.smaller}
-
-::: {.incremental}
-- A technique similar in spirit is *factor analysis* (e.g. `factanal`). It is more theory based as it requires to specify to the theoriezed number of factors up front. 
-- PCA is an example of the importance of linear algebra ("matrixology") in data science techniques. 
-  - PCA is based on the **eigenvalue decomposition** of the covariance matrix (or correlation matrix in the standardized case) of the data.
-:::
-
 
 
 

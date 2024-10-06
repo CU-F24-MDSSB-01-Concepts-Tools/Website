@@ -1,21 +1,535 @@
 ---
-title: "W#06: Epidemic Modeling, Calculus, Linear Model, Fitting a Linear Model"
+title: "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus"
 author: Jan Lorenz
 format: 
   revealjs: 
+    toc: true
+    toc-depth: 1
     slide-number: true
     chalkboard: 
       buttons: true
     preview-links: true
     logo: img/ConstructorUniversity.png
-    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+    footer: "MDSSB-DSCO-02: Data Science Concepts"
 bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+editor_options: 
+  chunk_output_type: console
 ---
 
+
+## Preliminaries
+
 ```{r}
-#| include: false
+#| echo: true
+
+### A bit on Matrices!!
+
 library(tidyverse)
+library(palmerpenguins)
 ```
+
+# Principal component analysis (PCA)
+
+A typical part of Exploratory Data Analysis. 
+
+## PCA Description {.smaller}
+
+Principle component analysis 
+
+- is a **dimensionality-reduction** technique, that means it can be used to reduce the number of variables
+- computes new variables which represent the data in a different way
+- transforms the data **linearly** to a new coordinate system where most of the variation in the data can be described with fewer variables than the original data
+
+**Today:** Quick walk through how to use and interpret it. 
+
+
+## Example: Numerical variables of penguins {.smaller}
+
+```{r}
+#| echo: true
+peng <- 
+ penguins |> 
+ select(species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g) |> 
+ na.omit()
+peng |> count(species)
+```
+
+We have `r nrow(peng)` penguins and `r ncol(peng) - 1` numeric variables.
+
+
+## Two Variables {.smaller}
+
+Example for the new axes. 
+
+```{r}
+#| fig-height: 4
+pca1 <- peng |> select(flipper_length_mm, bill_length_mm) |> 
+ prcomp(~., data = _, scale = FALSE)
+pca_vec <- t(pca1$rotation) |> as_tibble() # Vectors with x = flipper_length, y = bill_length
+ggplot(peng) +
+ geom_point(aes(x = flipper_length_mm, y = bill_length_mm, color = species)) +
+ geom_segment(
+  data = pca_vec, 
+  aes(x = mean(peng$flipper_length_mm), 
+      y = mean(peng$bill_length_mm), 
+      xend = c(pca1$sdev)*flipper_length_mm + mean(peng$flipper_length_mm), 
+      yend = c(pca1$sdev)*bill_length_mm + mean(peng$bill_length_mm)), 
+  arrow = arrow(length = unit(0.3, "cm"))) +
+ coord_fixed()
+```
+
+::: aside
+The two arrows show the two eigenvectors of the covariance matrix of the two variables scaled by the square root of the corresponding eigenvalues, and shifted so their origins are at the means of both variables. 
+:::
+
+
+## Computation in R {.smaller}
+
+The basic function is base-R's `prcomp` (there is an older `princomp` which is not advisable to use). 
+
+```{r}
+#| echo: true
+# prcomp can take a data frame with all numerical vectors as 1st argument
+P <- peng |> select(flipper_length_mm, bill_length_mm) |> prcomp()
+```
+
+:::: {.columns}
+
+::: {.column width='50%'}
+The base output
+
+```{r}
+#| echo: true
+P
+```
+:::
+
+::: {.column width='50%'}
+The summary output
+```{r}
+#| echo: true
+summary(P)
+```
+:::
+
+::::
+
+
+
+## The `prcomp` object {.smaller}
+
+Includes 4 different related entities.
+
+:::: {.columns}
+
+::: {.column width='50%'}
+The **standard deviations** related to each principal component.   
+```{r}
+#| echo: true
+P$sdev
+```
+
+The matrix of variable **loadings**. (It is also the matrix which rotates the original data vectors.)
+```{r}
+#| echo: true
+P$rotation
+```
+:::
+
+::: {.column width='50%'}
+The means for each original variable. 
+```{r}
+#| echo: true
+P$center
+```
+Note, there are also standard deviations of original variables in `$scale` when this is set to be used.
+
+The centered (scaled, if set) and rotated data.
+```{r}
+#| echo: true
+P$x
+```
+:::
+
+::::
+
+## PCA as Exploratory Data Analysis {.smaller}
+
+Suppose we do a PCA with all `r nrow(peng)` penguins (rows) and all `r ncol(peng)-1` numeric variables.
+
+- *How long will the vector of standard deviations be?* [`r ncol(peng)-1`]{.fragment}  
+- *What dimensions will the rotation matrix have?* [`r ncol(peng)-1` x `r ncol(peng)-1`]{.fragment}  
+- *What dimensions will the rotated data frame have?* [`r nrow(peng)` x `r ncol(peng)-1`]{.fragment}
+
+. . . 
+
+When we do a PCA for exploration there are 3 things to look at: 
+
+1. The data in PC coordinates - the centered (scaled, if set) and rotated data.  
+2. The rotation matrix - the variable loadings.
+3. The variance explained by each PC - based on the standard deviations. 
+
+## All variables {.smaller}
+
+Now, with `scale = TRUE` (recommended). Data will be centered and scaled (a.k.a. standardized) first. 
+
+```{r}
+#| echo: true
+peng_PCA <- peng |> select(-species) |> 
+ prcomp(scale = TRUE)
+peng_PCA
+```
+
+
+## Explore data in PC coordinates {.smaller}
+
+
+:::: {.columns}
+
+::: {.column width='35%'}
+- Start plotting PC1 against PC2. By default these are the most important ones. Drill deeper later. 
+- Append the original data. Here used to color by species. 
+:::
+
+::: {.column width='65%'}
+```{r}
+#| echo: true
+#| fig-height: 5
+plotdata <- peng_PCA$x |> as_tibble() |> bind_cols(peng)
+plotdata |> ggplot(aes(PC1, PC2, color = species)) +
+ geom_point() +
+ coord_fixed() + theme_minimal(base_size = 20)
+```
+:::
+
+::::
+
+
+## Variable loadings {.smaller}
+
+- The columns of the rotation matrix shows how the original variables *load* on the principle components. 
+- We can try to interpret these loadings and give descriptive names to principal components. 
+- `tidy` extracts the rotation matrix in long format with a `PC`, a `column` (for the original variable name), and a `value` variable.
+
+```{r}
+#| echo: true
+#| fig-height: 3
+peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
+ pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
+ ggplot(aes(value, variable)) + geom_col() + geom_vline(xintercept = 0, color = "blue") +
+ facet_wrap(~PC, nrow = 1) + theme_minimal(base_size = 20)
+```
+
+## Variance explained {.smaller}
+
+- Principle components are by default sorted by importance. 
+- The squares of the standard deviation for each component gives its variances and **variances have to sum up to the sum of the variances** of the original variables. 
+    - When original variables were standardized their original variances are all each one. Consequently, the variances of the principal components sum up to the number of original variables.
+- A typical plot to visualize the importance of the components is to plot the percentage of the variance explained by each component.
+
+```{r}
+#| echo: true
+#| fig-height: 3
+tibble(PC = 1:4, sdev = peng_PCA$sdev) |> 
+ mutate(percent = sdev^2/sum(sdev^2) * 100) |>
+ ggplot(aes(PC, percent)) + geom_col() + theme_grey(base_size = 20)
+```
+
+
+## Interpretations (1) {.smaller}
+
+```{r}
+#| fig-height: 3
+tibble(PC = 1:4, sdev = peng_PCA$sdev) |> 
+ mutate(percent = sdev^2/sum(sdev^2) * 100,
+        cum_percent = cumsum(percent)) |>
+ ggplot(aes(PC, percent)) + geom_col() + 
+ geom_line(aes(y = cum_percent), color = "blue") +
+ geom_point(aes(y = cum_percent), color = "blue") + 
+ scale_y_continuous(breaks = seq(0,100,20))
+```
+
+- The first component explains almost 70% of the variance. So most emphasize should be on this. 
+- The first two explain about 88% of the total variance. 
+
+
+## Interpretations (2) {.smaller}
+
+```{r}
+#| fig-height: 3
+peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
+ pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
+ ggplot(aes(value, variable)) + geom_col() + geom_vline(xintercept = 0, color = "blue") +
+ facet_wrap(~PC, nrow = 1) 
+```
+
+1. To score high on PC1 a penguin needs to be generally large but with low bill depth.
+2. Penguins scoring high on PC2 are penguins with generally small bills.  
+
+## Interpretations (3) {.smaller}
+
+```{r}
+#| fig-height: 4
+
+g1 <- plotdata |> ggplot(aes(PC1, PC2, color = species)) +
+ geom_point() + coord_fixed()
+g2 <- peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
+ pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
+ filter(PC=="PC2" | PC == "PC1") |> 
+ ggplot(aes(value, variable)) + geom_col() +
+ facet_wrap(~PC, nrow = 1)
+library(patchwork)
+g1 + g2
+```
+
+![](https://upload.wikimedia.org/wikipedia/commons/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg){height=120}
+![](https://upload.wikimedia.org/wikipedia/commons/0/08/South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg){height=120}
+![](https://upload.wikimedia.org/wikipedia/commons/0/00/Brown_Bluff-2016-Tabarin_Peninsula%E2%80%93Gentoo_penguin_%28Pygoscelis_papua%29_03.jpg){height=120}
+
+
+
+## Apply PCA {.smaller}
+
+- Besides standardization, PCA may benefit by **preprocessing** steps of **data transformation** with variables with skew distributions (log, square-root, or Box-Cox transformation). This may result in less outliers.
+- PCA is a often a useful step of **exploratory data analysis** when you have a large number of numerical variables to show the empirical *dimensionality* of the data and its structure
+- Limitation: PCA is only sensitive for linear relation ships (no U-shaped) or the like
+- The principal components can be used **as predictors** in a model instead of the raw variables. 
+
+## Properties of PCA {.smaller}
+
+::: {.incremental}
+- The principal components (the columns of the rotation matrix) are maximally *uncorrelated* (actually they are even *orthogonal*).
+- This also holds for the columns of the rotated data. 
+- The total variances of all prinicipal components sum up to the number of variables (when variables are standardized)
+- The PCA is unique. All principle components together are a complete representation of the data. (Unlike other technique of dimensionality reduction which may rely on starting values, random factors, or tuning parameters)
+:::
+
+
+## Relations of PCA {.smaller}
+
+::: {.incremental}
+- A technique similar in spirit is *factor analysis* (e.g. `factanal`). It is more theory based as it requires to specify to the theoriezed number of factors up front. 
+- PCA is an example of the importance of linear algebra ("matrixology") in data science techniques. 
+  - PCA is based on the **eigenvalue decomposition** of the covariance matrix (or correlation matrix in the standardized case) of the data.
+:::
+
+
+
+
+
+
+
+# Math: Exponentiations and Logarithms
+
+## Rules for Exponentiation {background-color="aquamarine"}
+
+:::{.columns}
+:::{.column width="20%"}
+$x^0$  
+
+$0^x$  
+
+$0^0$  
+
+$(x\cdot y)^a$  
+
+$x^{-a}$, $x^{-1}$  
+
+$x^\frac{a}{b}$, $x^\frac{1}{2}$  
+
+$(x^a)^b$  
+
+::: 
+:::{.column}
+:::{.fragment fragment-index=1}
+$x^0 = 1$
+:::
+:::{.fragment fragment-index=2}
+$0^x = 0$ for $x\neq 0$
+:::
+:::{.fragment fragment-index=3}
+$0^0 = 1$ (discontinuity in $0^x$)
+:::
+:::{.fragment fragment-index=4}
+$(x\cdot y)^a = x^a\cdot x^b$  
+:::
+:::{.fragment fragment-index=5}
+$x^{-a} = \frac{1}{x^a}$, $x^{-1} = \frac{1}{x}$  
+:::
+:::{.fragment fragment-index=6}
+$x^\frac{a}{b} = \sqrt[b]{x^a} = (\sqrt[b]{x})^a,\ x^\frac{1}{2} = \sqrt{x}$  
+:::
+:::{.fragment fragment-index=7}
+$(x^a)^b = x^{a\cdot b} = (x^b)^a \neq x^{a^b} = x^{(a^b)}$   
+Example: $(4^3)^2 = 64^2 = 4096 \qquad 4^{3^2} = 4^9 = 262144$
+:::
+:::
+:::
+
+
+## More rules for exponentiation {.smaller background-color="aquamarine"}
+
+:::{.columns}
+:::{.column width="20%"}
+$x^a\cdot x^b$
+::: 
+:::{.column width="79%"}
+:::{.fragment}
+$x^a\cdot x^b = x^{a+b}$  Multiplication of powers (with same base $x$) becomes addition of exponents.
+:::
+:::
+:::
+
+. . . 
+
+:::{.columns}
+:::{.column width="20%"}
+$(x+y)^a$
+::: 
+:::{.column width="79%"}
+:::{.fragment}
+No "simple" form! For $a$ integer use *binomial expansion*.
+$(x+y)^2 = x^2 + 2xy + y^2$  
+$(x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$  
+$(x+y)^n = \sum_{k=0}^n {n \choose k} x^{n-k}y^k$
+:::
+:::
+:::
+
+. . . 
+
+**Pascal's triangle**
+
+:::{.columns}
+:::{.column width="40%"}
+![From wikipedia](https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif){height=200} 
+:::
+:::{.column}
+We meet it again in **Probability**:   
+A row represents a *binomial distribution*   
+Which tends to mimics the *normal distribution* more and more  
+and is related to the *central limit theorem*
+:::
+:::
+
+
+## Logarithms {.smaller background-color="aquamarine"}
+
+**Definition:** A *logarithm* of $a$ for some base $b$ is the value of the exponent which brings $b$ to $a$: 
+$\log_b(a) = x$ means that $b^x =a$
+
+**Most common:**
+
+- $\log_{10}$ useful for plotting data in logarithmic scales because the numbers can be interpreted easiest (number of decimals of the original values)
+- $\log_{e}$ *natural logarithm* (also $\log$ or $\ln$) useful in calculus and statistics because of nice mathematical properties
+
+. . .
+
+:::{.columns}
+:::{.column width="30%"}
+$\log_{10}(100) =$
+::: 
+:::{.column}
+:::{.fragment}
+$2$
+:::
+:::
+:::
+
+. . .
+
+:::{.columns}
+:::{.column width="30%"}
+$\log_{10}(1) =$
+::: 
+:::{.column}
+:::{.fragment}
+$0$
+:::
+:::
+:::
+
+. . .
+
+:::{.columns}
+:::{.column width="30%"}
+$\log_{10}(6590) =$
+::: 
+:::{.column}
+:::{.fragment}
+$3.818885$
+:::
+:::
+:::
+
+. . .
+
+:::{.columns}
+:::{.column width="30%"}
+$\log_{10}(0.02) =$
+::: 
+:::{.column}
+:::{.fragment}
+$-1.69897$
+:::
+:::
+:::
+
+
+## Rules for logarithms {.smaller background-color="aquamarine"}
+
+Usually only one base is used in the same context, because changing base is easy:
+
+$\log_c(x) = \frac{\log_b(x)}{\log_b(c)} = \frac{\log(x)}{\log(c)}$
+
+
+
+
+:::{.columns}
+:::{.column width="20%"}
+$\log(x\cdot y)$
+::: 
+:::{.column width="79%"}
+:::{.fragment}
+$= \log(x) + \log(y)$ Multiplication $\to$ addition.
+:::
+:::
+:::
+
+. . .
+
+:::{.columns}
+:::{.column width="20%"}
+$\log(x^y)$
+::: 
+:::{.column width="75%"}
+:::{.fragment}
+$= y\cdot\log(x)$
+:::
+:::
+
+
+:::
+:::{.columns}
+:::{.column width="20%"}
+$\log(x+y)$
+::: 
+:::{.column width="75%"}
+:::{.fragment}
+complicated!
+:::
+:::
+:::
+
+. . . 
+
+Also changing bases for powers is easy: $x^y = (e^{\log(x)})^y = e^{y\cdot\log(x)}$
+
+
+
+
+
+
 
 # Epidemic Modeling
 
@@ -536,362 +1050,3 @@ cumsum(c(1,derivative))
 # We have to put in the first value (here 1) 
 # manually because it was lost during the diff
 ```
-
-
-# Linear Model
-The first work-horse to explore relations between numerical variables
-
-## Different purposes of models {.smaller background-color="khaki"}
-
-**Agent-based models** and **differential equations** are usually used to **explain** the **dynamics** of one or more variables typically over time. They are used to answer [*mechanistic questions*]{style='color:blue;'}.
-
-. . . 
-
-In the following we treat **variable-based models** which we use to 
-
-- **explain** relations between variables
-- make **predictions**
-
-These are often used to answer [*inferential*]{style='color:blue;'} and [*predictive questions*]{style='color:blue;'}.   
-(With experimental or more theoretical effort also for [*causal questions*]{style='color:blue;'}.)
-
-First, we focus on linear models.
-
-## Hello again penguins! {.scrollable .smaller}
-
-We use the dataset [Palmer Penguins](https://allisonhorst.github.io/palmerpenguins/)
-
-Chinstrap, Gentoo, and Adélie Penguins
-
-![](https://upload.wikimedia.org/wikipedia/commons/0/08/South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg){height=200}
-![](https://upload.wikimedia.org/wikipedia/commons/0/00/Brown_Bluff-2016-Tabarin_Peninsula%E2%80%93Gentoo_penguin_%28Pygoscelis_papua%29_03.jpg){height=200}
-![](https://upload.wikimedia.org/wikipedia/commons/e/e3/Hope_Bay-2016-Trinity_Peninsula%E2%80%93Ad%C3%A9lie_penguin_%28Pygoscelis_adeliae%29_04.jpg){height=200}
-
-
-```{r}
-library(palmerpenguins)
-penguins
-```
-
-## Body mass in grams
-
-```{r}
-#| echo: true
-penguins |>
-  ggplot(aes(body_mass_g)) +
-  geom_histogram()
-```
-
-## Flipper length in millimeters
-
-```{r}
-#| echo: true
-penguins |>
-  ggplot(aes(flipper_length_mm)) +
-  geom_histogram()
-```
-
-## Relate variables as a line {.smaller background-color="aquamarine"}
-
-A *line* is a shift-scale transformation of the identity function usually written in the form 
-
-$$f(x) = a\cdot x + b$$
-
-where [$a$ is the *slope*]{style="color:red;"}, [$b$ is the *intercept*]{style="color:blue;"}.^[This a scale and a shift in the $y$ direction. Note: For lines there are always an analog transformations on the $x$ direction.]
-
-```{r}
-#| echo: true
-#| output-location: column
-a <- 0.5
-b <- 1
-func <- function(x) a*x + b
-ggplot() + geom_function(fun = func, size = 2) +
- # Set axis limits and make axis equal
-	xlim(c(-0.5,2)) + ylim(c(0,2)) + coord_fixed() + 
-	geom_line( # intercept line:
-	 data=tibble(x=c(0,0),y=c(0,1)), 
-	 mapping = aes(x,y), 
-	 color = "blue", size = 2) +
-	geom_line( # slope:
-	 data=tibble(x=c(1.5,1.5),y=c(1.25,1.75)), 
-	 mapping = aes(x,y), 
-	 color = "red", size = 2) +
-	geom_line( # x-interval of length one:
-	 data=tibble(x=c(0.5,1.5),y=c(1.25,1.25)), 
-	 mapping = aes(x,y), color = "gray") +
-	theme_classic(base_size = 24)
-```
-
-## Penguins: Linear model {.smaller}
-
-**Flipper length** as a function of **body mass**.
-
-```{r}
-#| echo: true
-#| output-location: column
-#| fig-height: 9
-penguins |>
- ggplot(aes(x = body_mass_g, 
-            y = flipper_length_mm)) +
- geom_point() +
- geom_smooth(method = "lm", 
-             se = FALSE) + 
- theme_classic(base_size = 24)
-```
-
-## Penguins: A smooth line {.smaller}
-
-**Flipper length** as a function of **body mass** with `loess`^[loess = locally estimated scatterplot smoothing] smoothing. 
-
-```{r}
-#| echo: true
-#| output-location: column
-#| fig-height: 7
-penguins |>
- ggplot(aes(x = body_mass_g, 
-            y = flipper_length_mm)) +
- geom_point() +
- geom_smooth(method = "loess") + 
- theme_classic(base_size = 24)
-```
-
-This is a less theory-driven and more data-driven model. Why?    
-[We don't have a simple mathematical form of the function.]{.fragment}
-
-## Terminology variable-based models {.smaller background-color="khaki"}
-
-- **Response variable:**^[Also **dependent variable** in statistics or empirical social sciences.] Variable whose behavior or variation you are trying to understand, on the y-axis
-- **Explanatory variable(s):**^[Also **independent variable(s)** in statistics or empirical social sciences.] Other variable(s) that you want to use to explain the variation in the response, on the x-axis
-- **Predicted value:** Output of the model function. 
-  - The model function gives the **(expected) average value** of the response variable conditioning on the explanatory variables
-  - **Residual(s):** A measure of how far away a case is from its predicted value (based on the particular model)   
-    Residual = Observed value - Predicted value  
-    The residual tells how far above/below the expected value each case is
-
-## More explanatory variables {.smaller}
-
-How does the relation between flipper length and body mass change with different species?
-
-```{r}
-#| echo: true
-#| output-location: column
-#| fig-height: 7
-penguins |>
- ggplot(aes(x = body_mass_g, 
-            y = flipper_length_mm, 
-            color = species)) +
- geom_point() +
- geom_smooth(method = "lm",
-             se = FALSE) + 
- theme_classic(base_size = 24)
-```
-
-## ggplot-hint: How to color penguins but keep one model? {.smaller}
-
-Put the mapping of the color aesthetic into the `geom_point` command. 
-
-```{r}
-#| echo: true
-#| output-location: column
-#| fig-height: 6
-penguins |>
- ggplot(aes(x = body_mass_g, 
-            y = flipper_length_mm)) +
- geom_point(aes(color = species)) +
- geom_smooth(method = "lm",	se = FALSE) + 
- theme_classic(base_size = 24)
-```
-
-## Beware of Simpson's paradox {.smaller background-color="aquamarine"} 
-
-Slopes for all groups can be in the opposite direction of the main effect's slope!
-
-![](https://upload.wikimedia.org/wikipedia/commons/f/fb/Simpsons_paradox_-_animation.gif)
-::: aside
-Source: <https://upload.wikimedia.org/wikipedia/commons/f/fb/Simpsons_paradox_-_animation.gif>
-:::
-
-
-## The paradox is real! {.smaller}
-
-How does the relation between bill length and body mass change with different species?
-
-```{r}
-#| echo: true
-#| output-location: column
-#| fig-height: 7
-penguins |>
- ggplot(aes(x = bill_length_mm, 
-            y = bill_depth_mm)) +
- geom_point(aes(color = species)) +
- geom_smooth(mapping = aes(color = species),
-             method = "lm",
-             se = FALSE) + 
- geom_smooth(method = "lm",
-													se = FALSE) + 
- theme_classic(base_size = 24)
-```
-
-
-## Models - upsides and downsides {.smaller background-color="khaki"}
-
-- Models can reveal patterns that are not evident in a graph of the data. This is an advantage of modeling over simple visual inspection of data.
-  - How would you visualize dependencies of more than two variables?
-- The risk is that a model is imposing structure that is not really there in the real world data. 
-  - People imagined animal shapes in the stars. This is maybe a good model to detect and memorize shapes, but it has nothing to do with these animals.
-  - Every model is a simplification of the real world, but there are good and bad models (for particular purposes). 
-  - A skeptical (but constructive) approach to a model is always advisable. 
-  
-  
-## Variation around a model {.smaller background-color="khaki"}
-
-... is as interesting and important as the model!
-
-*Statistics is the explanation of uncertainty of variation in the context of what remains unexplained.*
-
-- The scattered data of flipper length and body mass suggests that there maybe other factors that account for some parts of the variability. 
-- Or is it randomness?
-- Adding more explanatory variables can help (but need not)
-
-## *All models are wrong ...* {.smaller background-color="khaki"}
-
-*... but some are useful.* (George Box)
-
-
-Extending the range of the model: 
-
-```{r}
-#| echo: true
-#| output-location: column
-#| fig-height: 5.5
-penguins |>
- ggplot(aes(x = body_mass_g, 
-            y = flipper_length_mm)) +
- geom_point() +
- geom_smooth(method = "lm", 
-             se = FALSE, 
- 												fullrange = TRUE) +
-	xlim(c(0,7000)) + ylim(c(0,230)) +
- theme_classic(base_size = 24)
-```
-
-- The model predicts that penguins with zero weight still have flippers of about 140 mm on average.
-- Is the model useless? [Yes, around zero body mass. No, it works OK in the range of the body mass data.]{.fragment}
-
-## Two model purposes {.smaller background-color="khaki"}
-
-Linear models can be used for:
-
-- **Explanation:** Understand the relationship of variables in a quantitative way.   
-*For the linear model, interpret slope and intercept.*
-- **Prediction:** Plug in new values for the explanatory variable(s) and receive the expected response value.   
-*For the linear model, predict the flipper length of new penguins by their body mass.*
-
-# Fitting Models (Part 1)
-
-Today: The linear model. 
-
-## In R: `tidymodels`
-
-![](https://datasciencebox.org/course-materials/_slides/u4-d02-fitting-interpreting-models/img/tidymodels.png)
-
-:::{.aside}
-From <https://datasciencebox.org>
-:::
-
-## Our goal
-
-Predict flipper length from body mass
-
-average `flipper_length_mm` $= \beta_0 + \beta_1\cdot$ `body_mass_g`
-
-
-## Step 1: Specify model
-
-```{r}
-#| echo: true
-library(tidymodels)
-linear_reg()
-```
-
-## Step 2: Set the model fitting *engine*
-
-```{r}
-#| echo: true
-linear_reg() |> 
-	set_engine("lm")
-```
-
-## Step 3: Fit model and estimate parameters {.smaller}
-
-Only now, the data and the variable selection comes in. 
-
-Use of **formula syntax**
-
-```{r}
-#| echo: true
-linear_reg() |> 
-	set_engine("lm") |> 
-	fit(flipper_length_mm ~ body_mass_g, data = penguins)
-```
-
-[`parsnip`](http://parsnip.tidymodels.org) is package in `tidymodels` which is to provide a tidy, unified interface to models that can be used to try a range of models. 
-
-:::{.aside}
-Note: The fit command does not follow the tidyverse principle the data comes first. Instead, the formula comes first. This is to relate to existing traditions of a much older established way of modeling in base R. 
-:::
-
-## What does the output say? {.smaller}
-
-```{r}
-#| echo: true
-linear_reg() |> 
-	set_engine("lm") |> 
-	fit(flipper_length_mm ~ body_mass_g, data = penguins)
-```
-
-. . .
-
-average `flipper_length_mm` $= 136.72956 + 0.01528\cdot$ `body_mass_g`
-
-. . .
-
-**Interpretation:**   
-The penguins have a flipper length of 138 mm plus 0.01528 mm for each gram of body mass (that is 15.28 mm per kg).
-Penguins with zero mass have a flipper length of 138 mm. However, this is not in the range where the model was fitted.
-
-## Show output in *tidy* form
-
-```{r}
-#| echo: true
-linear_reg() |> 
-	set_engine("lm") |> 
-	fit(flipper_length_mm ~ body_mass_g, data = penguins) |> 
-	tidy()
-```
-
-## Parameter estimation {.smaller background-color="aquamarine"}
-
-Notation from statistics: $\beta$'s for the population parameters and $\hat\beta$'s for the parameters estimated from the sample statistics. 
-
-$$\hat y = \beta_0 + \beta_1 x$$
-
-Is what we cannot have. ($\hat y$ stands for *predicted value of $y$*. )
-
-. . .
-
-We estimate $\hat\beta_0$ and $\hat\beta_1$ in the model fitting process.
-
-$$\hat y = \hat\beta_0 + \hat\beta_1 x$$
-
-:::{style="background-color:khaki;padding:10px;"}
-A typical follow-up data analysis question is what the fitted values $\hat\beta_0$ and $\hat\beta_1$ tell us about the population-wide values $\beta_0$ and $\beta_1$? 
-
-This is the typical [**inferential question**]{style='color:blue}.
-::: 
-
-
-## Fitting Linear Models Part 2
-
-Next week!
-

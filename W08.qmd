@@ -1,15 +1,19 @@
 ---
-title: "W#08: Logistic Regression, Classification Problems, Prediction"
+title: "W#08: Predicting Categorical Variables, Logistic Regression, Classification Problems"
 author: Jan Lorenz
 format: 
   revealjs: 
+    toc: true
+    toc-depth: 1
     slide-number: true
     chalkboard: 
       buttons: true
     preview-links: true
     logo: img/ConstructorUniversity.png
-    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+    footer: "MDSSB-DSCO-02: Data Science Concepts"
 bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -19,6 +23,147 @@ library(palmerpenguins)
 library(tidymodels)
 library(openintro)
 ```
+
+# Predicting Categorical Data
+
+Large part of the content adapted from <http://datasciencebox.org>.
+ 
+## What if response is binary?  {.smaller}
+
+- Example: **Spam filter** for emails
+
+```{r}
+#| echo: true
+library(openintro)
+library(tidyverse)
+glimpse(email)
+```
+
+## Multinomial response variable?
+
+- We will not cover other categorical variables than binary ones here.
+- However, many of the probabilistic concepts transfer. 
+
+
+
+## Variables {.smaller}
+
+`?email` shows all variable descriptions. For example: 
+
+- `spam` Indicator for whether the email was spam.
+- `from` Whether the message was listed as from anyone (this is usually set by default for regular outgoing email).
+- `cc` Number of people cc'ed.
+- `time` Time at which email was sent.
+- `attach` The number of attached files.
+- `dollar` The number of times a dollar sign or the word “dollar” appeared in the email.
+- `num_char` The number of characters in the email, in thousands.
+- `re_subj` Whether the subject started with “Re:”, “RE:”, “re:”, or “rE:”
+
+:::{.aside}
+The development, extraction, or discovery of such variables is called **feature engineering**, **feature extraction** or **feature discovery**. Usually, a combination of *domain knowledge* and *data science* skill is needed to do this. 
+:::
+
+## Data exploration {.smaller}
+
+Would you expect spam to be longer or shorter?
+
+. . . 
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+email |> ggplot(aes(x = num_char, y = spam)) + geom_boxplot()
+```
+
+. . .
+
+Would you expect spam subject to start with "Re:" or the like?
+
+. . . 
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+email |> ggplot(aes(y = re_subj, fill = spam)) + geom_bar()  
+```
+
+## Linear models? {.smaller}
+
+Both seem to give some signal. **How can we model the relationship?**
+
+We focus first on just `num_char`:
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+email |> ggplot(aes(x = num_char, y = as.numeric(spam)-1)) + 
+ geom_point(alpha = 0.2) + geom_smooth(method = "lm")
+```
+
+```{r}
+#| echo: true
+linear_reg() |> fit(as.numeric(spam)-1 ~ num_char, data = email)
+```
+
+We would like to have a better concept!
+
+## A penguins example {.smaller}
+
+```{r}
+#| echo: true
+#| fig-height: 1.5
+penguins |> na.omit() |> 
+ ggplot(aes(x = body_mass_g, y = as.numeric(sex)-1)) + 
+ geom_point(alpha = 0.2) + geom_smooth(method = "lm")
+```
+
+[It does not make much sense to predict 0-1-values with a linear model.]{style='color:red;'}
+
+
+
+## A probabilistic concept {.smaller}
+
+- We treat each outcome (spam and not) as successes and failures arising from separate Bernoulli trials
+  - **Bernoulli trial:** a random experiment with exactly two possible outcomes, *success* and *failure*, in which the *probability of success* is the same every time the experiment is conducted
+
+. . .
+
+- Each email is treated as Bernoulli trial with separate probability of success
+
+$$ y_i ∼ \text{Bernoulli}(p_i) $$
+
+. . .
+
+- We use the predictor variables to model the Bernoulli parameter $p_i$
+
+. . .
+
+- Now we conceptualized a continuous response, but still a linear model does not fit perfectly for $p_i$ (since a probability is between 0 and 1). 
+- However, we can transform the linear model to have the appropriate range.
+
+
+
+# Generalized linear models
+
+## Characterising GLMs {.smaller}
+
+- **Generalized linear models (GLMs)** are a way of addressing many problems in regression
+- Logistic regression is one example
+
+All GLMs have the following three characteristics:
+
+1. A **probability distribution** as a generative model for the outcome variable $y_i \sim \text{Distribution}(\text{parameter})$
+
+. . .
+
+2. A **linear model** $\eta = \beta_0 + \beta_1 X_1 + \cdots + \beta_k X_k$  
+where $\eta$ is related to a mean parameter of the distribution by the ...
+
+. . .
+
+3. **Link function** that relates the linear model to the parameter of the outcome distribution. 
+  
+
 
 # Logistic regression
 

@@ -1,5 +1,5 @@
 ---
-title: "W#04: Relational Data, Math refresh, Function Programming"
+title: "W#04: Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming"
 author: Jan Lorenz
 format: 
   revealjs: 
