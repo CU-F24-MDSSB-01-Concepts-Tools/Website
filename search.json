@@ -582,27 +582,6 @@
     "text": "EDA embedded in a statistical data science project\n\nStating and refining the question\nExploring the data\nBuilding formal statistical models\nInterpreting the results\nCommunicating the results\n\n\n\nRoger D. Peng and Elizabeth Matsui. “The Art of Data Science.” A Guide for Anyone Who Works with Data. Skybrude Consulting, LLC (2015)."
   },
   {
-    "objectID": "W05.html#example-eda-strange-airports",
-    "href": "W05.html#example-eda-strange-airports",
-    "title": "W#05: Descriptive Statistics, Exploratory Data Analysis",
-    "section": "Example EDA: Strange Airports",
-    "text": "Example EDA: Strange Airports\nFrom Homework 02:\n\nlibrary(nycflights13)\nggplot(data = airports, mapping = aes(x = lon, y = lat)) + geom_point(aes(color = tzone)) \n\n\n\nairports %&gt;% filter(lon &gt;= 0) \n\n# A tibble: 4 × 8\n  faa   name                            lat   lon   alt    tz dst   tzone       \n  &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;       \n1 DVT   Deer Valley Municipal Airport  33.4 112.   1478     8 A     Asia/Chongq…\n2 EEN   Dillant Hopkins Airport        72.3  42.9   149    -5 A     &lt;NA&gt;        \n3 MYF   Montgomery Field               32.5 118.     17     8 A     Asia/Chongq…\n4 SYA   Eareckson As                   52.7 174.     98    -9 A     America/Anc…"
-  },
-  {
-    "objectID": "W05.html#airport-errors",
-    "href": "W05.html#airport-errors",
-    "title": "W#05: Descriptive Statistics, Exploratory Data Analysis",
-    "section": "Airport errors",
-    "text": "Airport errors\n\n\n# A tibble: 4 × 8\n  faa   name                            lat   lon   alt    tz dst   tzone       \n  &lt;chr&gt; &lt;chr&gt;                         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;       \n1 DVT   Deer Valley Municipal Airport  33.4 112.   1478     8 A     Asia/Chongq…\n2 EEN   Dillant Hopkins Airport        72.3  42.9   149    -5 A     &lt;NA&gt;        \n3 MYF   Montgomery Field               32.5 118.     17     8 A     Asia/Chongq…\n4 SYA   Eareckson As                   52.7 174.     98    -9 A     America/Anc…\n\n\n\nCorrect locations (internet research and location of maps):\n\n\n\nDeer Valley Municipal Airport: Phoenix\n33°41′N 112°05′W Missing minus for lon (W)\nDillant Hopkins Airport: New Hampshire\n42°54′N 72°16′W lon-lat switched, minus (W)\nMontgomery Field: San Diego\n32°44′N 117°11″W Missing minus for lon (W)\nEareckson As: Alaska\n52°42′N 174°06′E No error: Too west,it’s east!"
-  },
-  {
-    "objectID": "W05.html#conclusions-on-data-errors",
-    "href": "W05.html#conclusions-on-data-errors",
-    "title": "W#05: Descriptive Statistics, Exploratory Data Analysis",
-    "section": "Conclusions on data errors",
-    "text": "Conclusions on data errors\n\nIn real-world datasets errors like the 3 airport are quite common.\nErrors of this type are often hard to detect and remain unnoticed.\n\nThis can (but need not) change results drastically!\n\n\n\nConclusions\n\nAlways remain alert for inconsistencies and be ready to check the plausibility of results.\nSkills in exploratory data analysis (EDA) are essential to find errors and explore their nature and implication\nErrors are unpredictable, of diverse types, and are often deeply related to the reality the data presents.\n\nThis is one reason why EDA can not be a fully formalized and automatized process."
-  },
-  {
     "objectID": "W05.html#six-types-of-questions",
     "href": "W05.html#six-types-of-questions",
     "title": "W#05: Descriptive Statistics, Exploratory Data Analysis",
