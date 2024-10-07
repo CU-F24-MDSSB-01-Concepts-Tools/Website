@@ -1746,7 +1746,7 @@ You can think of the <em>coordinate system being stretched</em> multiplicatively
 <pre><code>function (x, na.rm = FALSE) 
 sqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x), 
     na.rm = na.rm))
-&lt;bytecode: 0x5e8d41f2f8d0&gt;
+&lt;bytecode: 0x572ef599ea78&gt;
 &lt;environment: namespace:stats&gt;</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb151"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a></a>c <span class="co"># This function is not written in R but is a R primitive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1759,7 +1759,7 @@ sqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x),
 {
     UseMethod("ggplot")
 }
-&lt;bytecode: 0x5e8d3df03df0&gt;
+&lt;bytecode: 0x572ef243af50&gt;
 &lt;environment: namespace:ggplot2&gt;</code></pre>
 </div>
 </div>
@@ -2044,8 +2044,8 @@ $out2
 </div>
 </div></div>
 <aside><ol class="aside-footnotes"><li id="fn3"><p>In <code>tidyverse</code> they are provided in the package <code>purrr</code></p></li></ol></aside></section>
-<section id="map-and-reduce" class="slide level2 smaller">
-<h2><code>map</code> and <code>reduce</code></h2>
+<section id="reduce" class="slide level2 smaller">
+<h2><code>reduce</code></h2>
 <p>Instead of a list or a vector <code>reduce</code> returns a single value.<br>
 To that end it needs a function with two arguments. It applies it to the first two elements of the vector, then to the result and the third element, then the result and the fourth element, and so on.</p>
 <div class="cell">
@@ -2076,6 +2076,22 @@ To that end it needs a function with two arguments. It applies it to the first t
 <span id="cb207-3"><a></a> <span class="fu">reduce</span>(bind_rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </div>
+</section>
+<section id="map-and-reduce" class="slide level2 smaller">
+<h2><code>map</code> and <code>reduce</code></h2>
+<ul>
+<li><code>map</code> applies a function to each element of a vector (or list) and returns a list (or vector if <code>map_dbl</code> or other vaeriants are used)
+<ul>
+<li>The output has the same <code>length</code> as the input</li>
+</ul></li>
+<li><code>reduce</code> applies a function taking two arguments and then summarizes the list by applying them two element 1 and 2 and then again the result with element 3 and then the result with element 4, …
+<ul>
+<li>The output is one object</li>
+</ul></li>
+<li>Remark: The problem of vectorizing a function which has an <code>if</code> and <code>else</code> statement (see the example <code>piecewise_vectorized</code>) can also be solved using the vectorized version of it:<br>
+<code>if_else(condition = *condition*, true = *value-if_TRUE*, false = *value-if_FALSE*)</code><br>
+Here every argument can be a vector!</li>
+</ul>
 </section>
 <section id="function-programming-take-away" class="slide level2">
 <h2>Function programming: Take away</h2>

@@ -1916,7 +1916,7 @@
     "href": "W04.html#function-as-objects-in-r",
     "title": "W#04: Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming",
     "section": "Function as objects in R",
-    "text": "Function as objects in R\nfunction is a class of an object in R\n\nclass(c)\n\n[1] \"function\"\n\nclass(ggplot2::ggplot)\n\n[1] \"function\"\n\n\nCalling the function without brackets writes its code or some information.\n\nsd # This function is written in R, and we see its code\n\nfunction (x, na.rm = FALSE) \nsqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x), \n    na.rm = na.rm))\n&lt;bytecode: 0x5e8d41f2f8d0&gt;\n&lt;environment: namespace:stats&gt;\n\nc # This function is not written in R but is a R primitive\n\nfunction (...)  .Primitive(\"c\")\n\nggplot2::ggplot # This function is not written solely in R\n\nfunction (data = NULL, mapping = aes(), ..., environment = parent.frame()) \n{\n    UseMethod(\"ggplot\")\n}\n&lt;bytecode: 0x5e8d3df03df0&gt;\n&lt;environment: namespace:ggplot2&gt;"
+    "text": "Function as objects in R\nfunction is a class of an object in R\n\nclass(c)\n\n[1] \"function\"\n\nclass(ggplot2::ggplot)\n\n[1] \"function\"\n\n\nCalling the function without brackets writes its code or some information.\n\nsd # This function is written in R, and we see its code\n\nfunction (x, na.rm = FALSE) \nsqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x), \n    na.rm = na.rm))\n&lt;bytecode: 0x572ef599ea78&gt;\n&lt;environment: namespace:stats&gt;\n\nc # This function is not written in R but is a R primitive\n\nfunction (...)  .Primitive(\"c\")\n\nggplot2::ggplot # This function is not written solely in R\n\nfunction (data = NULL, mapping = aes(), ..., environment = parent.frame()) \n{\n    UseMethod(\"ggplot\")\n}\n&lt;bytecode: 0x572ef243af50&gt;\n&lt;environment: namespace:ggplot2&gt;"
   },
   {
     "objectID": "W04.html#define-your-own-functions-in-r",
@@ -1975,11 +1975,18 @@
     "text": "Vectorized operations with map\n\nmap functions apply a function to each element of a vector.1\nmap(.x, .f, ...) applies the function .f to each element of the vector of .x and returns a list.\nmap_dbl returns a double vector (other variants exist)\n\n\n\n\nmap(c(1,2,3), piecewise) \n\n[[1]]\n[1] 0.5\n\n[[2]]\n[1] 1\n\n[[3]]\n[1] 2\n\nmap_dbl(c(1,2,3), piecewise) \n\n[1] 0.5 1.0 2.0\n\npiecewise_vectorized &lt;- \n function(x) map_dbl(x, piecewise) \n\n\n\npiecewise_vectorized(seq(0,3,by = 0.5))\n\n[1] 0.00 0.25 0.50 0.75 1.00 1.50 2.00\n\ntibble(x = seq(0,3,by = 0.5)) |&gt; \n  mutate(y = piecewise_vectorized(x)) |&gt; \n  ggplot(aes(x,y)) + geom_line() + theme_minimal(base_size = 20)\n\n\n\n\n\n\n\n\n\nIn tidyverse they are provided in the package purrr"
   },
   {
+    "objectID": "W04.html#reduce",
+    "href": "W04.html#reduce",
+    "title": "W#04: Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming",
+    "section": "reduce",
+    "text": "reduce\nInstead of a list or a vector reduce returns a single value.\nTo that end it needs a function with two arguments. It applies it to the first two elements of the vector, then to the result and the third element, then the result and the fourth element, and so on.\n\n1:10 |&gt; reduce(\\(x,y) x + y)\n\n[1] 55\n\n\nNote: \\(x) is a short way to write an anonymous function as function(x).\n\nExample: Reading multiple files\n\n\nInstead of\na &lt;-read_csv(\"a.csv\")\nb &lt;-read_csv(\"b.csv\")\nc &lt;-read_csv(\"c.csv\")\nd &lt;-read_csv(\"d.csv\")\ne &lt;-read_csv(\"e.csv\")\nf &lt;-read_csv(\"f.csv\")\ng &lt;-read_csv(\"g.csv\")\n\nbind_rows(a,b,c,d,e,f,g)\n\nWrite\nletter[1:7] |&gt; \n map(\\(x) read_csv(paste0(x,\".csv\"))) |&gt; \n reduce(bind_rows)"
+  },
+  {
     "objectID": "W04.html#map-and-reduce",
     "href": "W04.html#map-and-reduce",
     "title": "W#04: Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming",
     "section": "map and reduce",
-    "text": "map and reduce\nInstead of a list or a vector reduce returns a single value.\nTo that end it needs a function with two arguments. It applies it to the first two elements of the vector, then to the result and the third element, then the result and the fourth element, and so on.\n\n1:10 |&gt; reduce(\\(x,y) x + y)\n\n[1] 55\n\n\nNote: \\(x) is a short way to write an anonymous function as function(x).\n\nExample: Reading multiple files\n\n\nInstead of\na &lt;-read_csv(\"a.csv\")\nb &lt;-read_csv(\"b.csv\")\nc &lt;-read_csv(\"c.csv\")\nd &lt;-read_csv(\"d.csv\")\ne &lt;-read_csv(\"e.csv\")\nf &lt;-read_csv(\"f.csv\")\ng &lt;-read_csv(\"g.csv\")\n\nbind_rows(a,b,c,d,e,f,g)\n\nWrite\nletter[1:7] |&gt; \n map(\\(x) read_csv(paste0(x,\".csv\"))) |&gt; \n reduce(bind_rows)"
+    "text": "map and reduce\n\nmap applies a function to each element of a vector (or list) and returns a list (or vector if map_dbl or other vaeriants are used)\n\nThe output has the same length as the input\n\nreduce applies a function taking two arguments and then summarizes the list by applying them two element 1 and 2 and then again the result with element 3 and then the result with element 4, …\n\nThe output is one object\n\nRemark: The problem of vectorizing a function which has an if and else statement (see the example piecewise_vectorized) can also be solved using the vectorized version of it:\nif_else(condition = *condition*, true = *value-if_TRUE*, false = *value-if_FALSE*)\nHere every argument can be a vector!"
   },
   {
     "objectID": "W04.html#function-programming-take-away",
