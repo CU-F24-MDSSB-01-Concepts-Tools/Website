@@ -25,14 +25,14 @@ In this lectures we will use these packages and datasets. You need to do this co
 library(tidyverse)
 library(palmerpenguins)
 if (!file.exists("data/galton_data.xlsx")) {
-  download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/galton_data.csv", 
+  download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/galton.csv", 
                 destfile = "data/galton.csv")
 } 
 if (!file.exists("data/Viertelfest.csv")) {
   download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/Viertelfest.csv", 
                 destfile = "data/Viertelfest.csv")
 } 
-galton <- read_excel("data/galton_data.csv")
+galton <- read_excel("data/galton.csv")
 viertel <- read_csv("data/Viertelfest.csv")
 ```
 
