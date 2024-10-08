@@ -669,7 +669,7 @@ Mode: Yes.</p>
 <p><img data-src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Sir_Francis_Galton_by_Charles_Wellington_Furse.jpg" width="150"></p>
 </div></div>
 <aside><ol class="aside-footnotes"><li id="fn2"><p>Galton (1822-1911) was a half-cousin to Charles Darwin and one of the founding fathers of statistics. He also was a scientific racist, see <a href="https://twitter.com/kareem_carr/status/1575506343401775104?s=20&amp;t=8T5TzrayAWNShmOSzJgCJQ." class="uri">https://twitter.com/kareem_carr/status/1575506343401775104?s=20&amp;t=8T5TzrayAWNShmOSzJgCJQ.</a>.</p></li></ol></aside></section>
-<section id="galtons-data" class="slide level2 smaller" data-background-color="aquamarine">
+<section id="galtons-data" class="slide level2 smaller" data-background-color="khaki">
 <h2>Galton’s data<sup>1</sup></h2>
 <p><em>What is the weight of the meat of this ox?</em></p>
 <div class="cell">
@@ -707,7 +707,7 @@ Mode: Yes.</p>
 </div>
 <p>1226 estimates, the maximal value is 29530000! We should filter …</p>
 <aside><ol class="aside-footnotes"><li id="fn4"><p>Data collected as additional guessing game at the Lottery “Haste mal ’nen Euro?”, data provided by Jan Lorenz <a href="https://docs.google.com/spreadsheets/d/1HiYhUrYrsbeybJ10mwsae_hQCawZlUQFOOZzcugXzgA/edit#gid=0" class="uri">https://docs.google.com/spreadsheets/d/1HiYhUrYrsbeybJ10mwsae_hQCawZlUQFOOZzcugXzgA/edit#gid=0</a></p></li></ol></aside></section>
-<section id="viertelfest-bremen-2008-1" class="slide level2 smaller" data-background-color="aquamarine">
+<section id="viertelfest-bremen-2008-1" class="slide level2 smaller" data-background-color="khaki">
 <h2>Viertelfest Bremen 2008</h2>
 <p><em>How many lots will be sold by the end of the festival?</em></p>
 <div class="cell">
@@ -723,7 +723,7 @@ Mode: Yes.</p>
 <img data-src="W05_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><p>1226 estimates, <span style="color:green;">true value</span> 10788, <span style="color:red;">mean</span> 53163.9, <span style="color:blue;">median</span> 9843, <span style="color:purple;">mode</span> 10000,<br>
 <span style="color:orange;">geometric mean</span> 10510.1</p>
 </section>
-<section id="log_10-transformation-viertelfest" class="slide level2 smaller" data-background-color="aquamarine">
+<section id="log_10-transformation-viertelfest" class="slide level2 smaller" data-background-color="khaki">
 <h2><span class="math inline">\(\log_{10}\)</span> transformation Viertelfest</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>viertel <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">log10Est =</span> <span class="fu">log10</span>(Schätzung)) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(log10Est)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
@@ -737,7 +737,7 @@ Mode: Yes.</p>
 <img data-src="W05_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"><p>1226 estimates, <span style="color:green;">true value</span> 10788, <span style="color:red;">mean</span> 53163.9, <span style="color:blue;">median</span> 9843, <span style="color:purple;">mode</span> 10000,<br>
 <span style="color:orange;">geometric mean</span> 10510.1</p>
 </section>
-<section id="wisdom-of-the-crowd-insights" class="slide level2 smaller" data-background-color="aquamarine">
+<section id="wisdom-of-the-crowd-insights" class="slide level2 smaller" data-background-color="khaki">
 <h2>Wisdom of the crowd insights</h2>
 <div>
 <ul>
@@ -777,6 +777,7 @@ Quoting Galton on the mean as a democratic aggregation function:<br>
 <p><strong>Mean absolute deviation</strong> (MAD) is the mean of the absolute deviation from the mean: <span class="math inline">\(\text{MAD}(x) = \frac{1}{n}\sum_{i=1}^n|x_i - \mu|\)</span>.</p>
 </div>
 <div class="fragment">
+<p><span style="color:red;">Warning:</span> MAD can also be <strong>Median absolute deviation</strong>! Check before usage.</p>
 <p><strong>Range</strong> is the difference of the maximal and the minimal value <span class="math inline">\(\max(x) - \min(x)\)</span>.</p>
 </div>
 <aside><ol class="aside-footnotes"><li id="fn5"><p>Also called <em>variability</em>, <em>scatter</em>, or <em>spread</em>.</p></li></ol></aside></section>
@@ -793,11 +794,11 @@ Quoting Galton on the mean as a democratic aggregation function:<br>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 73.58677</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a><span class="fu">mad</span>(galton<span class="sc">$</span>Estimate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a><span class="fu">mad</span>(galton<span class="sc">$</span>Estimate) <span class="co"># Warning: median absolute deviation is default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 51.891</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="fu">range</span>(galton<span class="sc">$</span>Estimate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="fu">range</span>(galton<span class="sc">$</span>Estimate) <span class="co"># Oh, range gives us a vector of min and max. So, we diff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  896 1516</code></pre>
 </div>
@@ -816,11 +817,11 @@ Quoting Galton on the mean as a democratic aggregation function:<br>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 848395.5</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a><span class="fu">mad</span>(viertel<span class="sc">$</span>Schätzung)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a><span class="fu">mad</span>(viertel<span class="sc">$</span>Schätzung)  <span class="co"># Warning: median absolute deviation is default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8771.803</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a><span class="fu">range</span>(viertel<span class="sc">$</span>Schätzung) <span class="co"># Oh, range in R gives us a vector of min and max. So, we diff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a><span class="fu">range</span>(viertel<span class="sc">$</span>Schätzung) <span class="co"># Oh, range gives us a vector of min and max. So, we diff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]      120 29530000</code></pre>
 </div>
@@ -1250,6 +1251,10 @@ The range in which the middle 50% of the values are located.</p>
 <div class="fragment">
 <p><em>Median</em> minimizes the sum of the absolute deviation. No other value <span class="math inline">\(a\)</span> has a lower mean of absolute distances from the data points. <span class="math inline">\(\frac{1}{n}\sum_{i=1}^n|x_i - a|\)</span>.</p>
 </div>
+<div class="fragment">
+<p><span style="color:blue;"><strong>The Concept of Minimizing</strong></span><br>
+Is central for all statisitical fitting and learning procedures! These are among the simplest examples of this concept.</p>
+</div>
 </section>
 <section id="two-families-of-summary-statistics" class="slide level2 smaller" data-background-color="aquamarine">
 <h2>Two families of summary statistics</h2>
@@ -1268,7 +1273,7 @@ The range in which the middle 50% of the values are located.</p>
 </section>
 <section id="a-hierarchy-of-moments" class="slide level2 smaller" data-background-color="aquamarine">
 <h2>A hierarchy of moments</h2>
-<p><span class="math inline">\(n\)</span>th raw moment: <span class="math inline">\(\frac{1}{n}\sum_i^n x_i^n\)</span>.</p>
+<p><span class="math inline">\(k\)</span>th raw moment: <span class="math inline">\(\frac{1}{n}\sum_i^n x_i^k\)</span>.</p>
 <ol type="1">
 <li>The <em>mean</em> is the <em>1st raw moment</em> (because no exponents appear in formula)</li>
 <li>The <em>variance</em> is the <em>2nd raw moment</em> the mean-shifted <span class="math inline">\(x\)</span></li>
@@ -1285,7 +1290,8 @@ The range in which the middle 50% of the values are located.</p>
 <li><strong>Negative skewness</strong>: The left tail is longer or fatter than the right tail.</li>
 </ul>
 
-<img data-src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Relationship_between_mean_and_median_under_different_skewness.png" class="r-stretch"><p>The relation of <em>mean</em> and <em>median</em> can give a hint on skewness!</p>
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Relationship_between_mean_and_median_under_different_skewness.png" class="r-stretch"><p>The relation of <em>mean</em> and <em>median</em> can give a hint on skewness!<br>
+The Viertelfest data is heavily positively skew. (The Galton data is a little bit negatively skew, but it is barely visible.)</p>
 </section>
 <section id="kurtosis" class="slide level2 smaller" data-background-color="aquamarine">
 <h2>Kurtosis</h2>
@@ -1302,7 +1308,7 @@ The range in which the middle 50% of the values are located.</p>
 <h1>Bivariate Summary Statistics</h1>
 
 </section>
-<section id="covariance" class="slide level2 smaller" data-background-color="khaki">
+<section id="covariance" class="slide level2 smaller" data-background-color="aquamarine">
 <h2>Covariance</h2>
 <p>Goal: We want to measure the joint variation in numerical observations of two variables <span class="math inline">\(x_1,\dots,x_n\)</span> and <span class="math inline">\(y_1, \dots, y_n\)</span>.</p>
 <p><strong>Covariance</strong></p>
@@ -1312,10 +1318,11 @@ The range in which the middle 50% of the values are located.</p>
 <p>Note: <span class="math inline">\(\text{cov}(x,x) = \frac{1}{n}\sum_{i=1}^n(x_i - \mu_x)(x_i - \mu_x) = \frac{1}{n}\sum_{i=1}^n(x_i - \mu_x)^2 = \text{Var}(x)\)</span></p>
 </div>
 </section>
-<section id="correlation" class="slide level2 smaller" data-background-color="khaki">
+<section id="correlation" class="slide level2 smaller" data-background-color="aquamarine">
 <h2>Correlation</h2>
 <p>Goal: We want to measure the linear correlation in numerical observations of two variables <span class="math inline">\(x_1,\dots,x_n\)</span> and <span class="math inline">\(y_1, \dots, y_n\)</span>.</p>
 <p><strong>Pearson correlation coefficient</strong> <span class="math inline">\(r_{xy} = \frac{\sum_{i=1}^n(x_i - \mu_x)(y_i - \mu_y)}{\sqrt{\sum_{i=1}^n(x_i - \mu_x)^2}\sqrt{\sum_{i=1}^n(y_i - \mu_y)^2}}\)</span></p>
+<p>(Note: Do you are missing $ terms compared to covariance? They all cancel out!)</p>
 <div class="fragment">
 <p>Relation to covariance: <span class="math inline">\(r_{xy} = \frac{\text{cov}(x,y)}{\sigma_x\sigma_y}\)</span></p>
 <p>where <span class="math inline">\(\sigma_x\)</span> and <span class="math inline">\(\sigma_y\)</span> are the standard deviations of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
@@ -1347,7 +1354,7 @@ When <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)<
 </section>
 <section id="correlation-matrix" class="slide level2 smaller">
 <h2>Correlation matrix</h2>
-<p>Using <code>corrr</code> from the packages<code>tidymodels</code></p>
+<p>Using <code>corrr</code> from the packages <code>tidymodels</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a></a><span class="fu">library</span>(corrr)</span>
 <span id="cb84-2"><a></a>penguins <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>species, <span class="sc">-</span>island, <span class="sc">-</span>sex) <span class="sc">|&gt;</span> </span>
@@ -1366,7 +1373,7 @@ When <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)<
 </section>
 <section id="correlation-table" class="slide level2 smaller">
 <h2>Correlation table</h2>
-<p>Using <code>correlation</code> from the packages<code>correlation</code></p>
+<p>Using <code>correlation</code> from the packages <code>correlation</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a></a><span class="fu">library</span>(correlation)</span>
 <span id="cb86-2"><a></a>results <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins <span class="sc">|&gt;</span> </span>
