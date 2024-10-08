@@ -1,5 +1,5 @@
 ---
-title: "W#04: Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming"
+title: "W#04: Relational Data, Math: Sets and Functions, Programming Functions"
 author: Jan Lorenz
 format: 
   revealjs: 
@@ -28,20 +28,24 @@ if (!file.exists("data/hotels.csv")) {
                 destfile = "data/hotels.csv")
 }
 if (!file.exists("data/professions.csv")) {
-  download.file(url = "https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/scientists/professions.csv", 
+  download.file(url = "https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/professions.csv", 
                 destfile = "data/professions.csv")
 }
 if (!file.exists("data/dates.csv")) {
-  download.file(url = "https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/scientists/dates.csv", 
+  download.file(url = "https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/dates.csv", 
                 destfile = "data/dates.csv")
 }
 if (!file.exists("data/works.csv")) {
-  download.file(url = "https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/scientists/works.csv", 
+  download.file(url = "https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/works.csv", 
                 destfile = "data/qorks.csv")
 }
 ```
+::: aside
+Tip: Run the script in an R-project and have a folder `data/` in it such that the local path works!
+:::
 
-# Strings and Special Values
+
+# Strings
 
 ## String modification {.smaller}
 
@@ -157,7 +161,7 @@ str_extract(fruits,"^[Pp][a-z]+")
 Email addresses! However, this is not the perfect solution...
 
 Dig deeper: Read the discussion and see the example in [How can I validate an email address using a regular expression?](https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression) at stackoverflow. 
-
+# Special Values for "no" data
 
 ## Special values  {.smaller}
 
@@ -278,7 +282,7 @@ L[[3]] <- 5
 L
 ```
 
-# Relational Data
+# Relational Data - Joining
 
 ## Working with more dataframes {.smaller}
 
@@ -295,13 +299,8 @@ Often variables in different dataframe have the same name, but that need not be 
 ## Data: Women in science {.smaller}
 
 10 women in science who changed the world: 
-`r read_csv("data/scientists/professions.csv") |> pull(name) |> paste(collapse=", ")`
+`r read_csv("data/professions.csv") |> pull(name) |> paste(collapse=", ")`
 
-```{r}
-professions <- read_csv("data/scientists/professions.csv")
-dates <- read_csv("data/scientists/dates.csv")
-works <- read_csv("data/scientists/works.csv")
-```
 
 ::: {.panel-tabset}
 
@@ -309,7 +308,7 @@ works <- read_csv("data/scientists/works.csv")
 
 ```{r}
 #| echo: true
-professions <- read_csv("data/scientists/professions.csv")
+professions <- read_csv("data/professions.csv")
 professions
 ```
 
@@ -317,7 +316,7 @@ professions
 
 ```{r}
 #| echo: true
-dates <- read_csv("data/scientists/dates.csv")
+dates <- read_csv("data/dates.csv")
 dates
 ```
 
@@ -325,7 +324,7 @@ dates
 
 ```{r}
 #| echo: true
-works <- read_csv("data/scientists/works.csv")
+works <- read_csv("data/works.csv")
 works
 ```
 :::
@@ -813,6 +812,8 @@ Other examples:
 
 No, it is not a function. It has nine outcomes and these change when run again. 
 
+# Functions: Graphs, Shift and Scale, Polynomial vs. Exponential
+
 ## Graphs of functions   {.smaller background-color="aquamarine"}
 
 - A function is characterized by the set all possible pairs $(x,f(x))$. 
@@ -1013,7 +1014,7 @@ g1 + g2 + plot_annotation(title = "Same function but different of axis limits!")
 
 
 
-# Functions in Programming
+# Functions in Programming $\to$ Programming Function
 
 ## Input $\to$ output {.smaller} 
 
@@ -1126,6 +1127,8 @@ mymult <- function(x = 2, y = 3)
 mymult()
 ```
 
+# Think and program vectorized!
+
 ## Vectorized functions {.smaller}
 
 Mathematical functions in programming are often "vectorized": 
@@ -1211,6 +1214,8 @@ ggplot() +
 Code line 3 shows another important concept: **anonymous functions**. The function `function(x) 3*x - 4` is defined *on the fly* without a name.
 
 
+# Conditional Statements (`if`) and Iteration (`map`)
+
 ## Conditional statements  {.smaller}
 
 - `if` executes a code block if a condition is `TRUE`
@@ -1292,7 +1297,7 @@ tibble(x = seq(0,3,by = 0.5)) |>
 
 ::::
 
-## `map` and `reduce` {.smaller}
+## `reduce` {.smaller}
 
 Instead of a list or a vector `reduce` returns a single value.   
 To that end it needs a function with two arguments. It applies it to the first two elements of the vector, then to the result and the third element, then the result and the fourth element, and so on.
@@ -1336,7 +1341,16 @@ letter[1:7] |>
 
 ::::
 
+## `map` and `reduce` {.smaller}
 
+- `map` applies a function to each element of a vector (or list) and returns a list (or vector if `map_dbl` or other vaeriants are used)
+    - The output has the same `length` as the input
+- `reduce` applies a function taking two arguments and then summarizes the list by applying them two element 1 and 2 and then again the result with element 3 and then the result with element 4, ...
+    - The output is one object
+    
+- Remark: The problem of vectorizing a function which has an `if` and `else` statement (see the example `piecewise_vectorized`) can also be solved using the vectorized version of it:    
+`if_else(condition = *condition*, true = *value-if_TRUE*, false = *value-if_FALSE*)`    
+Here every argument can be a vector!
 
 
 ## Function programming: Take away

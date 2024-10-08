@@ -23,17 +23,16 @@ In this lectures we will use these packages and datasets. You need to do this co
 ```{r}
 #| echo: true
 library(tidyverse)
-library(readxl)
 library(palmerpenguins)
 if (!file.exists("data/galton_data.xlsx")) {
   download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/galton_data.xlsx", 
-                destfile = "data/galton_data.xlsx")
+                destfile = "data/galton.csv")
 } 
 if (!file.exists("data/Viertelfest.csv")) {
   download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/Viertelfest.csv", 
                 destfile = "data/Viertelfest.csv")
 } 
-galton <- read_excel("data/galton_data.xlsx")
+galton <- read_excel("data/galton_data.csv")
 viertel <- read_csv("data/Viertelfest.csv")
 ```
 
@@ -974,69 +973,6 @@ Roger D. Peng and Elizabeth Matsui.
 "The Art of Data Science." A Guide for Anyone Who Works with Data.
 Skybrude Consulting, LLC (2015).
 :::
-
-## Example EDA: Strange Airports {.smaller background-color="khaki"}
-
-From Homework 02: 
-
-```{r}
-#| fig-height: 4
-#| fig-weight: 10
-#| echo: true
-library(nycflights13)
-ggplot(data = airports, mapping = aes(x = lon, y = lat)) + geom_point(aes(color = tzone)) 
-```
-
-```{r}
-#| echo: true
-airports %>% filter(lon >= 0) 
-```
-
-
-## Airport errors {.smaller background-color="khaki"}
-
-```{r}
-airports %>% filter(lon >= 0)
-```
-
-. . . 
-
-Correct locations (internet research and location of maps):
-
-:::: {.columns}
-::: {.column width='55%'}
-- Deer Valley Municipal Airport: Phoenix   
-33°41′N 112°05′W [Missing minus for lon (W)]{style='color:red;'}
-- Dillant Hopkins Airport: New Hampshire   
-42°54′N 72°16′W [lon-lat switched, minus (W)]{style='color:red;'}
-- Montgomery Field: San Diego   
-32°44′N 117°11″W [Missing minus for lon (W)]{style='color:red;'}
-- Eareckson As: Alaska    
-52°42′N 174°06′E [No error: Too west,it's east!]{style='color:red;'}
-:::
-
-::: {.column width='45%'}
-![](https://upload.wikimedia.org/wikipedia/commons/e/ef/FedStats_Lat_long.svg)
-:::
-
-::::
-
-## Conclusions on data errors {.smaller background-color="khaki"}
-
-- In real-world datasets errors like the 3 airport are quite common.
-- Errors of this type are often hard to detect and remain unnoticed. 
-  - This can (but need not) change results drastically!
-
-. . .
-
-Conclusions
-
-- Always remain **alert for inconsistencies** and be ready to check the **plausibility** of results. 
-- Skills in **exploratory data analysis** (EDA) are essential to find errors and explore their nature and implication
-- Errors are unpredictable, of diverse types, and are often deeply related to the reality the data presents. 
-  - This is one reason why EDA can not be a fully formalized and automatized process. 
-
-
 
 
 # Data science projects {background-color="khaki"}
