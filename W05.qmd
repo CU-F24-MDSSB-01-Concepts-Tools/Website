@@ -24,12 +24,12 @@ In this lectures we will use these packages and datasets. You need to do this co
 #| echo: true
 library(tidyverse)
 library(palmerpenguins)
-if (!file.exists("data/galton_data.xlsx")) {
-  download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/galton.csv", 
+if (!file.exists("data/galton.csv")) {
+  download.file(url = "https://raw.githubusercontent.com/CU-F24-MDSSB-01-Concepts-Tools/Website/refs/heads/main/data/galton.csv", 
                 destfile = "data/galton.csv")
 } 
 if (!file.exists("data/Viertelfest.csv")) {
-  download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/Viertelfest.csv", 
+  download.file(url = "https://raw.githubusercontent.com/CU-F24-MDSSB-01-Concepts-Tools/Website/refs/heads/main/data/Viertelfest.csv", 
                 destfile = "data/Viertelfest.csv")
 } 
 galton <- read_csv("data/galton.csv")
@@ -277,7 +277,7 @@ ggplot() +
 
 :::
 
-## Galton's data^[Kenneth Wallis dug out the data from Galton's notebook and put it here <https://warwick.ac.uk/fac/soc/economics/staff/kfwallis/publications/galton_data.xlsx>] {.smaller background-color="aquamarine"}
+## Galton's data^[Kenneth Wallis dug out the data from Galton's notebook and put it here <https://warwick.ac.uk/fac/soc/economics/staff/kfwallis/publications/galton_data.xlsx>] {.smaller background-color="khaki"}
 
 *What is the weight of the meat of this ox?*
 
@@ -311,7 +311,7 @@ viertel |> ggplot(aes(`Schätzung`)) + geom_histogram() +
 `r nrow(viertel)` estimates, the maximal value is `r format(max(viertel$Schätzung))`!  We should filter ... 
 
 
-## Viertelfest Bremen 2008 {.smaller background-color="aquamarine"}
+## Viertelfest Bremen 2008 {.smaller background-color="khaki"}
 
 *How many lots will be sold by the end of the festival?*
 
@@ -331,7 +331,7 @@ viertel |> filter(Schätzung<100000) |> ggplot(aes(`Schätzung`)) + geom_histogr
 [geometric mean]{style="color:orange;"} `r format(round(exp(mean(log(viertel$Schätzung))), digits=1))`
 
 
-## $\log_{10}$ transformation Viertelfest {.smaller background-color="aquamarine"}
+## $\log_{10}$ transformation Viertelfest {.smaller background-color="khaki"}
 
 ```{r}
 #| echo: true
@@ -348,7 +348,7 @@ viertel |> mutate(log10Est = log10(Schätzung)) |> ggplot(aes(log10Est)) + geom_
 [geometric mean]{style="color:orange;"} `r format(round(exp(mean(log(viertel$Schätzung))), digits=1))`
 
 
-## Wisdom of the crowd insights {.smaller background-color="aquamarine"}
+## Wisdom of the crowd insights {.smaller background-color="khaki"}
 
 ::: {.incremental}
 - In Galton's sample the different measures do not make a big difference
@@ -387,6 +387,8 @@ The standard deviation is often denoted $\sigma$ (sigma) and the variance $\sigm
 
 . . .
 
+[Warning:]{style='color:red;'} MAD can also be **Median absolute deviation**! Check before usage.
+
 **Range** is the difference of the maximal and the minimal value $\max(x) - \min(x)$.
 
 
@@ -399,8 +401,8 @@ The standard deviation is often denoted $\sigma$ (sigma) and the variance $\sigm
 #| echo: true
 var(galton$Estimate)
 sd(galton$Estimate)
-mad(galton$Estimate)
-range(galton$Estimate)
+mad(galton$Estimate) # Warning: median absolute deviation is default
+range(galton$Estimate) # Oh, range gives us a vector of min and max. So, we diff
 diff(range(galton$Estimate))
 ```
 :::
@@ -410,8 +412,8 @@ diff(range(galton$Estimate))
 #| echo: true
 var(viertel$Schätzung)
 sd(viertel$Schätzung)
-mad(viertel$Schätzung)
-range(viertel$Schätzung) # Oh, range in R gives us a vector of min and max. So, we diff
+mad(viertel$Schätzung)  # Warning: median absolute deviation is default
+range(viertel$Schätzung) # Oh, range gives us a vector of min and max. So, we diff
 diff(range(viertel$Schätzung))
 ```
 :::
@@ -768,6 +770,10 @@ palmerpenguins::penguins |> ggplot(aes(x = flipper_length_mm)) + geom_histogram(
 
 *Median* minimizes the sum of the absolute deviation. No other value $a$ has a lower mean of absolute distances from the data points. $\frac{1}{n}\sum_{i=1}^n|x_i - a|$.
 
+. . . 
+
+[**The Concept of Minimizing**]{style='color:blue;'}  
+Is central for all statisitical fitting and learning procedures! These are among the simplest examples of this concept. 
 
 ## Two families of summary statistics {background-color="aquamarine" .smaller}
 
@@ -780,7 +786,7 @@ palmerpenguins::penguins |> ggplot(aes(x = flipper_length_mm)) + geom_histogram(
   
 ## A hierarchy of moments {background-color="aquamarine" .smaller}
 
-$n$th raw moment: $\frac{1}{n}\sum_i^n x_i^n$.  
+$k$th raw moment: $\frac{1}{n}\sum_i^n x_i^k$.  
 
 1. The *mean* is the *1st raw moment* (because no exponents appear in formula)
 2. The *variance* is the *2nd raw moment* the mean-shifted $x$
@@ -798,7 +804,8 @@ Equation: $\text{skewness} = \frac{\frac{1}{n}\sum_{i=1}^n(x_i - \mu)^3}{\left(\
 
 ![](https://upload.wikimedia.org/wikipedia/commons/c/cc/Relationship_between_mean_and_median_under_different_skewness.png)
 
-The relation of *mean* and *median* can give a hint on skewness!
+The relation of *mean* and *median* can give a hint on skewness!  
+The Viertelfest data is heavily positively skew. (The Galton data is a little bit negatively skew, but it is barely visible.)
 
 
 
@@ -818,7 +825,7 @@ A logarithmic y-axis shows the fatter tails!
 
 # Bivariate Summary Statistics
 
-## Covariance  {.smaller background-color="khaki"}
+## Covariance  {.smaller background-color="aquamarine"}
 
 Goal: We want to measure the joint variation in numerical observations of two variables $x_1,\dots,x_n$ and $y_1, \dots, y_n$. 
 
@@ -833,12 +840,14 @@ where $\mu_x$ and $\mu_y$ are the arithmetic means of $x$ and $y$.
 Note: $\text{cov}(x,x) = \frac{1}{n}\sum_{i=1}^n(x_i - \mu_x)(x_i - \mu_x) = \frac{1}{n}\sum_{i=1}^n(x_i - \mu_x)^2 = \text{Var}(x)$
 
 
-## Correlation {.smaller background-color="khaki"}
+## Correlation {.smaller background-color="aquamarine"}
 
 Goal: We want to measure the linear correlation in numerical observations of two variables $x_1,\dots,x_n$ and $y_1, \dots, y_n$. 
 
 **Pearson correlation coefficient**
 $r_{xy} = \frac{\sum_{i=1}^n(x_i - \mu_x)(y_i - \mu_y)}{\sqrt{\sum_{i=1}^n(x_i - \mu_x)^2}\sqrt{\sum_{i=1}^n(y_i - \mu_y)^2}}$ 
+
+(Note: Do you are missing $\frac{1}{n} terms compared to covariance? They all cancel out!)
 
 . . . 
 
@@ -870,7 +879,7 @@ Correlation between two vectors $x$ and $y$ is "normalized".
 
 ## Correlation matrix {.smaller}
 
-Using `corrr` from the packages`tidymodels`
+Using `corrr` from the packages `tidymodels`
 
 ```{r}
 #| echo: true
@@ -882,7 +891,7 @@ penguins |> select(-species, -island, -sex) |>
 
 ## Correlation table {.smaller}
 
-Using `correlation` from the packages`correlation`
+Using `correlation` from the packages `correlation`
 
 ```{r}
 #| echo: true
