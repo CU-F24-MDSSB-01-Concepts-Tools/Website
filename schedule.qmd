@@ -21,11 +21,11 @@ Date format MM-DD (month-day) (09-05 is Sep, 5)
 | Week | Dates Concepts  | **Concepts Topics**                                                | Dates Tools  | **Tools Topic**    |
 |------|--------|-------------------------------------------------------------|----------|:------------:|
 | 1    | 09-02  | *No class, Academic Opening*                                | 09-05    | R            |
-| 2    | 09-09  | [What is Data Science?](https://docs.google.com/presentation/d/1xoUAOMptSXCGi3DpaqRmBdNKVcaijT4u7G0R2pvrmBM/pub?start=false&loop=false&delayms=3000) | 09-12    | R            |
-| 3    | 09-16  | Data Visualization, Data Formats [Slides Part 1](https://docs.google.com/presentation/d/1xX06QXjfzI1FXBgJRh0vqsP_TKUutW2gUJTvJfi5krw/pub?start=false&loop=false&delayms=3000) [Slides Part 2](W02.qmd) | 09-19    | R            |
-| 4    | 09-23  | [Recap: Toolkit](W03-toolkit.qmd) <br> [Data Import, Data Wrangling](W03.qmd)   | 09-26    | R            |
-| 5    | 09-30  | [Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming](W04.qmd)  | 10-03    | *no class, Public Holiday* |
-| 6    | 10-07  | [Descriptive Statistics, Exploratory Data Analysis](W05.qmd) | 10-10    | R            |
+| 2    | 09-09  | [W#1 What is Data Science?](https://docs.google.com/presentation/d/1xoUAOMptSXCGi3DpaqRmBdNKVcaijT4u7G0R2pvrmBM/pub?start=false&loop=false&delayms=3000) | 09-12    | R            |
+| 3    | 09-16  | W#2 Data Visualization, Data Formats [Slides Part 1](https://docs.google.com/presentation/d/1xX06QXjfzI1FXBgJRh0vqsP_TKUutW2gUJTvJfi5krw/pub?start=false&loop=false&delayms=3000) [Slides Part 2](W02.qmd) | 09-19    | R            |
+| 4    | 09-23  | W#3 [Recap: Toolkit](W03-toolkit.qmd) <br> [ Data Import, Data Wrangling](W03.qmd)   | 09-26    | R            |
+| 5    | 09-30  | [W#4 Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming](W04.qmd)  | 10-03    | *no class, Public Holiday* |
+| 6    | 10-07  | [W#5 Descriptive Statistics, Exploratory Data Analysis](W05.qmd) | 10-10    | R            |
 | 7    | 10-14  | Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus | 10-17    | R            |
 | 8    | 10-21  | Linear Model, Fitting, Interaction Effects, Nonlinear Models | 10-24    | python       |
 | 9    | 10-28  | Predicting Categorical Variables, Logistic Regression, Classification Problems  | 10-31    | *no class, Public Holiday* |

@@ -23,7 +23,7 @@ library(tidyverse)
 
 
 
-# Data Import
+# Data Import, First Look
 
 ![](img/data-science-explore.png){height=250}
 
@@ -383,14 +383,9 @@ hotels |> select(hotel, market_segment, children, everything())
 - `ends_with()`: Ends with a suffix
 - `contains()`: Contains a literal string
 - `num_range()`: Matches a numerical range like x01, x02, x03
-- `one_of()`: Matches variable names in a character vector
 - `everything()`: Matches all variables
 - `last_col()`: Select last variable, possibly with an offset
 - `matches()`: Matches a regular expression (a sequence of symbols/characters expressing a string/pattern to be searched for within text)
-
-:::{.aside}
-Check details with `?one_of`
-:::
 
 
 ## `slice` for certain rows {.smaller}
@@ -444,6 +439,10 @@ hotels |> filter(
 
 ## Logical operators^[Logical is sometimes called **Boolean**] {.smaller .scrollable}
 
+
+:::: {.columns}
+
+::: {.column width='50%'}
 operator      | definition                   
 --------------|------------------------------
 `<`           | less than                    
@@ -455,11 +454,50 @@ operator      | definition
 `x & y`       | `x` AND `y`                  
 `x | y`       | `x` OR `y` 
 `!x`          | not `x`
+:::
 
+::: {.column width='50%'}
+Test these (vectors of) logical statements
 
-## Excursions: The Concept of Indexing {.smaller}
+```{r}
+#| echo: true
+#| output-location: fragment
+c(2 == 2   ,   2 == 3) 
+```
 
-Select and filter can also be achieved by **indexing**.  
+```{r}
+#| echo: true
+#| output-location: fragment
+c(2 != 2   ,    2 != 3) 
+```
+
+```{r}
+#| echo: true
+#| output-location: fragment
+c(2 != 2 & 2 != 3   ,   2 != 2 | 2 != 3)
+```
+
+```{r}
+#| echo: true
+#| output-location: fragment
+c(2 == 2   ,   !(2 == 2))
+```
+
+```{r}
+#| echo: true
+#| output-location: fragment
+c(2 != 2   ,    !(2 != 2))
+```
+
+:::
+
+::::
+
+# Numerical and Logical Indexing
+
+## The Concept of Indexing {.smaller}
+
+Select and filter can also be achieved by **numerical indexing**.  
 
 **In (base) R as well as in python.**
 
@@ -490,7 +528,9 @@ hotels[c(1:3,100232),c(5:7,1)]
 **Analogy:** In mathematics there is an unsettled debate if $0 \in \mathbb{N}$ or $0 \notin \mathbb{N}$
 
 
-## Excursion: Logical Indexing {.smaller}
+## Logical Indexing {.smaller}
+
+Instead of numerical indexing (with a vector of numbers) you can also use **logical indexing** with a vector of logicals. 
 
 With logical vectors you can select rows and columns. 
 
@@ -554,9 +594,11 @@ data |>
     )
 ```
 
+# Counting and Sorting
+
 ## Unique combinations, arranging
  
-`distinct` and `arrange`
+`distinct` and `arrange` (for sorting)
 
 ```{r} 
 #| echo: true
