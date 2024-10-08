@@ -25,7 +25,7 @@ In this lectures we will use these packages and datasets. You need to do this co
 library(tidyverse)
 library(palmerpenguins)
 if (!file.exists("data/galton_data.xlsx")) {
-  download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/galton_data.xlsx", 
+  download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/galton_data.csv", 
                 destfile = "data/galton.csv")
 } 
 if (!file.exists("data/Viertelfest.csv")) {
