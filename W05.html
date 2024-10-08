@@ -425,18 +425,17 @@ Jan Lorenz
 <p>In this lectures we will use these packages and datasets. You need to do this code in the Console to download data and play with some of the code in this lecture.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-3"><a></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb1-4"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"data/galton_data.xlsx"</span>)) {</span>
-<span id="cb1-5"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/galton_data.xlsx"</span>, </span>
-<span id="cb1-6"><a></a>                <span class="at">destfile =</span> <span class="st">"data/galton_data.xlsx"</span>)</span>
-<span id="cb1-7"><a></a>} </span>
-<span id="cb1-8"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"data/Viertelfest.csv"</span>)) {</span>
-<span id="cb1-9"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/Viertelfest.csv"</span>, </span>
-<span id="cb1-10"><a></a>                <span class="at">destfile =</span> <span class="st">"data/Viertelfest.csv"</span>)</span>
-<span id="cb1-11"><a></a>} </span>
-<span id="cb1-12"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/galton_data.xlsx"</span>)</span>
-<span id="cb1-13"><a></a>viertel <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Viertelfest.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb1-3"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"data/galton.csv"</span>)) {</span>
+<span id="cb1-4"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://raw.githubusercontent.com/CU-F24-MDSSB-01-Concepts-Tools/Website/refs/heads/main/data/galton.csv"</span>, </span>
+<span id="cb1-5"><a></a>                <span class="at">destfile =</span> <span class="st">"data/galton.csv"</span>)</span>
+<span id="cb1-6"><a></a>} </span>
+<span id="cb1-7"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"data/Viertelfest.csv"</span>)) {</span>
+<span id="cb1-8"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://raw.githubusercontent.com/CU-F24-MDSSB-01-Concepts-Tools/Website/refs/heads/main/data/Viertelfest.csv"</span>, </span>
+<span id="cb1-9"><a></a>                <span class="at">destfile =</span> <span class="st">"data/Viertelfest.csv"</span>)</span>
+<span id="cb1-10"><a></a>} </span>
+<span id="cb1-11"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/galton.csv"</span>)</span>
+<span id="cb1-12"><a></a>viertel <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Viertelfest.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 <aside><div>
@@ -674,12 +673,11 @@ Mode: Yes.</p>
 <h2>Galton’s data<sup>1</sup></h2>
 <p><em>What is the weight of the meat of this ox?</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/galton_data.xlsx"</span>)</span>
-<span id="cb16-2"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>) <span class="sc">+</span> </span>
-<span id="cb16-3"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1198</span>, <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span> </span>
-<span id="cb16-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(galton<span class="sc">$</span>Estimate), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb16-5"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">median</span>(galton<span class="sc">$</span>Estimate), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
-<span id="cb16-6"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">Mode</span>(galton<span class="sc">$</span>Estimate), <span class="at">color =</span> <span class="st">"purple"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb16-2"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1198</span>, <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span> </span>
+<span id="cb16-3"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(galton<span class="sc">$</span>Estimate), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb16-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">median</span>(galton<span class="sc">$</span>Estimate), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
+<span id="cb16-5"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">Mode</span>(galton<span class="sc">$</span>Estimate), <span class="at">color =</span> <span class="st">"purple"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -694,12 +692,11 @@ Mode: Yes.</p>
 <h2>Viertelfest Bremen 2008<sup>1</sup></h2>
 <p><em>How many lots will be sold by the end of the festival?</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>viertel <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Viertelfest.csv"</span>)</span>
-<span id="cb17-2"><a></a>viertel <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">Schätzung</span><span class="st">`</span>)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb17-3"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">10788</span>, <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span> </span>
-<span id="cb17-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(viertel<span class="sc">$</span>Schätzung), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb17-5"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">median</span>(viertel<span class="sc">$</span>Schätzung), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
-<span id="cb17-6"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">Mode</span>(viertel<span class="sc">$</span>Schätzung), <span class="at">color =</span> <span class="st">"purple"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>viertel <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">Schätzung</span><span class="st">`</span>)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb17-2"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">10788</span>, <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span> </span>
+<span id="cb17-3"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(viertel<span class="sc">$</span>Schätzung), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb17-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">median</span>(viertel<span class="sc">$</span>Schätzung), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
+<span id="cb17-5"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">Mode</span>(viertel<span class="sc">$</span>Schätzung), <span class="at">color =</span> <span class="st">"purple"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>

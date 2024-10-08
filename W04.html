@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Jan Lorenz">
-  <title>Data Science Concepts / Data Science Tools – W#04: Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming</title>
+  <title>Data Science Concepts / Data Science Tools – W#04: Relational Data, Math: Sets and Functions, Programming Functions</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -393,7 +393,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">W#04: Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming</h1>
+  <h1 class="title">W#04: Relational Data, Math: Sets and Functions, Programming Functions</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -407,11 +407,14 @@ Jan Lorenz
 <nav role="doc-toc"> 
 <h2 id="toc-title">Table of contents</h2>
 <ul>
-<li><a href="#/strings-and-special-values" id="/toc-strings-and-special-values">Strings and Special Values</a></li>
-<li><a href="#/relational-data" id="/toc-relational-data">Relational Data</a></li>
+<li><a href="#/strings" id="/toc-strings">Strings</a></li>
+<li><a href="#/relational-data---joining" id="/toc-relational-data---joining">Relational Data - Joining</a></li>
 <li><a href="#/math-sets-and-vectors" id="/toc-math-sets-and-vectors">Math: Sets and vectors</a></li>
 <li><a href="#/math-functions" id="/toc-math-functions">Math: Functions</a></li>
-<li><a href="#/functions-in-programming" id="/toc-functions-in-programming">Functions in Programming</a></li>
+<li><a href="#/functions-graphs-shift-and-scale-polynomial-vs.-exponential" id="/toc-functions-graphs-shift-and-scale-polynomial-vs.-exponential">Functions: Graphs, Shift and Scale, Polynomial vs.&nbsp;Exponential</a></li>
+<li><a href="#/functions-in-programming-to-programming-function" id="/toc-functions-in-programming-to-programming-function">Functions in Programming <span class="math inline">\(\to\)</span> Programming Function</a></li>
+<li><a href="#/think-and-program-vectorized" id="/toc-think-and-program-vectorized">Think and program vectorized!</a></li>
+<li><a href="#/conditional-statements-if-and-iteration-map" id="/toc-conditional-statements-if-and-iteration-map">Conditional Statements (<code>if</code>) and Iteration (<code>map</code>)</a></li>
 </ul>
 </nav>
 </section>
@@ -426,22 +429,25 @@ Jan Lorenz
 <span id="cb1-5"><a></a>                <span class="at">destfile =</span> <span class="st">"data/hotels.csv"</span>)</span>
 <span id="cb1-6"><a></a>}</span>
 <span id="cb1-7"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"data/professions.csv"</span>)) {</span>
-<span id="cb1-8"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/scientists/professions.csv"</span>, </span>
+<span id="cb1-8"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/professions.csv"</span>, </span>
 <span id="cb1-9"><a></a>                <span class="at">destfile =</span> <span class="st">"data/professions.csv"</span>)</span>
 <span id="cb1-10"><a></a>}</span>
 <span id="cb1-11"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"data/dates.csv"</span>)) {</span>
-<span id="cb1-12"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/scientists/dates.csv"</span>, </span>
+<span id="cb1-12"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/dates.csv"</span>, </span>
 <span id="cb1-13"><a></a>                <span class="at">destfile =</span> <span class="st">"data/dates.csv"</span>)</span>
 <span id="cb1-14"><a></a>}</span>
 <span id="cb1-15"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"data/works.csv"</span>)) {</span>
-<span id="cb1-16"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/scientists/works.csv"</span>, </span>
+<span id="cb1-16"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">"https://raw.githubusercontent.com/rstudio-education/datascience-box/main/course-materials/_slides/u2-d08-multi-df/data/works.csv"</span>, </span>
 <span id="cb1-17"><a></a>                <span class="at">destfile =</span> <span class="st">"data/qorks.csv"</span>)</span>
 <span id="cb1-18"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
+
+<aside><div>
+<p>Tip: Run the script in an R-project and have a folder <code>data/</code> in it such that the local path works!</p>
+</div></aside></section>
 <section>
-<section id="strings-and-special-values" class="title-slide slide level1 center">
-<h1>Strings and Special Values</h1>
+<section id="strings" class="title-slide slide level1 center">
+<h1>Strings</h1>
 
 </section>
 <section id="string-modification" class="slide level2 smaller">
@@ -607,7 +613,7 @@ Jan Lorenz
 <p><code>""^[[:alnum:].-_]+@[[:alnum:].-]+$""</code></p>
 <div class="fragment">
 <p>Email addresses! However, this is not the perfect solution…</p>
-<p>Dig deeper: Read the discussion and see the example in <a href="https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression">How can I validate an email address using a regular expression?</a> at stackoverflow.</p>
+<p>Dig deeper: Read the discussion and see the example in <a href="https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression">How can I validate an email address using a regular expression?</a> at stackoverflow. # Special Values for “no” data</p>
 </div>
 </section>
 <section id="special-values" class="slide level2 smaller">
@@ -767,8 +773,8 @@ NULL
 </div>
 </section></section>
 <section>
-<section id="relational-data" class="title-slide slide level1 center">
-<h1>Relational Data</h1>
+<section id="relational-data---joining" class="title-slide slide level1 center">
+<h1>Relational Data - Joining</h1>
 
 </section>
 <section id="working-with-more-dataframes" class="slide level2 smaller">
@@ -790,7 +796,7 @@ NULL
 <div class="tab-content">
 <div id="tabset-1-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a></a>professions <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/scientists/professions.csv"</span>)</span>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a></a>professions <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/professions.csv"</span>)</span>
 <span id="cb68-2"><a></a>professions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 2
@@ -811,7 +817,7 @@ NULL
 </div>
 <div id="tabset-1-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a></a>dates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/scientists/dates.csv"</span>)</span>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a></a>dates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/dates.csv"</span>)</span>
 <span id="cb70-2"><a></a>dates</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 × 3
@@ -830,7 +836,7 @@ NULL
 </div>
 <div id="tabset-1-3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a></a>works <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/scientists/works.csv"</span>)</span>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a></a>works <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/works.csv"</span>)</span>
 <span id="cb72-2"><a></a>works</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 9 × 2
@@ -1533,6 +1539,11 @@ these are <code>origin</code> airports in <code>flights</code></li>
 <div class="fragment">
 <p>No, it is not a function. It has nine outcomes and these change when run again.</p>
 </div>
+</section></section>
+<section>
+<section id="functions-graphs-shift-and-scale-polynomial-vs.-exponential" class="title-slide slide level1 center">
+<h1>Functions: Graphs, Shift and Scale, Polynomial vs.&nbsp;Exponential</h1>
+
 </section>
 <section id="graphs-of-functions" class="slide level2 smaller" data-background-color="aquamarine">
 <h2>Graphs of functions</h2>
@@ -1544,7 +1555,7 @@ these are <code>origin</code> airports in <code>flights</code></li>
 
 <!-- ## Higher dimensional input and output -->
 <!-- Function can take $m$-dimensional input vectors and $n$-dimensional output vectors $f : \mathbb{R}^m \to \mathbb{R}^n$.  -->
-<img data-src="W04_files/figure-revealjs/unnamed-chunk-52-1.png" width="960" class="r-stretch"></section>
+<img data-src="W04_files/figure-revealjs/unnamed-chunk-51-1.png" width="960" class="r-stretch"></section>
 <section id="some-functions-f-mathbbr-to-mathbbr" class="slide level2 smaller" data-background-color="aquamarine">
 <h2>Some functions <span class="math inline">\(f: \mathbb{R} \to \mathbb{R}\)</span></h2>
 <div class="columns">
@@ -1566,7 +1577,7 @@ these are <code>origin</code> airports in <code>flights</code></li>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-53-1.png" width="480"></p>
+<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-52-1.png" width="480"></p>
 </figure>
 </div>
 </div>
@@ -1602,7 +1613,7 @@ these are <code>origin</code> airports in <code>flights</code></li>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-54-1.png" width="960"></p>
+<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-53-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1631,7 +1642,7 @@ You can think of the <em>coordinate system being shifted</em> in direction <span
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-55-1.png" width="960"></p>
+<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-54-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1658,7 +1669,7 @@ You can think of the <em>coordinate system being shifted</em> in direction <span
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-56-1.png" width="960"></p>
+<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-55-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1687,7 +1698,7 @@ You can think of the <em>coordinate system being stretched</em> multiplicatively
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-57-1.png" width="960"></p>
+<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-56-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1704,11 +1715,11 @@ You can think of the <em>coordinate system being stretched</em> multiplicatively
 <p>In an <em>exponential</em> the <span class="math inline">\(x\)</span> appears in the exponent.</p>
 <p><span class="math inline">\(f(x) = x^3\)</span> vs.&nbsp;<span style="color:red;"><span class="math inline">\(f(x) = e^x\)</span></span></p>
 
-<img data-src="W04_files/figure-revealjs/unnamed-chunk-58-1.png" width="960" class="r-stretch"><p><strong>For <span class="math inline">\(x\to\infty\)</span>, any exponential will finally “overtake” any polynomial.</strong></p>
+<img data-src="W04_files/figure-revealjs/unnamed-chunk-57-1.png" width="960" class="r-stretch"><p><strong>For <span class="math inline">\(x\to\infty\)</span>, any exponential will finally “overtake” any polynomial.</strong></p>
 </section></section>
 <section>
-<section id="functions-in-programming" class="title-slide slide level1 center">
-<h1>Functions in Programming</h1>
+<section id="functions-in-programming-to-programming-function" class="title-slide slide level1 center">
+<h1>Functions in Programming <span class="math inline">\(\to\)</span> Programming Function</h1>
 
 </section>
 <section id="input-to-output" class="slide level2 smaller">
@@ -1746,7 +1757,7 @@ You can think of the <em>coordinate system being stretched</em> multiplicatively
 <pre><code>function (x, na.rm = FALSE) 
 sqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x), 
     na.rm = na.rm))
-&lt;bytecode: 0x572ef599ea78&gt;
+&lt;bytecode: 0x5736cfe8a728&gt;
 &lt;environment: namespace:stats&gt;</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb151"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a></a>c <span class="co"># This function is not written in R but is a R primitive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1759,7 +1770,7 @@ sqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x),
 {
     UseMethod("ggplot")
 }
-&lt;bytecode: 0x572ef243af50&gt;
+&lt;bytecode: 0x5736d01162f0&gt;
 &lt;environment: namespace:ggplot2&gt;</code></pre>
 </div>
 </div>
@@ -1853,6 +1864,11 @@ $out2
 </div>
 </div></div>
 </div>
+</section></section>
+<section>
+<section id="think-and-program-vectorized" class="title-slide slide level1 center">
+<h1>Think and program vectorized!</h1>
+
 </section>
 <section id="vectorized-functions" class="slide level2 smaller">
 <h2>Vectorized functions</h2>
@@ -1941,7 +1957,7 @@ $out2
 <span id="cb186-4"><a></a>data <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(x,y)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="W04_files/figure-revealjs/unnamed-chunk-76-1.png" width="960" class="r-stretch"></section>
+<img data-src="W04_files/figure-revealjs/unnamed-chunk-75-1.png" width="960" class="r-stretch"></section>
 <section id="conveniently-ggploting-functions" class="slide level2">
 <h2>Conveniently <code>ggplot</code>ing functions</h2>
 <div class="cell">
@@ -1951,7 +1967,12 @@ $out2
 <span id="cb187-4"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="W04_files/figure-revealjs/unnamed-chunk-77-1.png" width="480" class="r-stretch"><p>Code line 3 shows another important concept: <strong>anonymous functions</strong>. The function <code>function(x) 3*x - 4</code> is defined <em>on the fly</em> without a name.</p>
+<img data-src="W04_files/figure-revealjs/unnamed-chunk-76-1.png" width="480" class="r-stretch"><p>Code line 3 shows another important concept: <strong>anonymous functions</strong>. The function <code>function(x) 3*x - 4</code> is defined <em>on the fly</em> without a name.</p>
+</section></section>
+<section>
+<section id="conditional-statements-if-and-iteration-map" class="title-slide slide level1 center">
+<h1>Conditional Statements (<code>if</code>) and Iteration (<code>map</code>)</h1>
+
 </section>
 <section id="conditional-statements" class="slide level2 smaller">
 <h2>Conditional statements</h2>
@@ -2037,7 +2058,7 @@ $out2
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-81-1.png" width="960"></p>
+<p><img data-src="W04_files/figure-revealjs/unnamed-chunk-80-1.png" width="960"></p>
 </figure>
 </div>
 </div>
