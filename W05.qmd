@@ -32,7 +32,7 @@ if (!file.exists("data/Viertelfest.csv")) {
   download.file(url = "https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Website/blob/main/data/Viertelfest.csv", 
                 destfile = "data/Viertelfest.csv")
 } 
-galton <- read_excel("data/galton.csv")
+galton <- read_csv("data/galton.csv")
 viertel <- read_csv("data/Viertelfest.csv")
 ```
 
@@ -284,7 +284,6 @@ ggplot() +
 ```{r}
 #| echo: true
 #| fig-height: 2.5
-galton <- read_excel("data/galton_data.xlsx")
 galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + 
  geom_vline(xintercept = 1198, color = "green") + 
  geom_vline(xintercept = mean(galton$Estimate), color = "red") + 
@@ -302,7 +301,6 @@ galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) +
 ```{r}
 #| echo: true
 #| fig-height: 2.5
-viertel <- read_csv("data/Viertelfest.csv")
 viertel |> ggplot(aes(`Schätzung`)) + geom_histogram() +
  geom_vline(xintercept = 10788, color = "green") + 
  geom_vline(xintercept = mean(viertel$Schätzung), color = "red") + 
