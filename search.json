@@ -341,7 +341,7 @@
     "href": "W05.html#measures-of-dispersion-1",
     "title": "W#05: Descriptive Statistics, Exploratory Data Analysis",
     "section": "Measures of dispersion1",
-    "text": "Measures of dispersion1\nGoal: We want to measure\n\nHow spread out values are around the central tendency.\nHow stretched or squeezed is the distribution?\n\nVariance is the mean of the squared deviation from the mean: \\(\\text{Var}(x) = \\frac{1}{n}\\sum_{i=1}^n(x_i - \\mu)^2\\) where \\(\\mu\\) (mu) is the mean.\n\nStandard deviation is the square root of the variance \\(\\text{SD}(x) = \\sqrt{\\text{Var}(x)}\\).\nThe standard deviation is often denoted \\(\\sigma\\) (sigma) and the variance \\(\\sigma^2\\).\n\n\nMean absolute deviation (MAD) is the mean of the absolute deviation from the mean: \\(\\text{MAD}(x) = \\frac{1}{n}\\sum_{i=1}^n|x_i - \\mu|\\).\n\n\nWarning: MAD can also be Median absolute deviation! Check before usage.\nRange is the difference of the maximal and the minimal value \\(\\max(x) - \\min(x)\\).\n\nAlso called variability, scatter, or spread."
+    "text": "Measures of dispersion1\nGoal: We want to measure\n\nHow spread out values are around the central tendency.\nHow stretched or squeezed is the distribution?\n\nVariance is the mean of the squared deviation from the mean: \\(\\text{Var}(x) = \\frac{1}{n}\\sum_{i=1}^n(x_i - \\mu)^2\\) where \\(\\mu\\) (mu) is the mean.\n\nStandard deviation is the square root of the variance \\(\\text{SD}(x) = \\sqrt{\\text{Var}(x)}\\).\nThe standard deviation is often denoted \\(\\sigma\\) (sigma) and the variance \\(\\sigma^2\\).\n\n\nMean absolute deviation (MAD) is the mean of the absolute deviation from the mean: \\(\\text{MAD}(x) = \\frac{1}{n}\\sum_{i=1}^n|x_i - \\mu|\\).\n\n\nWarning: MAD can also be Median absolute deviation from the median.\nRange is the difference of the maximal and the minimal value \\(\\max(x) - \\min(x)\\).\n\nAlso called variability, scatter, or spread."
   },
   {
     "objectID": "W05.html#examples-of-measures-of-dispersion",
@@ -628,7 +628,7 @@
     "href": "W06.html#preliminaries",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Preliminaries",
-    "text": "Preliminaries\n\n### A bit on Matrices!!\n\nlibrary(tidyverse)\nlibrary(palmerpenguins)"
+    "text": "Preliminaries\n\nlibrary(tidyverse)\nlibrary(palmerpenguins)"
   },
   {
     "objectID": "W06.html#pca-description",
@@ -649,14 +649,14 @@
     "href": "W06.html#two-variables",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Two Variables",
-    "text": "Two Variables\nExample for the new axes.\n\n\n\n\n\n\n\n\n\n\n\nThe two arrows show the two eigenvectors of the covariance matrix of the two variables scaled by the square root of the corresponding eigenvalues, and shifted so their origins are at the means of both variables."
+    "text": "Two Variables\nExample for the new axes.\n\n\nCode\npca1 &lt;- peng |&gt; select(flipper_length_mm, bill_length_mm) |&gt; \n prcomp(~., data = _, scale = FALSE)\npca_vec &lt;- t(pca1$rotation) |&gt; as_tibble() # Vectors with x = flipper_length, y = bill_length\nggplot(peng) +\n geom_point(aes(x = flipper_length_mm, y = bill_length_mm, color = species)) +\n geom_segment(\n  data = pca_vec, \n  aes(x = mean(peng$flipper_length_mm), \n      y = mean(peng$bill_length_mm), \n      xend = c(pca1$sdev)*flipper_length_mm + mean(peng$flipper_length_mm), \n      yend = c(pca1$sdev)*bill_length_mm + mean(peng$bill_length_mm)), \n  arrow = arrow(length = unit(0.3, \"cm\"))) +\n coord_fixed()\n\n\n\n\n\n\n\n\n\n\n\nThe two arrows show the two eigenvectors of the covariance matrix of the two variables scaled by the square root of the corresponding eigenvalues, and shifted so their origins are at the means of both variables."
   },
   {
     "objectID": "W06.html#computation-in-r",
     "href": "W06.html#computation-in-r",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Computation in R",
-    "text": "Computation in R\nThe basic function is base-R’s prcomp (there is an older princomp which is not advisable to use).\n\n# prcomp can take a data frame with all numerical vectors as 1st argument\nP &lt;- peng |&gt; select(flipper_length_mm, bill_length_mm) |&gt; prcomp()\n\n\n\nThe base output\n\nP\n\nStandard deviations (1, .., p=2):\n[1] 14.549388  3.981729\n\nRotation (n x k) = (2 x 2):\n                        PC1        PC2\nflipper_length_mm 0.9637169 -0.2669266\nbill_length_mm    0.2669266  0.9637169\n\n\n\nThe summary output\n\nsummary(P)\n\nImportance of components:\n                           PC1     PC2\nStandard deviation     14.5494 3.98173\nProportion of Variance  0.9303 0.06968\nCumulative Proportion   0.9303 1.00000"
+    "text": "Computation in R\nThe basic function is base-R’s prcomp (there is an older princomp which is not advisable to use).\n\n# prcomp can take a data frame with all numerical vectors as 1st argument\nP &lt;- peng |&gt; \n select(flipper_length_mm, bill_length_mm) |&gt; \n prcomp()\n\n\n\nThe base output\n\nP\n\nStandard deviations (1, .., p=2):\n[1] 14.549388  3.981729\n\nRotation (n x k) = (2 x 2):\n                        PC1        PC2\nflipper_length_mm 0.9637169 -0.2669266\nbill_length_mm    0.2669266  0.9637169\n\n\n\nThe summary output\n\nsummary(P)\n\nImportance of components:\n                           PC1     PC2\nStandard deviation     14.5494 3.98173\nProportion of Variance  0.9303 0.06968\nCumulative Proportion   0.9303 1.00000"
   },
   {
     "objectID": "W06.html#the-prcomp-object",
@@ -684,28 +684,28 @@
     "href": "W06.html#explore-data-in-pc-coordinates",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Explore data in PC coordinates",
-    "text": "Explore data in PC coordinates\n\n\n\nStart plotting PC1 against PC2. By default these are the most important ones. Drill deeper later.\nAppend the original data. Here used to color by species.\n\n\n\nplotdata &lt;- peng_PCA$x |&gt; as_tibble() |&gt; bind_cols(peng)\nplotdata |&gt; ggplot(aes(PC1, PC2, color = species)) +\n geom_point() +\n coord_fixed() + theme_minimal(base_size = 20)"
+    "text": "Explore data in PC coordinates\n\n\n\nStart plotting PC1 against PC2. By default these are the most important ones. Drill deeper later.\nAppend the original data. Here used to color by species.\n\n\n\nplotdata &lt;- peng_PCA$x |&gt; \n as_tibble() |&gt; \n bind_cols(peng)\nplotdata |&gt; ggplot(aes(PC1, PC2, color = species)) +\n geom_point() +\n coord_fixed() + theme_minimal(base_size = 20)"
   },
   {
     "objectID": "W06.html#variable-loadings",
     "href": "W06.html#variable-loadings",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Variable loadings",
-    "text": "Variable loadings\n\nThe columns of the rotation matrix shows how the original variables load on the principle components.\nWe can try to interpret these loadings and give descriptive names to principal components.\ntidy extracts the rotation matrix in long format with a PC, a column (for the original variable name), and a value variable.\n\n\npeng_PCA$rotation |&gt; as_tibble(rownames = \"variable\") |&gt; \n pivot_longer(starts_with(\"PC\"), names_to = \"PC\", values_to = \"value\") |&gt; \n ggplot(aes(value, variable)) + geom_col() + geom_vline(xintercept = 0, color = \"blue\") +\n facet_wrap(~PC, nrow = 1) + theme_minimal(base_size = 20)"
+    "text": "Variable loadings\n\nThe columns of the rotation matrix shows how the original variables load on the principle components.\nWe can interpret these loadings and give descriptive names to principal components.\nFor plotting we bring the rotation matrix to long format with PC and value column.\n\n\npeng_PCA$rotation |&gt; as_tibble(rownames = \"variable\") |&gt; \n pivot_longer(starts_with(\"PC\"), names_to = \"PC\", values_to = \"value\") |&gt; \n ggplot(aes(value, variable)) + \n geom_col() + \n geom_vline(xintercept = 0, color = \"blue\") +\n facet_wrap(~PC, nrow = 1) +\n theme_minimal(base_size = 20)"
   },
   {
     "objectID": "W06.html#variance-explained",
     "href": "W06.html#variance-explained",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Variance explained",
-    "text": "Variance explained\n\nPrinciple components are by default sorted by importance.\nThe squares of the standard deviation for each component gives its variances and variances have to sum up to the sum of the variances of the original variables.\n\nWhen original variables were standardized their original variances are all each one. Consequently, the variances of the principal components sum up to the number of original variables.\n\nA typical plot to visualize the importance of the components is to plot the percentage of the variance explained by each component.\n\n\ntibble(PC = 1:4, sdev = peng_PCA$sdev) |&gt; \n mutate(percent = sdev^2/sum(sdev^2) * 100) |&gt;\n ggplot(aes(PC, percent)) + geom_col() + theme_grey(base_size = 20)"
+    "text": "Variance explained\n\nPrinciple components are by default sorted by importance.\nThe squares of the standard deviation for each component gives its variances and variances have to sum up to the sum of the variances of the original variables.\n\nWhen original variables were standardized their original variances are all each one. Consequently, the variances of the principal components sum up to the number of original variables.\n\nA typical plot to visualize the importance of the components is to plot the percentage of the variance explained by each component.\n\n\n\ntibble(PC = 1:4, sdev = peng_PCA$sdev) |&gt;\n mutate(percent = sdev^2/sum(sdev^2) * 100) |&gt;\n ggplot(aes(PC, percent)) +\n geom_col() +\n theme_grey(base_size = 20)"
   },
   {
     "objectID": "W06.html#interpretations-1",
     "href": "W06.html#interpretations-1",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Interpretations (1)",
-    "text": "Interpretations (1)\n\n\nThe first component explains almost 70% of the variance. So most emphasize should be on this.\nThe first two explain about 88% of the total variance."
+    "text": "Interpretations (1)\n\n\nThe first component explains almost 70% of the variance.\n\nThe first two explain about 88% of the total variance."
   },
   {
     "objectID": "W06.html#interpretations-2",
@@ -726,21 +726,21 @@
     "href": "W06.html#apply-pca",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Apply PCA",
-    "text": "Apply PCA\n\nBesides standardization, PCA may benefit by preprocessing steps of data transformation with variables with skew distributions (log, square-root, or Box-Cox transformation). This may result in less outliers.\nPCA is a often a useful step of exploratory data analysis when you have a large number of numerical variables to show the empirical dimensionality of the data and its structure\nLimitation: PCA is only sensitive for linear relation ships (no U-shaped) or the like\nThe principal components can be used as predictors in a model instead of the raw variables."
+    "text": "Apply PCA\n\nBesides standardization, PCA may benefit from preprocessing steps of data transformation with variables with skew distributions. Use log, square-root, or Box-Cox transformation. This may result in less outliers.\nPCA is a often a useful step of exploratory data analysis when you have a large number of numerical variables to show the empirical dimensionality of the data and its structure.\nIt is related to the correlation-matrix and can “summarize” its structure.\nLimitation: PCA is only sensitive for linear relation ships (no U-shaped) or the like\nThe principal components can be used as predictors in a model instead of the raw variables."
   },
   {
     "objectID": "W06.html#properties-of-pca",
     "href": "W06.html#properties-of-pca",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Properties of PCA",
-    "text": "Properties of PCA\n\n\nThe principal components (the columns of the rotation matrix) are maximally uncorrelated (actually they are even orthogonal).\nThis also holds for the columns of the rotated data.\nThe total variances of all prinicipal components sum up to the number of variables (when variables are standardized)\nThe PCA is unique. All principle components together are a complete representation of the data. (Unlike other technique of dimensionality reduction which may rely on starting values, random factors, or tuning parameters)"
+    "text": "Properties of PCA\n\n\nThe principal components (the columns of the rotation matrix) are maximally uncorrelated (actually they are even orthogonal).\nThis also holds for the columns of the rotated data.\nThe total variances of all prinicipal components sum up to the number of variables (when variables are standardized)\nThe PCA is unique. All principle components together are a complete representation of the data. (Unlike other technique of dimensionality reduction which may rely on starting values, random factors, or tuning parameters)\n\nTo be precise: It is unique modulo the sign of the PCs. When \\(x\\) is a PC, then \\(-x\\) is as well and can replace it."
   },
   {
     "objectID": "W06.html#relations-of-pca",
     "href": "W06.html#relations-of-pca",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Relations of PCA",
-    "text": "Relations of PCA\n\n\nA technique similar in spirit is factor analysis (e.g. factanal). It is more theory based as it requires to specify to the theoriezed number of factors up front.\nPCA is an example of the importance of linear algebra (“matrixology”) in data science techniques.\n\nPCA is based on the eigenvalue decomposition of the covariance matrix (or correlation matrix in the standardized case) of the data."
+    "text": "Relations of PCA\n\n\nA technique similar in spirit is factor analysis (e.g. factanal). It is more theory based as it requires to specify to the theoriezed number of factors up front.\nPCA is an example of the importance of linear algebra (“matrixology”) in data science techniques.\n\n\n\n\n\n\nPCA is based on the eigenvalue decomposition of the covariance matrix (or correlation matrix in the standardized case) of the data.\n\n\nhttps://xkcd.com/1838/"
   },
   {
     "objectID": "W06.html#rules-for-exponentiation",
@@ -782,7 +782,7 @@
     "href": "W06.html#agent-based-simulation",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Agent-based Simulation",
-    "text": "Agent-based Simulation\nAgent-based model: Individual agents are simulated and interact with each other.\nExplore and analyze with computer simulations.\nA tool: NetLogo https://ccl.northwestern.edu/netlogo/\n\nWe look at the model “Virus on a Network” from the model library."
+    "text": "Agent-based Simulation\nAgent-based model: Individual agents are simulated and interact with each other.\nExplore and analyze with computer simulations.\nA tool: NetLogo https://ccl.northwestern.edu/netlogo/\n\nWe look at the model “Virus on a Network” from the model library.\nDirect Link to Virus on a Network in NetLogoWeb"
   },
   {
     "objectID": "W06.html#virus-on-a-network-6-links-initial",
@@ -824,14 +824,14 @@
     "href": "W06.html#si-model-simulation-in-r",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "SI-model: Simulation in R",
-    "text": "SI-model: Simulation in R\n\nWe produce a vector of length \\(N\\) with entries representing the state of each individual as \"S\" or \"I\".\nWe model the random infection process in each step of unit time\n\nSetup\nParameters: \\(N=150, \\beta=0.3\\), a function to produce randomly infect individuals\n\n\nN &lt;- 150\nbeta &lt;- 0.3\nrandomly_infect &lt;- function(N, prob) { \n runif(N) &lt; prob \n # Gives a logical vector of length N\n # where TRUE appears with probability beta\n}\n# Test\nrandomly_infect(N, beta) |&gt; head() # First 6\n\n\n[1] FALSE  TRUE FALSE  TRUE  TRUE  TRUE\n\n\n\n\ninit &lt;- rep(\"S\",N) # All susceptible\ninit[1] &lt;- \"I\" # Infect one individual\ninit |&gt; head() # First 6\n\n\n[1] \"I\" \"S\" \"S\" \"S\" \"S\" \"S\""
+    "text": "SI-model: Simulation in R\n\nWe produce a vector of length \\(N\\) with entries representing the state of each individual as \"S\" or \"I\".\nWe model the random infection process in each step of unit time\n\nSetup\nParameters: \\(N=150, \\beta=0.3\\), a function to produce randomly infect individuals\n\n\nN &lt;- 150\nbeta &lt;- 0.3\nrandomly_infect &lt;- function(N, prob) { \n runif(N) &lt; prob \n # Gives a logical vector of length N\n # where TRUE appears with probability beta\n}\n# Test\nrandomly_infect(N, beta) |&gt; head() # First 6\n\n\n[1] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE\n\n\n\n\ninit &lt;- rep(\"S\",N) # All susceptible\ninit[1] &lt;- \"I\" # Infect one individual\ninit |&gt; head() # First 6\n\n\n[1] \"I\" \"S\" \"S\" \"S\" \"S\" \"S\""
   },
   {
     "objectID": "W06.html#si-model-simulation-in-r-1",
     "href": "W06.html#si-model-simulation-in-r-1",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "SI-model: Simulation in R",
-    "text": "SI-model: Simulation in R\nIteration over 75 time steps.\n\n\ntmax &lt;- 75\nsim_run &lt;- list(init) # list with one element\n# This list will collect the states of \n# all individuals over tmax time steps \nfor (i in 2:tmax) {\n # Every agents has a contact with a random other\n contacts &lt;- sample(sim_run[[i-1]], size = N)\n sim_run[[i]] &lt;- if_else( # vectorised ifelse\n  # conditions vector: contact is infected\n  # and a random infection happens\n  contacts == \"I\" & randomly_infect(N, beta), \n  true = \"I\", \n  false = sim_run[[i-1]]\n  ) # otherwise state stays the same\n}\nsim_output &lt;- tibble( # create tibble for ggplot\n # Compute a vector with length tmax \n # with the count of \"I\" in sim_run list\n t = 0:(tmax-1), # times steps\n # count of infected, notice map_dbl\n infected = map_dbl(sim_run, \\(x) sum(x == \"I\"))) \nsim_output |&gt; \n ggplot(aes(t,infected)) + geom_line() +\n theme_minimal(base_size = 20)"
+    "text": "SI-model: Simulation in R\nIteration over 75 time steps.\n\n\ntmax &lt;- 75\nsim_run &lt;- list(init) # list with one element\n# This list will collect the states of \n# all individuals over tmax time steps \nfor (i in 2:tmax) {\n # Every agents has a contact with a random other\n contacts &lt;- sample(sim_run[[i-1]], size = N)\n sim_run[[i]] &lt;- if_else( # vectorised ifelse\n  # conditions vector: contact is infected\n  # and a random infection happens\n  contacts == \"I\" & randomly_infect(N, beta), \n  true = \"I\", \n  false = sim_run[[i-1]]\n  ) # otherwise state stays the same\n}\nsim_output &lt;- tibble( # create tibble for ggplot\n # Compute a vector with length tmax \n # with the count of \"I\" in sim_run list\n t = 0:(tmax-1), # times steps\n # count of infected and output a vector\n infected = sim_run |&gt; map_dbl(\\(x) sum(x == \"I\"))) \nsim_output |&gt; \n ggplot(aes(t,infected)) + geom_line() +\n theme_minimal(base_size = 20)"
   },
   {
     "objectID": "W06.html#si-model-simulation-in-r-2",
@@ -901,14 +901,14 @@
     "href": "W06.html#si-model-numerical-integration",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "SI-model: Numerical integration",
-    "text": "SI-model: Numerical integration\nAnother way of solution using, e.g., using Euler’s method.\nWe compute the solution step-by-step using increments of, e.g. \\(dt = 1\\).\n\n\nN &lt;- 10000\nI0 &lt;- 1\ndI &lt;- function(I,N,b) b*I*(N - I)/N\nbeta &lt;- 0.3\ndt &lt;- 1 # time increment, \n# supposed to be infinitesimally small\ntmax &lt;- 75\nt &lt;- seq(0,tmax,dt) \n# this is the vector of timesteps\nIt &lt;- I0 # this will become the vector \n# of the number infected I(t) over time\nfor (i in 2:length(t)) { \n # We iterate over the vector of time steps \n # and incrementally compute It\n It[i] = It[i-1] + dt * dI(It[i-1], N, beta) \n # This is called Euler's method\n}\ntibble(t, It) |&gt; ggplot(aes(t,It)) + \n geom_function( \n  fun = function(t) N / (1 + (N/I0 - 1)*exp(-beta*t))) + \n # Analytical solution for comparison\n geom_line(color = \"red\") + # The numerical solution in black\n theme_minimal(base_size = 20)\n\n\n\n\n\n\n\n\n\nWhy do the graphs deviate? The step size must be “infinitely” small"
+    "text": "SI-model: Numerical integration\nAnother way of solution is numerical integration, e.g. using Euler’s method.\nWe compute the solution step-by-step using increments of, e.g. \\(dt = 1\\).\n\n\nN &lt;- 10000\nI0 &lt;- 1\ndI &lt;- function(I,N,b) b*I*(N - I)/N\nbeta &lt;- 0.3\ndt &lt;- 1 # time increment, \n# supposed to be infinitesimally small\ntmax &lt;- 75\nt &lt;- seq(0,tmax,dt) \n# this is the vector of timesteps\nIt &lt;- I0 # this will become the vector \n# of the number infected I(t) over time\nfor (i in 2:length(t)) { \n # We iterate over the vector of time steps \n # and incrementally compute It\n It[i] = It[i-1] + dt * dI(It[i-1], N, beta) \n # This is called Euler's method\n}\ntibble(t, It) |&gt; ggplot(aes(t,It)) + \n geom_line(color = \"red\") + \n geom_function( \n  fun = function(t) N / (1 + (N/I0 - 1)*exp(-beta*t)), color = \"blue\") + \n # In blue: Analytical solution for comparison\n theme_minimal(base_size = 20)\n\n\n\n\n\n\n\n\n\nWhy do the graphs deviate? The step size \\(dt\\) must be “infinitely” small"
   },
   {
     "objectID": "W06.html#numerical-integration-with-smaller-dt",
     "href": "W06.html#numerical-integration-with-smaller-dt",
     "title": "W#06: Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus",
     "section": "Numerical integration with smaller \\(dt\\)",
-    "text": "Numerical integration with smaller \\(dt\\)\nWe compute the solution step-by-step using small increments of, e.g. \\(dt = 0.01\\).\n\n\nN &lt;- 10000\nI0 &lt;- 1\ndI &lt;- function(I,N,b) b*I*(N - I)/N\nbeta &lt;- 0.3\ndt &lt;- 0.01 # time increment, \n# supposed to be infinitesimally small\ntmax &lt;- 75\nt &lt;- seq(0,tmax,dt) \n# this is the vector of timesteps\nIt &lt;- I0 # this will become the vector \n# of the number infected I(t) over time\nfor (i in 2:length(t)) { \n # We iterate over the vector of time steps \n # and incrementally compute It\n It[i] = It[i-1] + dt * dI(It[i-1], N, beta) \n # This is called Euler's method\n}\ntibble(t, It) |&gt; ggplot(aes(t,It)) + \n geom_function( \n  fun = function(t) N / (1 + (N/I0 - 1)*exp(-beta*t))) + \n # Analytical solution for comparison\n geom_line(color = \"red\") + # The numerical solution in black\n theme_minimal(base_size = 20)"
+    "text": "Numerical integration with smaller \\(dt\\)\nWe compute the solution step-by-step using small increments of, e.g. \\(dt = 0.05\\).\n\n\nN &lt;- 10000\nI0 &lt;- 1\ndI &lt;- function(I,N,b) b*I*(N - I)/N\nbeta &lt;- 0.3\ndt &lt;- 0.05 # time increment, \n# supposed to be infinitesimally small\ntmax &lt;- 75\nt &lt;- seq(0,tmax,dt) \n# this is the vector of timesteps\nIt &lt;- I0 # this will become the vector \n# of the number infected I(t) over time\nfor (i in 2:length(t)) { \n # We iterate over the vector of time steps \n # and incrementally compute It\n It[i] = It[i-1] + dt * dI(It[i-1], N, beta) \n # This is called Euler's method\n}\ntibble(t, It) |&gt; ggplot(aes(t,It)) + \n geom_line(color = \"red\") +\n geom_function( \n  fun = function(t) N / (1 + (N/I0 - 1)*exp(-beta*t)), color = \"blue\") + \n # In blue: Analytical solution for comparison\n theme_minimal(base_size = 20)"
   },
   {
     "objectID": "W06.html#mechanistic-model",
@@ -3943,7 +3943,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Developing Schedule\n\n\n\n\n\nThe schedule is tentative it will be continuously updated also with readings/viewings, homework and learnings.\nImportant Links:\nGitHub organization\nPrivate Course-Organization-Resources\n\n\n\n\nTabular Schedule\nDate format MM-DD (month-day) (09-05 is Sep, 5)\nData Science Tools is Thursdays. First meeting: 09-05.\nData Science Concepts is Mondays. First meeeting: 09-09.\n\n\n\nWeek\nDates Concepts\nConcepts Topics\nDates Tools\nTools Topic\n\n\n\n\n1\n09-02\nNo class, Academic Opening\n09-05\nR\n\n\n2\n09-09\nW#1 What is Data Science?\n09-12\nR\n\n\n3\n09-16\nW#2 Data Visualization, Data Formats Slides Part 1 Slides Part 2\n09-19\nR\n\n\n4\n09-23\nW#3 Recap: Toolkit  Data Import, Data Wrangling\n09-26\nR\n\n\n5\n09-30\nW#4 Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming\n10-03\nno class, Public Holiday\n\n\n6\n10-07\nW#5 Descriptive Statistics, Exploratory Data Analysis\n10-10\nR\n\n\n7\n10-14\nPrincipal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus\n10-17\nR\n\n\n8\n10-21\nLinear Model, Fitting, Interaction Effects, Nonlinear Models\n10-24\npython\n\n\n9\n10-28\nPredicting Categorical Variables, Logistic Regression, Classification Problems\n10-31\nno class, Public Holiday\n\n\n10\n11-04\nHypothesis Testing, p-value, Decision Trees, RMSE, Overfitting\n11-07\npython\n\n\n11\n11-11\nBootstrapping, Cross validation, Clustering\n11-14\npython\n\n\n12\n11-18\nCollaborative Git, Data Science Projects, Probability\n11-21\npython\n\n\n13\n11-25\nYour data science questions; Random Variables, Probability Distributions, Central Limit Theorem\n11-28\npython / R\n\n\n14\n12-02\nCourse Review, Exam Preparation\n12-05\nstudent project presentations",
+    "text": "Developing Schedule\n\n\n\n\n\nThe schedule is tentative it will be continuously updated also with readings/viewings, homework and learnings.\nImportant Links:\nGitHub organization\nPrivate Course-Organization-Resources\n\n\n\n\nTabular Schedule\nDate format MM-DD (month-day) (09-05 is Sep, 5)\nData Science Tools is Thursdays. First meeting: 09-05.\nData Science Concepts is Mondays. First meeeting: 09-09.\n\n\n\nWeek\nDates Concepts\nConcepts Topics\nDates Tools\nTools Topic\n\n\n\n\n1\n09-02\nNo class, Academic Opening\n09-05\nR\n\n\n2\n09-09\nW#1 What is Data Science?\n09-12\nR\n\n\n3\n09-16\nW#2 Data Visualization, Data Formats Slides Part 1 Slides Part 2\n09-19\nR\n\n\n4\n09-23\nW#3 Recap: Toolkit  Data Import, Data Wrangling\n09-26\nR\n\n\n5\n09-30\nW#4 Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming\n10-03\nno class, Public Holiday\n\n\n6\n10-07\nW#5 Descriptive Statistics, Exploratory Data Analysis\n10-10\nR\n\n\n7\n10-14\nW#6 Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus\n10-17\nR\n\n\n8\n10-21\nLinear Model, Fitting, Interaction Effects, Nonlinear Models\n10-24\npython\n\n\n9\n10-28\nPredicting Categorical Variables, Logistic Regression, Classification Problems\n10-31\nno class, Public Holiday\n\n\n10\n11-04\nHypothesis Testing, p-value, Decision Trees, RMSE, Overfitting\n11-07\npython\n\n\n11\n11-11\nBootstrapping, Cross validation, Clustering\n11-14\npython\n\n\n12\n11-18\nCollaborative Git, Data Science Projects, Probability\n11-21\npython\n\n\n13\n11-25\nYour data science questions; Random Variables, Probability Distributions, Central Limit Theorem\n11-28\npython / R\n\n\n14\n12-02\nCourse Review, Exam Preparation\n12-05\nstudent project presentations",
     "crumbs": [
       "Syllabus",
       "**Schedule**"
@@ -4193,6 +4193,20 @@
     "title": "Data Science Workflows",
     "section": "",
     "text": "https://plain-text.co/index.html#introduction https://www.andrewheiss.com/uses/\nRelation between calculus and statistics further reading: https://www.andrewheiss.com/blog/2022/05/20/marginalia/"
+  },
+  {
+    "objectID": "W07.html#what-is-a-matrix",
+    "href": "W07.html#what-is-a-matrix",
+    "title": "W#07: Linear Model, Fitting, Interaction Effects, Nonlinear Models",
+    "section": "What is a matrix?",
+    "text": "What is a matrix?\n\n\n\nA matrix is a 2-dimensional array of numbers with rows and columns.\nThe numbers in it are called its elements.\n\nIsn’t that a data frame?\n\nNo, a dataframe is more general. In a matrix, every element has the same basic data type!\nIn R, a matrix is a vector plus some specification of the dimensions.\n\n(A matrix can also be of characters or logicals, it can also have row- and column-names)\n\n\n\nmatrix(data = 1:6, nrow = 2)\n\n\n\n     [,1] [,2] [,3]\n[1,]    1    3    5\n[2,]    2    4    6\n\n\n\nmatrix(data = 1:6, ncol = 2)\n\n\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n\n\nmatrix(data = 1:6, nrow = 3)\n\n\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n\n\nmatrix(data = 1:6, nrow = 3, byrow = TRUE)\n\n\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    3    4\n[3,]    5    6"
+  },
+  {
+    "objectID": "W07.html#matrices-in-mathematics",
+    "href": "W07.html#matrices-in-mathematics",
+    "title": "W#07: Linear Model, Fitting, Interaction Effects, Nonlinear Models",
+    "section": "Matrices in Mathematics",
+    "text": "Matrices in Mathematics\n\nAddition and subtraction of matrices is done element-wise.\nMultiplication of a matrix with a scalar is done element-wise.\nMultiplication of two matrices is done row times column.\nTransposition of a matrix is done by flipping the matrix over its diagonal."
   },
   {
     "objectID": "W07.html#different-purposes-of-models",
