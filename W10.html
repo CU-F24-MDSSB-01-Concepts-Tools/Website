@@ -403,6 +403,18 @@ Jan Lorenz
 </div>
 </div>
 
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Table of contents</h2>
+<ul>
+<li><a href="#/hypothesis-testing-and-the-p-value" id="/toc-hypothesis-testing-and-the-p-value">Hypothesis testing and the p-value</a></li>
+<li><a href="#/classification-compare-logistic-regression-and-decision-tree" id="/toc-classification-compare-logistic-regression-and-decision-tree">Classification: Compare logistic regression and decision tree</a></li>
+<li><a href="#/what-is-a-model-terminological-confusion" id="/toc-what-is-a-model-terminological-confusion">What is a model? Terminological confusion…</a></li>
+<li><a href="#/regression-compare-linear-regression-and-decision-tree" id="/toc-regression-compare-linear-regression-and-decision-tree">Regression: Compare linear regression and decision tree</a></li>
+<li><a href="#/overfitting-with-decision-trees" id="/toc-overfitting-with-decision-trees">Overfitting with decision trees</a></li>
+<li><a href="#/the-wisdom-of-the-crowd-diversity-and-the-bias-variance-decomposition" id="/toc-the-wisdom-of-the-crowd-diversity-and-the-bias-variance-decomposition">The wisdom of the crowd, “Diversity!”, and the Bias-Variance-Decomposition</a></li>
+</ul>
+</nav>
 </section>
 <section>
 <section id="hypothesis-testing-and-the-p-value" class="title-slide slide level1 center">
@@ -1531,7 +1543,7 @@ where <span class="math inline">\(\hat{y}_i\)</span> is the predicted value and 
 <p><em>What is the weight of the meat of this ox?</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb97"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a></a><span class="fu">library</span>(readxl)</span>
-<span id="cb97-2"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/galton_data.xlsx"</span>)</span>
+<span id="cb97-2"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/galton.csv"</span>)</span>
 <span id="cb97-3"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1198</span>, <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span> </span>
 <span id="cb97-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(galton<span class="sc">$</span>Estimate), <span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1682,7 +1694,7 @@ For example outcomes of estimation games, or linear regression models.</p>
 <div class="quarto-auto-generated-content">
 <p><img src="img/ConstructorUniversity.png" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><a href="https://github.com/CU-F23-MDSSB-01-Concepts-Tools">CU-F23-MDSSB-DSCO-02: Data Science Concepts</a></p>
+<p>MDSSB-DSCO-02: Data Science Concepts</p>
 </div>
 </div>
 </div>
@@ -1843,7 +1855,7 @@ For example outcomes of estimation games, or linear regression models.</p>
         hideCursorTime: 5000,
 
         // Opens links in an iframe preview overlay
-        previewLinks: false,
+        previewLinks: true,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
         transition: 'none',

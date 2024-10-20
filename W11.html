@@ -403,6 +403,17 @@ Jan Lorenz
 </div>
 </div>
 
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Table of contents</h2>
+<ul>
+<li><a href="#/bootstrapping" id="/toc-bootstrapping">Bootstrapping</a></li>
+<li><a href="#/another-resampling-method" id="/toc-another-resampling-method">Another resampling method</a></li>
+<li><a href="#/cluster-analysis" id="/toc-cluster-analysis">Cluster Analysis</a></li>
+<li><a href="#/k-means-clustering" id="/toc-k-means-clustering">k-means clustering</a></li>
+<li><a href="#/hierarchical-clustering" id="/toc-hierarchical-clustering">Hierarchical clustering</a></li>
+</ul>
+</nav>
 </section>
 <section>
 <section id="bootstrapping" class="title-slide slide level1 center">
@@ -439,7 +450,7 @@ Jan Lorenz
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-3"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/galton_data.xlsx"</span>)</span>
+<span id="cb1-3"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/galton.csv"</span>)</span>
 <span id="cb1-4"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -523,12 +534,12 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 1
-  Estimate
-     &lt;dbl&gt;
-1     1189
-2     1203
-3     1181</code></pre>
+<pre><code># A tibble: 3 × 2
+  Estimate    id
+     &lt;dbl&gt; &lt;dbl&gt;
+1     1189   320
+2     1203   367
+3     1181   278</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:35%;">
@@ -541,19 +552,19 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">787</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 787 × 1
-   Estimate
-      &lt;dbl&gt;
- 1     1347
- 2     1221
- 3     1112
- 4     1320
- 5     1266
- 6     1145
- 7     1271
- 8     1215
- 9     1238
-10     1163
+<pre><code># A tibble: 787 × 2
+   Estimate    id
+      &lt;dbl&gt; &lt;dbl&gt;
+ 1     1347   774
+ 2     1221   489
+ 3     1112    85
+ 4     1320   766
+ 5     1266   697
+ 6     1145   149
+ 7     1271   711
+ 8     1215   442
+ 9     1238   596
+10     1163   198
 # ℹ 777 more rows</code></pre>
 </div>
 </div>
@@ -630,19 +641,19 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>boots_galton<span class="sc">$</span>splits[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">analysis</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 787 × 1
-   Estimate
-      &lt;dbl&gt;
- 1     1160
- 2     1260
- 3     1147
- 4     1221
- 5     1204
- 6     1165
- 7     1112
- 8     1415
- 9     1081
-10     1168
+<pre><code># A tibble: 787 × 2
+   Estimate    id
+      &lt;dbl&gt; &lt;dbl&gt;
+ 1     1160   192
+ 2     1260   678
+ 3     1147   153
+ 4     1221   484
+ 5     1204   373
+ 6     1165   211
+ 7     1112    85
+ 8     1415   780
+ 9     1081    43
+10     1168   220
 # ℹ 777 more rows</code></pre>
 </div>
 </div>
@@ -1233,7 +1244,7 @@ Example: In a logistic regression, we assume the binary outcomes are realized ra
   .. ..$ ordered: logi NA
  $ fit_times     : tibble [6 × 2] (S3: tbl_df/tbl/data.frame)
   ..$ stage_id: chr [1:6] "prep.rm_Bfe6b" "bake.rm_Bfe6b" "prep.center_GbgDJ" "bake.center_GbgDJ" ...
-  ..$ elapsed : num [1:6] 0.002 0 0.002 0 0.002 ...
+  ..$ elapsed : num [1:6] 0.001 0 0.002 0 0.001 ...
  $ last_term_info: gropd_df [8 × 6] (S3: grouped_df/tbl_df/tbl/data.frame)
   ..$ variable: chr [1:8] "bill_depth_mm" "bill_length_mm" "body_mass_g" "flipper_length_mm" ...
   ..$ type    :List of 8
@@ -16186,7 +16197,7 @@ Number of objects: 333 </code></pre>
 <div class="quarto-auto-generated-content">
 <p><img src="img/ConstructorUniversity.png" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><a href="https://github.com/CU-F23-MDSSB-01-Concepts-Tools">CU-F23-MDSSB-DSCO-02: Data Science Concepts</a></p>
+<p>MDSSB-DSCO-02: Data Science Concepts</p>
 </div>
 </div>
 </div>
@@ -16347,7 +16358,7 @@ Number of objects: 333 </code></pre>
         hideCursorTime: 5000,
 
         // Opens links in an iframe preview overlay
-        previewLinks: false,
+        previewLinks: true,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
         transition: 'none',
