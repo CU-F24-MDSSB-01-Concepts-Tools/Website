@@ -22,11 +22,10 @@ editor_options:
 ```{r}
 #| echo: true
 
-### A bit on Matrices!!
-
 library(tidyverse)
 library(palmerpenguins)
 ```
+
 
 # Principal component analysis (PCA)
 
@@ -59,10 +58,13 @@ We have `r nrow(peng)` penguins and `r ncol(peng) - 1` numeric variables.
 
 ## Two Variables {.smaller}
 
+
 Example for the new axes. 
 
 ```{r}
 #| fig-height: 4
+#| echo: true
+#| code-fold: true
 pca1 <- peng |> select(flipper_length_mm, bill_length_mm) |> 
  prcomp(~., data = _, scale = FALSE)
 pca_vec <- t(pca1$rotation) |> as_tibble() # Vectors with x = flipper_length, y = bill_length
@@ -90,7 +92,9 @@ The basic function is base-R's `prcomp` (there is an older `princomp` which is n
 ```{r}
 #| echo: true
 # prcomp can take a data frame with all numerical vectors as 1st argument
-P <- peng |> select(flipper_length_mm, bill_length_mm) |> prcomp()
+P <- peng |> 
+ select(flipper_length_mm, bill_length_mm) |> 
+ prcomp()
 ```
 
 :::: {.columns}
@@ -195,7 +199,9 @@ peng_PCA
 ```{r}
 #| echo: true
 #| fig-height: 5
-plotdata <- peng_PCA$x |> as_tibble() |> bind_cols(peng)
+plotdata <- peng_PCA$x |> 
+ as_tibble() |> 
+ bind_cols(peng)
 plotdata |> ggplot(aes(PC1, PC2, color = species)) +
  geom_point() +
  coord_fixed() + theme_minimal(base_size = 20)
@@ -208,16 +214,19 @@ plotdata |> ggplot(aes(PC1, PC2, color = species)) +
 ## Variable loadings {.smaller}
 
 - The columns of the rotation matrix shows how the original variables *load* on the principle components. 
-- We can try to interpret these loadings and give descriptive names to principal components. 
-- `tidy` extracts the rotation matrix in long format with a `PC`, a `column` (for the original variable name), and a `value` variable.
+- We can interpret these loadings and give descriptive names to principal components. 
+- For plotting we bring the rotation matrix to long format with `PC` and `value` column.
 
 ```{r}
 #| echo: true
 #| fig-height: 3
 peng_PCA$rotation |> as_tibble(rownames = "variable") |> 
  pivot_longer(starts_with("PC"), names_to = "PC", values_to = "value") |> 
- ggplot(aes(value, variable)) + geom_col() + geom_vline(xintercept = 0, color = "blue") +
- facet_wrap(~PC, nrow = 1) + theme_minimal(base_size = 20)
+ ggplot(aes(value, variable)) + 
+ geom_col() + 
+ geom_vline(xintercept = 0, color = "blue") +
+ facet_wrap(~PC, nrow = 1) +
+ theme_minimal(base_size = 20)
 ```
 
 ## Variance explained {.smaller}
@@ -229,10 +238,12 @@ peng_PCA$rotation |> as_tibble(rownames = "variable") |>
 
 ```{r}
 #| echo: true
-#| fig-height: 3
-tibble(PC = 1:4, sdev = peng_PCA$sdev) |> 
+#| output-location: column
+tibble(PC = 1:4, sdev = peng_PCA$sdev) |>
  mutate(percent = sdev^2/sum(sdev^2) * 100) |>
- ggplot(aes(PC, percent)) + geom_col() + theme_grey(base_size = 20)
+ ggplot(aes(PC, percent)) +
+ geom_col() +
+ theme_grey(base_size = 20)
 ```
 
 
@@ -240,6 +251,7 @@ tibble(PC = 1:4, sdev = peng_PCA$sdev) |>
 
 ```{r}
 #| fig-height: 3
+#| fig-width: 5
 tibble(PC = 1:4, sdev = peng_PCA$sdev) |> 
  mutate(percent = sdev^2/sum(sdev^2) * 100,
         cum_percent = cumsum(percent)) |>
@@ -249,7 +261,7 @@ tibble(PC = 1:4, sdev = peng_PCA$sdev) |>
  scale_y_continuous(breaks = seq(0,100,20))
 ```
 
-- The first component explains almost 70% of the variance. So most emphasize should be on this. 
+- The first component explains almost 70% of the variance.  
 - The first two explain about 88% of the total variance. 
 
 
@@ -290,8 +302,9 @@ g1 + g2
 
 ## Apply PCA {.smaller}
 
-- Besides standardization, PCA may benefit by **preprocessing** steps of **data transformation** with variables with skew distributions (log, square-root, or Box-Cox transformation). This may result in less outliers.
-- PCA is a often a useful step of **exploratory data analysis** when you have a large number of numerical variables to show the empirical *dimensionality* of the data and its structure
+- Besides standardization, PCA may benefit from **preprocessing** steps of **data transformation** with variables with skew distributions. Use log, square-root, or Box-Cox transformation. This may result in less outliers.
+- PCA is a often a useful step of **exploratory data analysis** when you have a large number of numerical variables to show the empirical *dimensionality* of the data and its structure.
+- It is related to the correlation-matrix and can "summarize" its structure.
 - Limitation: PCA is only sensitive for linear relation ships (no U-shaped) or the like
 - The principal components can be used **as predictors** in a model instead of the raw variables. 
 
@@ -302,6 +315,7 @@ g1 + g2
 - This also holds for the columns of the rotated data. 
 - The total variances of all prinicipal components sum up to the number of variables (when variables are standardized)
 - The PCA is unique. All principle components together are a complete representation of the data. (Unlike other technique of dimensionality reduction which may rely on starting values, random factors, or tuning parameters)
+    - To be precise: It is unique modulo the sign of the PCs. When $x$ is a PC, then $-x$ is as well and can replace it.  
 :::
 
 
@@ -310,8 +324,21 @@ g1 + g2
 ::: {.incremental}
 - A technique similar in spirit is *factor analysis* (e.g. `factanal`). It is more theory based as it requires to specify to the theoriezed number of factors up front. 
 - PCA is an example of the importance of linear algebra ("matrixology") in data science techniques. 
+:::
+
+. . .
+
+:::: {.columns}
+
+::: {.column width='50%'}
   - PCA is based on the **eigenvalue decomposition** of the covariance matrix (or correlation matrix in the standardized case) of the data.
 :::
+
+::: {.column width='50%'}
+![](https://imgs.xkcd.com/comics/machine_learning.png){ height=350 }<https://xkcd.com/1838/>
+:::
+
+::::
 
 
 
@@ -321,7 +348,7 @@ g1 + g2
 
 # Math: Exponentiations and Logarithms
 
-## Rules for Exponentiation {background-color="aquamarine"}
+## Rules for Exponentiation {background-color="aquamarine" .smaller}
 
 :::{.columns}
 :::{.column width="20%"}
@@ -533,6 +560,8 @@ Also changing bases for powers is easy: $x^y = (e^{\log(x)})^y = e^{y\cdot\log(x
 
 # Epidemic Modeling
 
+An example for **modeling** the **data generating process**
+
 
 ## SIR model  {.smaller  background-color="khaki"}
 
@@ -556,6 +585,8 @@ A tool: **NetLogo** <https://ccl.northwestern.edu/netlogo/>
 ![](http://netlogoweb.org/assets/images/desktopicon.png)
 
 We look at the model **"Virus on a Network"** from the model library.
+
+Direct Link to [Virus on a Network in NetLogoWeb](https://www.netlogoweb.org/launch#https://www.netlogoweb.org/assets/modelslib/Sample%20Models/Networks/Virus%20on%20a%20Network.nlogo)
 
 ## Virus on a Network: 6 links, initial {.smaller  background-color="khaki"}
 
@@ -633,7 +664,6 @@ Iteration over 75 time steps.
 ```{r}
 #| echo: true
 #| output-location: column
-#| cache: true
 tmax <- 75
 sim_run <- list(init) # list with one element
 # This list will collect the states of 
@@ -653,8 +683,8 @@ sim_output <- tibble( # create tibble for ggplot
  # Compute a vector with length tmax 
  # with the count of "I" in sim_run list
  t = 0:(tmax-1), # times steps
- # count of infected, notice map_dbl
- infected = map_dbl(sim_run, \(x) sum(x == "I"))) 
+ # count of infected and output a vector
+ infected = sim_run |> map_dbl(\(x) sum(x == "I"))) 
 sim_output |> 
  ggplot(aes(t,infected)) + geom_line() +
  theme_minimal(base_size = 20)
@@ -667,7 +697,6 @@ Run with $N = 10000$
 ```{r}
 #| echo: true
 #| output-location: column
-#| cache: true
 N <- 10000
 init <- rep("S",N) # All susceptible
 init[1] <- "I" # Infect one individual
@@ -863,7 +892,7 @@ ggplot() +
 
 ## SI-model: Numerical integration {.smaller background-color="khaki"}
 
-Another way of solution using, e.g., using *Euler's method*. 
+Another way of solution is **numerical integration**, e.g. using *Euler's method*. 
 
 We compute the solution step-by-step using increments of, e.g. $dt = 1$.
 
@@ -888,18 +917,18 @@ for (i in 2:length(t)) {
  # This is called Euler's method
 }
 tibble(t, It) |> ggplot(aes(t,It)) + 
+ geom_line(color = "red") + 
  geom_function( 
-  fun = function(t) N / (1 + (N/I0 - 1)*exp(-beta*t))) + 
- # Analytical solution for comparison
- geom_line(color = "red") + # The numerical solution in black
+  fun = function(t) N / (1 + (N/I0 - 1)*exp(-beta*t)), color = "blue") + 
+ # In blue: Analytical solution for comparison
  theme_minimal(base_size = 20)
 ```
 
-Why do the graphs deviate? [The step size must be "infinitely" small]{.fragment}
+Why do the graphs deviate? [The step size $dt$ must be "infinitely" small]{.fragment}
 
 ## Numerical integration with smaller $dt$ {.smaller background-color="khaki"}
 
-We compute the solution step-by-step using small increments of, e.g. $dt = 0.01$.
+We compute the solution step-by-step using small increments of, e.g. $dt = 0.05$.
 
 ```{r}
 #| echo: true
@@ -908,7 +937,7 @@ N <- 10000
 I0 <- 1
 dI <- function(I,N,b) b*I*(N - I)/N
 beta <- 0.3
-dt <- 0.01 # time increment, 
+dt <- 0.05 # time increment, 
 # supposed to be infinitesimally small
 tmax <- 75
 t <- seq(0,tmax,dt) 
@@ -922,10 +951,10 @@ for (i in 2:length(t)) {
  # This is called Euler's method
 }
 tibble(t, It) |> ggplot(aes(t,It)) + 
+ geom_line(color = "red") +
  geom_function( 
-  fun = function(t) N / (1 + (N/I0 - 1)*exp(-beta*t))) + 
- # Analytical solution for comparison
- geom_line(color = "red") + # The numerical solution in black
+  fun = function(t) N / (1 + (N/I0 - 1)*exp(-beta*t)), color = "blue") + 
+ # In blue: Analytical solution for comparison
  theme_minimal(base_size = 20)
 ```
 
@@ -951,7 +980,7 @@ The examples above show 3 different ways to explore the model:
   - often not possible (therefore numerical integration is common)
 
 
-## Differentiation with data
+## Differentiation with data {.smaller}
 
 [**We can do calculus operations with data!**]{style='color:red;'}
 

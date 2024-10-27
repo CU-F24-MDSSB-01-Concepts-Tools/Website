@@ -11,6 +11,20 @@ Read the following to understand its purpose, format, workflow, and its role in 
 
 :::
 
+## Homework Projects List
+
+As a registered student, you find personalized repositories for your Homework Projects in the GitHub-Organization. These are the projects (List not final!):
+
+1. NYCFlights
+2. DataScienceProfiles
+3. COVID19
+4. *In preparation:* FuelWatch 
+5. ...
+
+Please read the next sections 
+
+
+
 ## Purpose 
 
 You learn to
@@ -36,7 +50,7 @@ You learn to
 
 A Homework Project is inbetween of a *simple Homework Assignment* to apply what you just learned and a *fully fledged Data Science Project*. 
 
-You work on projects towards *milestones*. All projects require some data import, some tidying of data, some exploratory data analysis with visualizations and computations of summary statistics. You will start with basic things as first milestones in more than one project. You do not finish one project after the other but you pick up work on some projects again when you learned new methods. Homework Projects and Milestones will be provided along the course. showing you what you should be able to do when. Finally, a Homework Project develop towards a readable Project Report on a certain topic. 
+You work on projects towards *milestones*. All projects require some data import, some tidying of data, some exploratory data analysis with visualizations and computations of summary statistics. You will start with basic things as first milestones in more than one project. You do not need to finish one project after the other but you pick up work on some projects again when you learned new methods. Homework Projects and Milestones will be provided along the course. Finally, a Homework Project develop towards a readable Project Report on a certain topic. 
 
 Task of the Homework can range from
 
@@ -110,5 +124,5 @@ Instructors and Teaching Assistants may use Issues to give you some feedback on 
 
 If you require feedback: 
 
-- File an issue an describe on what you need feedback or help as specific as possible. 
+- File an issue and describe on what you need feedback or help as specific as possible. 
 - Point the instructors to your issue. 

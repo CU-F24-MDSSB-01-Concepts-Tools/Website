@@ -21,12 +21,14 @@ website:
         file: schedule.qmd
       - text: "Homework"
         file: homework.qmd
+      # - text: "Report writing"
+        # file: reports.qmd
       - text: "Help"
         file: help.qmd
-      - text: "Report writing"
-        file: reports.qmd
       - text: "Literature"
         file: literature.qmd
+      - text: "Onboarding Late-arriving"
+        file: late.qmd
       
 format:
   html:

@@ -45,7 +45,7 @@ Tip: Run the script in an R-project and have a folder `data/` in it such that th
 :::
 
 
-# Strings
+# Strings and Special Values
 
 ## String modification {.smaller}
 

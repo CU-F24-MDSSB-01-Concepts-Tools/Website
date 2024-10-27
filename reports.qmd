@@ -2,9 +2,7 @@
 title: "Create a homework report"
 ---
 
-In the homework repositories following Homework 02 you are to create reports in quarto yourself. 
-
-These are suggestions how you create such a report.
+When you are to create a reports in your Homework Project in quarto yourself these are the first steps. 
 
 - In RStudio select "New File" -> "Quarto Document..." to create a new .qmd-file.
 - In Visual Studio Code "New File..." and then type "quarto" and select "Quarto Document Quarto" to create a new .qmd-file.

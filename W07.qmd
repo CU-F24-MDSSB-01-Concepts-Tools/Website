@@ -1,11 +1,12 @@
 ---
-title: "W#07: Linear Model, Fitting, Interaction Effects, Nonlinear Models"
+title: "W#07: Models in Science, Linear Model, Interaction Effects, Nonlinear Models"
 author: Jan Lorenz
 format: 
   revealjs: 
     toc: true
     toc-depth: 1
     slide-number: true
+    smaller: true
     chalkboard: 
       buttons: true
     preview-links: true
@@ -16,31 +17,147 @@ editor_options:
   chunk_output_type: console
 ---
 
+## Preliminaries
+
 ```{r}
-# Check if we replace Interaction Effects with Feature Engineering following Chelsea
+#| echo: true
 library(tidyverse)
+library(tidymodels)
+library(palmerpenguins)
 ```
+
+
+# Models in Science
+
+## What is a model? {.smaller background-color="khaki"}
+
+- A model is an informative representation of an object, person or system. 
+
+![](https://upload.wikimedia.org/wikipedia/commons/4/46/Astrid_Andersen_01.jpg){height=200}
+![](https://upload.wikimedia.org/wikipedia/commons/b/b8/Beta-D-Gulopyranose_Molek%C3%BClbaukasten_9288.JPG){height=200}
+![](https://upload.wikimedia.org/wikipedia/commons/7/73/AtmosphericModelSchematic.png){height=200} 
+
+- A model is a [**simplified**]{style='color:blue;'} representation of the real world focusing on the essential parts for its [**purpose**]{style='color:blue;'}.
+
+::: aside
+Source: <https://en.wikipedia.org/wiki/Model>
+:::
+
+## Scientific Modeling {.smaller background-color="khaki"}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+**Scientific modeling** is an activity that produces models representing empirical objects, phenomena, and physical processes, to make a particular part or feature of the world easier to 
+
+- understand, 
+- define, 
+- quantify, 
+- visualize, or 
+- simulate.
+:::
+
+::: {.column width='50%'}
+
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/MathModel.svg/2560px-MathModel.svg.png)
+
+#### Famous wisdom 
+
+> [All models are wrong, but some are useful.](https://en.wikipedia.org/wiki/All_models_are_wrong)
+:::
+
+::::
+
+::: aside
+Source: <https://en.wikipedia.org/wiki/Scientific_modelling>
+:::
+
+
+## Model Purposes and Data Analysis {.smaller background-color="khaki"}
+
+:::: {.columns}
+
+::: {.column width='60%'}
+- **Agent-based models** and **differential equations**
+    - are used to **explain** the **dynamics** of one or more variables (typically) over time. They are used to answer [*mechanistic questions*]{style='color:blue;'}.
+- [**Variable-based models**]{style='color:blue;'} 
+    - are used to specify relations between variables
+    - to **explain** relations and make **predictions**.
+    - Used to answer [*inferential*]{style='color:blue;'} and [*predictive questions*]{style='color:blue;'}.   
+    - (With experimental and theoretical effort also for [*causal questions*]{style='color:blue;'}.)
+
+:::
+
+::: {.column width='40%'}
+![](img/DataAnalysisFlowChart_LeekPeng.jpeg)
+:::
+
+::::
+
+. . . 
+
+The most basic variable-based model is the [**linear model**]{style='color:blue;'}.
+
+
+## Models to Learn from Data {.smaller background-color="khaki"}
+
+In much of the following we use a *narrower* definition of **model**:
+
+A **mathematical model** that consists of **variables** and **functions**. 
+
+:::: {.columns}
+
+::: {.column width='50%'}
+Different names and roles of [**variables**]{style='color:blue;'}: 
+
+- random variables
+- covariates
+- predictors
+- latent variables
+- features
+- targets
+- outcomes
+:::
+
+::: {.column width='50%'}
+[**Functions**]{style='color:blue;'} relate variables to each other
+
+- In a linear model we model one variable as a weighted sum of the other variables
+
+Once a model (setup of variables and functions) is specified, modelers use [**Data**]{style='color:blue;'} to find the *best* function, called
+
+- estimation
+- training
+- fitting
+- learning
+
+
+:::
+
+
+
+::::
+
+
+## Modeling Mindsets {.smaller background-color="khaki"}
+
+Even within the setup of *Models to Learn from Data* there are many different [**Modeling Mindsets**]{style='color:blue;'}
+
+![](img/ModelingMindsets.png)
+
+::: aside
+Molnar, C. (2022). [Modeling mindsets: The many cultures of learning from data.](https://books.google.de/books?id=qV-DzwEACAAJ) Christoph Molnar c/o Mucbook Clubhouse. 
+:::
+
+
+
 
 
 
 # Linear Model
-The first work-horse to explore relations between numerical variables
+The first work-horse model in data science
 
-## Different purposes of models {.smaller background-color="khaki"}
-
-**Agent-based models** and **differential equations** are usually used to **explain** the **dynamics** of one or more variables typically over time. They are used to answer [*mechanistic questions*]{style='color:blue;'}.
-
-. . . 
-
-In the following we treat **variable-based models** which we use to 
-
-- **explain** relations between variables
-- make **predictions**
-
-These are often used to answer [*inferential*]{style='color:blue;'} and [*predictive questions*]{style='color:blue;'}.   
-(With experimental or more theoretical effort also for [*causal questions*]{style='color:blue;'}.)
-
-First, we focus on linear models.
 
 ## Hello again penguins! {.scrollable .smaller}
 
@@ -54,7 +171,6 @@ Chinstrap, Gentoo, and Adélie Penguins
 
 
 ```{r}
-library(palmerpenguins)
 penguins
 ```
 
@@ -82,7 +198,7 @@ A *line* is a shift-scale transformation of the identity function usually writte
 
 $$f(x) = a\cdot x + b$$
 
-where [$a$ is the *slope*]{style="color:red;"}, [$b$ is the *intercept*]{style="color:blue;"}.^[This a scale and a shift in the $y$ direction. Note: For lines there are always an analog transformations on the $x$ direction.]
+where [$a$ is the *slope*]{style="color:red;"}, [$b$ is the *intercept*]{style="color:blue;"}.^[This a scale and a shift in the $y$ direction. Note: For lines there is always an analog transformations on the $x$ direction.]
 
 ```{r}
 #| echo: true
@@ -150,7 +266,7 @@ This is a less theory-driven and more data-driven model. Why?
 - **Predicted value:** Output of the model function. 
   - The model function gives the **(expected) average value** of the response variable conditioning on the explanatory variables
   - **Residual(s):** A measure of how far away a case is from its predicted value (based on the particular model)   
-    Residual = Observed value - Predicted value  
+    Residual = Observed value minus Predicted value  
     The residual tells how far above/below the expected value each case is
 
 ## More explanatory variables {.smaller}
@@ -191,9 +307,10 @@ penguins |>
 
 Slopes for all groups can be in the opposite direction of the main effect's slope!
 
-![](https://upload.wikimedia.org/wikipedia/commons/f/fb/Simpsons_paradox_-_animation.gif)
+![](https://upload.wikimedia.org/wikipedia/commons/f/fb/Simpsons_paradox_-_animation.gif){height=400}
+
 ::: aside
-Source: <https://upload.wikimedia.org/wikipedia/commons/f/fb/Simpsons_paradox_-_animation.gif>
+Source: <https://en.wikipedia.org/wiki/Simpson%27s_paradox>
 :::
 
 
@@ -232,7 +349,7 @@ penguins |>
 
 ... is as interesting and important as the model!
 
-*Statistics is the explanation of uncertainty of variation in the context of what remains unexplained.*
+*[**Statistics**]{style='color:blue;'} is the explanation of uncertainty of variation in the context of what remains unexplained.*
 
 - The scattered data of flipper length and body mass suggests that there maybe other factors that account for some parts of the variability. 
 - Or is it randomness?
@@ -269,10 +386,11 @@ Linear models can be used for:
 
 - **Explanation:** Understand the relationship of variables in a quantitative way.   
 *For the linear model, interpret slope and intercept.*
+    - In other words: We make **inference** about relations in any sample of penguins.
 - **Prediction:** Plug in new values for the explanatory variable(s) and receive the expected response value.   
 *For the linear model, predict the flipper length of new penguins by their body mass.*
 
-# Fitting Models (Part 1)
+# Fitting Models
 
 Today: The linear model. 
 
@@ -361,129 +479,21 @@ Notation from statistics: $\beta$'s for the population parameters and $\hat\beta
 
 $$\hat y = \beta_0 + \beta_1 x$$
 
-Is what we cannot have. ($\hat y$ stands for *predicted value of $y$*. )
-
+The population parameters $\beta_0$ and $\beta_1$ we cannot have. ($\hat y$ stands for *predicted value of $y$*. )
+ 
 . . .
 
-We estimate $\hat\beta_0$ and $\hat\beta_1$ in the model fitting process.
+Instead, we estimate $\hat\beta_0$ and $\hat\beta_1$ in the model fitting process.
 
 $$\hat y = \hat\beta_0 + \hat\beta_1 x$$
 
 :::{style="background-color:khaki;padding:10px;"}
-A typical follow-up data analysis question is what the fitted values $\hat\beta_0$ and $\hat\beta_1$ tell us about the population-wide values $\beta_0$ and $\beta_1$? 
+A typical follow-up data analysis question is what the fitted values $\hat\beta_0$ and $\hat\beta_1$ tell us about the (unknown) population-wide values $\beta_0$ and $\beta_1$? 
 
 This is the typical [**inferential question**]{style='color:blue}.
 ::: 
 
 
-
-# Fitting Models (Part 2)
-
-Today: The linear model. 
-
-```{r}
-#| include: true
-library(tidyverse)
-library(palmerpenguins)
-library(tidymodels)
-```
-
-## Recap: Linear model {.smaller}
-
-**Flipper length** as a function of **body mass**.
-
-```{r}
-#| echo: true
-#| output-location: column
-#| fig-height: 7
-penguins |>
- ggplot(aes(x = body_mass_g, 
-            y = flipper_length_mm)) +
- geom_point() +
- geom_smooth(method = "lm", 
-             se = FALSE) + 
- theme_classic(base_size = 24)
-```
-
-. . . 
-
-The fitting question: [How can we get this line?]{style='color:red;'}
-
-## Recap: A line {.smaller background-color="aquamarine"}
-
-A *line* is a shift-scale transformation of the identity function usually written in the form 
-
-$$f(x) = a\cdot x + b$$
-
-where [$a$ is the *slope*]{style="color:red;"}, [$b$ is the *intercept*]{style="color:blue;"}.
-
-```{r}
-#| fig-height: 4
-a <- 0.5
-b <- 1
-func <- function(x) a*x + b
-ggplot() + geom_function(fun = func, size = 2) +
- # Set axis limits and make axis equal
-	xlim(c(-0.5,2)) + ylim(c(0,2)) + coord_fixed() + 
-	geom_line( # intercept line:
-	 data=tibble(x=c(0,0),y=c(0,1)), 
-	 mapping = aes(x,y), 
-	 color = "blue", size = 2) +
-	geom_line( # slope:
-	 data=tibble(x=c(1.5,1.5),y=c(1.25,1.75)), 
-	 mapping = aes(x,y), 
-	 color = "red", size = 2) +
-	geom_line( # x-interval of length one:
-	 data=tibble(x=c(0.5,1.5),y=c(1.25,1.25)), 
-	 mapping = aes(x,y), color = "gray") +
-	theme_classic(base_size = 24)
-```
-
-## Recap: Terminology {.smaller background-color="khaki"}
-
-- **Response variable:**^[Also **dependent variable** in statistics or empirical social sciences.] Variable whose behavior or variation you are trying to understand, on the y-axis
-- **Explanatory variable(s):**^[Also **independent variable(s)** in statistics or empirical social sciences.] Other variable(s) that you want to use to explain the variation in the response, on the x-axis
-- **Predicted value:** Output of the model function. 
-  - The model function gives the **(expected) average value** of the response variable conditioning on the explanatory variables
-  - **Residual(s):** A measure of how far away a case is from its predicted value (based on the particular model)   
-    Residual = Observed value - Predicted value  
-    The residual tells how far above/below the expected value each case is
-
-
-
-## Our goal
-
-Predict flipper length from body mass
-
-average `flipper_length_mm` $= \beta_0 + \beta_1\cdot$ `body_mass_g`
-
-. . . 
-
-$\beta_0$ is the *intercet* of the line
-
-$\beta_1$ is the *slope* of the line 
-
-. . . 
-
-Later we will have $\beta_2, \dots, \beta_m$ as coefficients for more variables. 
-
-
-
-
-## Fitting the model in R {.smaller}
-
-```{r}
-#| echo: true
-linear_reg() |> 
-	set_engine("lm") |> 
-	fit(flipper_length_mm ~ body_mass_g, data = penguins)
-```
-
-average `flipper_length_mm` $= 136.72956 + 0.01528\cdot$ `body_mass_g`
-
-**Interpretation:**   
-The penguins have a flipper length of 136.7 mm plus 0.01528 mm for each gram of body mass (that is 15.28 mm per kg).
-Penguins with zero mass have a flipper length of 136.7 mm. However, this is not in the range where the model was fitted.
 
 ## `parsnip` model objects {.smaller}
 
@@ -510,15 +520,15 @@ pengmod$fit
 
 Notice: `parsnip model object` is now missing in the output.
 
-## `$fit` is the object created by `lm` (base R) {.smaller}
+## `$fit` is the object created by `lm` (base R) {.smaller .scrollable}
 
 ```{r}
 #| echo: true
 names(pengmod$fit)
 pengmod$fit$call
 pengmod$fit$coefficients
-pengmod$fit$fitted.values |> head()
-pengmod$fit$residuals |> head()
+pengmod$fit$fitted.values
+pengmod$fit$residuals
 ```
 
 ## Fitting method: Least squares regression {.smaller background-color="aquamarine"}
@@ -527,13 +537,15 @@ pengmod$fit$residuals |> head()
   (or, identically, their mean). 
 - Mathematically: The residual for case $i$ is $e_i = \hat y_i - y_i$. 
 - Now we want to minimize $\sum_{i=1}^n e_i^2$   
-(or equivalently $\frac{1}{n}\sum_{i=1}^n e_i^2$ the *the mean of squared errors*, which we will look at later). 
+(or equivalently $\frac{1}{n}\sum_{i=1}^n e_i^2$ the *mean of squared errors*, which we will look at later). 
 
-## Visualization of residuals {.smaller background-color="aquamarine"}
+## Visualization of residuals {.smaller background-color="aquamarine" .scrollable}
 
-The residuals are the gray lines between predictid values on the regression line and the actual values. 
+The residuals are the gray lines between predicted values on the regression line and the actual values. 
 
 ```{r}
+#| echo: true
+#| code-fold: true
 pengmod <- 
   linear_reg() |> 
   set_engine("lm") |> 
@@ -546,7 +558,7 @@ penguins |> bind_cols(predict(pengmod,penguins)) |>
   geom_point(aes(y=.pred), color = "red", alpha =  0.3)
 ```
 
-## Check: Fitted values and Residuals {.smaller background-color="aquamarine"}
+## Check: Fitted values and Residuals {.smaller background-color="aquamarine" .scrollable}
 
 Recall: **Residual = Observed value - Predicted value**
 
@@ -556,13 +568,12 @@ Residuals + Fitted values = Observed values
 
 ```{r}
 #| echo: true
-(pengmod$fit$residuals + pengmod$fit$fitted.values) |> 
-head()
+pengmod$fit$residuals + pengmod$fit$fitted.values
 ```
 
 ```{r}
 #| echo: true
-penguins$flipper_length_mm |> head()
+penguins$flipper_length_mm
 ```
 
 
@@ -610,7 +621,7 @@ cor(pengmod$fit$residuals, na.omit(penguins$body_mass_g))
 
 . . .
 
-The correlation of $x$ and $y$ is the slope $\beta_1$ corrected by their standard deviations. 
+The correlation of $x$ and $y$ is the slope $\beta_1$ "corrected" by their standard deviations. 
 
 ```{r}
 #| echo: true
@@ -639,7 +650,7 @@ When the two variables in the linear regression are standardized (standard score
 
 ## Explanatory variables are categorical {.smaller}
 
-Let's just try what happens with `species` as explanatory variable. 
+Let's try what happens with `species` as explanatory variable. 
 Remember, we have three species: Adelie, Chinstrap, Gentoo.
 
 ```{r}
@@ -666,8 +677,13 @@ Two of the three species categories appear as variables now.
 species    | speciesChinstrap | speciesGentoo 
 -----------|------------------|--------------
 Adelie     |      0           | 0
+Adelie     |      0           | 0
 Chinstrap  |      1           | 0
 Gentoo     |      0           | 1
+Gentoo     |      0           | 1
+Gentoo     |      0           | 1
+Adelie     |      0           | 0
+Chinstrap  |      1           | 0
 
 Then the fitting of the linear model is as before using the zero-one variables. 
 
@@ -708,7 +724,7 @@ The red dots are the average values for species.
 
 # Linear models and R-squared
 
-## Linear model {.smaller} 
+## Quality of different linear models? {.smaller} 
 
 ```{r}
 #| echo: true
@@ -864,6 +880,10 @@ average `flipper_length_mm` $= 158 + 0.0109\cdot$ `body_mass_g` $+ 0.592\cdot$ `
 83.1% explained variance
 
 
+# Interaction Effects
+
+Adding products of variables as new variable.
+
 ## Adding a categorical variable as main effect {.smaller}
 
 ```{r}
@@ -901,23 +921,6 @@ linear_reg() |> set_engine("lm") |>
 - An **interaction effect** allows for different slopes for each species!
 
 
-## Improvement through the interaction effects is small here {.smaller}
-
-```{r}
-#| echo: true
-linear_reg() |> set_engine("lm") |> 
- fit(flipper_length_mm ~ body_mass_g + species, data = penguins) |> 
- glance()
-```
-
-```{r}
-#| echo: true
-linear_reg() |> set_engine("lm") |> 
- fit(flipper_length_mm ~ body_mass_g * species, data = penguins) |> 
- glance()
-```
-
-
 ## Regression lines by species {.smaller}
 
 ```{r}
@@ -928,6 +931,7 @@ penguins |>
 ```
 
 Compare the slopes to the regression output on the slides before!
+
 
 ## Different equations for each species! {.smaller}
 
@@ -947,24 +951,41 @@ average `flipper_length_mm` $= 165 - 13.6 + (0.00668 + 0.00523)\cdot$ `body_mass
 Gentoo:   
 average `flipper_length_mm` $= 165 + 6.06 + (0.00668 + 0.00236)\cdot$ `body_mass_g`    
 
-## Interaction effects more categoricals {.smaller}
 
-Adding products of variables in the linear model 
-$y_i = \beta_0 + \beta_1x_1  + \beta_2x_2 + \beta_{3}x_1x_2 + \dots$. 
-
-For $x_1$ and $x_2$ being dummy variables for *being female* and *having kids* this is for example
+## Improvement of interaction effects is small here {.smaller}
 
 ```{r}
-tibble(gndr_f = c(0,1,1,0), has_kids = c(1,0,1,0)) |> 
- mutate(gndr_f_x_has_kids = gndr_f * has_kids) |> 
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g + species, data = penguins) |> 
+ glance()
+```
+
+```{r}
+#| echo: true
+linear_reg() |> set_engine("lm") |> 
+ fit(flipper_length_mm ~ body_mass_g * species, data = penguins) |> 
+ glance()
+```
+
+
+## Interaction effects of two categoricals {.smaller}
+
+Assume $x_1$ and $x_2$ are categorical variables. We add their product in the linear model as a *new variable*: 
+$y_i = \beta_0 + \beta_1x_1  + \beta_2x_2 + \beta_{3}x_1x_2 + \dots$. 
+
+**Example:** $x_1$ is *gender female* and $x_2$ *having kids* 
+
+```{r}
+#| echo: true
+#| code-fold: true
+tibble(gender_female = c(0,1,1,0), has_kids = c(1,0,1,0)) |> 
+ mutate(gender_female_x_has_kids = gender_female * has_kids) |> 
  knitr::kable()
 ```
 
 - What is the baseline? [*Being male without kids.*]{.fragment}
-
-Thought experiment: 
-
-- When we estimate a model explaining life satisfaction with these. How would we see if being a mother increases life satisfaction more than being a father? [*positiv coefficient for `gndr_f_x_has_kids`*]{.fragment}
+- Thought experiment: When we estimate a model explaining life satisfaction with these. How would we see if being a mother increases life satisfaction more than being a father? [*positive coefficient for `gender_female_x_has_kids`*]{.fragment}
 
 
 # Nonlinear Models
@@ -997,7 +1018,8 @@ Almost perfect fit of the linear model: $\log(y)=\log(\beta_0) + \beta_1\cdot x$
 
 . . . 
 
-Exponentiation gives the model: $y=\beta_0 e^{\beta_1\cdot x}$  (Check $e^{\log(\beta_0) + \beta_1\cdot x} = e^{\log(\beta_0)} e^{\beta_1\cdot x} = \beta_0 e^{\beta_1\cdot x}$)
+Exponentiation gives the model: $y=\beta_0 e^{\beta_1\cdot x}$    
+(Check $e^{\log(\beta_0) + \beta_1\cdot x} = e^{\log(\beta_0)} e^{\beta_1\cdot x} = \beta_0 e^{\beta_1\cdot x}$)
 
 ## Exponential growth! {.smaller}
 
@@ -1026,7 +1048,8 @@ Logistic growth (as in the SI model) mimicks exponential growth initially.
 	geom_smooth(method = "lm") 
 ```
 
-What is the difference to the penguin model?
+An important difference of `log10(Cumulative_cases) ~ Date_Reported` to the penguin model `flipper_length_mm ~ body_mass_g`?
+?
 
 . . . 
 

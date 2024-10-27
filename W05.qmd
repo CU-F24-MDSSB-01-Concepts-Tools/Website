@@ -387,7 +387,7 @@ The standard deviation is often denoted $\sigma$ (sigma) and the variance $\sigm
 
 . . .
 
-[Warning:]{style='color:red;'} MAD can also be **Median absolute deviation**! Check before usage.
+[Warning:]{style='color:red;'} MAD can also be **Median absolute deviation from the median**.
 
 **Range** is the difference of the maximal and the minimal value $\max(x) - \min(x)$.
 
