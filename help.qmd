@@ -21,7 +21,7 @@ title: "Need help for Homework?"
 - It is absolutely OK to ask instructors for help outside of class. We try to care, if we are not too busy with other things. If you do, please do first: **Document and describe where you get stuck as precise as possible.** Try to find out **why** as much as possible. Use Teams chat (or email)!
 
 
-## Problems with the **git-GitHub-dance** 
+## Problems with the git-GitHub-dance 
 
 [Happy Git with R](https://happygitwithr.com/) is a great resource for helping you practically and for learning the version control concepts better. The site is well suited for our purpose of data science! Git was developed for software development and a lot of the advice and good practices you find by searching the internet are targeted for software engineering. Whenever you consult [Happy Git with R](https://happygitwithr.com/) for solutions for a problem, try to learn a bit about the basics. Git is not something to learn in one course but step by step while doing. 
 

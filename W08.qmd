@@ -5,6 +5,7 @@ format:
   revealjs: 
     toc: true
     toc-depth: 1
+    smaller: true
     slide-number: true
     chalkboard: 
       buttons: true
@@ -16,8 +17,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+## Preliminaries
+
 ```{r}
-#| include: false
+#| echo: true
 library(tidyverse)
 library(palmerpenguins)
 library(tidymodels)
@@ -34,9 +37,7 @@ Large part of the content adapted from <http://datasciencebox.org>.
 
 ```{r}
 #| echo: true
-library(openintro)
-library(tidyverse)
-glimpse(email)
+glimpse(email) # Part of the openintro data package 
 ```
 
 ## Multinomial response variable?
@@ -95,19 +96,19 @@ We focus first on just `num_char`:
 
 ```{r}
 #| echo: true
-#| fig-height: 1.5
+#| fig-height: 2.5
 email |> ggplot(aes(x = num_char, y = as.numeric(spam)-1)) + 
  geom_point(alpha = 0.2) + geom_smooth(method = "lm")
 ```
 
-```{r}
-#| echo: true
-linear_reg() |> fit(as.numeric(spam)-1 ~ num_char, data = email)
-```
-
 We would like to have a better concept!
 
-## A penguins example {.smaller}
+::: aside
+Why do we need `y = as.numeric(spam)-1` instead of just `y = spam`?? Answer: `spam` is a factor although it looks like a numeric variable. The underlying integers for the two categories `"0"` and `"1"` are `1` and `2`. The strange form transforms the factor into a numerical variables with the values `0` and `1` as we need it for a target variable in a linear model.
+:::
+
+
+## A penguins example - predict sex{.smaller}
 
 ```{r}
 #| echo: true
@@ -121,7 +122,7 @@ penguins |> na.omit() |>
 
 
 
-## A probabilistic concept {.smaller}
+## A probabilistic concept {.smaller background-color="aquamarine"}
 
 - We treat each outcome (spam and not) as successes and failures arising from separate Bernoulli trials
   - **Bernoulli trial:** a random experiment with exactly two possible outcomes, *success* and *failure*, in which the *probability of success* is the same every time the experiment is conducted
@@ -145,7 +146,7 @@ $$ y_i ∼ \text{Bernoulli}(p_i) $$
 
 # Generalized linear models
 
-## Characterising GLMs {.smaller}
+## Characterising GLMs {.smaller background-color="aquamarine"}
 
 - **Generalized linear models (GLMs)** are a way of addressing many problems in regression
 - Logistic regression is one example
@@ -167,7 +168,7 @@ where $\eta$ is related to a mean parameter of the distribution by the ...
 
 # Logistic regression
 
-## Logistic regression {.smaller}
+## Logistic regression {.smaller background-color="aquamarine"}
 
 - **Logistic regression** is a GLM used to model a binary categorical outcome using numerical and categorical predictors.
 - The *distribution* is the Bernoulli distribution with parameter $p$ (success probability). 
@@ -183,7 +184,7 @@ $$\text{logit}(p) = \log\left(\frac{p}{1-p}\right)$$
 Example: Roll a six with a die has $p=1/6$. Thus, the odds are $\frac{1/6}{5/6} = 1/5$. Sometimes written as 1:5. *"The odds of success are one to five."*
 
 
-## Properties of the logit {.smaller}
+## Properties of the logit {.smaller background-color="aquamarine"}
 
 - Logit takes values between 0 and 1 and returns values between $-\infty$ and $\infty$
 - The inverse of the logit function if the **logistic function** (mapping values from $-\infty$ and $\infty$ to values between 0 and 1):
@@ -200,7 +201,7 @@ $$\text{logit}^{-1}(x) = \text{logistic}(x) = \frac{e^x}{1+e^x} = \frac{1}{1+e^{
 :::
 
 
-## Logit and [logistic]{style='color:red;'} function {.smaller}
+## Logit and [logistic]{style='color:red;'} function {.smaller background-color="aquamarine"}
 
 ```{r}
 #| echo: true
@@ -214,7 +215,7 @@ ggplot() +
 ```
 
 
-## The logistic regression model
+## The logistic regression model {background-color="aquamarine"}
 
 - Based on the three GLM criteria we have
   - $y_i \sim \text{Bernoulli}(p_i)$
@@ -1013,7 +1014,7 @@ email_pred |>
 
 This is better than our former model (without the feature engineering workflow), which had AUC = 0.857. 
 
-# Making decisions {.smaller}
+# From probabilities to decisions {.smaller}
 
 ## Cutoff probability: 0.5 {.smaller}
 

@@ -148,7 +148,8 @@ Assessment Type: **Project Report**
 Length: 4000 - 5000 words (This is a guideline, not a strict rule! Content counts, we will not count words.)
 Weight: 100%
 Scope: All intended learning outcomes of the module.  
-*More information of project formats and a rubric for the grading will be provided later.*
+
+**More information of project formats and grading rubric:** [Final Projects](final.qmd)
 
 Bonus option: Students receive **0.33 points** grade improvements on their project grade on the numerical grade as specified in the [Grading Table](https://constructor.university/sites/default/files/2023-02/Grading_Table_2023.pdf) when all assignments are solved by the end of the semester.  (Note, the bonus is not necessary to reach the best grade in the module.)
 

@@ -19,9 +19,9 @@ As a registered student, you find personalized repositories for your Homework Pr
 2. DataScienceProfiles
 3. COVID19
 4. *In preparation:* FuelWatch 
-5. ...
+5. *In preparation:* Finance
 
-Please read the next sections 
+Please read the next sections. 
 
 
 
@@ -126,3 +126,8 @@ If you require feedback:
 
 - File an issue and describe on what you need feedback or help as specific as possible. 
 - Point the instructors to your issue. 
+
+
+## Making a Homework Project repository public
+
+You may want to use your Homework Projects in your portfolio. The repositories can be made public from where the are. If you want to do so, please inform the instructors. In the case of publication, the README should be replaced by a note that this was part of a Homework in Data Science Tools at Constructor University. Please also make sure that no private data gets into a public repository.  

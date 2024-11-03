@@ -1,0 +1,13 @@
+org:
+  link: https://github.com/CU-F24-MDSSB-01-Concepts-Tools
+  name: CU-F24-MDSSB-01-Concepts-Tools
+  link-org-repo: https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Course-Organization-Resources
+  
+link: 
+  academic-calendar: https://constructor.university/student-life/academic-calendar/academic-calendar-2024
+  
+instructor:
+  concepts: "[Jan Lorenz](mailto:jlorenz@constructor.university)"
+  tools: "[Armin Müller](mailto:armmueller@constructor.university)"
+  
+instructors: "{{< var instructor.concepts >}} and {{< var instructor.tools >}}"

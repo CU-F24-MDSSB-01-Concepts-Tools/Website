@@ -19,16 +19,16 @@ website:
         file: index.qmd
       - text: "**Schedule**"
         file: schedule.qmd
-      - text: "Homework"
+      - text: "Onboarding Late-arriving"
+        file: late.qmd
+      - text: "Homework Projects"
         file: homework.qmd
-      # - text: "Report writing"
-        # file: reports.qmd
-      - text: "Help"
+      - text: "Final Project"
+        file: final.qmd
+      - text: "Help Project Work"
         file: help.qmd
       - text: "Literature"
         file: literature.qmd
-      - text: "Onboarding Late-arriving"
-        file: late.qmd
       
 format:
   html:

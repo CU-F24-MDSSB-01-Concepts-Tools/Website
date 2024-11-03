@@ -1,0 +1,142 @@
+---
+title: "Final Project"
+---
+
+:::{.callout-warning collapse=false appearance='default' icon=true}
+This is a preliminary version! When this note is gone you read the final version. 
+:::
+
+
+These are specifications and guidelines for the final **Data Science Project** and the **Project report**, the assessment for the *Data Science Tools* (see [Syllabus](index.qmd)): How to write it, when and how to deliver it, and how it will be graded. 
+
+
+## How to write a project report in a nutshell
+
+- You find a team,  
+- pick a dataset,
+- register your project, 
+- do some interesting question-driven data analysis with it,
+- present a draft version at the end of the semester, and
+- write up a well-structured and nicely formatted report about the analysis in your team's  repository. 
+
+## Work in Teams and Register your Project
+
+Projects should be done in **teams of 2-3 students**. This serves two additional learning goals:
+
+1. Learning to pursue and coordinate data science workflows collaboratively.
+2. Learning to work collaboratively on code with it and GitHub.
+
+**Single teams** and **teams with more the 3 members** are possible upon request when there are reasons for it. 
+
+:::{.callout-important collapse=false appearance='default' icon=true}
+## The team's work is graded as one piece.
+
+All members receive the same grade for it. However, the module grade can be different because of the bonus for fully complete homework. A dysfunctional team can be split upon request by individual members. 
+:::
+
+**How to form a team and register your project:**
+
+1. Form a team on your own with fellow students. 
+2. Go through this guidelines together.  
+3. Find a suitable dataset (see below). 
+4. Come up with a few initial questions. 
+5. All team members should write to the instructors. 
+
+[**One member should write to the {{< var instructors >}}**]{style='color:red;'} and provide 
+
+- all names of the team members,
+- information about the dataset,
+- the initial questions, and
+- a short working title for the repository name. 
+
+[All other members should write to the instructors for confirmation.]{style='color:red;'}
+
+
+## Advice for data science team work (with git)
+
+- Select your language R or python!
+- Put the data you need into a folder `data`. For large data sets better not to commit and push it, but to document where the data can be retrieved and where it should be put to load it with your code.  
+- All team members need to clone the repository to their local computers.
+- Try both:
+    - Working together at the same time with realtime communction. 
+    - Working together remotely based on a plan who should do what. Feel free to use GitHub issues in your repository for this!
+- Every team member should finally have pushed some work to GitHub!
+- Commit early and often! Then we can help you when you have questions or need directions. 
+- Before you start to work as a team member: Always do `git pull` first to receive potentially new content!
+- Try to finish an individual work session with comments on next steps and open questions. Push the files in a state such that it renders. 
+- *Conflicts in git:* Git conflicts will probably occur when you work in teams while pulling and pushing. These can be solved. If you do not manage, ask for help.
+- **Conflicts in the team.** Please communicate about tensions in your team and try to solve them. However, you are not obliged to finish your project as a dysfunctional team. To avoid being bound to the same grade in a dysfunctional team, every team member has the right to leave the team and continue independently. This can only be realized upon prior communication with team members and consequently with the instructors! 
+
+
+## Delivery
+
+- Delivery is via GitHub in a private repository (the same way as Homework Projects). 
+- The repository for the final project will be created in the [{{< var org.name >}}]({{< var org.link >}}) by the instructors **upon team and project approval**. 
+- The source file as well as the rendered html-file should be included.
+- The assessment will start after the deadline with the latest commit. 
+- Assessment will be done based on reading the HTML-file. Additionally and if necessary, the Quarto Markdown File and other provided files may be looked at. Ideally, the HTML-Report is sufficient to assess the project! (To test if the HTML file looks good for the instructors do the following: Clone the repository anew to a temporaty directory on your computer, open the HTML file from this newly cloned directory. Check if it looks good. This is what instructors will do.)
+
+
+## Deadline
+
+See [Schedule](schedule.qmd)
+
+
+## Grading
+
+- The reports will be graded jointly by the instructor of Data Science Tools and Data Science Concepts.   
+- The presentation in class is informal and will not be graded.
+- All team members receive the same grade for the project report. In case of a dysfunctional team, members can leave or split the team upon prior communication with the team and the instructors.
+
+**Assessment rubric**
+
+Project reports can be quite different depending on the data used and the type of question(s) (Descriptive, Exploratory, Inferential, Predictive, Causal, Mechanistic). Therefore, there will not be a fixed rubric. We will communicate back the final percentage grade (compare [Constructor University's Grading Table](https://constructor.university/sites/default/files/2023-02/Grading_Table_2023.pdf). Additionally, we aim to give short textual feedback about strong and weak points. 
+
+Nevertheless, the assessment goes along some criteria with some approximate weights: 
+
+- Introduction/Questions (10%)
+- Data Handling/Preparation	(10%)
+- Modeling (20%)
+- Comprehensiveness/Visualizations (20%)
+- Results/Conclusion (20%)
+- Programming style (10%)
+- Document Structure and Layout (10%)
+
+
+
+## How to define a project?
+
+Part of the work is to define a good project for question-driven data analysis. 
+
+Essentially there are two approaches to coming to a project setup:
+
+- Find and select data that interests you, do some question-driven data exploration, and focus and narrow the question. 
+- Start with a question and search data to answer it.
+
+**You can build on topics and datasets of the Homework.**
+
+
+## Guidelines for drafting your project
+
+- Find a manageable dataset: at least 50 cases, good is 10-20 variables with a mix of categorical and numeric. Deviations are allowed based on your interest and capability.
+- Go through the visualizations, statistics, and models we had in lectures and homework and think if similar things would be interesting.
+- The goal is not an exhaustive data analysis with every method! Do not calculate every statistic and procedure you have learned for every variable, but rather show that you can ask meaningful questions and answer them with results of data analysis and proficient interpretation and presentation of the results.
+- Do NOT blindly do all visualization and all statistics on all variables in the data set! You may do that in your data exploration. But not all exploratory data analysis goes into your report. At some point, you have to focus on what is needed to answer your questions. Your report is not a documentation of all your exploratory steps. Throw out what is not needed anymore, improve the remaining visualizations, and explain well in the text what you want to communicate.
+- A single high-quality visualization that shows a point clearly will receive a much higher appreciation than a large number of poor-quality visualizations without an explanation of what they should communicate.
+
+## Making your project public
+
+By default, project repositories are *private* and only visible to team members and instructors. The repositories can be made *public* such that students can use it as part of their portfolio, for example for referring to it in applications for internships and student jobs. Please let the instructors know if you want to make the repository public. 
+
+Additionally, the HTML file can be made accessible directly as a webpage with a few tweaks from quarto using the service of *GitHub Pages*. See the [documentation](https://quarto.org/docs/publishing/github-pages.html).
+
+
+## Frequently Asked Questions *(may be extended)*
+
+1. **Do we need to stick to methods and visualizations treated in lectures?**
+   
+    No, you are invited to use other data analysis and visualization methods (from other courses or packages which you self-learn)! We are happy to give advice if we can.
+   
+2. **Are we only allowed to use one dataset?**
+   
+    No, you can also merge data from different sources. This is a more challenging project because the data wrangling work would be a bit more. If your question calls for it we encourage you to use another data source. The additional effort will be recognized. 
