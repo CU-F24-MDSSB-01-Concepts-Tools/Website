@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Jan Lorenz">
-  <title>Data Science Concepts / Data Science Tools – W#09: Matrics, Hypothesis Testing</title>
+  <title>Data Science Concepts / Data Science Tools – W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -393,7 +393,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">W#09: Matrics, Hypothesis Testing</h1>
+  <h1 class="title">W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -407,86 +407,26 @@ Jan Lorenz
 <nav role="doc-toc"> 
 <h2 id="toc-title">Table of contents</h2>
 <ul>
-<li><a href="#/matrices" id="/toc-matrices">Matrices</a></li>
 <li><a href="#/hypothesis-testing" id="/toc-hypothesis-testing">Hypothesis testing</a></li>
+<li><a href="#/simulation-for-hypothesis-testing" id="/toc-simulation-for-hypothesis-testing">Simulation for Hypothesis Testing</a></li>
+<li><a href="#/p-value" id="/toc-p-value">p-value</a></li>
+<li><a href="#/classification-compare-logistic-regression-and-decision-tree" id="/toc-classification-compare-logistic-regression-and-decision-tree">Classification: Compare logistic regression and decision tree</a></li>
+<li><a href="#/regression-compare-linear-regression-and-decision-tree" id="/toc-regression-compare-linear-regression-and-decision-tree">Regression: Compare linear regression and decision tree</a></li>
+<li><a href="#/overfitting-with-decision-trees" id="/toc-overfitting-with-decision-trees">Overfitting with decision trees</a></li>
+<li><a href="#/what-do-we-mean-by-model-how-to-be-specific" id="/toc-what-do-we-mean-by-model-how-to-be-specific">What do we mean by “model”? How to be specific</a></li>
 </ul>
 </nav>
 </section>
-<section>
-<section id="matrices" class="title-slide slide level1 center">
-<h1>Matrices</h1>
-
+<section id="packages-used-here" class="slide level2">
+<h2>Packages used here</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-3"><a></a><span class="fu">library</span>(rpart.plot)</span>
+<span id="cb1-4"><a></a><span class="fu">library</span>(openintro)</span>
+<span id="cb1-5"><a></a><span class="fu">library</span>(palmerpenguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="what-is-a-matrix" class="slide level2 smaller">
-<h2>What is a matrix?</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li>A <strong>matrix</strong> is a 2-dimensional array of numbers with rows and columns.</li>
-<li>The numbers in it are called its <strong>elements</strong>.</li>
-</ul>
-<p>Isn’t that a data frame?</p>
-<ul>
-<li>No, a dataframe is more general. In a matrix, every element has the same basic data type!</li>
-<li>In R, a matrix is a vector plus some specification of the dimensions.<br>
-</li>
-<li>(A matrix can also be of characters or logicals, it can also have row- and column-names)</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>     [,1] [,2] [,3]
-[1,]    1    3    5
-[2,]    2    4    6</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>     [,1] [,2]
-[1,]    1    4
-[2,]    2    5
-[3,]    3    6</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>     [,1] [,2]
-[1,]    1    4
-[2,]    2    5
-[3,]    3    6</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>     [,1] [,2]
-[1,]    1    2
-[2,]    3    4
-[3,]    5    6</code></pre>
-</div>
-</div>
-</div></div>
-</section>
-<section id="matrices-in-mathematics" class="slide level2 smaller" data-background-color="aquamarine">
-<h2>Matrices in Mathematics</h2>
-<ul>
-<li><strong>Addition</strong> and <strong>subtraction</strong> of matrices is done element-wise.</li>
-<li><strong>Multiplication</strong> of a matrix with a scalar is done element-wise.</li>
-<li><strong>Multiplication</strong> of two matrices is done row times column.</li>
-<li><strong>Transposition</strong> of a matrix is done by flipping the matrix over its diagonal.</li>
-</ul>
-</section></section>
 <section>
 <section id="hypothesis-testing" class="title-slide slide level1 center">
 <h1>Hypothesis testing</h1>
@@ -494,19 +434,24 @@ Jan Lorenz
 </section>
 <section id="organ-donors" class="slide level2 smaller">
 <h2>Organ donors</h2>
-<p>People providing an organ for donation sometimes seek the help of a special “medical consultant”. These consultants assist the patient in all aspects of the surgery, with the goal of reducing the possibility of complications during the medical procedure and recovery. Patients might choose a consultant based in part on the historical complication rate of the consultant’s clients.</p>
-<p>One consultant tried to attract patients by noting that the average complication rate for liver donor surgeries in the US is about 10%, but her clients have only had 3 complications in the 62 liver donor surgeries she has facilitated. She claims this is strong evidence that her work meaningfully contributes to reducing complications (and therefore she should be hired!).</p>
+<p><strong>Background story:</strong> People providing an organ for donation sometimes seek the help of a special “medical consultant”. These consultants assist the patient in all aspects of the surgery, with the goal of reducing the possibility of complications during the medical procedure and recovery. Patients might choose a consultant based in part on the historical complication rate of the consultant’s clients.</p>
+<div class="fragment">
+<p><strong>Example track record:</strong> One consultant tried to attract patients by noting that the average complication rate for liver donor surgeries in the US is about 10%, but her clients have only had 3 complications in the 62 liver donor surgeries she has facilitated. She claims this is strong evidence that her work meaningfully contributes to reducing complications (and therefore she should be hired!).</p>
+</div>
+<div class="fragment">
+<p><span style="color:red;">Is this strong evidence for a good track record?</span></p>
+</div>
 </section>
 <section id="data" class="slide level2 smaller">
 <h2>Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a>organ_donor <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb9-2"><a></a>  <span class="at">outcome =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"complication"</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">"no complication"</span>, <span class="dv">59</span>))</span>
-<span id="cb9-3"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>organ_donor <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-2"><a></a>  <span class="at">outcome =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"complication"</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">"no complication"</span>, <span class="dv">59</span>))</span>
+<span id="cb2-3"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a>organ_donor <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a></a>  <span class="fu">count</span>(outcome)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>organ_donor <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a></a>  <span class="fu">count</span>(outcome)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
   outcome             n
@@ -519,30 +464,31 @@ Jan Lorenz
 <section id="parameter-vs.-statistic" class="slide level2 smaller">
 <h2>Parameter vs.&nbsp;statistic</h2>
 <p>A <strong>parameter</strong> for a hypothesis test is the “true” value of interest. We typically estimate the parameter using a <strong>sample statistic</strong> as a <strong>point estimate</strong>.</p>
-<p><span class="math inline">\(p\)</span>: true rate of complication, here 0.1 (10% complication rate in US)</p>
-<p><span class="math inline">\(\hat{p}\)</span>: rate of complication in the sample = <span class="math inline">\(\frac{3}{62}\)</span> = 0.048 (This is the point estimate.)</p>
+<p><span class="math inline">\(q\)</span>: true rate of complication, here 0.1 (10% complication rate in US)</p>
+<p><span class="math inline">\(\hat{q}\)</span>: rate of complication in the sample = <span class="math inline">\(\frac{3}{62}\)</span> = 0.048 (This is the point estimate.)</p>
 </section>
 <section id="correlation-vs.-causation" class="slide level2 smaller">
 <h2>Correlation vs.&nbsp;causation</h2>
 <p><strong>Is it possible to infer the consultant’s claim using the data?</strong></p>
 <p>No.&nbsp;The claim is: <em>There is a causal connection</em>. However, the data are observational. For example, maybe patients who can afford a medical consultant can afford better medical care, which can also lead to a lower complication rate (for example).</p>
 <div class="fragment">
-<p>While it is not possible to assess the causal claim, it is still possible to test for an association using these data. For this question we ask, <strong>could the low complication rate of <span class="math inline">\(\hat{p}\)</span> = 0.048 be due to chance?</strong></p>
+<p><strong>What is possible?</strong></p>
+<p>While it is not possible to assess the causal claim, it is still possible to test for an association using these data. For this question we ask, <strong>could the low complication rate of <span class="math inline">\(\hat{q}\)</span> = 0.048 be due to chance?</strong></p>
 </div>
 </section>
 <section id="two-claims" class="slide level2">
 <h2>Two claims</h2>
 <ul>
-<li><strong>Null hypothesis:</strong> “There is nothing going on”</li>
+<li><span style="color:blue;"><strong>Null hypothesis <span class="math inline">\(H_0\)</span>:</strong></span> “There is nothing going on”</li>
 </ul>
 <p>Complication rate for this consultant is no different than the US average of 10%</p>
 <ul>
-<li><strong>Alternative hypothesis:</strong> “There is something going on”</li>
+<li><span style="color:blue;"><strong>Alternative hypothesis <span class="math inline">\(H_1\)</span>:</strong></span> “There is something going on”</li>
 </ul>
 <p>Complication rate for this consultant is <strong>lower</strong> than the US average of 10%</p>
 </section>
-<section id="hypothesis-testing-as-a-court-trial" class="slide level2 smaller">
-<h2>Hypothesis testing as a court trial</h2>
+<section id="understand-hypothesis-testing-as-a-court-trial" class="slide level2 smaller">
+<h2>Understand hypothesis testing as a court trial</h2>
 <ul>
 <li><p><strong>Null hypothesis</strong>, <span class="math inline">\(H_0\)</span>: Defendant is innocent</p></li>
 <li><p><strong>Alternative hypothesis</strong>, <span class="math inline">\(H_A\)</span>: Defendant is guilty</p></li>
@@ -571,20 +517,28 @@ Jan Lorenz
 <h2>Setting the hypotheses</h2>
 <p>Which of the following is the correct set of hypotheses for the claim that the consultant has lower complication rates?</p>
 <ol type="a">
-<li><p><span class="math inline">\(H_0: p = 0.10\)</span>; <span class="math inline">\(H_A: p \ne 0.10\)</span></p></li>
-<li><p><span class="math inline">\(H_0: p = 0.10\)</span>; <span class="math inline">\(H_A: p &gt; 0.10\)</span></p></li>
-<li><p><span class="math inline">\(H_0: p = 0.10\)</span>; <span class="math inline">\(H_A: p &lt; 0.10\)</span></p></li>
-<li><p><span class="math inline">\(H_0: \hat{p} = 0.10\)</span>; <span class="math inline">\(H_A: \hat{p} \ne 0.10\)</span></p></li>
-<li><p><span class="math inline">\(H_0: \hat{p} = 0.10\)</span>; <span class="math inline">\(H_A: \hat{p} &gt; 0.10\)</span></p></li>
-<li><p><span class="math inline">\(H_0: \hat{p} = 0.10\)</span>; <span class="math inline">\(H_A: \hat{p} &lt; 0.10\)</span></p></li>
+<li><p><span class="math inline">\(H_0: q = 0.10\)</span>; <span class="math inline">\(H_A: q \ne 0.10\)</span></p></li>
+<li><p><span class="math inline">\(H_0: q = 0.10\)</span>; <span class="math inline">\(H_A: q &gt; 0.10\)</span></p></li>
+<li><p><span class="math inline">\(H_0: q = 0.10\)</span>; <span class="math inline">\(H_A: q &lt; 0.10\)</span></p></li>
+<li><p><span class="math inline">\(H_0: \hat{q} = 0.10\)</span>; <span class="math inline">\(H_A: \hat{q} \ne 0.10\)</span></p></li>
+<li><p><span class="math inline">\(H_0: \hat{q} = 0.10\)</span>; <span class="math inline">\(H_A: \hat{q} &gt; 0.10\)</span></p></li>
+<li><p><span class="math inline">\(H_0: \hat{q} = 0.10\)</span>; <span class="math inline">\(H_A: \hat{q} &lt; 0.10\)</span></p></li>
 </ol>
 <div class="fragment">
-<p>Correct is c.&nbsp;Hypotheses are about the true rate of complication <span class="math inline">\(p\)</span> not the observed ones <span class="math inline">\(\hat{p}\)</span></p>
+<ol start="3" type="a">
+<li>is correct.<br>
+Hypotheses are about the true rate of complication <span class="math inline">\(q\)</span> not the observed ones <span class="math inline">\(\hat{q}\)</span></li>
+</ol>
 </div>
+</section></section>
+<section>
+<section id="simulation-for-hypothesis-testing" class="title-slide slide level1 center">
+<h1>Simulation for Hypothesis Testing</h1>
+
 </section>
 <section id="simulating-the-null-distribution" class="slide level2 smaller">
 <h2>Simulating the null distribution</h2>
-<p>Since <span class="math inline">\(H_0: p = 0.10\)</span>, we need to simulate a null distribution where the probability of success (complication) for each trial (patient) is 0.10.</p>
+<p>Since <span class="math inline">\(H_0: q = 0.10\)</span>, we need to simulate a null distribution where the probability of success (complication) for each trial (patient) is 0.10.</p>
 <p><strong>How should we simulate the null distribution for this study using a bag of chips?</strong></p>
 <ul>
 <li>How many chips? <span class="fragment" style="color:red;">For example 10 which makes 10% choices possible</span></li>
@@ -598,10 +552,10 @@ Jan Lorenz
 <section id="simulation" class="slide level2 smaller">
 <h2>Simulation!</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb12-2"><a></a>outcomes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"complication"</span>, <span class="st">"no complication"</span>)</span>
-<span id="cb12-3"><a></a>sim1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(outcomes, <span class="at">size =</span> <span class="dv">62</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-4"><a></a>sim1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">set.seed</span>(<span class="dv">1234</span>) <span class="co"># The seed is set for the sake of stable presentation outcomes.</span></span>
+<span id="cb5-2"><a></a>outcomes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"complication"</span>, <span class="st">"no complication"</span>)</span>
+<span id="cb5-3"><a></a>sim1 <span class="ot">&lt;-</span> <span class="fu">sample</span>(outcomes, <span class="at">size =</span> <span class="dv">62</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-4"><a></a>sim1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "no complication" "no complication" "no complication" "no complication"
  [5] "no complication" "no complication" "no complication" "no complication"
@@ -620,7 +574,7 @@ Jan Lorenz
 [57] "no complication" "no complication" "no complication" "no complication"
 [61] "no complication" "no complication"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="fu">sum</span>(sim1 <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="fu">sum</span>(sim1 <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.0483871</code></pre>
 </div>
@@ -630,33 +584,33 @@ Jan Lorenz
 <section id="more-simulation" class="slide level2 smaller">
 <h2>More simulation!</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>one_sim <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">sample</span>(outcomes, <span class="at">size =</span> <span class="dv">62</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-2"><a></a></span>
-<span id="cb16-3"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a>one_sim <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">sample</span>(outcomes, <span class="at">size =</span> <span class="dv">62</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-2"><a></a></span>
+<span id="cb9-3"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1290323</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1290323</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.09677419</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.09677419</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1774194</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1129032</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="fu">sum</span>(<span class="fu">one_sim</span>() <span class="sc">==</span> <span class="st">"complication"</span>)<span class="sc">/</span><span class="dv">62</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1129032</code></pre>
 </div>
@@ -667,7 +621,7 @@ Jan Lorenz
 <div class="columns">
 <div class="column" style="width:40%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a></a>organ_donor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>organ_donor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 62 × 1
    outcome        
@@ -687,14 +641,14 @@ Jan Lorenz
 </div>
 </div><div class="column" style="width:60%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
-<span id="cb32-2"><a></a>null_dist <span class="ot">&lt;-</span> organ_donor <span class="sc">|&gt;</span></span>
-<span id="cb32-3"><a></a>  <span class="fu">specify</span>(<span class="at">response =</span> outcome, <span class="at">success =</span> <span class="st">"complication"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb32-4"><a></a>  <span class="fu">hypothesize</span>(<span class="at">null =</span> <span class="st">"point"</span>, </span>
-<span id="cb32-5"><a></a>              <span class="at">p =</span> <span class="fu">c</span>(<span class="st">"complication"</span> <span class="ot">=</span> <span class="fl">0.10</span>, <span class="st">"no complication"</span> <span class="ot">=</span> <span class="fl">0.90</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb32-6"><a></a>  <span class="fu">generate</span>(<span class="at">reps =</span> <span class="dv">100</span>, <span class="at">type =</span> <span class="st">"draw"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb32-7"><a></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"prop"</span>)</span>
-<span id="cb32-8"><a></a>null_dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb25-2"><a></a>null_dist <span class="ot">&lt;-</span> organ_donor <span class="sc">|&gt;</span></span>
+<span id="cb25-3"><a></a>  <span class="fu">specify</span>(<span class="at">response =</span> outcome, <span class="at">success =</span> <span class="st">"complication"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-4"><a></a>  <span class="fu">hypothesize</span>(<span class="at">null =</span> <span class="st">"point"</span>, </span>
+<span id="cb25-5"><a></a>              <span class="at">p =</span> <span class="fu">c</span>(<span class="st">"complication"</span> <span class="ot">=</span> <span class="fl">0.10</span>, <span class="st">"no complication"</span> <span class="ot">=</span> <span class="fl">0.90</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb25-6"><a></a>  <span class="fu">generate</span>(<span class="at">reps =</span> <span class="dv">100</span>, <span class="at">type =</span> <span class="st">"draw"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-7"><a></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"prop"</span>)</span>
+<span id="cb25-8"><a></a>null_dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Response: outcome (factor)
 Null Hypothesis: point
@@ -719,24 +673,29 @@ Null Hypothesis: point
 <section id="visualizing-the-null-distribution" class="slide level2 smaller">
 <h2>Visualizing the null distribution</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a><span class="fu">ggplot</span>(<span class="at">data =</span> null_dist, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stat)) <span class="sc">+</span></span>
-<span id="cb34-2"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
-<span id="cb34-3"><a></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Null distribution"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a><span class="fu">ggplot</span>(<span class="at">data =</span> null_dist, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stat)) <span class="sc">+</span></span>
+<span id="cb27-2"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
+<span id="cb27-3"><a></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Null distribution"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="W09_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+<img data-src="W09_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section></section>
+<section>
+<section id="p-value" class="title-slide slide level1 center">
+<h1>p-value</h1>
+
+</section>
 <section id="calculating-the-p-value-visually" class="slide level2 smaller">
 <h2>Calculating the p-value, visually</h2>
 <p><strong>What is the p-value:</strong><sup>1</sup> <em>How often was the simulated sample proportion at least as extreme as the observed sample proportion?</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a><span class="fu">ggplot</span>(<span class="at">data =</span> null_dist, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stat)) <span class="sc">+</span></span>
-<span id="cb35-2"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
-<span id="cb35-3"><a></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Null distribution"</span>)  <span class="sc">+</span></span>
-<span id="cb35-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">62</span>, <span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="fu">ggplot</span>(<span class="at">data =</span> null_dist, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stat)) <span class="sc">+</span></span>
+<span id="cb28-2"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Null distribution"</span>)  <span class="sc">+</span></span>
+<span id="cb28-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">62</span>, <span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W09_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
+<p><img data-src="W09_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -745,8 +704,8 @@ Null Hypothesis: point
 <section id="calculating-the-p-value-directly" class="slide level2">
 <h2>Calculating the p-value, directly</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a>null_dist <span class="sc">|&gt;</span></span>
-<span id="cb36-2"><a></a> <span class="fu">summarise</span>(<span class="at">p_value =</span> <span class="fu">sum</span>(stat <span class="sc">&lt;=</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">62</span>)<span class="sc">/</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a>null_dist <span class="sc">|&gt;</span></span>
+<span id="cb29-2"><a></a> <span class="fu">summarise</span>(<span class="at">p_value =</span> <span class="fu">sum</span>(stat <span class="sc">&lt;=</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">62</span>)<span class="sc">/</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   p_value
@@ -773,25 +732,25 @@ Null Hypothesis: point
 <li>We simulate 15,000 times to get an accurate distribution.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a></a>null_dist <span class="ot">&lt;-</span> organ_donor <span class="sc">|&gt;</span></span>
-<span id="cb38-2"><a></a>  <span class="fu">specify</span>(<span class="at">response =</span> outcome, <span class="at">success =</span> <span class="st">"complication"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb38-3"><a></a>  <span class="fu">hypothesize</span>(<span class="at">null =</span> <span class="st">"point"</span>, </span>
-<span id="cb38-4"><a></a>              <span class="at">p =</span> <span class="fu">c</span>(<span class="st">"complication"</span> <span class="ot">=</span> <span class="fl">0.10</span>, <span class="st">"no complication"</span> <span class="ot">=</span> <span class="fl">0.90</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb38-5"><a></a>  <span class="fu">generate</span>(<span class="at">reps =</span> <span class="dv">15000</span>, <span class="at">type =</span> <span class="st">"simulate"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb38-6"><a></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"prop"</span>)</span>
-<span id="cb38-7"><a></a><span class="fu">ggplot</span>(<span class="at">data =</span> null_dist, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stat)) <span class="sc">+</span></span>
-<span id="cb38-8"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
-<span id="cb38-9"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">62</span>, <span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a>null_dist <span class="ot">&lt;-</span> organ_donor <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a></a>  <span class="fu">specify</span>(<span class="at">response =</span> outcome, <span class="at">success =</span> <span class="st">"complication"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb31-3"><a></a>  <span class="fu">hypothesize</span>(<span class="at">null =</span> <span class="st">"point"</span>, </span>
+<span id="cb31-4"><a></a>              <span class="at">p =</span> <span class="fu">c</span>(<span class="st">"complication"</span> <span class="ot">=</span> <span class="fl">0.10</span>, <span class="st">"no complication"</span> <span class="ot">=</span> <span class="fl">0.90</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb31-5"><a></a>  <span class="fu">generate</span>(<span class="at">reps =</span> <span class="dv">15000</span>, <span class="at">type =</span> <span class="st">"simulate"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb31-6"><a></a>  <span class="fu">calculate</span>(<span class="at">stat =</span> <span class="st">"prop"</span>)</span>
+<span id="cb31-7"><a></a><span class="fu">ggplot</span>(<span class="at">data =</span> null_dist, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stat)) <span class="sc">+</span></span>
+<span id="cb31-8"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
+<span id="cb31-9"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">62</span>, <span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="W09_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+<img data-src="W09_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
 <section id="our-more-robust-p-value" class="slide level2">
 <h2>Our more robust p-value</h2>
 <p>For the null distribution with 15,000 simulations</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>null_dist <span class="sc">|&gt;</span></span>
-<span id="cb39-2"><a></a>  <span class="fu">filter</span>(stat <span class="sc">&lt;=</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">62</span>) <span class="sc">|&gt;</span></span>
-<span id="cb39-3"><a></a>  <span class="fu">summarise</span>(<span class="at">p_value =</span> <span class="fu">n</span>()<span class="sc">/</span><span class="fu">nrow</span>(null_dist))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a></a>null_dist <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a></a>  <span class="fu">filter</span>(stat <span class="sc">&lt;=</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">62</span>) <span class="sc">|&gt;</span></span>
+<span id="cb32-3"><a></a>  <span class="fu">summarise</span>(<span class="at">p_value =</span> <span class="fu">n</span>()<span class="sc">/</span><span class="fu">nrow</span>(null_dist))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   p_value
@@ -799,14 +758,14 @@ Null Hypothesis: point
 1   0.125</code></pre>
 </div>
 </div>
-<p>Oh OK, our fist p-value was much more borderline in favor of the alternative hypothesis.</p>
+<p>Oh OK, our first p-value was much more borderline in favor of the alternative hypothesis.</p>
 </section>
 <section id="p-value-in-model-outputs" class="slide level2 smaller">
 <h2>p-value in model outputs</h2>
 <p>Model output for a linear model with palmer penguins.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb41-2"><a></a>    <span class="fu">fit</span>(bill_length_mm <span class="sc">~</span> bill_depth_mm, <span class="at">data =</span> penguins) <span class="sc">|&gt;</span> <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-2"><a></a>    <span class="fu">fit</span>(bill_length_mm <span class="sc">~</span> bill_depth_mm, <span class="at">data =</span> penguins) <span class="sc">|&gt;</span> <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
   term          estimate std.error statistic  p.value
@@ -817,8 +776,8 @@ Null Hypothesis: point
 </div>
 <p>Model output for a logistic regression model with email from <a href="https://www.openintro.org/data/index.php?data=email">openintro</a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a><span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb43-2"><a></a>  <span class="fu">fit</span>(spam <span class="sc">~</span> from <span class="sc">+</span> cc, <span class="at">data =</span> email, <span class="at">family =</span> <span class="st">"binomial"</span>) <span class="sc">|&gt;</span> <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a><span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a></a>  <span class="fu">fit</span>(spam <span class="sc">~</span> from <span class="sc">+</span> cc, <span class="at">data =</span> email, <span class="at">family =</span> <span class="st">"binomial"</span>) <span class="sc">|&gt;</span> <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 5
   term         estimate std.error statistic p.value
@@ -830,8 +789,8 @@ Null Hypothesis: point
 </div>
 <p>What do the p-values mean? What is the null hypothesis?</p>
 <div class="fragment">
-<p>Null-Hypothesis: There is no relationship between the predictor variable and the response variable, that means that the coefficient is equal to zero.</p>
-<p>Smaller the p-value <span class="math inline">\(\to\)</span> more evidence for rejecting the hypothesis that there is no effect.</p>
+<p><strong>Null-Hypothesis:</strong> There is no relationship between the predictor variable and the response variable, that means that the coefficient is equal to zero.</p>
+<p><strong>Smaller p-value</strong> <span class="math inline">\(\to\)</span> more evidence for rejecting the hypothesis that there is no effect.</p>
 </div>
 </section>
 <section id="xkcd-on-p-values" class="slide level2 smaller">
@@ -857,12 +816,734 @@ Null Hypothesis: point
 <li>the probability that the studied hypothesis is true</li>
 <li>the probability that the data were produced by random chance alone</li>
 <li>the size of an effect</li>
-<li>the importance of a result” or “evidence regarding a model or hypothesis” (it is only against the null hypothesis).</li>
+<li>the “importance of a result” or “evidence regarding a model or hypothesis” (it is only against the null hypothesis).</li>
 </ul>
 <div class="fragment">
 <p>Correct:<br>
 The p-value is the probability of obtaining test results at least as extreme as the result actually observed, under the assumption that the null hypothesis is correct.</p>
 <p>p-values and significance tests, when properly applied and interpreted, increase the rigor of the conclusions drawn from data.<sup>2</sup></p>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>From the American Statistical Association (ASA) 2016</p></li><li id="fn4"><p>From the American Statistical Association (ASA) 2019</p></li></ol></aside></section></section>
+<section>
+<section id="classification-compare-logistic-regression-and-decision-tree" class="title-slide slide level1 center">
+<h1>Classification: Compare logistic regression and decision tree</h1>
+
+</section>
+<section id="purpose-of-the-section" class="slide level2 smaller">
+<h2>Purpose of the section</h2>
+<ul>
+<li>Go again through the modeling workflow (with <code>tidymodels</code>) and see that large parts are identical</li>
+<li>Look again at the coefficients of a logistic regression model</li>
+<li>Learn the basic idea of a decision tree (you will not learn the details here)</li>
+<li>Do the classification with both models and compare the confusion matrices</li>
+</ul>
+</section>
+<section id="specify-recipe-and-models" class="slide level2 smaller">
+<h2>Specify recipe and models</h2>
+<p>For both logistic regression and decision tree:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a></a>peng_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(sex <span class="sc">~</span> ., <span class="at">data =</span> penguins) <span class="sc">|&gt;</span> </span>
+<span id="cb38-2"><a></a> <span class="fu">step_rm</span>(year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li>We specify a recipe to predict <code>sex</code> with all available variables in <code>penguins</code>
+<ul>
+<li>In typical model development, more pre-processing steps are done.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Logistic Regression</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>peng_logreg <span class="ot">&lt;-</span> <span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb39-2"><a></a> <span class="fu">set_engine</span>(<span class="st">"glm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>peng_logreg</code> specifies to fit with <code>glm</code> (generalized linear model from <code>base</code> R)</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Decision Tree</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a></a>peng_tree <span class="ot">&lt;-</span> <span class="fu">decision_tree</span>() <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a></a> <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb40-3"><a></a> <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>peng_tree</code> specifies to fit for <code>classification</code> with the <code>rpart</code><sup>1</sup> as engine.</p>
+</div></div>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn5"><p><code>rpart</code> is a package for <em>recursive partitioning and regression trees</em>. Different decision tree procedures are subsumed as <strong>classification and regression trees (CART)</strong></p></li></ol></aside></section>
+<section id="split-and-fit" class="slide level2 smaller">
+<h2>Split and fit</h2>
+<p>For logistic regression and decision tree:</p>
+<p>Split into test and training data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb41-2"><a></a>penguins_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(penguins, <span class="at">prop =</span> <span class="fl">0.7</span>, <span class="at">strata =</span> sex)</span>
+<span id="cb41-3"><a></a>peng_train <span class="ot">&lt;-</span> <span class="fu">training</span>(penguins_split)</span>
+<span id="cb41-4"><a></a>peng_test <span class="ot">&lt;-</span> <span class="fu">testing</span>(penguins_split)</span>
+<span id="cb41-5"><a></a>peng_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> <span class="fu">add_recipe</span>(peng_recipe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Logistic Regression</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a></a>peng_logreg_fit <span class="ot">&lt;-</span> peng_workflow <span class="sc">|&gt;</span> </span>
+<span id="cb42-2"><a></a> <span class="fu">add_model</span>(peng_logreg) <span class="sc">|&gt;</span> </span>
+<span id="cb42-3"><a></a> <span class="fu">fit</span>(<span class="at">data =</span> peng_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Decision Tree</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a>peng_tree_fit <span class="ot">&lt;-</span> peng_workflow <span class="sc">|&gt;</span> </span>
+<span id="cb43-2"><a></a> <span class="fu">add_model</span>(peng_tree) <span class="sc">|&gt;</span> </span>
+<span id="cb43-3"><a></a> <span class="fu">fit</span>(<span class="at">data =</span> peng_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
+</div>
+</section>
+<section id="look-at-fitted-logistic-regression" class="slide level2 smaller">
+<h2>Look at fitted logistic regression</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a></a>peng_logreg_fit <span class="sc">|&gt;</span> <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 5
+  term               estimate std.error statistic      p.value
+  &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+1 (Intercept)       -90.4      16.7        -5.41  0.0000000632
+2 speciesChinstrap   -6.06      1.90       -3.19  0.00142     
+3 speciesGentoo      -8.65      3.49       -2.48  0.0132      
+4 islandDream         0.752     1.15        0.656 0.512       
+5 islandTorgersen     0.380     1.13        0.335 0.737       
+6 bill_length_mm      0.532     0.150       3.56  0.000378    
+7 bill_depth_mm       1.79      0.456       3.93  0.0000866   
+8 flipper_length_mm   0.0552    0.0620      0.891 0.373       
+9 body_mass_g         0.00693   0.00162     4.27  0.0000193   </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<ul>
+<li>What do the categorical predictors tell us? Which are signigficant?</li>
+<li>What do the numerical predictors tell us? Which are signigficant?</li>
+<li>Why is the coefficient for <code>body_mass_g</code> so small, but highly significant?</li>
+</ul>
+</div></div>
+<div class="fragment">
+<p><strong>Categorical predictors:</strong> We have 3 <code>species</code>, 3 <code>island</code>. So, we see 4 new variables, 2 for <code>species</code> and 2 for <code>island</code> (the third is the reference category). Species are significant (p &lt; 0.05), but islands not.</p>
+<p><strong>Numerical predictors:</strong> <code>flipper_length_mm</code> is insignificant, though its coefficient is larger than for <code>body_mass_g</code>. Reason: values of <code>body_mass_g</code> are larger than those of <code>flipper_length_mm</code>. Body mass differs by much more grams than flipper length differs by millimeters.</p>
+</div>
+</section>
+<section id="what-is-a-decision-tree" class="slide level2 smaller">
+<h2>What is a decision tree?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a></a>peng_tree_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>══ Workflow [trained] ══════════════════════════════════════════════════════════
+Preprocessor: Recipe
+Model: decision_tree()
+
+── Preprocessor ────────────────────────────────────────────────────────────────
+1 Recipe Step
+
+• step_rm()
+
+── Model ───────────────────────────────────────────────────────────────────────
+n=234 (6 observations deleted due to missingness)
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+ 1) root 234 117 female (0.50000000 0.50000000)  
+   2) bill_length_mm&lt; 48.15 166  57 female (0.65662651 0.34337349)  
+     4) bill_depth_mm&lt; 18.05 103  14 female (0.86407767 0.13592233)  
+       8) body_mass_g&lt; 4987.5 88   4 female (0.95454545 0.04545455) *
+       9) body_mass_g&gt;=4987.5 15   5 male (0.33333333 0.66666667) *
+     5) bill_depth_mm&gt;=18.05 63  20 male (0.31746032 0.68253968)  
+      10) body_mass_g&lt; 3875 29  10 female (0.65517241 0.34482759)  
+        20) flipper_length_mm&lt; 190.5 18   3 female (0.83333333 0.16666667) *
+        21) flipper_length_mm&gt;=190.5 11   4 male (0.36363636 0.63636364) *
+      11) body_mass_g&gt;=3875 34   1 male (0.02941176 0.97058824) *
+   3) bill_length_mm&gt;=48.15 68   8 male (0.11764706 0.88235294)  
+     6) body_mass_g&lt; 5175 35   8 male (0.22857143 0.77142857)  
+      12) bill_depth_mm&lt; 18 9   3 female (0.66666667 0.33333333) *
+      13) bill_depth_mm&gt;=18 26   2 male (0.07692308 0.92307692) *
+     7) body_mass_g&gt;=5175 33   0 male (0.00000000 1.00000000) *</code></pre>
+</div>
+</div>
+<ul>
+<li>A sequence of rules for yes/no decisions</li>
+<li>Selects variables and thresholds which separate the data to predict (here <code>sex</code>) best</li>
+<li>Further details are not the scope of this course</li>
+</ul>
+</section>
+<section id="show-rules" class="slide level2 smaller">
+<h2>Show rules</h2>
+<p>We “dig out” the original fitted <code>rpart</code>-object from the <code>workflow</code>-object with <code>peng_tree_fit$fit$fit$fit</code> and plot it:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a><span class="fu">rpart.rules</span>(peng_tree_fit<span class="sc">$</span>fit<span class="sc">$</span>fit<span class="sc">$</span>fit, <span class="at">roundint=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ..y                                                                                                 
+ 0.05 when bill_length_mm &lt;  48 &amp; body_mass_g &lt;  4988 &amp; bill_depth_mm &lt;  18                           
+ 0.17 when bill_length_mm &lt;  48 &amp; body_mass_g &lt;  3875 &amp; bill_depth_mm &gt;= 18 &amp; flipper_length_mm &lt;  191
+ 0.33 when bill_length_mm &gt;= 48 &amp; body_mass_g &lt;  5175 &amp; bill_depth_mm &lt;  18                           
+ 0.64 when bill_length_mm &lt;  48 &amp; body_mass_g &lt;  3875 &amp; bill_depth_mm &gt;= 18 &amp; flipper_length_mm &gt;= 191
+ 0.67 when bill_length_mm &lt;  48 &amp; body_mass_g &gt;= 4988 &amp; bill_depth_mm &lt;  18                           
+ 0.92 when bill_length_mm &gt;= 48 &amp; body_mass_g &lt;  5175 &amp; bill_depth_mm &gt;= 18                           
+ 0.97 when bill_length_mm &lt;  48 &amp; body_mass_g &gt;= 3875 &amp; bill_depth_mm &gt;= 18                           
+ 1.00 when bill_length_mm &gt;= 48 &amp; body_mass_g &gt;= 5175                                                 </code></pre>
+</div>
+</div>
+<ul>
+<li>The first three rules would predict <code>female</code> for all observations</li>
+<li>The last five rules would predict <code>male</code> for all observations</li>
+</ul>
+<p>The order of <code>male</code> and <code>female</code> is because <code>sex</code> is a factor with the first level <code>female</code> and the second level <code>male</code>. The probabilities in front of the rule-text are for the second level: <code>male</code>.</p>
+</section>
+<section id="visualize-tree" class="slide level2 smaller">
+<h2>Visualize tree</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a><span class="fu">rpart.plot</span>(peng_tree_fit<span class="sc">$</span>fit<span class="sc">$</span>fit<span class="sc">$</span>fit, </span>
+<span id="cb50-2"><a></a>           <span class="at">roundint=</span><span class="cn">FALSE</span>, <span class="at">tweak=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="W09_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"><p>How to read?</p>
+<ul>
+<li>The percentage is the fraction of the total cases in this group</li>
+<li>The probability-number is the fraction of observations which are male in the group</li>
+<li><code>male</code> of <code>female</code> and color would match the predicted outcome at this decision node</li>
+</ul>
+</section>
+<section id="make-predictions-for-test-data" class="slide level2 smaller">
+<h2>Make predictions for test data</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a></a>peng_logreg_pred <span class="ot">&lt;-</span> </span>
+<span id="cb51-2"><a></a> <span class="fu">predict</span>(peng_logreg_fit, peng_test) <span class="sc">|&gt;</span> </span>
+<span id="cb51-3"><a></a> <span class="fu">bind_cols</span>(peng_test) </span>
+<span id="cb51-4"><a></a>peng_logreg_pred <span class="sc">|&gt;</span> </span>
+<span id="cb51-5"><a></a> <span class="fu">conf_mat</span>(<span class="at">truth =</span> sex, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction female male
+    female     46   10
+    male        2   41</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a></a>peng_tree_pred <span class="ot">&lt;-</span> </span>
+<span id="cb53-2"><a></a> <span class="fu">predict</span>(peng_tree_fit, peng_test) <span class="sc">|&gt;</span> </span>
+<span id="cb53-3"><a></a> <span class="fu">bind_cols</span>(peng_test)</span>
+<span id="cb53-4"><a></a>peng_tree_pred <span class="sc">|&gt;</span> </span>
+<span id="cb53-5"><a></a> <span class="fu">conf_mat</span>(<span class="at">truth =</span> sex, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction female male
+    female     43   12
+    male        5   39</code></pre>
+</div>
+</div>
+</div></div>
+<ul>
+<li>The logistic regression has more correct predictions.</li>
+<li><span style="color:red;">Warning:</span> The function <code>conf_mat</code> (from <code>yardstick</code> of <code>tidymodels</code>) shows the transposed confusion matrix compared with <a href="https://en.wikipedia.org/wiki/Confusion_matrix">Wikipedia:Confusion Matrix</a>. In <code>conf_mat</code>, the <em>true conditions</em> are in columns. The wikipedia convention is that columns are the <em>predicted conditions</em>.</li>
+</ul>
+</section></section>
+<section>
+<section id="regression-compare-linear-regression-and-decision-tree" class="title-slide slide level1 center">
+<h1>Regression: Compare linear regression and decision tree</h1>
+
+</section>
+<section id="purpose-of-the-section-1" class="slide level2 smaller">
+<h2>Purpose of the section</h2>
+<ul>
+<li>Go again through the modeling workflow (with <code>tidymodels</code>) and see that large parts are identical</li>
+<li>Look again at the coefficients of a linear model</li>
+<li>See how the decision tree looks like for a regression problem</li>
+<li>Compare the two most common performance measures for regression models: Root Mean Squared Error (RMSE) and R-squared</li>
+</ul>
+</section>
+<section id="specify-recipe-and-models-1" class="slide level2 smaller">
+<h2>Specify recipe and models</h2>
+<ul>
+<li>We specify a recipe to predict <code>body_mass_g</code> with all available variables in <code>penguins</code> and put it in a workflow
+<ul>
+<li>Typically, more pre-processing steps are specified here, but we are mostly fine</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a></a>peng_recipe2 <span class="ot">&lt;-</span> <span class="fu">recipe</span>(body_mass_g <span class="sc">~</span> ., <span class="at">data =</span> penguins) <span class="sc">|&gt;</span> </span>
+<span id="cb55-2"><a></a> <span class="fu">step_rm</span>(year)</span>
+<span id="cb55-3"><a></a>peng_workflow2 <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb55-4"><a></a> <span class="fu">add_recipe</span>(peng_recipe2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can re-use the split and the training and test set.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Linear Regression</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a></a>peng_linreg <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a></a> <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Decision Tree</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a></a>peng_regtree <span class="ot">&lt;-</span> <span class="fu">decision_tree</span>() <span class="sc">|&gt;</span></span>
+<span id="cb57-2"><a></a> <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-3"><a></a> <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
+</div>
+</section>
+<section id="fit-regression-models" class="slide level2 smaller">
+<h2>Fit Regression Models</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Linear Regression</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a></a>peng_linreg_fit <span class="ot">&lt;-</span> peng_workflow2 <span class="sc">|&gt;</span> </span>
+<span id="cb58-2"><a></a> <span class="fu">add_model</span>(peng_linreg) <span class="sc">|&gt;</span> </span>
+<span id="cb58-3"><a></a> <span class="fu">fit</span>(<span class="at">data =</span> peng_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Decision Tree</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a></a>peng_regtree_fit <span class="ot">&lt;-</span> peng_workflow2 <span class="sc">|&gt;</span> </span>
+<span id="cb59-2"><a></a> <span class="fu">add_model</span>(peng_regtree) <span class="sc">|&gt;</span> </span>
+<span id="cb59-3"><a></a> <span class="fu">fit</span>(<span class="at">data =</span> peng_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
+</section>
+<section id="look-at-fitted-linear-regression" class="slide level2 smaller">
+<h2>Look at fitted linear regression</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a></a>peng_linreg_fit <span class="sc">|&gt;</span> <span class="fu">tidy</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 5
+  term              estimate std.error statistic  p.value
+  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)         -829.     701.      -1.18  2.38e- 1
+2 speciesChinstrap    -268.     109.      -2.47  1.44e- 2
+3 speciesGentoo       1010.     164.       6.15  3.52e- 9
+4 islandDream          -14.5     70.0     -0.208 8.36e- 1
+5 islandTorgersen      -21.4     75.7     -0.283 7.77e- 1
+6 bill_length_mm        19.8      8.55     2.32  2.13e- 2
+7 bill_depth_mm         53.7     23.9      2.25  2.56e- 2
+8 flipper_length_mm     13.6      3.54     3.84  1.58e- 4
+9 sexmale              393.      58.5      6.71  1.57e-10</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<ul>
+<li>What do the categorical predictors tell us? Which are signigficant?</li>
+<li>What do the numerical predictors tell us? Which are signigficant?</li>
+</ul>
+</div></div>
+<div class="fragment">
+<p><strong>Categorical predictors:</strong> We have 3 <code>species</code>, 3 <code>island</code> and 2 <code>sex</code>. So, we see 5 new variables. Species and sex are significant, but islands not.</p>
+<p><strong>Numerical predictors:</strong> All 3 are significant.</p>
+</div>
+</section>
+<section id="show-rules-1" class="slide level2 smaller">
+<h2>Show rules</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a></a><span class="fu">rpart.rules</span>(peng_regtree_fit<span class="sc">$</span>fit<span class="sc">$</span>fit<span class="sc">$</span>fit, <span class="at">roundint=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ..y                                                    
+ 3418 when species is Adelie or Chinstrap &amp; sex is female
+ 3961 when species is Adelie or Chinstrap &amp; sex is   male
+ 4693 when species is              Gentoo &amp; sex is female
+ 5474 when species is              Gentoo &amp; sex is   male</code></pre>
+</div>
+</div>
+<ul>
+<li>For each terminal node a certain value is predicted (the mean of the remaining penguins)</li>
+</ul>
+</section>
+<section id="visualize-tree-1" class="slide level2 smaller">
+<h2>Visualize tree</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a></a><span class="fu">rpart.plot</span>(peng_regtree_fit<span class="sc">$</span>fit<span class="sc">$</span>fit<span class="sc">$</span>fit, </span>
+<span id="cb64-2"><a></a>           <span class="at">roundint=</span><span class="cn">FALSE</span>, <span class="at">tweak=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="W09_files/figure-revealjs/unnamed-chunk-34-1.png" width="960" class="r-stretch"><p>How to read?</p>
+<ul>
+<li>The percentage is the fraction of the total cases in this group</li>
+<li>The number is the predicted outcome (mean body mass) at this decision node</li>
+</ul>
+</section>
+<section id="make-predictions-for-test-data-1" class="slide level2 smaller">
+<h2>Make predictions for test data</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><strong>Linear Regression</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a></a>peng_linreg_pred <span class="ot">&lt;-</span> </span>
+<span id="cb65-2"><a></a> <span class="fu">predict</span>(peng_linreg_fit, peng_test) <span class="sc">|&gt;</span> </span>
+<span id="cb65-3"><a></a> <span class="fu">bind_cols</span>(peng_test) </span>
+<span id="cb65-4"><a></a>peng_linreg_pred <span class="sc">|&gt;</span> </span>
+<span id="cb65-5"><a></a> <span class="fu">select</span>(.pred, body_mass_g, <span class="fu">everything</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb65-6"><a></a> <span class="fu">slice</span>(<span class="dv">10</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)) <span class="co"># show selected rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 9
+   .pred body_mass_g species   island    bill_length_mm bill_depth_mm
+   &lt;dbl&gt;       &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;
+ 1 3349.        3700 Adelie    Torgersen           36.6          17.8
+ 2 3979.        3950 Adelie    Dream               38.8          20  
+ 3 3902.        3800 Adelie    Dream               36.3          19.5
+ 4 4106.        3875 Adelie    Torgersen           41.4          18.5
+ 5 3499.        3400 Adelie    Dream               40.2          17.1
+ 6 4597.        4150 Gentoo    Biscoe              42            13.5
+ 7 4688.        4200 Gentoo    Biscoe              45.5          13.9
+ 8 4929.        4850 Gentoo    Biscoe              48.5          15  
+ 9 4014.        4150 Chinstrap Dream               52            19  
+10 4108.        4050 Chinstrap Dream               50.7          19.7
+# ℹ 3 more variables: flipper_length_mm &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:35%;">
+<p><strong>Decision Tree</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a></a>peng_regtree_pred <span class="ot">&lt;-</span> </span>
+<span id="cb67-2"><a></a> <span class="fu">predict</span>(peng_regtree_fit, peng_test) <span class="sc">|&gt;</span> </span>
+<span id="cb67-3"><a></a> <span class="fu">bind_cols</span>(peng_test)</span>
+<span id="cb67-4"><a></a>peng_regtree_pred <span class="sc">|&gt;</span> </span>
+<span id="cb67-5"><a></a> <span class="fu">select</span>(.pred, body_mass_g, species, sex) <span class="sc">|&gt;</span> </span>
+<span id="cb67-6"><a></a> <span class="fu">slice</span>(<span class="dv">10</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)) <span class="co"># show same selected rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 4
+   .pred body_mass_g species   sex   
+   &lt;dbl&gt;       &lt;int&gt; &lt;fct&gt;     &lt;fct&gt; 
+ 1 3418         3700 Adelie    female
+ 2 3961.        3950 Adelie    male  
+ 3 3961.        3800 Adelie    male  
+ 4 3961.        3875 Adelie    male  
+ 5 3418         3400 Adelie    female
+ 6 4693.        4150 Gentoo    female
+ 7 4693.        4200 Gentoo    female
+ 8 4693.        4850 Gentoo    female
+ 9 3961.        4150 Chinstrap male  
+10 3961.        4050 Chinstrap male  </code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="regression-performance-evaluation" class="slide level2 smaller">
+<h2>Regression Performance Evaluation</h2>
+<p><span style="color:blue;"><strong>R-squared</strong></span>: Percentage of variability in <code>body_mass_g</code> explained by the model</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Linear Regression</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a></a><span class="fu">rsq</span>(peng_linreg_pred, </span>
+<span id="cb69-2"><a></a>    <span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rsq     standard       0.861</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Decision Tree</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a></a><span class="fu">rsq</span>(peng_regtree_pred, </span>
+<span id="cb71-2"><a></a>    <span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rsq     standard       0.806</code></pre>
+</div>
+</div>
+</div></div>
+<p><span style="color:blue;"><strong>Root Mean Squared Error (RMSE)</strong>:</span> <span class="math inline">\(\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i = 1}^n (y_i - \hat{y}_i)^2}\)</span><br>
+where <span class="math inline">\(\hat{y}_i\)</span> is the predicted value and <span class="math inline">\(y_i\)</span> the true value. (The name RMSE is descriptive.)</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a></a><span class="fu">rmse</span>(peng_linreg_pred, </span>
+<span id="cb73-2"><a></a>     <span class="at">truth =</span> body_mass_g, </span>
+<span id="cb73-3"><a></a>     <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        290.</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a></a><span class="fu">rmse</span>(peng_regtree_pred, </span>
+<span id="cb75-2"><a></a>     <span class="at">truth =</span> body_mass_g, </span>
+<span id="cb75-3"><a></a>     <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        337.</code></pre>
+</div>
+</div>
+</div></div>
+<p>Which model is better in prediction? <span class="fragment"><strong>Linear regression.</strong> The R-squared is higher.</span></p>
+</section>
+<section id="what-rmse-is-better" class="slide level2 smaller">
+<h2>What RMSE is better?</h2>
+<div class="fragment">
+<p><strong>Lower. The lower the error, the better the model’s prediction.</strong></p>
+<p>It is the other way round than R-squared! Do not confuse them.</p>
+</div>
+<div class="fragment">
+<p>Notes:</p>
+<ul>
+<li>The common method to fit a linear model is the <em>ordinary least squares</em> (OLS) method</li>
+<li>That means the fitted parameters should deliver the lowest possible sum of squared errors (SSE) between predicted and observed values.</li>
+<li>Minimizing the sum of squared errors (SSE) is identical to minimizing the mean of squared errors (MSE) because it only adds the factor <span class="math inline">\(1/n\)</span>.</li>
+<li>Minimizing the mean of squared errors (MSE) is identical to minimizing the root mean of squared errors (RMSE) because the square root is strictly monotone function.</li>
+</ul>
+<p>Conclusion: RMSE can be seen as a definition of the OLS optimization goal.</p>
+</div>
+</section>
+<section id="interpreting-rmse" class="slide level2 smaller">
+<h2>Interpreting RMSE</h2>
+<p>In contrast to R-squared, RMSE can only be interpreted with knowledge about the range and of the response variable! It also has the same unit (grams for <code>body_mass_g</code>).</p>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a></a>peng_test <span class="sc">|&gt;</span> </span>
+<span id="cb77-2"><a></a> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>body_mass_g, <span class="at">fill =</span> species)) <span class="sc">+</span> </span>
+<span id="cb77-3"><a></a> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">50</span>) <span class="sc">+</span> </span>
+<span id="cb77-4"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="W09_files/figure-revealjs/unnamed-chunk-41-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a></a>peng_linreg_pred <span class="sc">|&gt;</span> </span>
+<span id="cb78-2"><a></a> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>.pred, <span class="at">fill =</span> species)) <span class="sc">+</span> </span>
+<span id="cb78-3"><a></a> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">50</span>) <span class="sc">+</span> </span>
+<span id="cb78-4"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="W09_files/figure-revealjs/unnamed-chunk-42-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a></a>peng_regtree_pred <span class="sc">|&gt;</span> </span>
+<span id="cb79-2"><a></a> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>.pred, <span class="at">fill =</span> species)) <span class="sc">+</span> </span>
+<span id="cb79-3"><a></a> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">50</span>) <span class="sc">+</span> </span>
+<span id="cb79-4"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="W09_files/figure-revealjs/unnamed-chunk-43-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div></div>
+<p>The RMSE shows many grams predicted values deviate from the true value on average. (Taking the squaring of differences and root of the average into account.)</p>
+</section></section>
+<section>
+<section id="overfitting-with-decision-trees" class="title-slide slide level1 center">
+<h1>Overfitting with decision trees</h1>
+
+</section>
+<section id="compare-training-and-test-data" class="slide level2 smaller">
+<h2>Compare training and test data</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Linear Regression</strong> Predict with test data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a></a><span class="fu">predict</span>(peng_linreg_fit, peng_test) <span class="sc">|&gt;</span> <span class="fu">bind_cols</span>(peng_test) <span class="sc">|&gt;</span> </span>
+<span id="cb80-2"><a></a> <span class="fu">metrics</span>(<span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard     290.   
+2 rsq     standard       0.861</code></pre>
+</div>
+</div>
+<p>Predict with training data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a></a><span class="fu">predict</span>(peng_linreg_fit, peng_train) <span class="sc">|&gt;</span> <span class="fu">bind_cols</span>(peng_train) <span class="sc">|&gt;</span> </span>
+<span id="cb82-2"><a></a> <span class="fu">metrics</span>(<span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard     283.   
+2 rsq     standard       0.880</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Decision Tree</strong> Predict with test data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a></a><span class="fu">predict</span>(peng_regtree_fit, peng_test) <span class="sc">|&gt;</span> <span class="fu">bind_cols</span>(peng_test) <span class="sc">|&gt;</span> </span>
+<span id="cb84-2"><a></a> <span class="fu">metrics</span>(<span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard     337.   
+2 rsq     standard       0.806</code></pre>
+</div>
+</div>
+<p>Predict with training data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a></a><span class="fu">predict</span>(peng_regtree_fit, peng_train) <span class="sc">|&gt;</span> <span class="fu">bind_cols</span>(peng_train) <span class="sc">|&gt;</span> </span>
+<span id="cb86-2"><a></a> <span class="fu">metrics</span>(<span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard     309.   
+2 rsq     standard       0.857</code></pre>
+</div>
+</div>
+</div></div>
+<p>Where is the prediction better? (Lower RMSE, higher R-squared)</p>
+<div class="fragment">
+<p>Performance is better for training data (compare values to testing data of the same model). Why? It was used to fit. The model is optimized to predict the training data.</p>
+</div>
+</section>
+<section id="make-a-deeper-tree" class="slide level2 smaller">
+<h2>Make a deeper tree</h2>
+<ul>
+<li>In <code>decision_tree()</code> we can set the maximal depth of the tree to 30.<br>
+</li>
+<li>The trees we had before were also automatically <em>pruned</em> by sensible defaults.<br>
+</li>
+<li>By setting the cost complexity parameter to -1 we avoid pruning.<sup>1</sup></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a></a>peng_regtree_deep <span class="ot">&lt;-</span> <span class="fu">decision_tree</span>(</span>
+<span id="cb88-2"><a></a> <span class="at">cost_complexity =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb88-3"><a></a> <span class="at">tree_depth =</span> <span class="dv">30</span></span>
+<span id="cb88-4"><a></a>) <span class="sc">|&gt;</span></span>
+<span id="cb88-5"><a></a> <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb88-6"><a></a> <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb88-7"><a></a>peng_regtree_deep_fit <span class="ot">&lt;-</span> peng_workflow2 <span class="sc">|&gt;</span> <span class="fu">add_model</span>(peng_regtree_deep) <span class="sc">|&gt;</span> </span>
+<span id="cb88-8"><a></a> <span class="fu">fit</span>(<span class="at">data =</span> peng_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn6"><p>The details of this go beyond the scope of this course.</p></li></ol></aside></section>
+<section id="the-deep-tree" class="slide level2">
+<h2>The deep tree</h2>
+
+<img data-src="W09_files/figure-revealjs/unnamed-chunk-49-1.png" width="960" class="r-stretch"></section>
+<section id="compare-pruned-and-deep-tree" class="slide level2 smaller">
+<h2>Compare pruned and deep tree</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Pruned decision tree</strong></p>
+<p>Predict with <strong>training data</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a></a>peng_regtree_fit <span class="sc">|&gt;</span> </span>
+<span id="cb89-2"><a></a> <span class="fu">predict</span>(<span class="at">new_data =</span> peng_train) <span class="sc">|&gt;</span> <span class="fu">bind_cols</span>(peng_train) <span class="sc">|&gt;</span> </span>
+<span id="cb89-3"><a></a> <span class="fu">metrics</span>(<span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard     309.   
+2 rsq     standard       0.857</code></pre>
+</div>
+</div>
+<p>Predict with <strong>testing data</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a></a>peng_regtree_fit <span class="sc">|&gt;</span> </span>
+<span id="cb91-2"><a></a> <span class="fu">predict</span>(peng_test) <span class="sc">|&gt;</span> <span class="fu">bind_cols</span>(peng_test) <span class="sc">|&gt;</span> </span>
+<span id="cb91-3"><a></a> <span class="fu">metrics</span>(<span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard     337.   
+2 rsq     standard       0.806</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Deep decision tree</strong></p>
+<p>Predict with <strong>training data</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a></a>peng_regtree_deep_fit <span class="sc">|&gt;</span> </span>
+<span id="cb93-2"><a></a> <span class="fu">predict</span>(<span class="at">new_data =</span> peng_train) <span class="sc">|&gt;</span> <span class="fu">bind_cols</span>(peng_train) <span class="sc">|&gt;</span> </span>
+<span id="cb93-3"><a></a> <span class="fu">metrics</span>(<span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard     247.   
+2 rsq     standard       0.908</code></pre>
+</div>
+</div>
+<p>Predict with <strong>testing data</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a></a>peng_regtree_deep_fit <span class="sc">|&gt;</span> </span>
+<span id="cb95-2"><a></a> <span class="fu">predict</span>(peng_test) <span class="sc">|&gt;</span> <span class="fu">bind_cols</span>(peng_test) <span class="sc">|&gt;</span> </span>
+<span id="cb95-3"><a></a> <span class="fu">metrics</span>(<span class="at">truth =</span> body_mass_g, <span class="at">estimate =</span> .pred) <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard     333.   
+2 rsq     standard       0.808</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="more-in-an-r-script" class="slide level2">
+<h2>More in an R-script</h2>
+<ul>
+<li><p>Overfitting in spam predicton models.</p></li>
+<li><p>From decision trees to random forrests.</p></li>
+</ul>
+<p>Move to the <a href="https://raw.githubusercontent.com/CU-F24-MDSSB-01-Concepts-Tools/Website/refs/heads/main/emails_decision_tree_overfitting_randomforrest.r">script</a>.</p>
+</section></section>
+<section>
+<section id="what-do-we-mean-by-model-how-to-be-specific" class="title-slide slide level1 center">
+<h1>What do we mean by “model”? How to be specific</h1>
+
+</section>
+<section id="model-in-statistical-learning" class="slide level2 smaller">
+<h2>“Model” in Statistical Learning</h2>
+<p>We already had the difference between <em>variable-based</em> and <em>agent-based</em> models in earlier lectures.</p>
+<p>But even in the variable-based model setting of <strong>statistical learning</strong>, the term <em>model</em> can be more or less abstract:</p>
+<ol type="1">
+<li>Very general: <span class="math inline">\(Y = f(X_1, \dots, X_m) + \varepsilon\)</span> where <span class="math inline">\(Y\)</span> is the response variable and <span class="math inline">\(X_i\)</span> are features which we put in our <strong>model</strong>: the abstract and unknown function <span class="math inline">\(f\)</span>.<br>
+<span class="math inline">\(\varepsilon\)</span> is the <em>error</em> which we can never explain usually do not know.</li>
+<li>More specific: The <strong>model</strong> <span class="math inline">\(f\)</span> could already be of a specific type, like <em>logistic regression</em>, a <em>decision tree</em> or other functional forms. As this need not be the <em>real</em> function we may call it <em>assumed model</em> <span class="math inline">\(\hat f\)</span> For example a linear model <span class="math inline">\(\hat f(X_1, \dots, X_m) = \beta_0 + \beta_1 X_1 + \dots + \beta_m X_m + \varepsilon\)</span>. Now, the model has specified parameters which values are unknown.</li>
+</ol>
+</section>
+<section id="more-specific-fitted-model" class="slide level2 smaller">
+<h2>More specific: Fitted model</h2>
+<ol start="3" type="1">
+<li>Fitted model: When we have a data set with values for <span class="math inline">\(Y, X_1, \dots, X_m\)</span> we can fit values for the parameters <span class="math inline">\(\hat\beta_0, \dots, \hat\beta_m\)</span> to the data. This is the <em>fitted model</em> <span class="math inline">\(\hat f\)</span>. This is called parameter estimation: We estimate <span class="math inline">\(\hat\beta_0, \dots, \hat\beta_m\)</span> with the hope that they match the <em>real</em> values <span class="math inline">\(\beta_0, \dots, \beta_m\)</span> and that the linear model <span class="math inline">\(\hat f\)</span> matches the <em>real</em> function <span class="math inline">\(f\)</span>.</li>
+<li>Now we could specify further to fit a specific parameterized model with a specific algorithm, and a specific set of hyperparameters, and maybe more …</li>
+</ol>
+<p>Sometimes model means only a certain aspect of all these, for example the <em>formula</em> like <code>sex ~ bill_length_mm + bill_depth_mm + flipper_length_mm + body_mass_g + species + island</code></p>
+<div class="fragment">
+<p><span style="color:blue;">Take away:</span> “Model” can mean things with very different granularity. That is OK because they are all related and all fit the definition of being a <strong>simplified representation of reality</strong>.</p>
+<p><span style="color:blue;"><strong>Be prepared to specify what you mean when you are talking about a model.</strong></span></p>
 
 <div class="quarto-auto-generated-content">
 <p><img src="img/ConstructorUniversity.png" class="slide-logo"></p>
@@ -871,7 +1552,7 @@ The p-value is the probability of obtaining test results at least as extreme as 
 </div>
 </div>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn3"><p>From the American Statistical Association (ASA) 2016</p></li><li id="fn4"><p>From the American Statistical Association (ASA) 2019</p></li></ol></aside></section></section>
+</section></section>
 
     </div>
   </div>
@@ -906,7 +1587,7 @@ The p-value is the probability of obtaining test results at least as extreme as 
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,

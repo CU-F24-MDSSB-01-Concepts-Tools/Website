@@ -887,7 +887,7 @@
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Developing Schedule\n\n\n\n\n\nThe schedule is tentative it will be continuously updated also with readings/viewings, homework and learnings.\nImportant Links:\nGitHub organization: CU-F24-MDSSB-01-Concepts-Tools\nCourse-Organization-Resources (private repository, you need to be logged in on GitHub)\n\n\n\n\nTabular Schedule\nDate format MM-DD (month-day) (09-05 is Sep, 5)\nData Science Tools is Thursdays. First meeting: 09-05.\nData Science Concepts is Mondays. First meeting: 09-09.\n\n\n\nWeek\nDates Concepts\nConcepts Topics\nDates Tools\nTools Topic\n\n\n\n\n1\n09-02\nNo class, Academic Opening\n09-05\nR\n\n\n2\n09-09\nW#1 What is Data Science?  Achievements W# 1\n09-12\nR\n\n\n3\n09-16\nW#2 Data Visualization, Data Formats Slides Part 1 Slides Part 2  Achievements W# 2\n09-19\nR\n\n\n4\n09-23\nW#3 Recap: Toolkit  Data Import, Data Wrangling  Achievements W# 3\n09-26\nR\n\n\n5\n09-30\nW#4 Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming  Achievements W# 4\n10-03\nno class, Public Holiday\n\n\n6\n10-07\nW#5 Descriptive Statistics, Exploratory Data Analysis  Achievements W# 5\n10-10\nR\n\n\n7\n10-14\nW#6 Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus  Achievements W# 6\n10-17\nR\n\n\n8\n10-21\nW#07 Models in Science, Linear Model, Interaction Effects, Nonlinear Models  Achievements W# 7\n10-24\npython\n\n\n9\n10-28\nW#08 Predicting Categorical Variables, Logistic Regression, Classification Problems  Achievements W# 8\n10-31\nno class, Public Holiday\n\n\n10\n11-04\nYour Data Science Project, Hypothesis Testing, p-value, Decision Trees, RMSE, Overfitting\n11-07\npython\n\n\n11\n11-11\nBootstrapping, Cross validation, Clustering\n11-14\npython\n\n\n12\n11-18\nCollaborative Git, Data Science Projects, Probability\n11-21\npython\n\n\n13\n11-25\nYour data science questions; Random Variables, Probability Distributions, Central Limit Theorem\n11-28\npython / R\n\n\n14\n12-02\nCourse Review, Exam Preparation\n12-05\nstudent project presentations\n\n\nExam\n12-16\nThe exam takes place as an online exam  Monday, Dec 16 09:00-11:00\n\n\n\n\nProject\n\nDeadline for submission of the Final Project is Saturday, Dec 21 (see academic calendar)\n12-21\n\n\n\n\n\n2025\n\n\n\n\n2nd  Exam\n\nThose who fail the exam and those who are officially excused can sit in the second exam end of January 2025.  To be scheduled by the admin.\n\n\n\n\n\n\nThose who fail to deliver their final project or are officially excused must deliver it by January 31, 2025 (see academic calendar)\n\n\n\n\n\nFinale note on assessment scheduling: This semester provides two options to pass. The final 3rd attempt (in particular the exam) is offered again in the fall semester 2025.\n\n\n1 Achievements W#1\nYou\n\nhave read the Syllabus and understood the course organization\nhave a running R with RStudio installation on you computer\nhave done the git-GitHub dance and know what the tools are in principle\nhave rendered quarto documents and understood its idea\nhave made your first steps with R\n\nAdditional reading:\n\nQuarto: Watch https://www.youtube.com/watch?v=_f3latmOhew from Mine Çetinkaya-Rundel (co-developer of quarto, R for Data Science, datasciencebox).\nR: The following sections in R for Data Science\n\nIntroduction\nWhole Game (the outline of the part)\n\n\n\n\n2 Achievements W#2\nYou\n\nhave understood the data science process, in particular you can describe with examples what is understood as data wrangling and data exploration, and you can describe two different purposes of data visualization in the data science process\nhave identified and can explain when a pie chart is a bad visualization (when the pieces do not add up to 100%) and when a truncated y-axis is a bad visualization (when it is used to make a small difference look big).\nhave understood the basic idea of the grammar of graphics and can explain what the role of a mapping and and geom is\nhave made a bar chart, a scatter plot, and a line plot with ggplot\nknow how many rows and columns an \\(m\\times n\\) data frame has\ncan explain the basic data types, in particular character, logical, and double\nknow what coercion of data is (what happens when different data types are combined in a vector)\nhave understood the concept of the tidy data format and can argue why a certain form of data representation is more or less tidy\nmade a data frame longer and wider\n\nAdditional reading:\n\nggplot: The following sections in R for Data Science\n\nCh 1: Data Visualization\nIf you want to go deeper already now, chapter Ch 9: Layers\n\n\n\n\n3 Achievements W#3\nYou\n\nhave read in a csv-file, you can interpret the output of column type guessing, and use it to adjust and correct it for your needs if necessary\ncan take a statement with a pipe operator and translate it into a nested function call without the pipe operator (and the other way round)\nyou have used the dplyr functions select, slice, and filter\nyou understood the concept of logical indexing, vectorized logical operation (in particular AND, OR, and NOT), and how it relates to filtering data\nyou know if R or python is 0- or 1-indexed and what this means\nyou have used the dplyr functions distinct, and arrange\nyou understood how you use mutate and summarize to gather with the .by = specification (or group_by) to create new variables and data frames with aggregated data\nyou know about the practical importance of the special data types factor and date\n\nAdditional reading:\nThe following sections in R for Data Science\n\nCh 3: Data transformation\nCh 5: Tidy Data\nCh 7: Data Import\n\n\n\n4 Achievements W#4\nYou\n\nyou know the difference between NaN and NA\nyou have used the dplyr functions left_join, and full_join to combine data frames\nyou know what is meant by primary and foreign key\nknow the difference between a vector (ordered elements, duplicates possible) and a set (no order, no duplicates) and have used the functions unique, union, intersect, and setdiff\ncan program a function with various arguments and default values\ncan program a function which does a shift and scale transformation to data\nknow about the value of vectorized functions for data operations\nhave used the concept of the function map (for iteration over values of a list or vector) and reduce (for aggregation over values of a list or vector)\n\nAdditional reading:\nSections in R for Data Science\n\nCh 19: Joins\nCh 25: Functions\nCh 26: Iteration\n\n\n\n5 Achievements W#5\nYou\n\ncan compute and interpret the mean, median, variance, and standard deviation of vector of numbers\ncan create and interpret histogram plots\ncan compute and interpret quantiles of a data set\ncan create and interpret boxplots\ncan compute and interpret the correlation between two vectors of numbers\nyou have done a first exploratory data analysis and have a first feeling of why it is not a fully standardized process\nyou can classify data science research questions according to the six types of questions of Leek and Peng (2015)\n\nAdditional reading:\nLeek, Jeffery T., and Peng, Roger D. 2015. “What Is the Question?” Science 347 (6228): 1314–15. https://doi.org/10.1126/science.aaa6146.\nRead the following sections in R for Data Science\n\nCh 10: Exploratory Data Analysis\n\n\n\n6 Achievements W#6\nYou\n\nyou can create and interpret a principal component analysis, in particular you can\n\nlook at the principle components,\nthe data in PCA coordinates, and\nthe explained variance of the principle components\n\nand relate them to each other\ncan handle computations with exponents and logarithms\nunderstood why logarithms appear mostly as the natural logarithm (with base \\(e = 2.718...\\)) or the logarithm with base 10\ncan interpret the numbers in a vector after a \\(\\log_{10}\\) transformation\ncan operationalize the concept of differentiation and integration of calculus to data science operations, e.g. with time series data:\n\nYou can visualize on paper the ideas that\n\nthe derivative represents the slope of a function at a certain \\(x\\)-value, and\nthe integral represents the area under the curve of a function from \\(x=0\\) up to a certain \\(x\\)-value.\n\nWith time series data you can compute the change and the cumulative sum of a variable over time.\n\nknow how the fundamental theorem of calculus relates the derivative and the integral of a function and how you can show it with data.\n\nAdditional reading:\nRead the following section in Introduction to Modern Statistics:\n\nCh 7: Linear regression with a single predictor\n\n\n\n7 Achievements W#7\nYou\n\ncan explain, and interpret the coefficients of a linear model\ncan define and fit a linear model (in R and/or python)\nknow which part of a linear model output relates to explanation and prediction\ncan explain what residuals are\nhave an idea what “All models are wrong, but some are useful” means\nknow the difference between the \\(\\beta\\)’s (population parameters which we do not know) and the \\(\\hat\\beta\\)’s (the estimated parameters from the data) and how this relates to a inferential research questions\nknow how the correlation of two variables relates to the slope of a linear model with one variable as predictor and the other as response variable (the slope is the correlation times the ratio of the standard deviations of the two variables)\nknow how to interpret the \\(R^2\\) of a linear model\nknow what dummy variables are and how many you need for a categorical variable with \\(k\\) levels\ncan interpret the coefficients of a linear model with dummy variables as main effects, in particular you\n\nknow what it means that the intercept is the mean of the reference category (the one which is not represented by a dummy variable)\nknow that the coefficient of a dummy variable is the difference of the mean of the category represented by the dummy variable and the mean of the reference category\n\ncan interpret the coefficients of interaction effects of dummy variables with a numerical variable\ncan draw example data points in 2-dimensions where a linear model is bad\ncan give an explanation where log-transforming the response variable for a linear model is a good idea\n\nRead the following section in Introduction to Modern Statistics:\n\nCh 8: Linear regression with multiple predictors\n\n\n\n8 Achievements W#8\nYou\n\nknow how to compute the odds and the log-odds of a probability and the other way round and how the range of theoretically possible values changes between the three ways to represent the same information\ncan visually sketch the logistic and the logit function within their ranges on the x-axis and y-axis\ncan explain the goal of logistic regression and the conceptual steps such that a linear model can be used\ncan distinguish the goals and mindsets of prediction and explanation and how a logistic regression or a linear model can be used for both\nknow how a threshold probability can be used to make a classifier for actual binary predictions (yes or no) from the predicted log-odds of a logistic regression (which can be transformed to odds or probabilities)\nknow what the four basic values of the confusion matrix of a classifier are (TP, FN, FP, TN)\ncan make sense of the various derived measures of a classifier like accuracy, sensitivity, specificity, precision, recall (you are not expected to memorize the exact definition you can look them up)\ncan explain why data is split into training and testing data and how this relates to the goals of prediction (but not to explanation)\ncan explain how a classifier can manage the trade-off between sensitivity and specificity from the ROC-curve (by changing the threshold probability)\ncan explain what the AUC of a ROC-curve is",
+    "text": "Developing Schedule\n\n\n\n\n\nThe schedule is tentative it will be continuously updated also with readings/viewings, homework and learnings.\nImportant Links:\nGitHub organization: CU-F24-MDSSB-01-Concepts-Tools\nCourse-Organization-Resources (private repository, you need to be logged in on GitHub)\n\n\n\n\nTabular Schedule\nDate format MM-DD (month-day) (09-05 is Sep, 5)\nData Science Tools is Thursdays. First meeting: 09-05.\nData Science Concepts is Mondays. First meeting: 09-09.\n\n\n\nWeek\nDates Concepts\nConcepts Topics\nDates Tools\nTools Topic\n\n\n\n\n1\n09-02\nNo class, Academic Opening\n09-05\nR\n\n\n2\n09-09\nW#1 What is Data Science?  Achievements W# 1\n09-12\nR\n\n\n3\n09-16\nW#2 Data Visualization, Data Formats Slides Part 1 Slides Part 2  Achievements W# 2\n09-19\nR\n\n\n4\n09-23\nW#3 Recap: Toolkit  Data Import, Data Wrangling  Achievements W# 3\n09-26\nR\n\n\n5\n09-30\nW#4 Relational Data, Math: Sets and Functions, Shift-Scale Transformation, Function Programming  Achievements W# 4\n10-03\nno class, Public Holiday\n\n\n6\n10-07\nW#5 Descriptive Statistics, Exploratory Data Analysis  Achievements W# 5\n10-10\nR\n\n\n7\n10-14\nW#6 Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus  Achievements W# 6\n10-17\nR\n\n\n8\n10-21\nW#07 Models in Science, Linear Model, Interaction Effects, Nonlinear Models  Achievements W# 7\n10-24\npython\n\n\n9\n10-28\nW#08 Predicting Categorical Variables, Logistic Regression, Classification Problems  Achievements W# 8\n10-31\nno class, Public Holiday\n\n\n10\n11-04\nFinal Projects Info  W#09 Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting\n11-07\npython\n\n\n11\n11-11\nBootstrapping, Cross validation, Clustering\n11-14\npython\n\n\n12\n11-18\nCollaborative Git, Data Science Projects, Probability\n11-21\npython\n\n\n13\n11-25\nYour data science questions; Random Variables, Probability Distributions, Central Limit Theorem\n11-28\npython / R\n\n\n14\n12-02\nCourse Review, Exam Preparation\n12-05\nstudent project presentations\n\n\nExam\n12-16\nThe exam takes place as an online exam  Monday, Dec 16 09:00-11:00\n\n\n\n\nProject\n\nDeadline for submission of the Final Project is Saturday, Dec 21 (see academic calendar)\n12-21\n\n\n\n\n\n2025\n\n\n\n\n2nd  Exam\n\nThose who fail the exam and those who are officially excused can sit in the second exam end of January 2025.  To be scheduled by the admin.\n\n\n\n\n\n\nThose who fail to deliver their final project or are officially excused must deliver it by January 31, 2025 (see academic calendar)\n\n\n\n\n\nFinale note on assessment scheduling: This semester provides two options to pass. The final 3rd attempt (in particular the exam) is offered again in the fall semester 2025.\n\n\n1 Achievements W#1\nYou\n\nhave read the Syllabus and understood the course organization\nhave a running R with RStudio installation on you computer\nhave done the git-GitHub dance and know what the tools are in principle\nhave rendered quarto documents and understood its idea\nhave made your first steps with R\n\nAdditional reading:\n\nQuarto: Watch https://www.youtube.com/watch?v=_f3latmOhew from Mine Çetinkaya-Rundel (co-developer of quarto, R for Data Science, datasciencebox).\nR: The following sections in R for Data Science\n\nIntroduction\nWhole Game (the outline of the part)\n\n\n\n\n2 Achievements W#2\nYou\n\nhave understood the data science process, in particular you can describe with examples what is understood as data wrangling and data exploration, and you can describe two different purposes of data visualization in the data science process\nhave identified and can explain when a pie chart is a bad visualization (when the pieces do not add up to 100%) and when a truncated y-axis is a bad visualization (when it is used to make a small difference look big).\nhave understood the basic idea of the grammar of graphics and can explain what the role of a mapping and and geom is\nhave made a bar chart, a scatter plot, and a line plot with ggplot\nknow how many rows and columns an \\(m\\times n\\) data frame has\ncan explain the basic data types, in particular character, logical, and double\nknow what coercion of data is (what happens when different data types are combined in a vector)\nhave understood the concept of the tidy data format and can argue why a certain form of data representation is more or less tidy\nmade a data frame longer and wider\n\nAdditional reading:\n\nggplot: The following sections in R for Data Science\n\nCh 1: Data Visualization\nIf you want to go deeper already now, chapter Ch 9: Layers\n\n\n\n\n3 Achievements W#3\nYou\n\nhave read in a csv-file, you can interpret the output of column type guessing, and use it to adjust and correct it for your needs if necessary\ncan take a statement with a pipe operator and translate it into a nested function call without the pipe operator (and the other way round)\nyou have used the dplyr functions select, slice, and filter\nyou understood the concept of logical indexing, vectorized logical operation (in particular AND, OR, and NOT), and how it relates to filtering data\nyou know if R or python is 0- or 1-indexed and what this means\nyou have used the dplyr functions distinct, and arrange\nyou understood how you use mutate and summarize to gather with the .by = specification (or group_by) to create new variables and data frames with aggregated data\nyou know about the practical importance of the special data types factor and date\n\nAdditional reading:\nThe following sections in R for Data Science\n\nCh 3: Data transformation\nCh 5: Tidy Data\nCh 7: Data Import\n\n\n\n4 Achievements W#4\nYou\n\nyou know the difference between NaN and NA\nyou have used the dplyr functions left_join, and full_join to combine data frames\nyou know what is meant by primary and foreign key\nknow the difference between a vector (ordered elements, duplicates possible) and a set (no order, no duplicates) and have used the functions unique, union, intersect, and setdiff\ncan program a function with various arguments and default values\ncan program a function which does a shift and scale transformation to data\nknow about the value of vectorized functions for data operations\nhave used the concept of the function map (for iteration over values of a list or vector) and reduce (for aggregation over values of a list or vector)\n\nAdditional reading:\nSections in R for Data Science\n\nCh 19: Joins\nCh 25: Functions\nCh 26: Iteration\n\n\n\n5 Achievements W#5\nYou\n\ncan compute and interpret the mean, median, variance, and standard deviation of vector of numbers\ncan create and interpret histogram plots\ncan compute and interpret quantiles of a data set\ncan create and interpret boxplots\ncan compute and interpret the correlation between two vectors of numbers\nyou have done a first exploratory data analysis and have a first feeling of why it is not a fully standardized process\nyou can classify data science research questions according to the six types of questions of Leek and Peng (2015)\n\nAdditional reading:\nLeek, Jeffery T., and Peng, Roger D. 2015. “What Is the Question?” Science 347 (6228): 1314–15. https://doi.org/10.1126/science.aaa6146.\nRead the following sections in R for Data Science\n\nCh 10: Exploratory Data Analysis\n\n\n\n6 Achievements W#6\nYou\n\nyou can create and interpret a principal component analysis, in particular you can\n\nlook at the principle components,\nthe data in PCA coordinates, and\nthe explained variance of the principle components\n\nand relate them to each other\ncan handle computations with exponents and logarithms\nunderstood why logarithms appear mostly as the natural logarithm (with base \\(e = 2.718...\\)) or the logarithm with base 10\ncan interpret the numbers in a vector after a \\(\\log_{10}\\) transformation\ncan operationalize the concept of differentiation and integration of calculus to data science operations, e.g. with time series data:\n\nYou can visualize on paper the ideas that\n\nthe derivative represents the slope of a function at a certain \\(x\\)-value, and\nthe integral represents the area under the curve of a function from \\(x=0\\) up to a certain \\(x\\)-value.\n\nWith time series data you can compute the change and the cumulative sum of a variable over time.\n\nknow how the fundamental theorem of calculus relates the derivative and the integral of a function and how you can show it with data.\n\nAdditional reading:\nRead the following section in Introduction to Modern Statistics:\n\nCh 7: Linear regression with a single predictor\n\n\n\n7 Achievements W#7\nYou\n\ncan explain, and interpret the coefficients of a linear model\ncan define and fit a linear model (in R and/or python)\nknow which part of a linear model output relates to explanation and prediction\ncan explain what residuals are\nhave an idea what “All models are wrong, but some are useful” means\nknow the difference between the \\(\\beta\\)’s (population parameters which we do not know) and the \\(\\hat\\beta\\)’s (the estimated parameters from the data) and how this relates to a inferential research questions\nknow how the correlation of two variables relates to the slope of a linear model with one variable as predictor and the other as response variable (the slope is the correlation times the ratio of the standard deviations of the two variables)\nknow how to interpret the \\(R^2\\) of a linear model\nknow what dummy variables are and how many you need for a categorical variable with \\(k\\) levels\ncan interpret the coefficients of a linear model with dummy variables as main effects, in particular you\n\nknow what it means that the intercept is the mean of the reference category (the one which is not represented by a dummy variable)\nknow that the coefficient of a dummy variable is the difference of the mean of the category represented by the dummy variable and the mean of the reference category\n\ncan interpret the coefficients of interaction effects of dummy variables with a numerical variable\ncan draw example data points in 2-dimensions where a linear model is bad\ncan give an explanation where log-transforming the response variable for a linear model is a good idea\n\nRead the following section in Introduction to Modern Statistics:\n\nCh 8: Linear regression with multiple predictors\n\n\n\n8 Achievements W#8\nYou\n\nknow how to compute the odds and the log-odds of a probability and the other way round and how the range of theoretically possible values changes between the three ways to represent the same information\ncan visually sketch the logistic and the logit function within their ranges on the x-axis and y-axis\ncan explain the goal of logistic regression and the conceptual steps such that a linear model can be used\ncan distinguish the goals and mindsets of prediction and explanation and how a logistic regression or a linear model can be used for both\nknow how a threshold probability can be used to make a classifier for actual binary predictions (yes or no) from the predicted log-odds of a logistic regression (which can be transformed to odds or probabilities)\nknow what the four basic values of the confusion matrix of a classifier are (TP, FN, FP, TN)\ncan make sense of the various derived measures of a classifier like accuracy, sensitivity, specificity, precision, recall (you are not expected to memorize the exact definition you can look them up)\ncan explain why data is split into training and testing data and how this relates to the goals of prediction (but not to explanation)\ncan explain how a classifier can manage the trade-off between sensitivity and specificity from the ROC-curve (by changing the threshold probability)\ncan explain what the AUC of a ROC-curve is",
     "crumbs": [
       "Syllabus",
       "**Schedule**"
@@ -2515,6 +2515,20 @@
     "text": "Students evaluation of teaching (SET)\n\nFill out the survey for this course (you have received access by email)\n\nIt is anonymous, we will not see personalized evaluations\n\nWe, the instructors, are very interested to read your feedback\n\nAll 3 instructors will share the feedback\n\n\n\n\n\n\nCU-F23-MDSSB-DSCO-02: Data Science Concepts"
   },
   {
+    "objectID": "W10.html#what-is-a-matrix",
+    "href": "W10.html#what-is-a-matrix",
+    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "section": "What is a matrix?",
+    "text": "What is a matrix?\n\n\n\nA matrix is a 2-dimensional array of numbers with rows and columns.\nThe numbers in it are called its elements.\n\nIsn’t that a data frame?\n\nNo, a dataframe is more general. In a matrix, every element has the same basic data type!\nIn R, a matrix is a vector plus some specification of the dimensions.\n\n(A matrix can also be of characters or logicals, it can also have row- and column-names)\n\n\n\nmatrix(data = 1:6, nrow = 2)\n\n\n\n     [,1] [,2] [,3]\n[1,]    1    3    5\n[2,]    2    4    6\n\n\n\nmatrix(data = 1:6, ncol = 2)\n\n\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n\n\nmatrix(data = 1:6, nrow = 3)\n\n\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n\n\nmatrix(data = 1:6, nrow = 3, byrow = TRUE)\n\n\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    3    4\n[3,]    5    6"
+  },
+  {
+    "objectID": "W10.html#matrices-in-mathematics",
+    "href": "W10.html#matrices-in-mathematics",
+    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "section": "Matrices in Mathematics",
+    "text": "Matrices in Mathematics\n\nAddition and subtraction of matrices is done element-wise.\nMultiplication of a matrix with a scalar is done element-wise.\nMultiplication of two matrices is done row times column.\nTransposition of a matrix is done by flipping the matrix over its diagonal."
+  },
+  {
     "objectID": "W10.html#organ-donors",
     "href": "W10.html#organ-donors",
     "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
@@ -2526,7 +2540,7 @@
     "href": "W10.html#parameter-vs.-statistic-hypotheses",
     "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
     "section": "Parameter vs. statistic, Hypotheses",
-    "text": "Parameter vs. statistic, Hypotheses\n\n\nData\n\nlibrary(tidyverse)\norgan_donor &lt;- tibble(outcome = \n c(rep(\"complication\", 3), \n   rep(\"no complication\", 59)))\norgan_donor\n\n# A tibble: 62 × 1\n   outcome        \n   &lt;chr&gt;          \n 1 complication   \n 2 complication   \n 3 complication   \n 4 no complication\n 5 no complication\n 6 no complication\n 7 no complication\n 8 no complication\n 9 no complication\n10 no complication\n# ℹ 52 more rows\n\n\n\norgan_donor |&gt;\n  count(outcome)\n\n# A tibble: 2 × 2\n  outcome             n\n  &lt;chr&gt;           &lt;int&gt;\n1 complication        3\n2 no complication    59\n\n\n\nIn a test, a parameter is the “true” value of interest.\nWe typically estimate the parameter using a sample statistic as a point estimate.\n\\(p\\): true rate of complication, here 10%\n\\(\\hat{p}\\): rate of complication in the sample = \\(\\frac{3}{62}\\) = 0.048\nTwo claims:\nNull hypothesis \\(H_0\\): There is nothing going on\nComplication rate for this consultant is no different than the US average of 10%\nAlternative hypothesis \\(H_A\\): There is something going on\nComplication rate for this consultant is lower than the US average of 10%"
+    "text": "Parameter vs. statistic, Hypotheses\n\n\nData\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\norgan_donor &lt;- tibble(outcome = \n c(rep(\"complication\", 3), \n   rep(\"no complication\", 59)))\norgan_donor\n\n# A tibble: 62 × 1\n   outcome        \n   &lt;chr&gt;          \n 1 complication   \n 2 complication   \n 3 complication   \n 4 no complication\n 5 no complication\n 6 no complication\n 7 no complication\n 8 no complication\n 9 no complication\n10 no complication\n# ℹ 52 more rows\n\n\n\norgan_donor |&gt;\n  count(outcome)\n\n# A tibble: 2 × 2\n  outcome             n\n  &lt;chr&gt;           &lt;int&gt;\n1 complication        3\n2 no complication    59\n\n\n\nIn a test, a parameter is the “true” value of interest.\nWe typically estimate the parameter using a sample statistic as a point estimate.\n\\(p\\): true rate of complication, here 10%\n\\(\\hat{p}\\): rate of complication in the sample = \\(\\frac{3}{62}\\) = 0.048\nTwo claims:\nNull hypothesis \\(H_0\\): There is nothing going on\nComplication rate for this consultant is no different than the US average of 10%\nAlternative hypothesis \\(H_A\\): There is something going on\nComplication rate for this consultant is lower than the US average of 10%"
   },
   {
     "objectID": "W10.html#hypothesis-testing-as-a-court-trial",
@@ -2575,7 +2589,7 @@
     "href": "W10.html#automating-with-tidymodels",
     "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
     "section": "Automating with tidymodels1",
-    "text": "Automating with tidymodels1\n\n\n\norgan_donor\n\n# A tibble: 62 × 1\n   outcome        \n   &lt;chr&gt;          \n 1 complication   \n 2 complication   \n 3 complication   \n 4 no complication\n 5 no complication\n 6 no complication\n 7 no complication\n 8 no complication\n 9 no complication\n10 no complication\n# ℹ 52 more rows\n\n\n\n\nlibrary(tidymodels)\nset.seed(10)\nnull_dist &lt;- organ_donor |&gt;\n  specify(response = outcome, success = \"complication\") |&gt;\n  hypothesize(null = \"point\", \n              p = c(\"complication\" = 0.10, \"no complication\" = 0.90)) |&gt; \n  generate(reps = 100, type = \"draw\") |&gt; \n  calculate(stat = \"prop\")\nnull_dist\n\nResponse: outcome (factor)\nNull Hypothesis: point\n# A tibble: 100 × 2\n   replicate   stat\n       &lt;int&gt;  &lt;dbl&gt;\n 1         1 0.0323\n 2         2 0.0645\n 3         3 0.0968\n 4         4 0.0161\n 5         5 0.161 \n 6         6 0.0968\n 7         7 0.0645\n 8         8 0.129 \n 9         9 0.161 \n10        10 0.0968\n# ℹ 90 more rows\n\n\n\nOf course, you can also do it in your own way without packages."
+    "text": "Automating with tidymodels1\n\n\n\norgan_donor\n\n# A tibble: 62 × 1\n   outcome        \n   &lt;chr&gt;          \n 1 complication   \n 2 complication   \n 3 complication   \n 4 no complication\n 5 no complication\n 6 no complication\n 7 no complication\n 8 no complication\n 9 no complication\n10 no complication\n# ℹ 52 more rows\n\n\n\n\nlibrary(tidymodels)\n\n── Attaching packages ────────────────────────────────────── tidymodels 1.2.0 ──\n\n\n✔ broom        1.0.5     ✔ rsample      1.2.1\n✔ dials        1.3.0     ✔ tune         1.2.1\n✔ infer        1.0.7     ✔ workflows    1.1.4\n✔ modeldata    1.3.0     ✔ workflowsets 1.1.0\n✔ parsnip      1.2.1     ✔ yardstick    1.3.1\n✔ recipes      1.1.0     \n\n\n── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──\n✖ scales::discard() masks purrr::discard()\n✖ dplyr::filter()   masks stats::filter()\n✖ recipes::fixed()  masks stringr::fixed()\n✖ dplyr::lag()      masks stats::lag()\n✖ yardstick::spec() masks readr::spec()\n✖ recipes::step()   masks stats::step()\n• Dig deeper into tidy modeling with R at https://www.tmwr.org\n\nset.seed(10)\nnull_dist &lt;- organ_donor |&gt;\n  specify(response = outcome, success = \"complication\") |&gt;\n  hypothesize(null = \"point\", \n              p = c(\"complication\" = 0.10, \"no complication\" = 0.90)) |&gt; \n  generate(reps = 100, type = \"draw\") |&gt; \n  calculate(stat = \"prop\")\nnull_dist\n\nResponse: outcome (factor)\nNull Hypothesis: point\n# A tibble: 100 × 2\n   replicate   stat\n       &lt;int&gt;  &lt;dbl&gt;\n 1         1 0.0323\n 2         2 0.0645\n 3         3 0.0968\n 4         4 0.0161\n 5         5 0.161 \n 6         6 0.0968\n 7         7 0.0645\n 8         8 0.129 \n 9         9 0.161 \n10        10 0.0968\n# ℹ 90 more rows\n\n\n\nOf course, you can also do it in your own way without packages."
   },
   {
     "objectID": "W10.html#visualizing-the-null-distribution",
@@ -2610,7 +2624,7 @@
     "href": "W10.html#simulations-is-not-sufficient",
     "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
     "section": "100 simulations is not sufficient",
-    "text": "100 simulations is not sufficient\n\nWe simulate 15,000 times to get an accurate distribution.\n\n\nnull_dist &lt;- organ_donor |&gt;\n  specify(response = outcome, success = \"complication\") |&gt;\n  hypothesize(null = \"point\", \n              p = c(\"complication\" = 0.10, \"no complication\" = 0.90)) |&gt; \n  generate(reps = 15000, type = \"simulate\") |&gt; \n  calculate(stat = \"prop\")\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.005) +\n  geom_vline(xintercept = 3/62, color = \"red\")"
+    "text": "100 simulations is not sufficient\n\nWe simulate 15,000 times to get an accurate distribution.\n\n\nnull_dist &lt;- organ_donor |&gt;\n  specify(response = outcome, success = \"complication\") |&gt;\n  hypothesize(null = \"point\", \n              p = c(\"complication\" = 0.10, \"no complication\" = 0.90)) |&gt; \n  generate(reps = 15000, type = \"simulate\") |&gt; \n  calculate(stat = \"prop\")\n\nThe `\"simulate\"` generation type has been renamed to `\"draw\"`. Use `type =\n\"draw\"` instead to quiet this message.\n\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.005) +\n  geom_vline(xintercept = 3/62, color = \"red\")"
   },
   {
     "objectID": "W10.html#our-more-robust-p-value",
@@ -2624,7 +2638,7 @@
     "href": "W10.html#p-value-in-model-outputs",
     "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
     "section": "p-value in model outputs",
-    "text": "p-value in model outputs\n\n\nModel output for a linear model with palmer penguins.\n\nlinear_reg() |&gt; set_engine(\"lm\") |&gt; \n    fit(bill_length_mm ~ bill_depth_mm, data = penguins) |&gt; tidy()\n\n# A tibble: 2 × 5\n  term          estimate std.error statistic  p.value\n  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)     55.1       2.52      21.9  6.91e-67\n2 bill_depth_mm   -0.650     0.146     -4.46 1.12e- 5\n\n\n\nModel output for a logistic regression model with email from openintro\n\nlibrary(openintro)\nlogistic_reg() |&gt;  set_engine(\"glm\") |&gt;\n  fit(spam ~ from + cc, data = email, family = \"binomial\") |&gt; tidy()\n\n# A tibble: 3 × 5\n  term         estimate std.error statistic p.value\n  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;\n1 (Intercept)  13.6      309.        0.0439   0.965\n2 from1       -15.8      309.       -0.0513   0.959\n3 cc            0.00423    0.0193    0.220    0.826\n\n\n\nWhat do the p-values for coefficients mean? What is the null hypothesis?\n\nNull-Hypothesis: No relationship predictor and response. Coefficient could be zero.\nAlternative Hypothesis: The coefficient is away from zero.\nSmall p-value: evidence for rejecting the hypothesis that there is no effect.\nTechnically: The statistic (which we do not treat now) is sufficiently away from zero."
+    "text": "p-value in model outputs\n\n\nModel output for a linear model with palmer penguins.\n\nlinear_reg() |&gt; set_engine(\"lm\") |&gt; \n    fit(bill_length_mm ~ bill_depth_mm, data = penguins) |&gt; tidy()\n\n# A tibble: 2 × 5\n  term          estimate std.error statistic  p.value\n  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)     55.1       2.52      21.9  6.91e-67\n2 bill_depth_mm   -0.650     0.146     -4.46 1.12e- 5\n\n\n\nModel output for a logistic regression model with email from openintro\n\nlibrary(openintro)\n\nLoading required package: airports\n\n\nLoading required package: cherryblossom\n\n\nLoading required package: usdata\n\n\n\nAttaching package: 'openintro'\n\n\nThe following object is masked from 'package:modeldata':\n\n    ames\n\nlogistic_reg() |&gt;  set_engine(\"glm\") |&gt;\n  fit(spam ~ from + cc, data = email, family = \"binomial\") |&gt; tidy()\n\n# A tibble: 3 × 5\n  term         estimate std.error statistic p.value\n  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;\n1 (Intercept)  13.6      309.        0.0439   0.965\n2 from1       -15.8      309.       -0.0513   0.959\n3 cc            0.00423    0.0193    0.220    0.826\n\n\n\nWhat do the p-values for coefficients mean? What is the null hypothesis?\n\nNull-Hypothesis: No relationship predictor and response. Coefficient could be zero.\nAlternative Hypothesis: The coefficient is away from zero.\nSmall p-value: evidence for rejecting the hypothesis that there is no effect.\nTechnically: The statistic (which we do not treat now) is sufficiently away from zero."
   },
   {
     "objectID": "W10.html#xkcd-on-p-values",
@@ -2641,186 +2655,11 @@
     "text": "p-value misinterpretation\np-values do not measure1\n\nthe probability that the studied hypothesis is true\nthe probability that the data were produced by random chance alone\nthe size of an effect\nthe importance of a result” or “evidence regarding a model or hypothesis” (it is only against the null hypothesis).\n\n\nCorrect explanation:\nThe p-value is the probability of obtaining test results at least as extreme as the result actually observed, under the assumption that the null hypothesis is correct.\np-values and significance tests, when properly applied and interpreted, increase the rigor of the conclusions drawn from data.2\n\nFrom the American Statistical Association (ASA) 2016From the American Statistical Association (ASA) 2019"
   },
   {
-    "objectID": "W10.html#purpose-of-the-section",
-    "href": "W10.html#purpose-of-the-section",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Purpose of the section",
-    "text": "Purpose of the section\n\nGo again through the modeling workflow (with tidymodels) and see that large parts are identical\nLook again at the coefficients of a logistic regression model\nLearn the basic idea of a decision tree (you will not learn the details here)\nDo the classification with both models and compare the confusion matrices"
-  },
-  {
-    "objectID": "W10.html#specify-recipe-and-models",
-    "href": "W10.html#specify-recipe-and-models",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Specify recipe and models",
-    "text": "Specify recipe and models\nFor both logistic regression and decision tree:\n\nlibrary(tidymodels)\nlibrary(palmerpenguins)\npeng_recipe &lt;- recipe(sex ~ ., data = penguins) |&gt; \n step_rm(year)\n\n\n\nWe specify a recipe to predict sex with all available variables in penguins\n\nTypically, more pre-processing steps are specified here, but we are mostly fine\n\n\n\n\n\n\nLogistic Regression\n\npeng_logreg &lt;- logistic_reg() |&gt;\n set_engine(\"glm\")\n\npeng_logreg specifies to fit with glm (generalized linear model from base R)\n\nDecision Tree\n\npeng_tree &lt;- decision_tree() |&gt;\n set_engine(\"rpart\") |&gt;\n set_mode(\"classification\")\n\npeng_tree specifies to fit for classification with the rpart1 as engine.\n\n\nrpart is a package for recursive partitioning and regression trees. Different decision tree procedures are subsumed as classification and regression trees (CART)"
-  },
-  {
-    "objectID": "W10.html#split-and-fit",
-    "href": "W10.html#split-and-fit",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Split and fit",
-    "text": "Split and fit\nFor logistic regression and decision tree:\nSplit into test and training data\n\nset.seed(1)\npenguins_split &lt;- initial_split(penguins, prop = 0.7, strata = sex)\npeng_train &lt;- training(penguins_split)\npeng_test &lt;- testing(penguins_split)\npeng_workflow &lt;- workflow() |&gt; add_recipe(peng_recipe)\n\n\n\n\nLogistic Regression\n\npeng_logreg_fit &lt;- peng_workflow |&gt; \n add_model(peng_logreg) |&gt; \n fit(data = peng_train)\n\n\nDecision Tree\n\npeng_tree_fit &lt;- peng_workflow |&gt; \n add_model(peng_tree) |&gt; \n fit(data = peng_train)"
-  },
-  {
-    "objectID": "W10.html#look-at-fitted-logistic-regression",
-    "href": "W10.html#look-at-fitted-logistic-regression",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Look at fitted logistic regression",
-    "text": "Look at fitted logistic regression\n\n\n\npeng_logreg_fit |&gt; tidy()\n\n# A tibble: 9 × 5\n  term               estimate std.error statistic      p.value\n  &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;\n1 (Intercept)       -90.4      16.7        -5.41  0.0000000632\n2 speciesChinstrap   -6.06      1.90       -3.19  0.00142     \n3 speciesGentoo      -8.65      3.49       -2.48  0.0132      \n4 islandDream         0.752     1.15        0.656 0.512       \n5 islandTorgersen     0.380     1.13        0.335 0.737       \n6 bill_length_mm      0.532     0.150       3.56  0.000378    \n7 bill_depth_mm       1.79      0.456       3.93  0.0000866   \n8 flipper_length_mm   0.0552    0.0620      0.891 0.373       \n9 body_mass_g         0.00693   0.00162     4.27  0.0000193   \n\n\n\n\nWhat do the categorical predictors tell us? Which are signigficant?\nWhat do the numerical predictors tell us? Which are signigficant?\nWhy is the coefficient for body_mass_g so small, but highly significant?\n\n\n\nCategorical predictors: We have 3 species, 3 island. So, we see 4 new variables, 2 for species and 2 for island (the third is the reference category). Species are significant (p &lt; 0.05), but islands not.\nNumerical predictors: flipper_length_mm is insignificant, though its coefficient is larger than for body_mass_g. Reason: values of body_mass_g are larger than those of flipper_length_mm. Body mass differs by much more grams than flipper length differs by millimeters."
-  },
-  {
-    "objectID": "W10.html#what-is-a-decision-tree",
-    "href": "W10.html#what-is-a-decision-tree",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "What is a decision tree?",
-    "text": "What is a decision tree?\n\npeng_tree_fit\n\n══ Workflow [trained] ══════════════════════════════════════════════════════════\nPreprocessor: Recipe\nModel: decision_tree()\n\n── Preprocessor ────────────────────────────────────────────────────────────────\n1 Recipe Step\n\n• step_rm()\n\n── Model ───────────────────────────────────────────────────────────────────────\nn=234 (6 observations deleted due to missingness)\n\nnode), split, n, loss, yval, (yprob)\n      * denotes terminal node\n\n 1) root 234 117 female (0.50000000 0.50000000)  \n   2) bill_length_mm&lt; 48.15 166  57 female (0.65662651 0.34337349)  \n     4) bill_depth_mm&lt; 18.05 103  14 female (0.86407767 0.13592233)  \n       8) body_mass_g&lt; 4987.5 88   4 female (0.95454545 0.04545455) *\n       9) body_mass_g&gt;=4987.5 15   5 male (0.33333333 0.66666667) *\n     5) bill_depth_mm&gt;=18.05 63  20 male (0.31746032 0.68253968)  \n      10) body_mass_g&lt; 3875 29  10 female (0.65517241 0.34482759)  \n        20) flipper_length_mm&lt; 190.5 18   3 female (0.83333333 0.16666667) *\n        21) flipper_length_mm&gt;=190.5 11   4 male (0.36363636 0.63636364) *\n      11) body_mass_g&gt;=3875 34   1 male (0.02941176 0.97058824) *\n   3) bill_length_mm&gt;=48.15 68   8 male (0.11764706 0.88235294)  \n     6) body_mass_g&lt; 5175 35   8 male (0.22857143 0.77142857)  \n      12) bill_depth_mm&lt; 18 9   3 female (0.66666667 0.33333333) *\n      13) bill_depth_mm&gt;=18 26   2 male (0.07692308 0.92307692) *\n     7) body_mass_g&gt;=5175 33   0 male (0.00000000 1.00000000) *\n\n\n\nA sequence of rules for yes/no decisions\nSelects variables and thresholds which separate the data to predict (here sex) best\nFurther details are not the scope of this course"
-  },
-  {
-    "objectID": "W10.html#show-rules",
-    "href": "W10.html#show-rules",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Show rules",
-    "text": "Show rules\nWe “dig out” the original fitted rpart-object from the workflow-object with peng_tree_fit$fit$fit$fit and plot it:\n\nlibrary(rpart.plot)\nrpart.rules(peng_tree_fit$fit$fit$fit, roundint=FALSE)\n\n  ..y                                                                                                 \n 0.05 when bill_length_mm &lt;  48 & body_mass_g &lt;  4988 & bill_depth_mm &lt;  18                           \n 0.17 when bill_length_mm &lt;  48 & body_mass_g &lt;  3875 & bill_depth_mm &gt;= 18 & flipper_length_mm &lt;  191\n 0.33 when bill_length_mm &gt;= 48 & body_mass_g &lt;  5175 & bill_depth_mm &lt;  18                           \n 0.64 when bill_length_mm &lt;  48 & body_mass_g &lt;  3875 & bill_depth_mm &gt;= 18 & flipper_length_mm &gt;= 191\n 0.67 when bill_length_mm &lt;  48 & body_mass_g &gt;= 4988 & bill_depth_mm &lt;  18                           \n 0.92 when bill_length_mm &gt;= 48 & body_mass_g &lt;  5175 & bill_depth_mm &gt;= 18                           \n 0.97 when bill_length_mm &lt;  48 & body_mass_g &gt;= 3875 & bill_depth_mm &gt;= 18                           \n 1.00 when bill_length_mm &gt;= 48 & body_mass_g &gt;= 5175                                                 \n\n\n\nThe first three rules would predict female for all observations\nThe last five rules would predict male for all observations\n\nThe order of male and female is because sex is a factor with the first level female and the second level male. The probabilities in front of the rule-text are for the second level: male."
-  },
-  {
-    "objectID": "W10.html#visualize-tree",
-    "href": "W10.html#visualize-tree",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Visualize tree",
-    "text": "Visualize tree\n\nlibrary(rpart.plot)\nrpart.plot(peng_tree_fit$fit$fit$fit, \n           roundint=FALSE, tweak=1.5)\n\n\nHow to read?\n\nThe percentage is the fraction of the total cases in this group\nThe probability-number is the fraction of observations which are male in the group\nmale of female and color would match the predicted outcome at this decision node"
-  },
-  {
-    "objectID": "W10.html#make-predictions-for-test-data",
-    "href": "W10.html#make-predictions-for-test-data",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Make predictions for test data",
-    "text": "Make predictions for test data\n\n\n\npeng_logreg_pred &lt;- \n predict(peng_logreg_fit, peng_test) |&gt; \n bind_cols(peng_test) \npeng_logreg_pred |&gt; \n conf_mat(truth = sex, estimate = .pred_class)\n\n          Truth\nPrediction female male\n    female     46   10\n    male        2   41\n\n\n\n\npeng_tree_pred &lt;- \n predict(peng_tree_fit, peng_test) |&gt; \n bind_cols(peng_test)\npeng_tree_pred |&gt; \n conf_mat(truth = sex, estimate = .pred_class)\n\n          Truth\nPrediction female male\n    female     43   12\n    male        5   39\n\n\n\n\nThe logistic regression has more correct predictions.\nWarning: The function conf_mat (from yardstick of tidymodels) shows the transposed confusion matrix compared with Wikipedia:Confusion Matrix. In conf_mat, the true conditions are in columns. The wikipedia convention is that columns are the predicted conditions."
-  },
-  {
-    "objectID": "W10.html#model-in-statistical-learning",
-    "href": "W10.html#model-in-statistical-learning",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "“Model” in Statistical Learning",
-    "text": "“Model” in Statistical Learning\nWe already had the difference between variable-based and agent-based models in earlier lectures.\nBut even in the variable-based model setting of statistical learning, the term model can be more or less abstract:\n\nVery general: \\(Y = f(X_1, \\dots, X_m) + \\varepsilon\\) where \\(Y\\) is the response variable and \\(X_i\\) are features which we put in our model: the abstract and unknown function \\(f\\). \\(\\varepsilon\\) is the error which can never explain and which we also usually do not know.\nMore specific: The model \\(f\\) could already be of a specific type, like linear regression, logistic regression, or a decision tree or other functional forms. As this need not be the real function we may call it assumed model \\(\\hat f\\) For example a linear model \\(\\hat f(X_1, \\dots, X_m) = \\beta_0 + \\beta_1 X_1 + \\dots + \\beta_m X_m + \\varepsilon\\). Now, the model has specified parameters which values are unknown."
-  },
-  {
-    "objectID": "W10.html#more-specific-fitted-model",
-    "href": "W10.html#more-specific-fitted-model",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "More specific: Fitted model",
-    "text": "More specific: Fitted model\n\nFitted model: When we have a data set with values for \\(Y, X_1, \\dots, X_m\\) we can fit values for the parameters \\(\\hat\\beta_0, \\dots, \\hat\\beta_m\\) to the data. This is the fitted model \\(\\hat f\\). This is called parameter estimation: We estimate \\(\\hat\\beta_0, \\dots, \\hat\\beta_m\\) with the hope that they match the real values \\(\\beta_0, \\dots, \\beta_m\\) and that the linear model \\(\\hat f\\) matches the real function \\(f\\).\nNow we could specify further to fit a specific parameterized model with a specific algorithm, and a specific set of hyperparameters, and maybe more …\n\nSometimes model means only a certain aspect of all these, for example the formula like sex ~ bill_length_mm + bill_depth_mm + flipper_length_mm + body_mass_g + species + island\n\nTake away: “Model” can mean things with very different granularity. That is OK because they are all related and all fit the definition of being a simplified representation of reality.\nBe prepared to specify what you mean when you are talking about a model."
-  },
-  {
-    "objectID": "W10.html#purpose-of-the-section-1",
-    "href": "W10.html#purpose-of-the-section-1",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Purpose of the section",
-    "text": "Purpose of the section\n\nGo again through the modeling workflow (with tidymodels) and see that large parts are identical\nLook again at the coefficients of a linear model\nSee how the decision tree looks like for a regression problem\nCompare the two most common performance measures for regression models: Root Mean Squared Error (RMSE) and R-squared"
-  },
-  {
-    "objectID": "W10.html#specify-recipe-and-models-1",
-    "href": "W10.html#specify-recipe-and-models-1",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Specify recipe and models",
-    "text": "Specify recipe and models\n\nWe specify a recipe to predict body_mass_g with all available variables in penguins and put it in a workflow\n\nTypically, more pre-processing steps are specified here, but we are mostly fine\n\n\n\npeng_recipe2 &lt;- recipe(body_mass_g ~ ., data = penguins) |&gt; \n step_rm(year)\npeng_workflow2 &lt;- workflow() |&gt; \n add_recipe(peng_recipe2)\n\nWe can re-use the split and the training and test set.\n\n\n\nLinear Regression\n\npeng_linreg &lt;- linear_reg() |&gt;\n set_engine(\"lm\")\n\n\nDecision Tree\n\npeng_regtree &lt;- decision_tree() |&gt;\n set_engine(\"rpart\") |&gt;\n set_mode(\"regression\")"
-  },
-  {
-    "objectID": "W10.html#fit-regression-models",
-    "href": "W10.html#fit-regression-models",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Fit Regression Models",
-    "text": "Fit Regression Models\n\n\nLinear Regression\n\npeng_linreg_fit &lt;- peng_workflow2 |&gt; \n add_model(peng_linreg) |&gt; \n fit(data = peng_train)\n\n\nDecision Tree\n\npeng_regtree_fit &lt;- peng_workflow2 |&gt; \n add_model(peng_regtree) |&gt; \n fit(data = peng_train)"
-  },
-  {
-    "objectID": "W10.html#look-at-fitted-linear-regression",
-    "href": "W10.html#look-at-fitted-linear-regression",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Look at fitted linear regression",
-    "text": "Look at fitted linear regression\n\n\n\npeng_linreg_fit |&gt; tidy() \n\n# A tibble: 9 × 5\n  term              estimate std.error statistic  p.value\n  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)         -829.     701.      -1.18  2.38e- 1\n2 speciesChinstrap    -268.     109.      -2.47  1.44e- 2\n3 speciesGentoo       1010.     164.       6.15  3.52e- 9\n4 islandDream          -14.5     70.0     -0.208 8.36e- 1\n5 islandTorgersen      -21.4     75.7     -0.283 7.77e- 1\n6 bill_length_mm        19.8      8.55     2.32  2.13e- 2\n7 bill_depth_mm         53.7     23.9      2.25  2.56e- 2\n8 flipper_length_mm     13.6      3.54     3.84  1.58e- 4\n9 sexmale              393.      58.5      6.71  1.57e-10\n\n\n\n\nWhat do the categorical predictors tell us? Which are signigficant?\nWhat do the numerical predictors tell us? Which are signigficant?\n\n\n\nCategorical predictors: We 3 species, 3 island and 2 sex. So, we see 5 new variables. Species and sex are significant, but islands not.\nNumerical predictors: All 3 are significant."
-  },
-  {
-    "objectID": "W10.html#show-rules-1",
-    "href": "W10.html#show-rules-1",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Show rules",
-    "text": "Show rules\n\nlibrary(rpart.plot)\nrpart.rules(peng_regtree_fit$fit$fit$fit, roundint=FALSE)\n\n  ..y                                                    \n 3418 when species is Adelie or Chinstrap & sex is female\n 3961 when species is Adelie or Chinstrap & sex is   male\n 4693 when species is              Gentoo & sex is female\n 5474 when species is              Gentoo & sex is   male\n\n\n\nFor each terminal node a certain value is predicted (the mean of the remaining penguins)"
-  },
-  {
-    "objectID": "W10.html#visualize-tree-1",
-    "href": "W10.html#visualize-tree-1",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Visualize tree",
-    "text": "Visualize tree\n\nlibrary(rpart.plot)\nrpart.plot(peng_regtree_fit$fit$fit$fit, \n           roundint=FALSE, tweak=1.5)\n\n\nHow to read?\n\nThe percentage is the fraction of the total cases in this group\nThe number is the predicted outcome (mean body mass) at this decision node"
-  },
-  {
-    "objectID": "W10.html#make-predictions-for-test-data-1",
-    "href": "W10.html#make-predictions-for-test-data-1",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Make predictions for test data",
-    "text": "Make predictions for test data\n\n\nLinear Regression\n\npeng_linreg_pred &lt;- \n predict(peng_linreg_fit, peng_test) |&gt; \n bind_cols(peng_test) \npeng_linreg_pred |&gt; \n select(.pred, body_mass_g, everything()) |&gt; \n slice(10*(1:10)) # show selected rows\n\n# A tibble: 10 × 9\n   .pred body_mass_g species   island    bill_length_mm bill_depth_mm\n   &lt;dbl&gt;       &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;\n 1 3349.        3700 Adelie    Torgersen           36.6          17.8\n 2 3979.        3950 Adelie    Dream               38.8          20  \n 3 3902.        3800 Adelie    Dream               36.3          19.5\n 4 4106.        3875 Adelie    Torgersen           41.4          18.5\n 5 3499.        3400 Adelie    Dream               40.2          17.1\n 6 4597.        4150 Gentoo    Biscoe              42            13.5\n 7 4688.        4200 Gentoo    Biscoe              45.5          13.9\n 8 4929.        4850 Gentoo    Biscoe              48.5          15  \n 9 4014.        4150 Chinstrap Dream               52            19  \n10 4108.        4050 Chinstrap Dream               50.7          19.7\n# ℹ 3 more variables: flipper_length_mm &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;\n\n\n\nDecision Tree\n\npeng_regtree_pred &lt;- \n predict(peng_regtree_fit, peng_test) |&gt; \n bind_cols(peng_test)\npeng_regtree_pred |&gt; \n select(.pred, body_mass_g, species, sex) |&gt; \n slice(10*(1:10)) # show same selected rows\n\n# A tibble: 10 × 4\n   .pred body_mass_g species   sex   \n   &lt;dbl&gt;       &lt;int&gt; &lt;fct&gt;     &lt;fct&gt; \n 1 3418         3700 Adelie    female\n 2 3961.        3950 Adelie    male  \n 3 3961.        3800 Adelie    male  \n 4 3961.        3875 Adelie    male  \n 5 3418         3400 Adelie    female\n 6 4693.        4150 Gentoo    female\n 7 4693.        4200 Gentoo    female\n 8 4693.        4850 Gentoo    female\n 9 3961.        4150 Chinstrap male  \n10 3961.        4050 Chinstrap male"
-  },
-  {
-    "objectID": "W10.html#regression-performance-evaluation",
-    "href": "W10.html#regression-performance-evaluation",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Regression Performance Evaluation",
-    "text": "Regression Performance Evaluation\nR-squared: Percentage of variability in body_mass_g explained by the model\n\n\nLinear Regression\n\nrsq(peng_linreg_pred, \n    truth = body_mass_g, estimate = .pred)\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rsq     standard       0.861\n\n\n\nDecision Tree\n\nrsq(peng_regtree_pred, \n    truth = body_mass_g, estimate = .pred)\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rsq     standard       0.806\n\n\n\nRoot Mean Squared Error (RMSE): \\(\\text{RMSE} = \\sqrt{\\frac{1}{n}\\sum_{i = 1}^n (y_i - \\hat{y}_i)^2}\\)\nwhere \\(\\hat{y}_i\\) is the predicted value and \\(y_i\\) the true value. (The name RMSE is descriptive.)\n\n\n\nrmse(peng_linreg_pred, \n     truth = body_mass_g, \n     estimate = .pred)\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard        290.\n\n\n\n\nrmse(peng_regtree_pred, \n     truth = body_mass_g, \n     estimate = .pred)\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard        337.\n\n\n\nWhich model is better in prediction? Linear regression. The R-squared is higher."
-  },
-  {
-    "objectID": "W10.html#what-rmse-is-better",
-    "href": "W10.html#what-rmse-is-better",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "What RMSE is better?",
-    "text": "What RMSE is better?\n\nLower. The lower the error, the better the model’s prediction.\nIt is the other way round than R-squared! Do not confuse them.\n\n\nNotes:\n\nThe common method to fit a linear model is the ordinary least squares (OLS) method\nThat means the fitted parameters should deliver the lowest possible sum of squared errors (SSE) between predicted and observed values.\nMinimizing the sum of squared errors (SSE) is identical to minimizing the mean of squared errors (MSE) because it only adds the factor \\(1/n\\).\nMinimizing the mean of squared errors (MSE) is identical to minimizing the root mean of squared errors (RMSE) because the square root is strictly monotone function.\n\nConclusion: RMSE can be seen as a definition of the OLS optimization goal."
-  },
-  {
-    "objectID": "W10.html#interpreting-rmse",
-    "href": "W10.html#interpreting-rmse",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Interpreting RMSE",
-    "text": "Interpreting RMSE\nIn contrast to R-squared, RMSE can only be interpreted with knowledge about the range and of the response variable! It also has the same unit (grams for body_mass_g).\n\n\npeng_test |&gt; \n ggplot(aes(x=body_mass_g, fill = species)) + \n geom_histogram(binwidth = 50) + \n theme_minimal(base_size = 20)\n\n\n\n\n\n\n\n\n\n\n\npeng_linreg_pred |&gt; \n ggplot(aes(x=.pred, fill = species)) + \n geom_histogram(binwidth = 50) + \n theme_minimal(base_size = 20)\n\n\n\n\n\n\n\n\n\n\n\npeng_regtree_pred |&gt; \n ggplot(aes(x=.pred, fill = species)) + \n geom_histogram(binwidth = 50) + \n theme_minimal(base_size = 20)\n\n\n\n\n\n\n\n\n\nThe RMSE shows many grams predicted values deviate from the true value on average. (Taking the squaring of differences and root of the average into account.)"
-  },
-  {
-    "objectID": "W10.html#compare-training-and-test-data",
-    "href": "W10.html#compare-training-and-test-data",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Compare training and test data",
-    "text": "Compare training and test data\n\n\nLinear Regression\nPredict with testing data:\n\npredict(peng_linreg_fit, peng_test) |&gt; bind_cols(peng_test) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     290.   \n2 rsq     standard       0.861\n\n\nPredict with training data:\n\npredict(peng_linreg_fit, peng_train) |&gt; bind_cols(peng_train) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     283.   \n2 rsq     standard       0.880\n\n\n\nDecision Tree Regression\nPredict with testing data:\n\npredict(peng_regtree_fit, peng_test) |&gt; bind_cols(peng_test) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     337.   \n2 rsq     standard       0.806\n\n\nPredict with training data:\n\npredict(peng_regtree_fit, peng_train) |&gt; bind_cols(peng_train) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     309.   \n2 rsq     standard       0.857\n\n\n\nWhere is the prediction better? (Lower RMSE, higher R-squared)\n\nPerformance is better for training data (compare values to testing data of the same model). Why? It was used to fit. The model is optimized to predict the training data."
-  },
-  {
-    "objectID": "W10.html#make-a-deeper-tree",
-    "href": "W10.html#make-a-deeper-tree",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Make a deeper tree",
-    "text": "Make a deeper tree\n\nIn decision_tree() we can set the maximal depth of the tree to 30.\n\nThe trees we had before were also automatically pruned by sensible defaults.\n\nBy setting the cost complexity parameter to -1 we avoid pruning.1\n\n\npeng_regtree_deep &lt;- decision_tree(\n cost_complexity = -1,\n tree_depth = 30\n) |&gt;\n set_engine(\"rpart\") |&gt;\n set_mode(\"regression\")\npeng_regtree_deep_fit &lt;- peng_workflow2 |&gt; add_model(peng_regtree_deep) |&gt; \n fit(data = peng_train)\n\nThe details of this go beyond the scope of this course."
-  },
-  {
-    "objectID": "W10.html#the-deep-tree",
-    "href": "W10.html#the-deep-tree",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "The deep tree",
-    "text": "The deep tree"
-  },
-  {
-    "objectID": "W10.html#compare-pruned-and-deep-tree",
-    "href": "W10.html#compare-pruned-and-deep-tree",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "Compare pruned and deep tree",
-    "text": "Compare pruned and deep tree\n\n\nPruned decision tree\nPredict with training data:\n\npeng_regtree_fit |&gt; \n predict(new_data = peng_train) |&gt; bind_cols(peng_train) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     309.   \n2 rsq     standard       0.857\n\n\nPredict with testing data:\n\npeng_regtree_fit |&gt; \n predict(peng_test) |&gt; bind_cols(peng_test) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     337.   \n2 rsq     standard       0.806\n\n\n\nDeep decision tree\nPredict with training data:\n\npeng_regtree_deep_fit |&gt; \n predict(new_data = peng_train) |&gt; bind_cols(peng_train) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     247.   \n2 rsq     standard       0.908\n\n\nPredict with testing data:\n\npeng_regtree_deep_fit |&gt; \n predict(peng_test) |&gt; bind_cols(peng_test) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     333.   \n2 rsq     standard       0.808"
-  },
-  {
-    "objectID": "W10.html#more-in-an-r-script",
-    "href": "W10.html#more-in-an-r-script",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
-    "section": "More in an R-script",
-    "text": "More in an R-script\n\nOverfitting in a spam prediciton model\nFrom decision trees to random forrests."
-  },
-  {
     "objectID": "W10.html#galtons-data",
     "href": "W10.html#galtons-data",
     "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
     "section": "Galton’s data",
-    "text": "Galton’s data\nWhat is the weight of the meat of this ox?\n\nlibrary(readxl)\ngalton &lt;- read_csv(\"data/galton.csv\")\ngalton |&gt; ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + geom_vline(xintercept = 1198, color = \"green\") + \n geom_vline(xintercept = mean(galton$Estimate), color = \"red\")\n\n\n\n\n\n\n\n\n787 estimates, true value 1198, mean 1196.7\n\n\nWe focus on the arithmetic mean as aggregation function for the wisdom of the crowd here."
+    "text": "Galton’s data\nWhat is the weight of the meat of this ox?\n\nlibrary(readxl)\ngalton &lt;- read_csv(\"data/galton.csv\")\n\nRows: 787 Columns: 2\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\ndbl (2): Estimate, id\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\ngalton |&gt; ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + geom_vline(xintercept = 1198, color = \"green\") + \n geom_vline(xintercept = mean(galton$Estimate), color = \"red\")\n\n\n\n\n\n\n\n\n787 estimates, true value 1198, mean 1196.7\n\n\nWe focus on the arithmetic mean as aggregation function for the wisdom of the crowd here."
   },
   {
     "objectID": "W10.html#rmse-galtons-data",
@@ -2879,165 +2718,333 @@
     "text": "What is a wise crowd?\nAssume the dots are estimates. Which is a wise crowd?\n\n\n\nOf course, high trueness and high precision! But, …\nFocusing on the crowd being wise instead of its individuals: High trueness, low precision.\n\n\n\n\n\nMDSSB-DSCO-02: Data Science Concepts"
   },
   {
-    "objectID": "W09.html#what-is-a-matrix",
-    "href": "W09.html#what-is-a-matrix",
-    "title": "W#09: Matrics, Hypothesis Testing",
-    "section": "What is a matrix?",
-    "text": "What is a matrix?\n\n\n\nA matrix is a 2-dimensional array of numbers with rows and columns.\nThe numbers in it are called its elements.\n\nIsn’t that a data frame?\n\nNo, a dataframe is more general. In a matrix, every element has the same basic data type!\nIn R, a matrix is a vector plus some specification of the dimensions.\n\n(A matrix can also be of characters or logicals, it can also have row- and column-names)\n\n\n\nmatrix(data = 1:6, nrow = 2)\n\n\n\n     [,1] [,2] [,3]\n[1,]    1    3    5\n[2,]    2    4    6\n\n\n\nmatrix(data = 1:6, ncol = 2)\n\n\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n\n\nmatrix(data = 1:6, nrow = 3)\n\n\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n\n\nmatrix(data = 1:6, nrow = 3, byrow = TRUE)\n\n\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    3    4\n[3,]    5    6"
-  },
-  {
-    "objectID": "W09.html#matrices-in-mathematics",
-    "href": "W09.html#matrices-in-mathematics",
-    "title": "W#09: Matrics, Hypothesis Testing",
-    "section": "Matrices in Mathematics",
-    "text": "Matrices in Mathematics\n\nAddition and subtraction of matrices is done element-wise.\nMultiplication of a matrix with a scalar is done element-wise.\nMultiplication of two matrices is done row times column.\nTransposition of a matrix is done by flipping the matrix over its diagonal."
+    "objectID": "W09.html#packages-used-here",
+    "href": "W09.html#packages-used-here",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Packages used here",
+    "text": "Packages used here\n\nlibrary(tidyverse)\nlibrary(tidymodels)\nlibrary(rpart.plot)\nlibrary(openintro)\nlibrary(palmerpenguins)"
   },
   {
     "objectID": "W09.html#organ-donors",
     "href": "W09.html#organ-donors",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Organ donors",
-    "text": "Organ donors\nPeople providing an organ for donation sometimes seek the help of a special “medical consultant”. These consultants assist the patient in all aspects of the surgery, with the goal of reducing the possibility of complications during the medical procedure and recovery. Patients might choose a consultant based in part on the historical complication rate of the consultant’s clients.\nOne consultant tried to attract patients by noting that the average complication rate for liver donor surgeries in the US is about 10%, but her clients have only had 3 complications in the 62 liver donor surgeries she has facilitated. She claims this is strong evidence that her work meaningfully contributes to reducing complications (and therefore she should be hired!)."
+    "text": "Organ donors\nBackground story: People providing an organ for donation sometimes seek the help of a special “medical consultant”. These consultants assist the patient in all aspects of the surgery, with the goal of reducing the possibility of complications during the medical procedure and recovery. Patients might choose a consultant based in part on the historical complication rate of the consultant’s clients.\n\nExample track record: One consultant tried to attract patients by noting that the average complication rate for liver donor surgeries in the US is about 10%, but her clients have only had 3 complications in the 62 liver donor surgeries she has facilitated. She claims this is strong evidence that her work meaningfully contributes to reducing complications (and therefore she should be hired!).\n\n\nIs this strong evidence for a good track record?"
   },
   {
     "objectID": "W09.html#data",
     "href": "W09.html#data",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Data",
     "text": "Data\n\norgan_donor &lt;- tibble(\n  outcome = c(rep(\"complication\", 3), rep(\"no complication\", 59))\n)\n\n\norgan_donor |&gt;\n  count(outcome)\n\n# A tibble: 2 × 2\n  outcome             n\n  &lt;chr&gt;           &lt;int&gt;\n1 complication        3\n2 no complication    59"
   },
   {
     "objectID": "W09.html#parameter-vs.-statistic",
     "href": "W09.html#parameter-vs.-statistic",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Parameter vs. statistic",
-    "text": "Parameter vs. statistic\nA parameter for a hypothesis test is the “true” value of interest. We typically estimate the parameter using a sample statistic as a point estimate.\n\\(p\\): true rate of complication, here 0.1 (10% complication rate in US)\n\\(\\hat{p}\\): rate of complication in the sample = \\(\\frac{3}{62}\\) = 0.048 (This is the point estimate.)"
+    "text": "Parameter vs. statistic\nA parameter for a hypothesis test is the “true” value of interest. We typically estimate the parameter using a sample statistic as a point estimate.\n\\(q\\): true rate of complication, here 0.1 (10% complication rate in US)\n\\(\\hat{q}\\): rate of complication in the sample = \\(\\frac{3}{62}\\) = 0.048 (This is the point estimate.)"
   },
   {
     "objectID": "W09.html#correlation-vs.-causation",
     "href": "W09.html#correlation-vs.-causation",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Correlation vs. causation",
-    "text": "Correlation vs. causation\nIs it possible to infer the consultant’s claim using the data?\nNo. The claim is: There is a causal connection. However, the data are observational. For example, maybe patients who can afford a medical consultant can afford better medical care, which can also lead to a lower complication rate (for example).\n\nWhile it is not possible to assess the causal claim, it is still possible to test for an association using these data. For this question we ask, could the low complication rate of \\(\\hat{p}\\) = 0.048 be due to chance?"
+    "text": "Correlation vs. causation\nIs it possible to infer the consultant’s claim using the data?\nNo. The claim is: There is a causal connection. However, the data are observational. For example, maybe patients who can afford a medical consultant can afford better medical care, which can also lead to a lower complication rate (for example).\n\nWhat is possible?\nWhile it is not possible to assess the causal claim, it is still possible to test for an association using these data. For this question we ask, could the low complication rate of \\(\\hat{q}\\) = 0.048 be due to chance?"
   },
   {
     "objectID": "W09.html#two-claims",
     "href": "W09.html#two-claims",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Two claims",
-    "text": "Two claims\n\nNull hypothesis: “There is nothing going on”\n\nComplication rate for this consultant is no different than the US average of 10%\n\nAlternative hypothesis: “There is something going on”\n\nComplication rate for this consultant is lower than the US average of 10%"
+    "text": "Two claims\n\nNull hypothesis \\(H_0\\): “There is nothing going on”\n\nComplication rate for this consultant is no different than the US average of 10%\n\nAlternative hypothesis \\(H_1\\): “There is something going on”\n\nComplication rate for this consultant is lower than the US average of 10%"
   },
   {
-    "objectID": "W09.html#hypothesis-testing-as-a-court-trial",
-    "href": "W09.html#hypothesis-testing-as-a-court-trial",
-    "title": "W#09: Matrics, Hypothesis Testing",
-    "section": "Hypothesis testing as a court trial",
-    "text": "Hypothesis testing as a court trial\n\nNull hypothesis, \\(H_0\\): Defendant is innocent\nAlternative hypothesis, \\(H_A\\): Defendant is guilty\nPresent the evidence: Collect data\nJudge the evidence: “Could these data plausibly have happened by chance if the null hypothesis were true?”\n\nYes: Fail to reject \\(H_0\\)\nNo: Reject \\(H_0\\)"
+    "objectID": "W09.html#understand-hypothesis-testing-as-a-court-trial",
+    "href": "W09.html#understand-hypothesis-testing-as-a-court-trial",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Understand hypothesis testing as a court trial",
+    "text": "Understand hypothesis testing as a court trial\n\nNull hypothesis, \\(H_0\\): Defendant is innocent\nAlternative hypothesis, \\(H_A\\): Defendant is guilty\nPresent the evidence: Collect data\nJudge the evidence: “Could these data plausibly have happened by chance if the null hypothesis were true?”\n\nYes: Fail to reject \\(H_0\\)\nNo: Reject \\(H_0\\)"
   },
   {
     "objectID": "W09.html#hypothesis-testing-framework",
     "href": "W09.html#hypothesis-testing-framework",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Hypothesis testing framework",
     "text": "Hypothesis testing framework\n\nStart with a null hypothesis, \\(H_0\\), that represents the status quo\nSet an alternative hypothesis, \\(H_A\\), that represents the research question, i.e. what we are testing for\nConduct a hypothesis test under the assumption that the null hypothesis is true and calculate a p-value.\nDefinition p-value: Probability of observed or more extreme outcome given that the null hypothesis is true.\n\nif the test results suggest that the data do not provide convincing evidence for the alternative hypothesis, stick with the null hypothesis\nif they do, then reject the null hypothesis in favor of the alternative"
   },
   {
     "objectID": "W09.html#setting-the-hypotheses",
     "href": "W09.html#setting-the-hypotheses",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Setting the hypotheses",
-    "text": "Setting the hypotheses\nWhich of the following is the correct set of hypotheses for the claim that the consultant has lower complication rates?\n\n\\(H_0: p = 0.10\\); \\(H_A: p \\ne 0.10\\)\n\\(H_0: p = 0.10\\); \\(H_A: p &gt; 0.10\\)\n\\(H_0: p = 0.10\\); \\(H_A: p &lt; 0.10\\)\n\\(H_0: \\hat{p} = 0.10\\); \\(H_A: \\hat{p} \\ne 0.10\\)\n\\(H_0: \\hat{p} = 0.10\\); \\(H_A: \\hat{p} &gt; 0.10\\)\n\\(H_0: \\hat{p} = 0.10\\); \\(H_A: \\hat{p} &lt; 0.10\\)\n\n\nCorrect is c. Hypotheses are about the true rate of complication \\(p\\) not the observed ones \\(\\hat{p}\\)"
+    "text": "Setting the hypotheses\nWhich of the following is the correct set of hypotheses for the claim that the consultant has lower complication rates?\n\n\\(H_0: q = 0.10\\); \\(H_A: q \\ne 0.10\\)\n\\(H_0: q = 0.10\\); \\(H_A: q &gt; 0.10\\)\n\\(H_0: q = 0.10\\); \\(H_A: q &lt; 0.10\\)\n\\(H_0: \\hat{q} = 0.10\\); \\(H_A: \\hat{q} \\ne 0.10\\)\n\\(H_0: \\hat{q} = 0.10\\); \\(H_A: \\hat{q} &gt; 0.10\\)\n\\(H_0: \\hat{q} = 0.10\\); \\(H_A: \\hat{q} &lt; 0.10\\)\n\n\n\nis correct.\nHypotheses are about the true rate of complication \\(q\\) not the observed ones \\(\\hat{q}\\)"
   },
   {
     "objectID": "W09.html#simulating-the-null-distribution",
     "href": "W09.html#simulating-the-null-distribution",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Simulating the null distribution",
-    "text": "Simulating the null distribution\nSince \\(H_0: p = 0.10\\), we need to simulate a null distribution where the probability of success (complication) for each trial (patient) is 0.10.\nHow should we simulate the null distribution for this study using a bag of chips?\n\nHow many chips? For example 10 which makes 10% choices possible\nHow many colors? 2\nWhat should colors represent? “complication”, “no complication”\nHow many draws? 62 as the data\nWith replacement or without replacement? With replacement\n\nWhen sampling from the null distribution, what would be the expected proportion of “complications”? 0.1"
+    "text": "Simulating the null distribution\nSince \\(H_0: q = 0.10\\), we need to simulate a null distribution where the probability of success (complication) for each trial (patient) is 0.10.\nHow should we simulate the null distribution for this study using a bag of chips?\n\nHow many chips? For example 10 which makes 10% choices possible\nHow many colors? 2\nWhat should colors represent? “complication”, “no complication”\nHow many draws? 62 as the data\nWith replacement or without replacement? With replacement\n\nWhen sampling from the null distribution, what would be the expected proportion of “complications”? 0.1"
   },
   {
     "objectID": "W09.html#simulation",
     "href": "W09.html#simulation",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Simulation!",
-    "text": "Simulation!\n\nset.seed(1234)\noutcomes &lt;- c(\"complication\", \"no complication\")\nsim1 &lt;- sample(outcomes, size = 62, prob = c(0.1, 0.9), replace = TRUE)\nsim1\n\n [1] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [5] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [9] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[13] \"no complication\" \"complication\"    \"no complication\" \"no complication\"\n[17] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[21] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[25] \"no complication\" \"no complication\" \"no complication\" \"complication\"   \n[29] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[33] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[37] \"no complication\" \"no complication\" \"complication\"    \"no complication\"\n[41] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[45] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[49] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[53] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[57] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[61] \"no complication\" \"no complication\"\n\nsum(sim1 == \"complication\")/62\n\n[1] 0.0483871\n\n\nOh OK, this was is pretty close to the consultant’s rate. But maybe it was a rare event?"
+    "text": "Simulation!\n\nset.seed(1234) # The seed is set for the sake of stable presentation outcomes.\noutcomes &lt;- c(\"complication\", \"no complication\")\nsim1 &lt;- sample(outcomes, size = 62, prob = c(0.1, 0.9), replace = TRUE)\nsim1\n\n [1] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [5] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [9] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[13] \"no complication\" \"complication\"    \"no complication\" \"no complication\"\n[17] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[21] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[25] \"no complication\" \"no complication\" \"no complication\" \"complication\"   \n[29] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[33] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[37] \"no complication\" \"no complication\" \"complication\"    \"no complication\"\n[41] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[45] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[49] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[53] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[57] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[61] \"no complication\" \"no complication\"\n\nsum(sim1 == \"complication\")/62\n\n[1] 0.0483871\n\n\nOh OK, this was is pretty close to the consultant’s rate. But maybe it was a rare event?"
   },
   {
     "objectID": "W09.html#more-simulation",
     "href": "W09.html#more-simulation",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "More simulation!",
     "text": "More simulation!\n\none_sim &lt;- function() sample(outcomes, size = 62, prob = c(0.1, 0.9), replace = TRUE)\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1290323\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1290323\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.09677419\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.09677419\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1774194\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1129032\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1129032"
   },
   {
     "objectID": "W09.html#automating-with-tidymodels",
     "href": "W09.html#automating-with-tidymodels",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Automating with tidymodels1",
     "text": "Automating with tidymodels1\n\n\n\norgan_donor\n\n# A tibble: 62 × 1\n   outcome        \n   &lt;chr&gt;          \n 1 complication   \n 2 complication   \n 3 complication   \n 4 no complication\n 5 no complication\n 6 no complication\n 7 no complication\n 8 no complication\n 9 no complication\n10 no complication\n# ℹ 52 more rows\n\n\n\n\nset.seed(10)\nnull_dist &lt;- organ_donor |&gt;\n  specify(response = outcome, success = \"complication\") |&gt;\n  hypothesize(null = \"point\", \n              p = c(\"complication\" = 0.10, \"no complication\" = 0.90)) |&gt; \n  generate(reps = 100, type = \"draw\") |&gt; \n  calculate(stat = \"prop\")\nnull_dist\n\nResponse: outcome (factor)\nNull Hypothesis: point\n# A tibble: 100 × 2\n   replicate   stat\n       &lt;int&gt;  &lt;dbl&gt;\n 1         1 0.0323\n 2         2 0.0645\n 3         3 0.0968\n 4         4 0.0161\n 5         5 0.161 \n 6         6 0.0968\n 7         7 0.0645\n 8         8 0.129 \n 9         9 0.161 \n10        10 0.0968\n# ℹ 90 more rows\n\n\n\nOf course, you can also do it in your own way without packages."
   },
   {
     "objectID": "W09.html#visualizing-the-null-distribution",
     "href": "W09.html#visualizing-the-null-distribution",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Visualizing the null distribution",
     "text": "Visualizing the null distribution\n\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.01) +\n  labs(title = \"Null distribution\")"
   },
   {
     "objectID": "W09.html#calculating-the-p-value-visually",
     "href": "W09.html#calculating-the-p-value-visually",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Calculating the p-value, visually",
     "text": "Calculating the p-value, visually\nWhat is the p-value:1 How often was the simulated sample proportion at least as extreme as the observed sample proportion?\n\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.01) +\n  labs(title = \"Null distribution\")  +\n geom_vline(xintercept = 3/62, color = \"red\")\n\n\n\n\n\n\n\n\nThe name p-value has nothing to do with the value \\(p\\) we are currently trying to use as population parameter."
   },
   {
     "objectID": "W09.html#calculating-the-p-value-directly",
     "href": "W09.html#calculating-the-p-value-directly",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Calculating the p-value, directly",
     "text": "Calculating the p-value, directly\n\nnull_dist |&gt;\n summarise(p_value = sum(stat &lt;= 3/62)/n())\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1    0.13\n\n\nThis is the fraction of simulations where complications was equal or below 0.0483871."
   },
   {
     "objectID": "W09.html#significance-level",
     "href": "W09.html#significance-level",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Significance level",
     "text": "Significance level\n\nA significance level \\(\\alpha\\) is a threshold we make up to make our judgment about the plausibility of the null hypothesis being true given the observed data.\nWe often use \\(\\alpha = 0.05 = 5\\%\\) as the cutoff for whether the p-value is low enough that the data are unlikely to have come from the null model.\nIf p-value &lt; \\(\\alpha\\), reject \\(H_0\\) in favor of \\(H_A\\): The data provide convincing evidence for the alternative hypothesis.\nIf p-value &gt; \\(\\alpha\\), fail to reject \\(H_0\\) in favor of \\(H_A\\): The data do not provide convincing evidence for the alternative hypothesis.\n\nWhat is the conclusion of the hypothesis test?\nSince the p-value is greater than the significance level, we fail to reject the null hypothesis. These data do not provide convincing evidence that this consultant incurs a lower complication rate than the 10% overall US complication rate."
   },
   {
     "objectID": "W09.html#simulations-is-not-sufficient",
     "href": "W09.html#simulations-is-not-sufficient",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "100 simulations is not sufficient",
     "text": "100 simulations is not sufficient\n\nWe simulate 15,000 times to get an accurate distribution.\n\n\nnull_dist &lt;- organ_donor |&gt;\n  specify(response = outcome, success = \"complication\") |&gt;\n  hypothesize(null = \"point\", \n              p = c(\"complication\" = 0.10, \"no complication\" = 0.90)) |&gt; \n  generate(reps = 15000, type = \"simulate\") |&gt; \n  calculate(stat = \"prop\")\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.01) +\n  geom_vline(xintercept = 3/62, color = \"red\")"
   },
   {
     "objectID": "W09.html#our-more-robust-p-value",
     "href": "W09.html#our-more-robust-p-value",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Our more robust p-value",
-    "text": "Our more robust p-value\nFor the null distribution with 15,000 simulations\n\nnull_dist |&gt;\n  filter(stat &lt;= 3/62) |&gt;\n  summarise(p_value = n()/nrow(null_dist))\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1   0.125\n\n\nOh OK, our fist p-value was much more borderline in favor of the alternative hypothesis."
+    "text": "Our more robust p-value\nFor the null distribution with 15,000 simulations\n\nnull_dist |&gt;\n  filter(stat &lt;= 3/62) |&gt;\n  summarise(p_value = n()/nrow(null_dist))\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1   0.125\n\n\nOh OK, our first p-value was much more borderline in favor of the alternative hypothesis."
   },
   {
     "objectID": "W09.html#p-value-in-model-outputs",
     "href": "W09.html#p-value-in-model-outputs",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "p-value in model outputs",
-    "text": "p-value in model outputs\nModel output for a linear model with palmer penguins.\n\nlinear_reg() |&gt; set_engine(\"lm\") |&gt; \n    fit(bill_length_mm ~ bill_depth_mm, data = penguins) |&gt; tidy()\n\n# A tibble: 2 × 5\n  term          estimate std.error statistic  p.value\n  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)     55.1       2.52      21.9  6.91e-67\n2 bill_depth_mm   -0.650     0.146     -4.46 1.12e- 5\n\n\nModel output for a logistic regression model with email from openintro\n\nlogistic_reg() |&gt;  set_engine(\"glm\") |&gt;\n  fit(spam ~ from + cc, data = email, family = \"binomial\") |&gt; tidy()\n\n# A tibble: 3 × 5\n  term         estimate std.error statistic p.value\n  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;\n1 (Intercept)  13.6      309.        0.0439   0.965\n2 from1       -15.8      309.       -0.0513   0.959\n3 cc            0.00423    0.0193    0.220    0.826\n\n\nWhat do the p-values mean? What is the null hypothesis?\n\nNull-Hypothesis: There is no relationship between the predictor variable and the response variable, that means that the coefficient is equal to zero.\nSmaller the p-value \\(\\to\\) more evidence for rejecting the hypothesis that there is no effect."
+    "text": "p-value in model outputs\nModel output for a linear model with palmer penguins.\n\nlinear_reg() |&gt; set_engine(\"lm\") |&gt; \n    fit(bill_length_mm ~ bill_depth_mm, data = penguins) |&gt; tidy()\n\n# A tibble: 2 × 5\n  term          estimate std.error statistic  p.value\n  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)     55.1       2.52      21.9  6.91e-67\n2 bill_depth_mm   -0.650     0.146     -4.46 1.12e- 5\n\n\nModel output for a logistic regression model with email from openintro\n\nlogistic_reg() |&gt;  set_engine(\"glm\") |&gt;\n  fit(spam ~ from + cc, data = email, family = \"binomial\") |&gt; tidy()\n\n# A tibble: 3 × 5\n  term         estimate std.error statistic p.value\n  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;\n1 (Intercept)  13.6      309.        0.0439   0.965\n2 from1       -15.8      309.       -0.0513   0.959\n3 cc            0.00423    0.0193    0.220    0.826\n\n\nWhat do the p-values mean? What is the null hypothesis?\n\nNull-Hypothesis: There is no relationship between the predictor variable and the response variable, that means that the coefficient is equal to zero.\nSmaller p-value \\(\\to\\) more evidence for rejecting the hypothesis that there is no effect."
   },
   {
     "objectID": "W09.html#xkcd-on-p-values",
     "href": "W09.html#xkcd-on-p-values",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "xkcd on p-values",
     "text": "xkcd on p-values\n\n\n \n\n\n\nSignificance levels are fairly arbitrary. Sometimes they are used (wrongly) as definitive judgments\nThey can even be used to do p-hacking: Searching for “significant” effects in observational data\nIn parts of science it has become a “gamed” performance metric.\nThe p-value says nothing about effect size!"
   },
   {
     "objectID": "W09.html#p-value-misinterpretation",
     "href": "W09.html#p-value-misinterpretation",
-    "title": "W#09: Matrics, Hypothesis Testing",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "p-value misinterpretation",
-    "text": "p-value misinterpretation\np-values do not measure1\n\nthe probability that the studied hypothesis is true\nthe probability that the data were produced by random chance alone\nthe size of an effect\nthe importance of a result” or “evidence regarding a model or hypothesis” (it is only against the null hypothesis).\n\n\nCorrect:\nThe p-value is the probability of obtaining test results at least as extreme as the result actually observed, under the assumption that the null hypothesis is correct.\np-values and significance tests, when properly applied and interpreted, increase the rigor of the conclusions drawn from data.2\n\n\n\n\nMDSSB-DSCO-02: Data Science Concepts\n\n\n\nFrom the American Statistical Association (ASA) 2016From the American Statistical Association (ASA) 2019"
+    "text": "p-value misinterpretation\np-values do not measure1\n\nthe probability that the studied hypothesis is true\nthe probability that the data were produced by random chance alone\nthe size of an effect\nthe “importance of a result” or “evidence regarding a model or hypothesis” (it is only against the null hypothesis).\n\n\nCorrect:\nThe p-value is the probability of obtaining test results at least as extreme as the result actually observed, under the assumption that the null hypothesis is correct.\np-values and significance tests, when properly applied and interpreted, increase the rigor of the conclusions drawn from data.2\n\nFrom the American Statistical Association (ASA) 2016From the American Statistical Association (ASA) 2019"
+  },
+  {
+    "objectID": "W09.html#purpose-of-the-section",
+    "href": "W09.html#purpose-of-the-section",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Purpose of the section",
+    "text": "Purpose of the section\n\nGo again through the modeling workflow (with tidymodels) and see that large parts are identical\nLook again at the coefficients of a logistic regression model\nLearn the basic idea of a decision tree (you will not learn the details here)\nDo the classification with both models and compare the confusion matrices"
+  },
+  {
+    "objectID": "W09.html#specify-recipe-and-models",
+    "href": "W09.html#specify-recipe-and-models",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Specify recipe and models",
+    "text": "Specify recipe and models\nFor both logistic regression and decision tree:\n\npeng_recipe &lt;- recipe(sex ~ ., data = penguins) |&gt; \n step_rm(year)\n\n\n\nWe specify a recipe to predict sex with all available variables in penguins\n\nIn typical model development, more pre-processing steps are done.\n\n\n\n\n\n\nLogistic Regression\n\npeng_logreg &lt;- logistic_reg() |&gt;\n set_engine(\"glm\")\n\npeng_logreg specifies to fit with glm (generalized linear model from base R)\n\nDecision Tree\n\npeng_tree &lt;- decision_tree() |&gt;\n set_engine(\"rpart\") |&gt;\n set_mode(\"classification\")\n\npeng_tree specifies to fit for classification with the rpart1 as engine.\n\n\nrpart is a package for recursive partitioning and regression trees. Different decision tree procedures are subsumed as classification and regression trees (CART)"
+  },
+  {
+    "objectID": "W09.html#split-and-fit",
+    "href": "W09.html#split-and-fit",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Split and fit",
+    "text": "Split and fit\nFor logistic regression and decision tree:\nSplit into test and training data\n\nset.seed(1)\npenguins_split &lt;- initial_split(penguins, prop = 0.7, strata = sex)\npeng_train &lt;- training(penguins_split)\npeng_test &lt;- testing(penguins_split)\npeng_workflow &lt;- workflow() |&gt; add_recipe(peng_recipe)\n\n\n\n\nLogistic Regression\n\npeng_logreg_fit &lt;- peng_workflow |&gt; \n add_model(peng_logreg) |&gt; \n fit(data = peng_train)\n\n\nDecision Tree\n\npeng_tree_fit &lt;- peng_workflow |&gt; \n add_model(peng_tree) |&gt; \n fit(data = peng_train)"
+  },
+  {
+    "objectID": "W09.html#look-at-fitted-logistic-regression",
+    "href": "W09.html#look-at-fitted-logistic-regression",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Look at fitted logistic regression",
+    "text": "Look at fitted logistic regression\n\n\n\npeng_logreg_fit |&gt; tidy()\n\n# A tibble: 9 × 5\n  term               estimate std.error statistic      p.value\n  &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;\n1 (Intercept)       -90.4      16.7        -5.41  0.0000000632\n2 speciesChinstrap   -6.06      1.90       -3.19  0.00142     \n3 speciesGentoo      -8.65      3.49       -2.48  0.0132      \n4 islandDream         0.752     1.15        0.656 0.512       \n5 islandTorgersen     0.380     1.13        0.335 0.737       \n6 bill_length_mm      0.532     0.150       3.56  0.000378    \n7 bill_depth_mm       1.79      0.456       3.93  0.0000866   \n8 flipper_length_mm   0.0552    0.0620      0.891 0.373       \n9 body_mass_g         0.00693   0.00162     4.27  0.0000193   \n\n\n\n\nWhat do the categorical predictors tell us? Which are signigficant?\nWhat do the numerical predictors tell us? Which are signigficant?\nWhy is the coefficient for body_mass_g so small, but highly significant?\n\n\n\nCategorical predictors: We have 3 species, 3 island. So, we see 4 new variables, 2 for species and 2 for island (the third is the reference category). Species are significant (p &lt; 0.05), but islands not.\nNumerical predictors: flipper_length_mm is insignificant, though its coefficient is larger than for body_mass_g. Reason: values of body_mass_g are larger than those of flipper_length_mm. Body mass differs by much more grams than flipper length differs by millimeters."
+  },
+  {
+    "objectID": "W09.html#what-is-a-decision-tree",
+    "href": "W09.html#what-is-a-decision-tree",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "What is a decision tree?",
+    "text": "What is a decision tree?\n\npeng_tree_fit\n\n══ Workflow [trained] ══════════════════════════════════════════════════════════\nPreprocessor: Recipe\nModel: decision_tree()\n\n── Preprocessor ────────────────────────────────────────────────────────────────\n1 Recipe Step\n\n• step_rm()\n\n── Model ───────────────────────────────────────────────────────────────────────\nn=234 (6 observations deleted due to missingness)\n\nnode), split, n, loss, yval, (yprob)\n      * denotes terminal node\n\n 1) root 234 117 female (0.50000000 0.50000000)  \n   2) bill_length_mm&lt; 48.15 166  57 female (0.65662651 0.34337349)  \n     4) bill_depth_mm&lt; 18.05 103  14 female (0.86407767 0.13592233)  \n       8) body_mass_g&lt; 4987.5 88   4 female (0.95454545 0.04545455) *\n       9) body_mass_g&gt;=4987.5 15   5 male (0.33333333 0.66666667) *\n     5) bill_depth_mm&gt;=18.05 63  20 male (0.31746032 0.68253968)  \n      10) body_mass_g&lt; 3875 29  10 female (0.65517241 0.34482759)  \n        20) flipper_length_mm&lt; 190.5 18   3 female (0.83333333 0.16666667) *\n        21) flipper_length_mm&gt;=190.5 11   4 male (0.36363636 0.63636364) *\n      11) body_mass_g&gt;=3875 34   1 male (0.02941176 0.97058824) *\n   3) bill_length_mm&gt;=48.15 68   8 male (0.11764706 0.88235294)  \n     6) body_mass_g&lt; 5175 35   8 male (0.22857143 0.77142857)  \n      12) bill_depth_mm&lt; 18 9   3 female (0.66666667 0.33333333) *\n      13) bill_depth_mm&gt;=18 26   2 male (0.07692308 0.92307692) *\n     7) body_mass_g&gt;=5175 33   0 male (0.00000000 1.00000000) *\n\n\n\nA sequence of rules for yes/no decisions\nSelects variables and thresholds which separate the data to predict (here sex) best\nFurther details are not the scope of this course"
+  },
+  {
+    "objectID": "W09.html#show-rules",
+    "href": "W09.html#show-rules",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Show rules",
+    "text": "Show rules\nWe “dig out” the original fitted rpart-object from the workflow-object with peng_tree_fit$fit$fit$fit and plot it:\n\nrpart.rules(peng_tree_fit$fit$fit$fit, roundint=FALSE)\n\n  ..y                                                                                                 \n 0.05 when bill_length_mm &lt;  48 & body_mass_g &lt;  4988 & bill_depth_mm &lt;  18                           \n 0.17 when bill_length_mm &lt;  48 & body_mass_g &lt;  3875 & bill_depth_mm &gt;= 18 & flipper_length_mm &lt;  191\n 0.33 when bill_length_mm &gt;= 48 & body_mass_g &lt;  5175 & bill_depth_mm &lt;  18                           \n 0.64 when bill_length_mm &lt;  48 & body_mass_g &lt;  3875 & bill_depth_mm &gt;= 18 & flipper_length_mm &gt;= 191\n 0.67 when bill_length_mm &lt;  48 & body_mass_g &gt;= 4988 & bill_depth_mm &lt;  18                           \n 0.92 when bill_length_mm &gt;= 48 & body_mass_g &lt;  5175 & bill_depth_mm &gt;= 18                           \n 0.97 when bill_length_mm &lt;  48 & body_mass_g &gt;= 3875 & bill_depth_mm &gt;= 18                           \n 1.00 when bill_length_mm &gt;= 48 & body_mass_g &gt;= 5175                                                 \n\n\n\nThe first three rules would predict female for all observations\nThe last five rules would predict male for all observations\n\nThe order of male and female is because sex is a factor with the first level female and the second level male. The probabilities in front of the rule-text are for the second level: male."
+  },
+  {
+    "objectID": "W09.html#visualize-tree",
+    "href": "W09.html#visualize-tree",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Visualize tree",
+    "text": "Visualize tree\n\nrpart.plot(peng_tree_fit$fit$fit$fit, \n           roundint=FALSE, tweak=1.5)\n\n\nHow to read?\n\nThe percentage is the fraction of the total cases in this group\nThe probability-number is the fraction of observations which are male in the group\nmale of female and color would match the predicted outcome at this decision node"
+  },
+  {
+    "objectID": "W09.html#make-predictions-for-test-data",
+    "href": "W09.html#make-predictions-for-test-data",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Make predictions for test data",
+    "text": "Make predictions for test data\n\n\n\npeng_logreg_pred &lt;- \n predict(peng_logreg_fit, peng_test) |&gt; \n bind_cols(peng_test) \npeng_logreg_pred |&gt; \n conf_mat(truth = sex, estimate = .pred_class)\n\n          Truth\nPrediction female male\n    female     46   10\n    male        2   41\n\n\n\n\npeng_tree_pred &lt;- \n predict(peng_tree_fit, peng_test) |&gt; \n bind_cols(peng_test)\npeng_tree_pred |&gt; \n conf_mat(truth = sex, estimate = .pred_class)\n\n          Truth\nPrediction female male\n    female     43   12\n    male        5   39\n\n\n\n\nThe logistic regression has more correct predictions.\nWarning: The function conf_mat (from yardstick of tidymodels) shows the transposed confusion matrix compared with Wikipedia:Confusion Matrix. In conf_mat, the true conditions are in columns. The wikipedia convention is that columns are the predicted conditions."
+  },
+  {
+    "objectID": "W09.html#purpose-of-the-section-1",
+    "href": "W09.html#purpose-of-the-section-1",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Purpose of the section",
+    "text": "Purpose of the section\n\nGo again through the modeling workflow (with tidymodels) and see that large parts are identical\nLook again at the coefficients of a linear model\nSee how the decision tree looks like for a regression problem\nCompare the two most common performance measures for regression models: Root Mean Squared Error (RMSE) and R-squared"
+  },
+  {
+    "objectID": "W09.html#specify-recipe-and-models-1",
+    "href": "W09.html#specify-recipe-and-models-1",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Specify recipe and models",
+    "text": "Specify recipe and models\n\nWe specify a recipe to predict body_mass_g with all available variables in penguins and put it in a workflow\n\nTypically, more pre-processing steps are specified here, but we are mostly fine\n\n\n\npeng_recipe2 &lt;- recipe(body_mass_g ~ ., data = penguins) |&gt; \n step_rm(year)\npeng_workflow2 &lt;- workflow() |&gt; \n add_recipe(peng_recipe2)\n\nWe can re-use the split and the training and test set.\n\n\n\nLinear Regression\n\npeng_linreg &lt;- linear_reg() |&gt;\n set_engine(\"lm\")\n\n\nDecision Tree\n\npeng_regtree &lt;- decision_tree() |&gt;\n set_engine(\"rpart\") |&gt;\n set_mode(\"regression\")"
+  },
+  {
+    "objectID": "W09.html#fit-regression-models",
+    "href": "W09.html#fit-regression-models",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Fit Regression Models",
+    "text": "Fit Regression Models\n\n\nLinear Regression\n\npeng_linreg_fit &lt;- peng_workflow2 |&gt; \n add_model(peng_linreg) |&gt; \n fit(data = peng_train)\n\n\nDecision Tree\n\npeng_regtree_fit &lt;- peng_workflow2 |&gt; \n add_model(peng_regtree) |&gt; \n fit(data = peng_train)"
+  },
+  {
+    "objectID": "W09.html#look-at-fitted-linear-regression",
+    "href": "W09.html#look-at-fitted-linear-regression",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Look at fitted linear regression",
+    "text": "Look at fitted linear regression\n\n\n\npeng_linreg_fit |&gt; tidy() \n\n# A tibble: 9 × 5\n  term              estimate std.error statistic  p.value\n  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)         -829.     701.      -1.18  2.38e- 1\n2 speciesChinstrap    -268.     109.      -2.47  1.44e- 2\n3 speciesGentoo       1010.     164.       6.15  3.52e- 9\n4 islandDream          -14.5     70.0     -0.208 8.36e- 1\n5 islandTorgersen      -21.4     75.7     -0.283 7.77e- 1\n6 bill_length_mm        19.8      8.55     2.32  2.13e- 2\n7 bill_depth_mm         53.7     23.9      2.25  2.56e- 2\n8 flipper_length_mm     13.6      3.54     3.84  1.58e- 4\n9 sexmale              393.      58.5      6.71  1.57e-10\n\n\n\n\nWhat do the categorical predictors tell us? Which are signigficant?\nWhat do the numerical predictors tell us? Which are signigficant?\n\n\n\nCategorical predictors: We have 3 species, 3 island and 2 sex. So, we see 5 new variables. Species and sex are significant, but islands not.\nNumerical predictors: All 3 are significant."
+  },
+  {
+    "objectID": "W09.html#show-rules-1",
+    "href": "W09.html#show-rules-1",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Show rules",
+    "text": "Show rules\n\nrpart.rules(peng_regtree_fit$fit$fit$fit, roundint=FALSE)\n\n  ..y                                                    \n 3418 when species is Adelie or Chinstrap & sex is female\n 3961 when species is Adelie or Chinstrap & sex is   male\n 4693 when species is              Gentoo & sex is female\n 5474 when species is              Gentoo & sex is   male\n\n\n\nFor each terminal node a certain value is predicted (the mean of the remaining penguins)"
+  },
+  {
+    "objectID": "W09.html#visualize-tree-1",
+    "href": "W09.html#visualize-tree-1",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Visualize tree",
+    "text": "Visualize tree\n\nrpart.plot(peng_regtree_fit$fit$fit$fit, \n           roundint=FALSE, tweak=1.5)\n\n\nHow to read?\n\nThe percentage is the fraction of the total cases in this group\nThe number is the predicted outcome (mean body mass) at this decision node"
+  },
+  {
+    "objectID": "W09.html#make-predictions-for-test-data-1",
+    "href": "W09.html#make-predictions-for-test-data-1",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Make predictions for test data",
+    "text": "Make predictions for test data\n\n\nLinear Regression\n\npeng_linreg_pred &lt;- \n predict(peng_linreg_fit, peng_test) |&gt; \n bind_cols(peng_test) \npeng_linreg_pred |&gt; \n select(.pred, body_mass_g, everything()) |&gt; \n slice(10*(1:10)) # show selected rows\n\n# A tibble: 10 × 9\n   .pred body_mass_g species   island    bill_length_mm bill_depth_mm\n   &lt;dbl&gt;       &lt;int&gt; &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;\n 1 3349.        3700 Adelie    Torgersen           36.6          17.8\n 2 3979.        3950 Adelie    Dream               38.8          20  \n 3 3902.        3800 Adelie    Dream               36.3          19.5\n 4 4106.        3875 Adelie    Torgersen           41.4          18.5\n 5 3499.        3400 Adelie    Dream               40.2          17.1\n 6 4597.        4150 Gentoo    Biscoe              42            13.5\n 7 4688.        4200 Gentoo    Biscoe              45.5          13.9\n 8 4929.        4850 Gentoo    Biscoe              48.5          15  \n 9 4014.        4150 Chinstrap Dream               52            19  \n10 4108.        4050 Chinstrap Dream               50.7          19.7\n# ℹ 3 more variables: flipper_length_mm &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;\n\n\n\nDecision Tree\n\npeng_regtree_pred &lt;- \n predict(peng_regtree_fit, peng_test) |&gt; \n bind_cols(peng_test)\npeng_regtree_pred |&gt; \n select(.pred, body_mass_g, species, sex) |&gt; \n slice(10*(1:10)) # show same selected rows\n\n# A tibble: 10 × 4\n   .pred body_mass_g species   sex   \n   &lt;dbl&gt;       &lt;int&gt; &lt;fct&gt;     &lt;fct&gt; \n 1 3418         3700 Adelie    female\n 2 3961.        3950 Adelie    male  \n 3 3961.        3800 Adelie    male  \n 4 3961.        3875 Adelie    male  \n 5 3418         3400 Adelie    female\n 6 4693.        4150 Gentoo    female\n 7 4693.        4200 Gentoo    female\n 8 4693.        4850 Gentoo    female\n 9 3961.        4150 Chinstrap male  \n10 3961.        4050 Chinstrap male"
+  },
+  {
+    "objectID": "W09.html#regression-performance-evaluation",
+    "href": "W09.html#regression-performance-evaluation",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Regression Performance Evaluation",
+    "text": "Regression Performance Evaluation\nR-squared: Percentage of variability in body_mass_g explained by the model\n\n\nLinear Regression\n\nrsq(peng_linreg_pred, \n    truth = body_mass_g, estimate = .pred)\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rsq     standard       0.861\n\n\n\nDecision Tree\n\nrsq(peng_regtree_pred, \n    truth = body_mass_g, estimate = .pred)\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rsq     standard       0.806\n\n\n\nRoot Mean Squared Error (RMSE): \\(\\text{RMSE} = \\sqrt{\\frac{1}{n}\\sum_{i = 1}^n (y_i - \\hat{y}_i)^2}\\)\nwhere \\(\\hat{y}_i\\) is the predicted value and \\(y_i\\) the true value. (The name RMSE is descriptive.)\n\n\n\nrmse(peng_linreg_pred, \n     truth = body_mass_g, \n     estimate = .pred)\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard        290.\n\n\n\n\nrmse(peng_regtree_pred, \n     truth = body_mass_g, \n     estimate = .pred)\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard        337.\n\n\n\nWhich model is better in prediction? Linear regression. The R-squared is higher."
+  },
+  {
+    "objectID": "W09.html#what-rmse-is-better",
+    "href": "W09.html#what-rmse-is-better",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "What RMSE is better?",
+    "text": "What RMSE is better?\n\nLower. The lower the error, the better the model’s prediction.\nIt is the other way round than R-squared! Do not confuse them.\n\n\nNotes:\n\nThe common method to fit a linear model is the ordinary least squares (OLS) method\nThat means the fitted parameters should deliver the lowest possible sum of squared errors (SSE) between predicted and observed values.\nMinimizing the sum of squared errors (SSE) is identical to minimizing the mean of squared errors (MSE) because it only adds the factor \\(1/n\\).\nMinimizing the mean of squared errors (MSE) is identical to minimizing the root mean of squared errors (RMSE) because the square root is strictly monotone function.\n\nConclusion: RMSE can be seen as a definition of the OLS optimization goal."
+  },
+  {
+    "objectID": "W09.html#interpreting-rmse",
+    "href": "W09.html#interpreting-rmse",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Interpreting RMSE",
+    "text": "Interpreting RMSE\nIn contrast to R-squared, RMSE can only be interpreted with knowledge about the range and of the response variable! It also has the same unit (grams for body_mass_g).\n\n\npeng_test |&gt; \n ggplot(aes(x=body_mass_g, fill = species)) + \n geom_histogram(binwidth = 50) + \n theme_minimal(base_size = 20)\n\n\n\n\n\n\n\n\n\n\n\npeng_linreg_pred |&gt; \n ggplot(aes(x=.pred, fill = species)) + \n geom_histogram(binwidth = 50) + \n theme_minimal(base_size = 20)\n\n\n\n\n\n\n\n\n\n\n\npeng_regtree_pred |&gt; \n ggplot(aes(x=.pred, fill = species)) + \n geom_histogram(binwidth = 50) + \n theme_minimal(base_size = 20)\n\n\n\n\n\n\n\n\n\nThe RMSE shows many grams predicted values deviate from the true value on average. (Taking the squaring of differences and root of the average into account.)"
+  },
+  {
+    "objectID": "W09.html#compare-training-and-test-data",
+    "href": "W09.html#compare-training-and-test-data",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Compare training and test data",
+    "text": "Compare training and test data\n\n\nLinear Regression Predict with test data:\n\npredict(peng_linreg_fit, peng_test) |&gt; bind_cols(peng_test) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     290.   \n2 rsq     standard       0.861\n\n\nPredict with training data:\n\npredict(peng_linreg_fit, peng_train) |&gt; bind_cols(peng_train) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     283.   \n2 rsq     standard       0.880\n\n\n\nDecision Tree Predict with test data:\n\npredict(peng_regtree_fit, peng_test) |&gt; bind_cols(peng_test) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     337.   \n2 rsq     standard       0.806\n\n\nPredict with training data:\n\npredict(peng_regtree_fit, peng_train) |&gt; bind_cols(peng_train) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     309.   \n2 rsq     standard       0.857\n\n\n\nWhere is the prediction better? (Lower RMSE, higher R-squared)\n\nPerformance is better for training data (compare values to testing data of the same model). Why? It was used to fit. The model is optimized to predict the training data."
+  },
+  {
+    "objectID": "W09.html#make-a-deeper-tree",
+    "href": "W09.html#make-a-deeper-tree",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Make a deeper tree",
+    "text": "Make a deeper tree\n\nIn decision_tree() we can set the maximal depth of the tree to 30.\n\nThe trees we had before were also automatically pruned by sensible defaults.\n\nBy setting the cost complexity parameter to -1 we avoid pruning.1\n\n\npeng_regtree_deep &lt;- decision_tree(\n cost_complexity = -1,\n tree_depth = 30\n) |&gt;\n set_engine(\"rpart\") |&gt;\n set_mode(\"regression\")\npeng_regtree_deep_fit &lt;- peng_workflow2 |&gt; add_model(peng_regtree_deep) |&gt; \n fit(data = peng_train)\n\nThe details of this go beyond the scope of this course."
+  },
+  {
+    "objectID": "W09.html#the-deep-tree",
+    "href": "W09.html#the-deep-tree",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "The deep tree",
+    "text": "The deep tree"
+  },
+  {
+    "objectID": "W09.html#compare-pruned-and-deep-tree",
+    "href": "W09.html#compare-pruned-and-deep-tree",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "Compare pruned and deep tree",
+    "text": "Compare pruned and deep tree\n\n\nPruned decision tree\nPredict with training data:\n\npeng_regtree_fit |&gt; \n predict(new_data = peng_train) |&gt; bind_cols(peng_train) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     309.   \n2 rsq     standard       0.857\n\n\nPredict with testing data:\n\npeng_regtree_fit |&gt; \n predict(peng_test) |&gt; bind_cols(peng_test) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     337.   \n2 rsq     standard       0.806\n\n\n\nDeep decision tree\nPredict with training data:\n\npeng_regtree_deep_fit |&gt; \n predict(new_data = peng_train) |&gt; bind_cols(peng_train) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     247.   \n2 rsq     standard       0.908\n\n\nPredict with testing data:\n\npeng_regtree_deep_fit |&gt; \n predict(peng_test) |&gt; bind_cols(peng_test) |&gt; \n metrics(truth = body_mass_g, estimate = .pred) |&gt; slice(1:2)\n\n# A tibble: 2 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard     333.   \n2 rsq     standard       0.808"
+  },
+  {
+    "objectID": "W09.html#more-in-an-r-script",
+    "href": "W09.html#more-in-an-r-script",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "More in an R-script",
+    "text": "More in an R-script\n\nOverfitting in spam predicton models.\nFrom decision trees to random forrests.\n\nMove to the script."
+  },
+  {
+    "objectID": "W09.html#model-in-statistical-learning",
+    "href": "W09.html#model-in-statistical-learning",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "“Model” in Statistical Learning",
+    "text": "“Model” in Statistical Learning\nWe already had the difference between variable-based and agent-based models in earlier lectures.\nBut even in the variable-based model setting of statistical learning, the term model can be more or less abstract:\n\nVery general: \\(Y = f(X_1, \\dots, X_m) + \\varepsilon\\) where \\(Y\\) is the response variable and \\(X_i\\) are features which we put in our model: the abstract and unknown function \\(f\\).\n\\(\\varepsilon\\) is the error which we can never explain usually do not know.\nMore specific: The model \\(f\\) could already be of a specific type, like logistic regression, a decision tree or other functional forms. As this need not be the real function we may call it assumed model \\(\\hat f\\) For example a linear model \\(\\hat f(X_1, \\dots, X_m) = \\beta_0 + \\beta_1 X_1 + \\dots + \\beta_m X_m + \\varepsilon\\). Now, the model has specified parameters which values are unknown."
+  },
+  {
+    "objectID": "W09.html#more-specific-fitted-model",
+    "href": "W09.html#more-specific-fitted-model",
+    "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
+    "section": "More specific: Fitted model",
+    "text": "More specific: Fitted model\n\nFitted model: When we have a data set with values for \\(Y, X_1, \\dots, X_m\\) we can fit values for the parameters \\(\\hat\\beta_0, \\dots, \\hat\\beta_m\\) to the data. This is the fitted model \\(\\hat f\\). This is called parameter estimation: We estimate \\(\\hat\\beta_0, \\dots, \\hat\\beta_m\\) with the hope that they match the real values \\(\\beta_0, \\dots, \\beta_m\\) and that the linear model \\(\\hat f\\) matches the real function \\(f\\).\nNow we could specify further to fit a specific parameterized model with a specific algorithm, and a specific set of hyperparameters, and maybe more …\n\nSometimes model means only a certain aspect of all these, for example the formula like sex ~ bill_length_mm + bill_depth_mm + flipper_length_mm + body_mass_g + species + island\n\nTake away: “Model” can mean things with very different granularity. That is OK because they are all related and all fit the definition of being a simplified representation of reality.\nBe prepared to specify what you mean when you are talking about a model.\n\n\n\n\nMDSSB-DSCO-02: Data Science Concepts"
   },
   {
     "objectID": "homework.html",
@@ -3111,6 +3118,17 @@
     "title": "Homework Projects",
     "section": "6 Feedback",
     "text": "6 Feedback\nTogether with Teaching Assistant the instructors will try to give feedback on your work.\nThe preferred way is via GitHub Issues. An Issues-Section is part of every repository. They are used to organize collaborative work and organize user interaction. You can also use issues for yourself as a project-specific To-Do-List.\nInstructors and Teaching Assistants may use Issues to give you some feedback on the current state of your work in the project.\nIf you require feedback:\n\nFile an issue and describe on what you need feedback or help as specific as possible.\nPoint the instructors to your issue.",
+    "crumbs": [
+      "Syllabus",
+      "Homework Projects"
+    ]
+  },
+  {
+    "objectID": "homework.html#making-a-homework-project-repository-public",
+    "href": "homework.html#making-a-homework-project-repository-public",
+    "title": "Homework Projects",
+    "section": "7 Making a Homework Project repository public",
+    "text": "7 Making a Homework Project repository public\nYou may want to use your Homework Projects in your portfolio. The repositories can be made public from where the are. If you want to do so, please inform the instructors. In the case of publication, the README should be replaced by a note that this was part of a Homework in Data Science Tools at Constructor University. Please also make sure that no private data gets into a public repository.",
     "crumbs": [
       "Syllabus",
       "Homework Projects"
@@ -4690,7 +4708,7 @@
     "href": "final.html#delivery",
     "title": "Final Project",
     "section": "4 Delivery",
-    "text": "4 Delivery\n\nDelivery is via GitHub in a private repository (the same way as Homework Projects).\nThe repository for the final project will be created in the CU-F24-MDSSB-01-Concepts-Tools by the instructors upon team and project approval.\nThe source file as well as the rendered html-file should be included.\nAssessment will be done based on reading the HTML-file. Additionally and if necessary, the Quarto Markdown File and other provided files may be looked at. Ideally, the HTML-Report is sufficient to assess the project! (To test if the HTML file looks good for the instructors do the following: Clone the repository anew to a temporaty directory on your computer, open the HTML file from this newly cloned directory. Check if it looks good. This is what instructors will do.) 2",
+    "text": "4 Delivery\n\nDelivery is via GitHub in a private repository (the same way as Homework Projects).\nThe repository for the final project will be created in the CU-F24-MDSSB-01-Concepts-Tools by the instructors upon team and project approval.\nThe source file as well as the rendered html-file should be included.\nThe assessment will start after the deadline with the latest commit.\nAssessment will be done based on reading the HTML-file. Additionally and if necessary, the Quarto Markdown File and other provided files may be looked at. Ideally, the HTML-Report is sufficient to assess the project! (To test if the HTML file looks good for the instructors do the following: Clone the repository anew to a temporaty directory on your computer, open the HTML file from this newly cloned directory. Check if it looks good. This is what instructors will do.)",
     "crumbs": [
       "Syllabus",
       "Final Project"
@@ -4723,7 +4741,7 @@
     "href": "final.html#how-to-define-a-project",
     "title": "Final Project",
     "section": "7 How to define a project?",
-    "text": "7 How to define a project?\nPart of the work is to define a good project for question-driven data analysis.\nEssentially there are two approaches to coming to a project setup:\n\nFind and select data that interests you, do some question-driven data exploration, and focus and narrow the question.\nStart with a question and search data to answer it.\n\nStudents can build on topics and datasets of the Homework.",
+    "text": "7 How to define a project?\nPart of the work is to define a good project for question-driven data analysis.\nEssentially there are two approaches to coming to a project setup:\n\nFind and select data that interests you, do some question-driven data exploration, and focus and narrow the question.\nStart with a question and search data to answer it.\n\nYou can build on topics and datasets of the Homework.",
     "crumbs": [
       "Syllabus",
       "Final Project"
@@ -4741,11 +4759,22 @@
     ]
   },
   {
+    "objectID": "final.html#making-your-project-public",
+    "href": "final.html#making-your-project-public",
+    "title": "Final Project",
+    "section": "9 Making your project public",
+    "text": "9 Making your project public\nBy default, project repositories are private and only visible to team members and instructors. The repositories can be made public such that students can use it as part of their portfolio, for example for referring to it in applications for internships and student jobs. Please let the instructors know if you want to make the repository public.\nAdditionally, the HTML file can be made accessible directly as a webpage with a few tweaks from quarto using the service of GitHub Pages. See the documentation.",
+    "crumbs": [
+      "Syllabus",
+      "Final Project"
+    ]
+  },
+  {
     "objectID": "final.html#frequently-asked-questions-may-be-extended",
     "href": "final.html#frequently-asked-questions-may-be-extended",
     "title": "Final Project",
-    "section": "9 Frequently Asked Questions (may be extended)",
-    "text": "9 Frequently Asked Questions (may be extended)\n\nDo we need to stick to methods and visualizations treated in lectures?\nNo, you are invited to use other data analysis and visualization methods (from other courses or packages which you self-learn)! We are happy to give advice if we can.\nAre we only allowed to use one dataset?\nNo, you can also merge data from different sources. This is a more challenging project because the data wrangling work would be a bit more. If your question calls for it we encourage you to use another data source. The additional effort will be recognized.",
+    "section": "10 Frequently Asked Questions (may be extended)",
+    "text": "10 Frequently Asked Questions (may be extended)\n\nDo we need to stick to methods and visualizations treated in lectures?\nNo, you are invited to use other data analysis and visualization methods (from other courses or packages which you self-learn)! We are happy to give advice if we can.\nAre we only allowed to use one dataset?\nNo, you can also merge data from different sources. This is a more challenging project because the data wrangling work would be a bit more. If your question calls for it we encourage you to use another data source. The additional effort will be recognized.",
     "crumbs": [
       "Syllabus",
       "Final Project"
