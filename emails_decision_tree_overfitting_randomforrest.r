@@ -2,6 +2,7 @@ library(tidymodels)
 library(openintro)
 library(tidyverse)
 library(rpart.plot)
+library(ranger)
 
 
 # Email spam-prediction: Overfitting a decision tree
