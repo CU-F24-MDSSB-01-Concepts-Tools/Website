@@ -162,7 +162,7 @@
     "href": "index.html#examination-and-assessment",
     "title": "Data Science Concepts / Data Science Tools",
     "section": "7 Examination and Assessment",
-    "text": "7 Examination and Assessment\n\n\n\n\n\n\nFor students of DSSB (online)\n\n\n\n\n\nThese information does NOT apply for you, check your handbook.\n\n\n\n\n7.1 Concepts Module\nAssessment Type: Written Examination\nDuration: 120 min\nWeight: 100%\nScope: All intended learning outcomes of the module.\nCompletion: to pass this module, the examination has to be passed with at least 45%\nAn exam will take place after all lectures in December. The date will be published by the university adminstration later.\nThere are no additional achievements necessary and there are no bonus options.\n\n\n7.2 Tools Module\nModule achievement: 50% of the assignments correctly solved\nProgramming and analysis assignments will appear step by step during the courses.\nTo pass the module you have to solve half of them by the end of the semester.\nAssessment Type: Project Report\nLength: 4000 - 5000 words (This is a guideline, not a strict rule! Content counts, we will not count words.) Weight: 100% Scope: All intended learning outcomes of the module.\nMore information of project formats and grading rubric: Final Projects\nBonus option: Students receive 0.33 points grade improvements on their project grade on the numerical grade as specified in the Grading Table when all assignments are solved by the end of the semester. (Note, the bonus is not necessary to reach the best grade in the module.)\nAll assignments and the final project must be delivered in personalized repositories in the GitHub organization.",
+    "text": "7 Examination and Assessment\n\n\n\n\n\n\nFor students of DSSB (online)\n\n\n\n\n\nThese information does NOT apply for you, check your handbook.\n\n\n\n\n7.1 Concepts Module\nAssessment Type: Written Examination\nDuration: 120 min\nWeight: 100%\nScope: All intended learning outcomes of the module.\nCompletion: to pass this module, the examination has to be passed with at least 45%\nAn exam will take place after all lectures in December. The date will be published by the university adminstration later.\nThere are no additional achievements necessary and there are no bonus options.\n\n\n7.2 Tools Module\nModule achievement: 50% of the assignments correctly solved\nProgramming and analysis assignments will appear step by step during the courses.\nTo pass the module you have to solve half of them by the end of the semester.\nAssessment Type: Project Report\nLength: 4000 - 5000 words (This is a guideline, not a strict rule! Content counts, we will not count words.)\nWeight: 100%\nScope: All intended learning outcomes of the module.\nMore information of project formats and grading rubric: Final Projects\nBonus option: Students receive 0.33 points grade improvements on their project grade on the numerical grade as specified in the Grading Table when all assignments are solved by the end of the semester. (Note, the bonus is not necessary to reach the best grade in the module.)\nAll assignments and the final project must be delivered in personalized repositories in the GitHub organization.\n\n\n\n\n\n\nPreliminary Homework Specification for Passing and Bonus\n\n\n\n\n\n(when final the “preliminary” note will be removed)\nBy the end of the semester, all Homework repositories will be assessed as\n\n“Just Passed” when half of the tasks are solved meaningfully,\n“Passed” when almost all tasks are solved (some shortcomings are acceptable),\n“Bonus” when the solutions are great, or\n“Fail” when none of this has been achieved.\n\nTo pass the module (50% Module Achievement such that the student can be assessed on the final project) a student needs to have all Homework Projects at least as “Just Passed” (no “Fail”). However, a “Fail” in one Homework can be compensated by a another Homework being “Passed” or “Bonus”.\nTo receive the bonus for the module assessments a student needs to have more than half of the Homework Projects at “Bonus” and all others at “Passed” (no “Fail” or “Just Passed”).",
     "crumbs": [
       "Syllabus"
     ]
@@ -2517,203 +2517,203 @@
   {
     "objectID": "W10.html#what-is-a-matrix",
     "href": "W10.html#what-is-a-matrix",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "What is a matrix?",
     "text": "What is a matrix?\n\n\n\nA matrix is a 2-dimensional array of numbers with rows and columns.\nThe numbers in it are called its elements.\n\nIsn’t that a data frame?\n\nNo, a dataframe is more general. In a matrix, every element has the same basic data type!\nIn R, a matrix is a vector plus some specification of the dimensions.\n\n(A matrix can also be of characters or logicals, it can also have row- and column-names)\n\n\n\nmatrix(data = 1:6, nrow = 2)\n\n\n\n     [,1] [,2] [,3]\n[1,]    1    3    5\n[2,]    2    4    6\n\n\n\nmatrix(data = 1:6, ncol = 2)\n\n\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n\n\nmatrix(data = 1:6, nrow = 3)\n\n\n\n     [,1] [,2]\n[1,]    1    4\n[2,]    2    5\n[3,]    3    6\n\n\n\nmatrix(data = 1:6, nrow = 3, byrow = TRUE)\n\n\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    3    4\n[3,]    5    6"
   },
   {
     "objectID": "W10.html#matrices-in-mathematics",
     "href": "W10.html#matrices-in-mathematics",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Matrices in Mathematics",
     "text": "Matrices in Mathematics\n\nAddition and subtraction of matrices is done element-wise.\nMultiplication of a matrix with a scalar is done element-wise.\nMultiplication of two matrices is done row times column.\nTransposition of a matrix is done by flipping the matrix over its diagonal."
   },
   {
     "objectID": "W10.html#organ-donors",
     "href": "W10.html#organ-donors",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Organ donors",
     "text": "Organ donors\nConsultant:\nI can help find a liver donor for your transplant surgery. From my donating clients only 4.8% (3 out of 62) had complications which is way below the national average of 10%!\nQuestion: Is this evidence that the consultant’s work meaningfully contributes to reducing complications?\nCorrelation vs. causation\nEpistemologic question: Is it possible to assess the consultant’s claim using the data?\nNo. The causal claim we can not analyze, the data is observational. Reasons can be outside of the numbers: For example, patients who can afford a medical consultant can afford better medical care, which could lead to a lower complication rate.\nStatistics Question: Could the low complication rate of 4.8% be due to chance?"
   },
   {
     "objectID": "W10.html#parameter-vs.-statistic-hypotheses",
     "href": "W10.html#parameter-vs.-statistic-hypotheses",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Parameter vs. statistic, Hypotheses",
     "text": "Parameter vs. statistic, Hypotheses\n\n\nData\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\norgan_donor &lt;- tibble(outcome = \n c(rep(\"complication\", 3), \n   rep(\"no complication\", 59)))\norgan_donor\n\n# A tibble: 62 × 1\n   outcome        \n   &lt;chr&gt;          \n 1 complication   \n 2 complication   \n 3 complication   \n 4 no complication\n 5 no complication\n 6 no complication\n 7 no complication\n 8 no complication\n 9 no complication\n10 no complication\n# ℹ 52 more rows\n\n\n\norgan_donor |&gt;\n  count(outcome)\n\n# A tibble: 2 × 2\n  outcome             n\n  &lt;chr&gt;           &lt;int&gt;\n1 complication        3\n2 no complication    59\n\n\n\nIn a test, a parameter is the “true” value of interest.\nWe typically estimate the parameter using a sample statistic as a point estimate.\n\\(p\\): true rate of complication, here 10%\n\\(\\hat{p}\\): rate of complication in the sample = \\(\\frac{3}{62}\\) = 0.048\nTwo claims:\nNull hypothesis \\(H_0\\): There is nothing going on\nComplication rate for this consultant is no different than the US average of 10%\nAlternative hypothesis \\(H_A\\): There is something going on\nComplication rate for this consultant is lower than the US average of 10%"
   },
   {
     "objectID": "W10.html#hypothesis-testing-as-a-court-trial",
     "href": "W10.html#hypothesis-testing-as-a-court-trial",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Hypothesis testing as a court trial",
     "text": "Hypothesis testing as a court trial\n\nNull hypothesis, \\(H_0\\): Defendant is innocent\nAlternative hypothesis, \\(H_A\\): Defendant is guilty\nPresent the evidence: Collect data\nJudge the evidence: “Could these data plausibly have happened by chance if the null hypothesis were true?”\n\nYes: Fail to reject \\(H_0\\)\nNo: Reject \\(H_0\\)"
   },
   {
     "objectID": "W10.html#hypothesis-testing-framework",
     "href": "W10.html#hypothesis-testing-framework",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Hypothesis testing framework",
     "text": "Hypothesis testing framework\n\nStart with a null hypothesis, \\(H_0\\), that represents the status quo\nSet an alternative hypothesis, \\(H_A\\), that represents the research question, i.e. what we are testing for\nConduct a hypothesis test under the assumption that the null hypothesis is true and calculate a p-value.\nDefinition: Probability of the observed outcome or a more extreme one given that the null hypothesis is true.\n\nif the test results suggest that the data do not provide convincing evidence for the alternative hypothesis, stick with the null hypothesis\nif they do, then reject the null hypothesis in favor of the alternative"
   },
   {
     "objectID": "W10.html#setting-the-hypotheses",
     "href": "W10.html#setting-the-hypotheses",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Setting the hypotheses",
     "text": "Setting the hypotheses\nIn the following \\(p\\) is the “true” rate of complication of the consultant.\n\\(H_0: p = 0.10\\) In the long run the consultant would also have a 10% complication rate.\n\\(H_A: p &lt; 0.10\\) Also in the long run the consultant would have a complication rate less than 10%. (We would still not know if it is because of the consultant’s work or for something else!)"
   },
   {
     "objectID": "W10.html#simulating-the-null-distribution",
     "href": "W10.html#simulating-the-null-distribution",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Simulating the null distribution",
     "text": "Simulating the null distribution\nSince \\(H_0: p = 0.10\\), we need to simulate a null distribution where the probability of success (complication) for each trial (patient) is 0.10.\nHow should we simulate the null distribution for this study using a bag of chips?\n\nHow many chips? For example 10 which makes 10% choices possible\nHow many colors? 2\nWhat should colors represent? “complication”, “no complication”\nHow many draws? 62 as the data\nWith replacement or without replacement? With replacement\n\nWhen sampling from the null distribution, what would be the expected proportion of “complications”? 0.1"
   },
   {
     "objectID": "W10.html#simulation",
     "href": "W10.html#simulation",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Simulation!",
     "text": "Simulation!\n\nset.seed(1234)\noutcomes &lt;- c(\"complication\", \"no complication\")\nsim1 &lt;- sample(outcomes, size = 62, prob = c(0.1, 0.9), replace = TRUE)\nsim1\n\n [1] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [5] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [9] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[13] \"no complication\" \"complication\"    \"no complication\" \"no complication\"\n[17] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[21] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[25] \"no complication\" \"no complication\" \"no complication\" \"complication\"   \n[29] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[33] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[37] \"no complication\" \"no complication\" \"complication\"    \"no complication\"\n[41] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[45] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[49] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[53] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[57] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[61] \"no complication\" \"no complication\"\n\nsum(sim1 == \"complication\")/62\n\n[1] 0.0483871\n\n\nOh OK, this is the same as the consultant’s rate. But maybe it was a rare event?"
   },
   {
     "objectID": "W10.html#more-simulation",
     "href": "W10.html#more-simulation",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "More simulation!",
     "text": "More simulation!\n\none_sim &lt;- function() sample(outcomes, size = 62, prob = c(0.1, 0.9), replace = TRUE)\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1290323\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1290323\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.09677419\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.09677419\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1774194\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1129032\n\nsum(one_sim() == \"complication\")/62\n\n[1] 0.1129032\n\n\nOh OK, our fist simulation with 0.0483871 seems to be comparably low."
   },
   {
     "objectID": "W10.html#automating-with-tidymodels",
     "href": "W10.html#automating-with-tidymodels",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Automating with tidymodels1",
     "text": "Automating with tidymodels1\n\n\n\norgan_donor\n\n# A tibble: 62 × 1\n   outcome        \n   &lt;chr&gt;          \n 1 complication   \n 2 complication   \n 3 complication   \n 4 no complication\n 5 no complication\n 6 no complication\n 7 no complication\n 8 no complication\n 9 no complication\n10 no complication\n# ℹ 52 more rows\n\n\n\n\nlibrary(tidymodels)\n\n── Attaching packages ────────────────────────────────────── tidymodels 1.2.0 ──\n\n\n✔ broom        1.0.5     ✔ rsample      1.2.1\n✔ dials        1.3.0     ✔ tune         1.2.1\n✔ infer        1.0.7     ✔ workflows    1.1.4\n✔ modeldata    1.3.0     ✔ workflowsets 1.1.0\n✔ parsnip      1.2.1     ✔ yardstick    1.3.1\n✔ recipes      1.1.0     \n\n\n── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──\n✖ scales::discard() masks purrr::discard()\n✖ dplyr::filter()   masks stats::filter()\n✖ recipes::fixed()  masks stringr::fixed()\n✖ dplyr::lag()      masks stats::lag()\n✖ yardstick::spec() masks readr::spec()\n✖ recipes::step()   masks stats::step()\n• Dig deeper into tidy modeling with R at https://www.tmwr.org\n\nset.seed(10)\nnull_dist &lt;- organ_donor |&gt;\n  specify(response = outcome, success = \"complication\") |&gt;\n  hypothesize(null = \"point\", \n              p = c(\"complication\" = 0.10, \"no complication\" = 0.90)) |&gt; \n  generate(reps = 100, type = \"draw\") |&gt; \n  calculate(stat = \"prop\")\nnull_dist\n\nResponse: outcome (factor)\nNull Hypothesis: point\n# A tibble: 100 × 2\n   replicate   stat\n       &lt;int&gt;  &lt;dbl&gt;\n 1         1 0.0323\n 2         2 0.0645\n 3         3 0.0968\n 4         4 0.0161\n 5         5 0.161 \n 6         6 0.0968\n 7         7 0.0645\n 8         8 0.129 \n 9         9 0.161 \n10        10 0.0968\n# ℹ 90 more rows\n\n\n\nOf course, you can also do it in your own way without packages."
   },
   {
     "objectID": "W10.html#visualizing-the-null-distribution",
     "href": "W10.html#visualizing-the-null-distribution",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Visualizing the null distribution",
     "text": "Visualizing the null distribution\n\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.005) +\n  labs(title = \"Null distribution\")"
   },
   {
     "objectID": "W10.html#calculating-the-p-value-visually",
     "href": "W10.html#calculating-the-p-value-visually",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Calculating the p-value, visually",
     "text": "Calculating the p-value, visually\nWhat is the p-value:1 How often was the simulated sample proportion at least as extreme as the observed sample proportion?\n\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.005) +\n  labs(title = \"Null distribution\")  +\n geom_vline(xintercept = 3/62, color = \"red\")\n\n\n\n\n\n\n\n\nWarning: The name p-value has nothing to do with the value \\(p\\) we are currently trying to use as population parameter."
   },
   {
     "objectID": "W10.html#calculating-the-p-value-directly",
     "href": "W10.html#calculating-the-p-value-directly",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Calculating the p-value directly",
     "text": "Calculating the p-value directly\n\nnull_dist |&gt;\n summarise(p_value = sum(stat &lt;= 3/62)/n())\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1    0.13\n\n\nThis is the fraction of simulations where the rate of complications was equal or below \\(\\frac{3}{62} =\\) 0.0483871."
   },
   {
     "objectID": "W10.html#significance-level",
     "href": "W10.html#significance-level",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Significance level",
     "text": "Significance level\n\nA significance level \\(\\alpha\\) is a threshold we make up to make our judgment about the plausibility of the null hypothesis being true given the observed data.\nWe often use \\(\\alpha = 0.05 = 5\\%\\) as the cutoff for whether the p-value is low enough that the data are unlikely to have come from the null model.\nIf p-value &lt; \\(\\alpha\\), reject \\(H_0\\) in favor of \\(H_A\\): The data provide convincing evidence for the alternative hypothesis.\nIf p-value &gt; \\(\\alpha\\), fail to reject \\(H_0\\) in favor of \\(H_A\\): The data do not provide convincing evidence for the alternative hypothesis.\n\nWhat is the conclusion of the hypothesis test?\nSince the p-value is greater than the significance level, we fail to reject the null hypothesis. These data do not provide convincing evidence that this consultant incurs a lower complication rate than the 10% overall US complication rate."
   },
   {
     "objectID": "W10.html#simulations-is-not-sufficient",
     "href": "W10.html#simulations-is-not-sufficient",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "100 simulations is not sufficient",
     "text": "100 simulations is not sufficient\n\nWe simulate 15,000 times to get an accurate distribution.\n\n\nnull_dist &lt;- organ_donor |&gt;\n  specify(response = outcome, success = \"complication\") |&gt;\n  hypothesize(null = \"point\", \n              p = c(\"complication\" = 0.10, \"no complication\" = 0.90)) |&gt; \n  generate(reps = 15000, type = \"simulate\") |&gt; \n  calculate(stat = \"prop\")\n\nThe `\"simulate\"` generation type has been renamed to `\"draw\"`. Use `type =\n\"draw\"` instead to quiet this message.\n\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.005) +\n  geom_vline(xintercept = 3/62, color = \"red\")"
   },
   {
     "objectID": "W10.html#our-more-robust-p-value",
     "href": "W10.html#our-more-robust-p-value",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Our more robust p-value",
     "text": "Our more robust p-value\nFor the null distribution with 15,000 simulations\n\nnull_dist |&gt;\n  filter(stat &lt;= 3/62) |&gt;\n  summarise(p_value = n()/nrow(null_dist))\n\n# A tibble: 1 × 1\n  p_value\n    &lt;dbl&gt;\n1   0.125"
   },
   {
     "objectID": "W10.html#p-value-in-model-outputs",
     "href": "W10.html#p-value-in-model-outputs",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "p-value in model outputs",
     "text": "p-value in model outputs\n\n\nModel output for a linear model with palmer penguins.\n\nlinear_reg() |&gt; set_engine(\"lm\") |&gt; \n    fit(bill_length_mm ~ bill_depth_mm, data = penguins) |&gt; tidy()\n\n# A tibble: 2 × 5\n  term          estimate std.error statistic  p.value\n  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)     55.1       2.52      21.9  6.91e-67\n2 bill_depth_mm   -0.650     0.146     -4.46 1.12e- 5\n\n\n\nModel output for a logistic regression model with email from openintro\n\nlibrary(openintro)\n\nLoading required package: airports\n\n\nLoading required package: cherryblossom\n\n\nLoading required package: usdata\n\n\n\nAttaching package: 'openintro'\n\n\nThe following object is masked from 'package:modeldata':\n\n    ames\n\nlogistic_reg() |&gt;  set_engine(\"glm\") |&gt;\n  fit(spam ~ from + cc, data = email, family = \"binomial\") |&gt; tidy()\n\n# A tibble: 3 × 5\n  term         estimate std.error statistic p.value\n  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;\n1 (Intercept)  13.6      309.        0.0439   0.965\n2 from1       -15.8      309.       -0.0513   0.959\n3 cc            0.00423    0.0193    0.220    0.826\n\n\n\nWhat do the p-values for coefficients mean? What is the null hypothesis?\n\nNull-Hypothesis: No relationship predictor and response. Coefficient could be zero.\nAlternative Hypothesis: The coefficient is away from zero.\nSmall p-value: evidence for rejecting the hypothesis that there is no effect.\nTechnically: The statistic (which we do not treat now) is sufficiently away from zero."
   },
   {
     "objectID": "W10.html#xkcd-on-p-values",
     "href": "W10.html#xkcd-on-p-values",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "xkcd on p-values",
     "text": "xkcd on p-values\n\n\n \n\n\n\nSignificance levels are fairly arbitrary. Sometimes they are used (wrongly) as definitive judgments\nThey can even be used to do p-hacking: Searching for “significant” effects in observational data\nIn parts of science it has become a “gamed” performance metric.\nThe p-value says nothing about effect size!"
   },
   {
     "objectID": "W10.html#p-value-misinterpretation",
     "href": "W10.html#p-value-misinterpretation",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "p-value misinterpretation",
     "text": "p-value misinterpretation\np-values do not measure1\n\nthe probability that the studied hypothesis is true\nthe probability that the data were produced by random chance alone\nthe size of an effect\nthe importance of a result” or “evidence regarding a model or hypothesis” (it is only against the null hypothesis).\n\n\nCorrect explanation:\nThe p-value is the probability of obtaining test results at least as extreme as the result actually observed, under the assumption that the null hypothesis is correct.\np-values and significance tests, when properly applied and interpreted, increase the rigor of the conclusions drawn from data.2\n\nFrom the American Statistical Association (ASA) 2016From the American Statistical Association (ASA) 2019"
   },
   {
     "objectID": "W10.html#galtons-data",
     "href": "W10.html#galtons-data",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Galton’s data",
     "text": "Galton’s data\nWhat is the weight of the meat of this ox?\n\nlibrary(readxl)\ngalton &lt;- read_csv(\"data/galton.csv\")\n\nRows: 787 Columns: 2\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\ndbl (2): Estimate, id\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\ngalton |&gt; ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + geom_vline(xintercept = 1198, color = \"green\") + \n geom_vline(xintercept = mean(galton$Estimate), color = \"red\")\n\n\n\n\n\n\n\n\n787 estimates, true value 1198, mean 1196.7\n\n\nWe focus on the arithmetic mean as aggregation function for the wisdom of the crowd here."
   },
   {
     "objectID": "W10.html#rmse-galtons-data",
     "href": "W10.html#rmse-galtons-data",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "RMSE Galton’s data",
     "text": "RMSE Galton’s data\nDescribe the estimation game as a predictive model:\n\nAll estimates are made to predict the same value: the truth.\n\nIn contrast to the regression model, the estimate come from people and not from a regression formula.\n\nThe truth is the same for all.\n\nIn contrast to the regression model, the truth is one value and not a value for each prediction\n\n\n\nrmse_galton &lt;- galton |&gt; \n mutate(true_value = 1198) |&gt;\n rmse(truth = true_value, Estimate)\nrmse_galton\n\n# A tibble: 1 × 3\n  .metric .estimator .estimate\n  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 rmse    standard        73.6"
   },
   {
     "objectID": "W10.html#mse-variance-and-bias-of-estimates",
     "href": "W10.html#mse-variance-and-bias-of-estimates",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "MSE, Variance, and Bias of estimates",
     "text": "MSE, Variance, and Bias of estimates\nIn a crowd estimation, \\(n\\) estimators delivered the estimates \\(\\hat{y}_1,\\dots,\\hat{y}_n\\). Let us look at the following measures\n\n\\(\\bar{y} = \\frac{1}{n}\\sum_{i = 1}^n \\hat{y}_i^2\\) is the mean estimate, it is the aggregated estimate of the crowd\n\\(\\text{MSE} = \\text{RMSE}^2 = \\frac{1}{n}\\sum_{i = 1}^n (\\text{truth} - \\hat{y}_i)^2\\)\n\\(\\text{Variance} = \\frac{1}{n}\\sum_{i = 1}^n (\\hat{y}_i - \\bar{y})^2\\)\n\\(\\text{Bias-squared} = (\\bar{y} - \\text{truth})^2\\) which is the square difference between truth and mean estimate.\n\nThere is a mathematical relation (a math exercise to check):\n\\[\\text{MSE} = \\text{Bias-squared} + \\text{Variance}\\]"
   },
   {
     "objectID": "W10.html#testing-for-galtons-data",
     "href": "W10.html#testing-for-galtons-data",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Testing for Galton’s data",
     "text": "Testing for Galton’s data\n\\[\\text{MSE} = \\text{Bias-squared} + \\text{Variance}\\]\n\nMSE &lt;- (rmse_galton$.estimate)^2 \nMSE\n\n[1] 5409.795\n\nVariance &lt;- var(galton$Estimate)*(nrow(galton)-1)/nrow(galton)\n# Note, we had to correct for the divisor (n-1) in the classical statistical definition\n# to get the sample variance instead of the estimate for the population variance\nVariance\n\n[1] 5408.132\n\nBias_squared &lt;- (mean(galton$Estimate) - 1198)^2\nBias_squared\n\n[1] 1.663346\n\nBias_squared + Variance\n\n[1] 5409.795\n\n\n\n\nSuch nice mathematical properties are probably one reason why these squared measures are so popular."
   },
   {
     "objectID": "W10.html#the-diversity-prediction-theorem",
     "href": "W10.html#the-diversity-prediction-theorem",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "The diversity prediction theorem1",
     "text": "The diversity prediction theorem1\n\nMSE is a measure the average individuals error\nBias-squared is a measure the collective error\nVariance is a measure for the diversity of estimates around the mean\n\nThe mathematical relation \\[\\text{MSE} = \\text{Bias-squared} + \\text{Variance}\\] can be formulated as\nCollective error = Individual error - Diversity\nInterpretation: The higher the diversity the lower the collective error!\nNotion from: Page, S. E. (2007). The Difference: How the Power of Diversity Creates Better Groups, Firms, Schools, and Societies. Princeton University Press."
   },
   {
     "objectID": "W10.html#why-is-this-message-a-bit-suggestive",
     "href": "W10.html#why-is-this-message-a-bit-suggestive",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Why is this message a bit suggestive?",
     "text": "Why is this message a bit suggestive?\nThe mathematical relation \\[\\text{MSE} = \\text{Bias-squared} + \\text{Variance}\\] can be formulated as\nCollective error = Individual error - Diversity\nInterpretation: The higher the diversity the lower the collective error!\n\n\n\\(\\text{MSE}\\) and \\(\\text{Variance}\\) are not independent!\nActivities to increase diversity (Variance) typically also increase the average individual error (MSE).\nFor example, if we just add more random estimates with same mean but wild variance to our sample we increase both and do not gain any decrease of the collective error."
   },
   {
     "objectID": "W10.html#accuracy-for-numerical-estimate",
     "href": "W10.html#accuracy-for-numerical-estimate",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "Accuracy for numerical estimate",
     "text": "Accuracy for numerical estimate\n\nFor binary classifiers accuracy has a simple definition: Fraction of correct classifications.\n\nIt can be further informed by other more specific measures taken from the confusion matrix (sensitivity, specificity)\n\n\nHow about numerical estimators?\nFor example outcomes of estimation games, or linear regression models.\n\nAccuracy is for example measured by (R)MSE\n\\(\\text{MSE} = \\text{Bias-squared} + \\text{Variance}\\) shows us that we can make a\nbias-variance decomposition\nThat means some part of the error is a systematic (the bias) and another part due to random variation (the variance).\nLearn more about the bias-variance tradeoff in statistical learning independently! It is an important concept to understand predictive models."
   },
   {
     "objectID": "W10.html#d-accuracy-trueness-and-precision",
     "href": "W10.html#d-accuracy-trueness-and-precision",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "2-d Accuracy: Trueness and Precision",
     "text": "2-d Accuracy: Trueness and Precision\nAccording to ISO 5725-1 Standard: Accuracy (trueness and precision) of measurement methods and results - Part 1: General principles and definitions. there are two dimension of accuracy of numerical measurement."
   },
   {
     "objectID": "W10.html#what-is-a-wise-crowd",
     "href": "W10.html#what-is-a-wise-crowd",
-    "title": "W#10: p-value, Decision Trees, RMSE, Overfitting, Bias-Variance in Crowd Wisdom",
+    "title": "W#10: Overfitting, Clustering, Bias-Variance in Crowd Wisdom",
     "section": "What is a wise crowd?",
     "text": "What is a wise crowd?\nAssume the dots are estimates. Which is a wise crowd?\n\n\n\nOf course, high trueness and high precision! But, …\nFocusing on the crowd being wise instead of its individuals: High trueness, low precision.\n\n\n\n\n\nMDSSB-DSCO-02: Data Science Concepts"
   },
@@ -2792,7 +2792,7 @@
     "href": "W09.html#simulation",
     "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Simulation!",
-    "text": "Simulation!\n\nset.seed(1234) # The seed is set for the sake of stable presentation outcomes.\noutcomes &lt;- c(\"complication\", \"no complication\")\nsim1 &lt;- sample(outcomes, size = 62, prob = c(0.1, 0.9), replace = TRUE)\nsim1\n\n [1] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [5] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [9] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[13] \"no complication\" \"complication\"    \"no complication\" \"no complication\"\n[17] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[21] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[25] \"no complication\" \"no complication\" \"no complication\" \"complication\"   \n[29] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[33] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[37] \"no complication\" \"no complication\" \"complication\"    \"no complication\"\n[41] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[45] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[49] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[53] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[57] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[61] \"no complication\" \"no complication\"\n\nsum(sim1 == \"complication\")/62\n\n[1] 0.0483871\n\n\nOh OK, this was is pretty close to the consultant’s rate. But maybe it was a rare event?"
+    "text": "Simulation!\n\nset.seed(1234) # The seed is set for the sake of stable presentation outcomes.\noutcomes &lt;- c(\"complication\", \"no complication\")\nsim1 &lt;- sample(outcomes, size = 62, prob = c(0.1, 0.9), replace = TRUE)\nsim1\n\n [1] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [5] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n [9] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[13] \"no complication\" \"complication\"    \"no complication\" \"no complication\"\n[17] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[21] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[25] \"no complication\" \"no complication\" \"no complication\" \"complication\"   \n[29] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[33] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[37] \"no complication\" \"no complication\" \"complication\"    \"no complication\"\n[41] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[45] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[49] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[53] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[57] \"no complication\" \"no complication\" \"no complication\" \"no complication\"\n[61] \"no complication\" \"no complication\"\n\nsum(sim1 == \"complication\")/62\n\n[1] 0.0483871\n\n\nOh OK, this was exactly the consultant’s rate. But maybe it was a rare event? Let us repeat it."
   },
   {
     "objectID": "W09.html#more-simulation",
@@ -2820,7 +2820,7 @@
     "href": "W09.html#calculating-the-p-value-visually",
     "title": "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting",
     "section": "Calculating the p-value, visually",
-    "text": "Calculating the p-value, visually\nWhat is the p-value:1 How often was the simulated sample proportion at least as extreme as the observed sample proportion?\n\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.01) +\n  labs(title = \"Null distribution\")  +\n geom_vline(xintercept = 3/62, color = \"red\")\n\n\n\n\n\n\n\n\nThe name p-value has nothing to do with the value \\(p\\) we are currently trying to use as population parameter."
+    "text": "Calculating the p-value, visually\nWhat is the p-value: How often was the simulated sample proportion at least as extreme as the observed sample proportion?1\n\nggplot(data = null_dist, mapping = aes(x = stat)) +\n  geom_histogram(binwidth = 0.01) +\n  labs(title = \"Null distribution\")  +\n geom_vline(xintercept = 3/62, color = \"red\")\n\n\n\n\n\n\n\n\nThis a one-sided hypothesis test because we are looking for extremely lower rates not also extremely higher rates. We do one-sided test if we know the direction of interest, here “low” and “lower” rates."
   },
   {
     "objectID": "W09.html#calculating-the-p-value-directly",
@@ -3062,7 +3062,7 @@
     "href": "homework.html#homework-projects-list",
     "title": "Homework Projects",
     "section": "1 Homework Projects List",
-    "text": "1 Homework Projects List\nAs a registered student, you find personalized repositories for your Homework Projects in the GitHub-Organization. These are the projects (List not final!):\n\nNYCFlights\nDataScienceProfiles\nCOVID19\nIn preparation: FuelWatch\nIn preparation: Finance\n\nPlease read the next sections.",
+    "text": "1 Homework Projects List\nAs a registered student, you find personalized repositories for your Homework Projects in the GitHub-Organization. These are the projects (List not final!):\n\nNYCFlights\nDataScienceProfiles\nCOVID19\nFuelWatch\nStock\n\nPlease read the next sections.",
     "crumbs": [
       "Syllabus",
       "Homework Projects"
@@ -4686,7 +4686,7 @@
     "href": "final.html#work-in-teams-and-register-your-project",
     "title": "Final Project",
     "section": "2 Work in Teams and Register your Project",
-    "text": "2 Work in Teams and Register your Project\nProjects should be done in teams of 2-3 students. This serves two additional learning goals:\n\nLearning to pursue and coordinate data science workflows collaboratively.\nLearning to work collaboratively on code with it and GitHub.\n\nSingle teams and teams with more the 3 members are possible upon request when there are reasons for it.\n\n\n\n\n\n\nThe team’s work is graded as one piece.\n\n\n\n\n\nAll members receive the same grade for it. However, the module grade can be different because of the bonus for fully complete homework. A dysfunctional team can be split upon request by individual members.\n\n\n\nHow to form a team and register your project:\n\nForm a team on your own with fellow students.\nGo through this guidelines together.\n\nFind a suitable dataset (see below).\nCome up with a few initial questions.\nAll team members should write to the instructors.\n\nOne member should write to the Jan Lorenz and Armin Müller and provide\n\nall names of the team members,\ninformation about the dataset,\nthe initial questions, and\na short working title for the repository name.\n\nAll other members should write to the instructors for confirmation.",
+    "text": "2 Work in Teams and Register your Project\nProjects should be done in teams of 2-3 students. This serves two additional learning goals:\n\nLearning to pursue and coordinate data science workflows collaboratively.\nLearning to work collaboratively on code with git and GitHub.\n\nSingle teams and teams with more the 3 members are possible upon request when there are reasons for it.\n\n\n\n\n\n\nThe team’s work is graded as one piece.\n\n\n\n\n\nAll members receive the same grade for it. However, the module grade can be different because of the bonus for fully complete homework. A dysfunctional team can be split upon request by individual members.\n\n\n\nHow to form a team and register your project:\n\nForm a team on your own with fellow students.\nGo through this guidelines together.\n\nFind a suitable dataset (see below).\nCome up with a few initial questions.\nAll team members should write to the instructors.\n\nOne member should write to the Jan Lorenz and Armin Müller and provide\n\nall names of the team members,\ninformation about the dataset,\nthe initial questions, and\na short working title for the repository name.\n\nAll other members should write to the instructors for confirmation.",
     "crumbs": [
       "Syllabus",
       "Final Project"
@@ -4752,7 +4752,7 @@
     "href": "final.html#guidelines-for-drafting-your-project",
     "title": "Final Project",
     "section": "8 Guidelines for drafting your project",
-    "text": "8 Guidelines for drafting your project\n\nFind a manageable dataset: at least 50 cases, good is 10-20 variables with a mix of categorical and numeric. Deviations are allowed based on your interest and capability.\nGo through the visualizations, statistics, and models we had in lectures and homework and think if similar things would be interesting.\nThe goal is not an exhaustive data analysis with every method! Do not calculate every statistic and procedure you have learned for every variable, but rather show that you can ask meaningful questions and answer them with results of data analysis and proficient interpretation and presentation of the results.\nDo NOT blindly do all visualization and all statistics on all variables in the data set! You may do that in your data exploration. But not all exploratory data analysis goes into your report. At some point, you have to focus on what is needed to answer your questions. Your report is not a documentation of all your exploratory steps. Throw out what is not needed anymore, improve the remaining visualizations, and explain well in the text what you want to communicate.\nA single high-quality visualization that shows a point clearly will receive a much higher appreciation than a large number of poor-quality visualizations without an explanation of what they should communicate.",
+    "text": "8 Guidelines for drafting your project\n\nFind a manageable dataset: at least 50 cases (rows), good is 10-20 variables (columns) with a mix of categorical and numeric. Deviations are allowed based on your interest and capability.\nGo through the visualizations, statistics, and models we had in lectures and homework and think if similar things would be interesting.\nThe goal is not an exhaustive data analysis with every method! Do not calculate every statistic and procedure you have learned for every variable, but rather show that you can ask meaningful questions and answer them with results of data analysis and proficient interpretation and presentation of the results.\nDo NOT blindly do all visualization and all statistics on all variables in the data set! You may do that in your data exploration. But not all exploratory data analysis goes into your report. At some point, you have to focus on what is needed to answer your questions. Your report is not a documentation of all your exploratory steps. Throw out what is not needed anymore, improve the remaining visualizations, and explain well in the text what you want to communicate.\nA single high-quality visualization that shows a point clearly will receive a much higher appreciation than a large number of poor-quality visualizations without an explanation of what they should communicate.",
     "crumbs": [
       "Syllabus",
       "Final Project"

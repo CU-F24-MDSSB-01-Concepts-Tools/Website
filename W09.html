@@ -579,7 +579,7 @@ Hypotheses are about the true rate of complication <span class="math inline">\(q
 <pre><code>[1] 0.0483871</code></pre>
 </div>
 </div>
-<p>Oh OK, this was is pretty close to the consultant’s rate. But maybe it was a rare event?</p>
+<p>Oh OK, this was exactly the consultant’s rate. But maybe it was a rare event? Let us repeat it.</p>
 </section>
 <section id="more-simulation" class="slide level2 smaller">
 <h2>More simulation!</h2>
@@ -686,7 +686,7 @@ Null Hypothesis: point
 </section>
 <section id="calculating-the-p-value-visually" class="slide level2 smaller">
 <h2>Calculating the p-value, visually</h2>
-<p><strong>What is the p-value:</strong><sup>1</sup> <em>How often was the simulated sample proportion at least as extreme as the observed sample proportion?</em></p>
+<p><strong>What is the p-value:</strong> <em>How often was the simulated sample proportion at least as extreme as the observed sample proportion?</em><sup>1</sup></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="fu">ggplot</span>(<span class="at">data =</span> null_dist, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stat)) <span class="sc">+</span></span>
 <span id="cb28-2"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
@@ -700,7 +700,7 @@ Null Hypothesis: point
 </div>
 </div>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn2"><p>The name p-value has nothing to do with the value <span class="math inline">\(p\)</span> we are currently trying to use as population parameter.</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>This a one-sided hypothesis test because we are looking for extremely lower rates not also extremely higher rates. We do one-sided test if we know the direction of interest, here “low” and “lower” rates.</p></li></ol></aside></section>
 <section id="calculating-the-p-value-directly" class="slide level2">
 <h2>Calculating the p-value, directly</h2>
 <div class="cell">
