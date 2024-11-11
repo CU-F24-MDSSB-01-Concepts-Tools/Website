@@ -2890,7 +2890,7 @@
     "href": "W10.html#mse-variance-and-bias-of-estimates",
     "title": "W#10: Overfitting, Clustering Algorithms, Bias and Diversity in Crowd Wisdom",
     "section": "MSE, Variance, and Bias of estimates",
-    "text": "MSE, Variance, and Bias of estimates\nIn a crowd estimation, \\(n\\) estimators delivered the estimates \\(\\hat{y}_1,\\dots,\\hat{y}_n\\). Let us look at the following measures\n\n\\(\\bar{y} = \\frac{1}{n}\\sum_{i = 1}^n \\hat{y}_i^2\\) is the mean estimate, it is the aggregated estimate of the crowd\n\\(\\text{MSE} = \\text{RMSE}^2 = \\frac{1}{n}\\sum_{i = 1}^n (\\text{truth} - \\hat{y}_i)^2\\)\n\\(\\text{Variance} = \\frac{1}{n}\\sum_{i = 1}^n (\\hat{y}_i - \\bar{y})^2\\)\n\\(\\text{Bias-squared} = (\\bar{y} - \\text{truth})^2\\) which is the square difference between truth and mean estimate.\n\nThere is a mathematical relation (a math exercise to check):\n\\[\\text{MSE} = \\text{Bias-squared} + \\texft{Variance}\\]"
+    "text": "MSE, Variance, and Bias of estimates\nIn a crowd estimation, \\(n\\) estimators delivered the estimates \\(\\hat{y}_1,\\dots,\\hat{y}_n\\). Let us look at the following measures\n\n\\(\\bar{y} = \\frac{1}{n}\\sum_{i = 1}^n \\hat{y}_i^2\\) is the mean estimate, it is the aggregated estimate of the crowd\n\\(\\text{MSE} = \\text{RMSE}^2 = \\frac{1}{n}\\sum_{i = 1}^n (\\text{truth} - \\hat{y}_i)^2\\)\n\\(\\text{Variance} = \\frac{1}{n}\\sum_{i = 1}^n (\\hat{y}_i - \\bar{y})^2\\)\n\\(\\text{Bias-squared} = (\\bar{y} - \\text{truth})^2\\) which is the square difference between truth and mean estimate.\n\nThere is a mathematical relation (a math exercise to check):\n\\[\\text{MSE} = \\text{Bias-squared} + \\text{Variance}\\]"
   },
   {
     "objectID": "W10.html#testing-for-galtons-data",
