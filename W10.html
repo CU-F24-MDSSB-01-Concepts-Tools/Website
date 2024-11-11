@@ -1066,7 +1066,7 @@ Example: In a logistic regression, we assume the binary outcomes are realized ra
   .. ..$ ordered: logi NA
  $ fit_times     : tibble [6 × 2] (S3: tbl_df/tbl/data.frame)
   ..$ stage_id: chr [1:6] "prep.rm_yulwk" "bake.rm_yulwk" "prep.center_3eO03" "bake.center_3eO03" ...
-  ..$ elapsed : num [1:6] 0.001 0 0.002 0 0.001 ...
+  ..$ elapsed : num [1:6] 0.001 0 0.002 0 0.002 ...
  $ last_term_info: gropd_df [8 × 6] (S3: grouped_df/tbl_df/tbl/data.frame)
   ..$ variable: chr [1:8] "bill_depth_mm" "bill_length_mm" "body_mass_g" "flipper_length_mm" ...
   ..$ type    :List of 8
@@ -16121,9 +16121,9 @@ Number of objects: 333 </code></pre>
 <section id="the-diversity-prediction-theorem" class="slide level2 smaller">
 <h2>The diversity prediction theorem<sup>1</sup></h2>
 <ul>
-<li><em>MSE</em> is a measure the average <strong>individuals error</strong></li>
-<li><em>Bias-squared</em> is a measure the <strong>collective error</strong></li>
-<li><em>Variance</em> is a measure for the <strong>diversity</strong> of estimates around the mean</li>
+<li><em>MSE</em> is a measure for the average <strong>individuals error</strong></li>
+<li><em>Bias-squared</em> is a measure for the <strong>collective error</strong></li>
+<li><em>Variance</em> is a measure for the <strong>diversity</strong> of estimates around the mean estimate</li>
 </ul>
 <p>The mathematical relation <span class="math display">\[\text{MSE} = \text{Bias-squared} + \text{Variance}\]</span> can be formulated as</p>
 <p><strong>Collective error = Individual error - Diversity</strong></p>
