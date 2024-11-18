@@ -20,9 +20,9 @@ All substantial changes will marked here with date.
 
 [Update Nov 10, 2024: **Specification of module passing requirement for Data Science Tools!** (See below.)]{style='color:red;'} 
 
-[Important Links:]{style='color:red;'}    
-GitHub organization of the course: <https://github.com/CU-F23-MDSSB-01-Concepts-Tools>   
-Organization repository with non-public information and FAQ in Discussions: <https://github.com/CU-F23-MDSSB-01-Concepts-Tools/Organization>
+[Important Links:]{style='color:red;'} 
+GitHub organization: [{{< var org.name >}}]({{< var org.link >}})  
+[Course-Organization-Resources]({{< var org.link-org-repo >}}) (private repository, you need to be logged in on GitHub)
 :::
 
 ## Module Names
