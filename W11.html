@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Jan Lorenz">
-  <title>Data Science Concepts / Data Science Tools – W#11: Bootstrapping, Cross validation (idea), Clustering</title>
+  <title>Data Science Concepts / Data Science Tools – W#11: Final Project, Collaborative Git, Bootstrapping, Cross validation, Bias-Variance Tradeoff</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -393,7 +393,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">W#11: Bootstrapping, Cross validation (idea), Clustering</h1>
+  <h1 class="title">W#11: Final Project, Collaborative Git, Bootstrapping, Cross validation, Bias-Variance Tradeoff</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -407,85 +407,280 @@ Jan Lorenz
 <nav role="doc-toc"> 
 <h2 id="toc-title">Table of contents</h2>
 <ul>
-<li><a href="#/matrices" id="/toc-matrices">Matrices</a></li>
+<li><a href="#/final-project" id="/toc-final-project">Final Project</a></li>
+<li><a href="#/modeling-mindsets" id="/toc-modeling-mindsets">Modeling Mindsets</a></li>
+<li><a href="#/collaborative-work-with-git" id="/toc-collaborative-work-with-git">Collaborative Work with Git</a></li>
 <li><a href="#/bootstrapping" id="/toc-bootstrapping">Bootstrapping</a></li>
 <li><a href="#/another-resampling-method" id="/toc-another-resampling-method">Another resampling method</a></li>
+<li><a href="#/wisdom-of-the-crowd-bias-and-diversity" id="/toc-wisdom-of-the-crowd-bias-and-diversity">Wisdom of the crowd, Bias and Diversity</a></li>
+<li><a href="#/bias-variance-trade-off-in-a-script" id="/toc-bias-variance-trade-off-in-a-script">Bias-variance trade-off in a script</a></li>
 </ul>
 </nav>
 </section>
 <section>
-<section id="matrices" class="title-slide slide level1 center">
-<h1>Matrices</h1>
+<section id="final-project" class="title-slide slide level1 center" data-background-color="khaki">
+<h1>Final Project</h1>
 
 </section>
-<section id="what-is-a-matrix" class="slide level2 smaller">
-<h2>What is a matrix?</h2>
+<section id="a-project-report-in-a-nutshell" class="slide level2" data-background-color="khaki">
+<h2>A project report in a nutshell</h2>
+<ul>
+<li>You pick a dataset,</li>
+<li>do some interesting question-driven data analysis with it,</li>
+<li>write up a well structured and nicely formatted report about the analysis, and</li>
+<li>present it at the end of the semester.</li>
+</ul>
+</section>
+<section id="six-types-of-questions" class="slide level2 smaller" data-background-color="khaki">
+<h2>Six types of questions</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ol type="1">
+<li><strong>Descriptive:</strong> summarize a characteristic of data</li>
+<li><strong>Exploratory:</strong> analyze to see if there are patterns, trends, or relationships between variables (hypothesis generating)</li>
+<li><strong>Inferential:</strong> analyze patterns, trends, or relationships in representative data from a population</li>
+<li><strong>Predictive:</strong> make predictions for individuals or groups of individuals</li>
+<li><strong>Causal:</strong> whether changing one factor will change another factor, on average, in a population</li>
+<li><strong>Mechanistic:</strong> explore “how” as opposed to whether</li>
+</ol>
+</div><div class="column" style="width:40%;">
+<p><img data-src="img/DataAnalysisFlowChart_LeekPeng.jpeg"></p>
+</div></div>
+
+<aside><div>
+<p>Leek, Jeffery T., and Roger D. Peng. 2015. “What Is the Question?” Science 347 (6228): 1314–15. <a href="https://doi.org/10.1126/science.aaa6146" class="uri">https://doi.org/10.1126/science.aaa6146</a>.</p>
+</div></aside></section>
+<section id="what-are-good-questions" class="slide level2 smaller" data-background-color="khaki">
+<h2>What are good questions?</h2>
+<p>A good question</p>
+<ul>
+<li>is not too broad (= complicated to answer)</li>
+<li>is not too specific (= trivial to answer)</li>
+<li>can be answered or at least approached with data</li>
+<li>call for one of the different types of data analysis:
+<ul>
+<li>descriptive</li>
+<li>exploratory</li>
+<li>inferential</li>
+<li>predictive</li>
+<li>(causal or mechanistic – not the typical choices for a short term data analysis projects. They should not be central but may be touched.)</li>
+</ul></li>
+</ul>
+</section>
+<section id="tools-and-advice-for-questions" class="slide level2 smaller" data-background-color="khaki">
+<h2>Tools and advice for questions</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
+<p><span style="color:blue;"><strong>Descriptive</strong></span></p>
+<div class="fragment">
 <ul>
-<li>A <strong>matrix</strong> is a 2-dimensional array of numbers with rows and columns.</li>
-<li>The numbers in it are called its <strong>elements</strong>.</li>
+<li>What is an observation? <span style="color:red;">Answer this in any data analysis!</span></li>
+<li>What are the variables?</li>
+<li>Summary statistics and basic visualizations</li>
+<li>Category frequencies and numerical distributions</li>
 </ul>
-<p>Isn’t that a data frame?</p>
-<ul>
-<li>No, a dataframe is more general. In a matrix, every element has the same basic data type!</li>
-<li>In R, a matrix is a vector plus some specification of the dimensions.<br>
-</li>
-<li>(A matrix can also be of characters or logicals, it can also have row- and column-names)</li>
-</ul>
+</div>
 </div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>     [,1] [,2] [,3]
-[1,]    1    3    5
-[2,]    2    4    6</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>     [,1] [,2]
-[1,]    1    4
-[2,]    2    5
-[3,]    3    6</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>     [,1] [,2]
-[1,]    1    4
-[2,]    2    5
-[3,]    3    6</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>     [,1] [,2]
-[1,]    1    2
-[2,]    3    4
-[3,]    5    6</code></pre>
-</div>
+<p><span style="color:blue;"><strong>Exploratory</strong></span></p>
+<div class="fragment">
+<ul>
+<li>Questions specific to the topic</li>
+<li>Compute/summarize relevant variables: percentages, ratios, differences, …)</li>
+<li>Scatter plots</li>
+<li>Correlations</li>
+<li>Cluster Analysis</li>
+<li><strong>Crafted computations and visualizations for your particular questions</strong></li>
+</ul>
 </div>
 </div></div>
 </section>
-<section id="matrices-in-mathematics" class="slide level2 smaller" data-background-color="aquamarine">
-<h2>Matrices in Mathematics</h2>
+<section id="tools-and-advice-for-questions-1" class="slide level2 smaller" data-background-color="khaki">
+<h2>Tools and advice for questions</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span style="color:blue;"><strong>Inferential</strong></span></p>
+<div class="fragment">
 <ul>
-<li><strong>Addition</strong> and <strong>subtraction</strong> of matrices is done element-wise.</li>
-<li><strong>Multiplication</strong> of a matrix with a scalar is done element-wise.</li>
-<li><strong>Multiplication</strong> of two matrices is done row times column.</li>
-<li><strong>Transposition</strong> of a matrix is done by flipping the matrix over its diagonal.</li>
+<li>Describe the population the data represents</li>
+<li>Can it be considered a random sample?</li>
+<li>Think theoretically about variable selection and data transformations</li>
+<li>Interpret coefficients of models</li>
+<li>Be careful interpreting coefficients when variables are highly correlated</li>
+<li>Are effects statistical significant?</li>
+<li>Hypothesis test: Describe null distribution</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<p><span style="color:blue;"><strong>Predictive</strong></span></p>
+<div class="fragment">
+<ul>
+<li>Regression or classification?</li>
+<li>Do a train/test split to evaluate model performance (Optional, do crossvalidation)</li>
+<li>Select sensible performance metrics for the problem (from confusion matrix or regression metrics)</li>
+<li>Maybe compare different models and tune hyperparameters</li>
+<li>Do feature selection and feature engineering to improve the performance!</li>
+</ul>
+</div>
+</div></div>
+</section></section>
+<section id="modeling-mindsets" class="title-slide slide level1 center">
+<h1>Modeling Mindsets</h1>
+<p><img data-src="img/ModelingMindsets_annotated.png" height="300"></p>
+<p>Some methods:<br>
+<strong>Linear Model:</strong> <span class="fragment" style="color:red;">Inferential</span> <span class="fragment" style="color:red;">and Predictive!</span><br>
+<strong>Logistic Regression:</strong> <span class="fragment" style="color:red;">Inferential</span> <span class="fragment" style="color:red;">and Predictive!</span><br>
+<strong>k-means Clustering:</strong> <span class="fragment" style="color:red;">Exploratory</span></p>
+<p><span class="fragment" style="color:blue;"><strong>Let’s check your questions in the Course Organization Repo!</strong></span></p>
+</section>
+
+<section>
+<section id="collaborative-work-with-git" class="title-slide slide level1 center">
+<h1>Collaborative Work with Git</h1>
+<p>Learning goal: First experiences with collaborative data science work with <code>git</code></p>
+</section>
+<section id="step-1-git-clone-project-y-usernames" class="slide level2 smaller">
+<h2>Step 1: git clone <em>project-Y-USERNAMES</em></h2>
+<p><span style="color:blue;">Team formation is mostly complete.</span> Repositories <code>project-1</code>, <code>FinalProject_2</code>, … are created. <strong>You are to deliver your project reports in your repository.</strong></p>
+<ul>
+<li>Find your project repository</li>
+<li>Copy the URL<br>
+<img data-src="img/clone-repo-link.png" height="150"></li>
+<li>Go to RStudio
+<ul>
+<li>New Project &gt; Form Version Control &gt; Git &gt; Paste your URL</li>
+<li>The project is created</li>
+</ul></li>
+</ul>
+</section>
+<section id="step-2-first-team-member-commits-and-pushes" class="slide level2 smaller">
+<h2>Step 2: First Team member commits and pushes</h2>
+<p><strong>One team member does the following:</strong></p>
+<ul>
+<li>Open the file <code>report.qmd</code></li>
+<li>Write your name in the first line at <code>author</code> in the YAML</li>
+<li><code>git add</code> the file <code>report.qmd</code></li>
+<li><code>git commit</code> (enter “Added name” as commit message)</li>
+<li><code>git push</code></li>
+</ul>
+</section>
+<section id="step-3-other-team-members-pull" class="slide level2 smaller">
+<h2>Step 3: Other team members pull</h2>
+<ul>
+<li>Do <code>git pull</code> in the RStudio interface.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong>What does <code>git pull</code> do?</strong></p>
+<ul>
+<li><code>git pull</code> does two things: fetching new stuff and merging it with existing stuff
+<ol type="1">
+<li>First it <code>git fetch</code>s the commit from the remote repository (GitHub) to the local machine</li>
+<li>Then it <code>git merge</code>s the commit with the latest commit on your local machine.</li>
+</ol></li>
+<li>When we are lucky this works with no problems. (Should be the case with new files.)</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="https://files.mastodon.social/media_attachments/files/109/303/119/338/776/592/original/662a5e803a5e6c21.png"></p>
+<p>Source: <a href="https://mastodon.social/@allison_horst/109303149552034159" class="uri">https://mastodon.social/@allison_horst/109303149552034159</a></p>
+</div></div>
+</section>
+<section id="step-4-merge-independent-changes" class="slide level2 smaller">
+<h2>Step 4: Merge independent changes</h2>
+<p><span style="color:blue;">Git can merge changes in the same file when there are no conflicts.</span> Let’s try.</p>
+<ul>
+<li><strong>The second team member:</strong>
+<ul>
+<li>Add your name in the author section of the YAML, save the file, add the file in the Git pane and make a commit.</li>
+<li>Save, add the file in the Git pane, commit with message “Next author name”, <strong>push.</strong></li>
+</ul></li>
+<li><strong>The third (or first) team member:</strong>
+<ul>
+<li>Change the title in the YAML to something meaningful (and also add your name if third team member), save the file, add the file in the Git pane and make a commit.</li>
+<li>Try to <strong>push</strong>. You should receive an error. Read it carefully, often it tells you what to do. Here: Do <code>git pull</code> first. You cannot push because remotely there is a newer commit (the one your colleague just made).</li>
+<li><strong>Pull.</strong> This should result in message about a <strong>successfull auto-merge</strong>. Check that <strong>both</strong> are there: Your line and the line of your colleague. <em>If you receive several hints instead, first read the next slide!</em></li>
+</ul></li>
+</ul>
+</section>
+<section id="git-configuration-for-divergent-branches" class="slide level2 smaller">
+<h2>??? <code>git</code> configuration for divergent branches</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>If you pull for the first time in a local git repository, git may complain like this:</p>
+<p><img data-src="img/gitconfigrebase_rstudio.png" height="200"></p>
+<p>Read that carefully. It advises to configure with <code>git config pull.rebase false</code> as the default version.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>How to do the configuration?</strong></p>
+<ul>
+<li>Copy the line <code>git config pull.rebase false</code> and close the window.</li>
+<li>Go to the Terminal pane (not the console, the one besides that). This is a terminal not for R but to speak with the computer in general. Paste the command and press enter. Now you are done and your next <code>git pull</code> should work.</li>
+</ul>
+</div></div>
+
+<aside><div>
+<p>What is a <em>branch</em> and what a <em>rebase</em>? These are features of git well worth to learn but not now. Learn at <a href="http://happygitwithr.com" class="uri">http://happygitwithr.com</a></p>
+</div></aside></section>
+<section id="step-5-push-and-pull-the-other-way-round" class="slide level2 smaller">
+<h2>Step 5: Push and pull the other way round</h2>
+<ul>
+<li><strong>The third/first member:</strong>
+<ul>
+<li>The successful merge creates a new commit, which you can directly push.</li>
+<li><strong>Push.</strong></li>
+</ul></li>
+<li><strong>The second team member (and all others):</strong>
+<ul>
+<li><strong>Pull</strong> the changes of your colleague.</li>
+</ul></li>
+</ul>
+<p>Practice a bit more pulling and pushing commits and check the merging.</p>
+</section>
+<section id="step-6-create-a-merge-conflict" class="slide level2 smaller">
+<h2>Step 6: Create a merge conflict</h2>
+<ul>
+<li>First and second team members:
+<ul>
+<li>Write a different sentence after “Executive Summary.” in YAML <code>abstract:</code>.</li>
+<li>Each <code>git add</code> and <code>git commit</code> on local machines.</li>
+</ul></li>
+<li>First member: <code>git push</code></li>
+<li>Second member:
+<ul>
+<li><code>git pull</code>. That should result in a conflict. <em>If you receive several hints instead, first read the slide two slides before!</em></li>
+<li>The conflict should show directly in the file with markings like this</li>
+</ul></li>
+</ul>
+<p><code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code><br>
+one option of text,<br>
+<code>========</code> a separator,<br>
+the other option, and<br>
+<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>.</p>
+</section>
+<section id="step-7-solve-the-conflict" class="slide level2 smaller">
+<h2>Step 7: Solve the conflict</h2>
+<ul>
+<li>The second member
+<ul>
+<li>You have to solve this conflict now!</li>
+<li>Solving is by editing the text</li>
+<li>Decide for an option or make a new text</li>
+<li>Thereby, remove the <code>&gt;&gt;&gt;&gt;&gt;</code>,<code>=====</code>,<code>&lt;&lt;&lt;&lt;&lt;&lt;</code></li>
+<li>When you are done: <code>git add</code>, <code>git commit</code>, and <code>git push</code>.</li>
+</ul></li>
+</ul>
+<p>Now you know how to solve merge conflicts. Practice a bit in your team.</p>
+<p><strong>Working in VSCode:</strong> The workflow is the same because it relies on git not on the editor of choice.</p>
+</section>
+<section id="advice-collaborative-work-with-git" class="slide level2 smaller">
+<h2>Advice: Collaborative work with git</h2>
+<ul>
+<li>Whenever you start a work session: First <strong>pull</strong> to see if there is anything new. That way you reduce the need for merges.</li>
+<li>Inform your colleagues when you pushed new commits.</li>
+<li>Coordinate the work, e.g.&nbsp;discuss who works on what part and maybe when. However, git allows to also work without full coordination and in parallel.</li>
+<li>When you finish your work session, end with pushing a <em>nice</em> commit. That means. The file should render. You made comments when there are loose ends and todo’s.</li>
+<li>You can also use the <em>issues</em> section of the GitHub repository for things to do.</li>
+<li>When you work on different parts of the file, be aware that also a successful merge can create problems. Example: Your colleague changed the data import, while you worked on graphics. Maybe after the merge the imported data is not what you need for your chunk. Then coordinate.<br>
+</li>
+<li>Commit and push often. This avoids that potential merge conflicts become large.</li>
 </ul>
 </section></section>
 <section>
@@ -521,35 +716,14 @@ Jan Lorenz
 <p><em>What is the mean of all possible participants <span class="math inline">\(\mu\)</span>?</em></p>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="fu">library</span>(readxl)</span>
-<span id="cb11-2"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/galton.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 787 Columns: 2
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-dbl (2): Estimate, id
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-3"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/galton.csv"</span>)</span>
+<span id="cb1-4"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W11_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+<p><img data-src="W11_files/figure-revealjs/unnamed-chunk-1-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -563,42 +737,12 @@ dbl (2): Estimate, id
 <p>A linear model for body mass of penguins: <span class="math inline">\(y_i = \beta_0 + \beta_1 x_i + \dots + \beta_m x_m  + \varepsilon_i\)</span>.</p>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="fu">library</span>(tidymodels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching packages ────────────────────────────────────── tidymodels 1.2.0 ──</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>✔ broom        1.0.5     ✔ rsample      1.2.1
-✔ dials        1.3.0     ✔ tune         1.2.1
-✔ infer        1.0.7     ✔ workflows    1.1.4
-✔ modeldata    1.3.0     ✔ workflowsets 1.1.0
-✔ parsnip      1.2.1     ✔ yardstick    1.3.1
-✔ recipes      1.1.0     </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
-✖ scales::discard() masks purrr::discard()
-✖ dplyr::filter()   masks stats::filter()
-✖ recipes::fixed()  masks stringr::fixed()
-✖ dplyr::lag()      masks stats::lag()
-✖ yardstick::spec() masks readr::spec()
-✖ recipes::step()   masks stats::step()
-• Learn how to get started at https://www.tidymodels.org/start/</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="fu">library</span>(palmerpenguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'palmerpenguins'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:modeldata':
-
-    penguins</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a>peng_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> <span class="fu">add_recipe</span>(<span class="fu">recipe</span>(body_mass_g <span class="sc">~</span> ., <span class="at">data =</span> penguins) <span class="sc">|&gt;</span> <span class="fu">step_rm</span>(year)) <span class="sc">|&gt;</span> </span>
-<span id="cb21-2"><a></a>  <span class="fu">add_model</span>(<span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>))</span>
-<span id="cb21-3"><a></a>peng_fit <span class="ot">&lt;-</span> peng_workflow <span class="sc">|&gt;</span> <span class="fu">fit</span>(<span class="at">data =</span> penguins)</span>
-<span id="cb21-4"><a></a>peng_fit <span class="sc">|&gt;</span> <span class="fu">tidy</span>() <span class="sc">|&gt;</span> <span class="fu">mutate_if</span>(is.numeric, round, <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb2-2"><a></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb2-3"><a></a>peng_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> <span class="fu">add_recipe</span>(<span class="fu">recipe</span>(body_mass_g <span class="sc">~</span> ., <span class="at">data =</span> penguins) <span class="sc">|&gt;</span> <span class="fu">step_rm</span>(year)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-4"><a></a>  <span class="fu">add_model</span>(<span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>))</span>
+<span id="cb2-5"><a></a>peng_fit <span class="ot">&lt;-</span> peng_workflow <span class="sc">|&gt;</span> <span class="fu">fit</span>(<span class="at">data =</span> penguins)</span>
+<span id="cb2-6"><a></a>peng_fit <span class="sc">|&gt;</span> <span class="fu">tidy</span>() <span class="sc">|&gt;</span> <span class="fu">mutate_if</span>(is.numeric, round, <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 9 × 5
   term              estimate std.error statistic   p.value
@@ -644,19 +788,19 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="column" style="width:35%;">
 <p>The function <code>sample</code> selects <code>size</code> random elements from a vector <code>x</code> with or without <code>replace</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a><span class="fu">set.seed</span>(<span class="dv">224</span>)</span>
-<span id="cb23-2"><a></a><span class="fu">sample</span>(galton<span class="sc">$</span>Estimate, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">set.seed</span>(<span class="dv">224</span>)</span>
+<span id="cb4-2"><a></a><span class="fu">sample</span>(galton<span class="sc">$</span>Estimate, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1177 1232 1242</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a><span class="fu">sample</span>(galton<span class="sc">$</span>Estimate, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="fu">sample</span>(galton<span class="sc">$</span>Estimate, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1270 1440 1232</code></pre>
 </div>
 </div>
 <p>For tibbles we can use <code>slice_sample</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   Estimate    id
@@ -670,11 +814,11 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="fragment">
 <p>A <strong>bootstrap sample</strong> is with replace and of the same size as the original sample:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a><span class="fu">nrow</span>(galton)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="fu">nrow</span>(galton)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 787</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">787</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">787</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 787 × 2
    Estimate    id
@@ -697,24 +841,24 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="fragment">
 <p>Do some mean bootstrapping manually:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">787</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb33-2"><a></a> <span class="fu">summarize</span>(<span class="fu">mean</span>(Estimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">787</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a></a> <span class="fu">summarize</span>(<span class="fu">mean</span>(Estimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   `mean(Estimate)`
              &lt;dbl&gt;
 1            1194.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">787</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb35-2"><a></a> <span class="fu">summarize</span>(<span class="fu">mean</span>(Estimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">787</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a></a> <span class="fu">summarize</span>(<span class="fu">mean</span>(Estimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   `mean(Estimate)`
              &lt;dbl&gt;
 1            1197.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">787</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb37-2"><a></a> <span class="fu">summarize</span>(<span class="fu">mean</span>(Estimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">787</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a></a> <span class="fu">summarize</span>(<span class="fu">mean</span>(Estimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   `mean(Estimate)`
@@ -732,8 +876,8 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="column" style="width:50%;">
 <p>1,000 resamples:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>boots_galton <span class="ot">&lt;-</span> galton <span class="sc">|&gt;</span> <span class="fu">bootstraps</span>(<span class="at">times =</span> <span class="dv">1000</span>)</span>
-<span id="cb39-2"><a></a>boots_galton</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a>boots_galton <span class="ot">&lt;-</span> galton <span class="sc">|&gt;</span> <span class="fu">bootstraps</span>(<span class="at">times =</span> <span class="dv">1000</span>)</span>
+<span id="cb20-2"><a></a>boots_galton</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Bootstrap sampling 
 # A tibble: 1,000 × 2
@@ -754,7 +898,7 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 </div>
 <p>The column <code>splits</code> contains a list of split objects.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a>boots_galton<span class="sc">$</span>splits[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a></a>boots_galton<span class="sc">$</span>splits[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;Analysis/Assess/Total&gt;
 &lt;787/295/787&gt;</code></pre>
@@ -764,7 +908,7 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="fragment">
 <p>From each split we can extract the bootstrapped resample with <code>analysis</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a>boots_galton<span class="sc">$</span>splits[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">analysis</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a>boots_galton<span class="sc">$</span>splits[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">analysis</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 787 × 2
    Estimate    id
@@ -792,11 +936,11 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="column" style="width:50%;">
 <p>We iterate with a <code>map</code> function<sup>1</sup> over the splits and extract the analysis set and calculate the mean.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a>boots_galton_mean <span class="ot">&lt;-</span> boots_galton <span class="sc">|&gt;</span> </span>
-<span id="cb45-2"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb45-3"><a></a>   <span class="at">mean =</span> <span class="fu">map_dbl</span>(splits, </span>
-<span id="cb45-4"><a></a>                  \(x) <span class="fu">analysis</span>(x)<span class="sc">$</span>Estimate <span class="sc">|&gt;</span> <span class="fu">mean</span>()))</span>
-<span id="cb45-5"><a></a>boots_galton_mean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a>boots_galton_mean <span class="ot">&lt;-</span> boots_galton <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-3"><a></a>   <span class="at">mean =</span> <span class="fu">map_dbl</span>(splits, </span>
+<span id="cb26-4"><a></a>                  \(x) <span class="fu">analysis</span>(x)<span class="sc">$</span>Estimate <span class="sc">|&gt;</span> <span class="fu">mean</span>()))</span>
+<span id="cb26-5"><a></a>boots_galton_mean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Bootstrap sampling 
 # A tibble: 1,000 × 3
@@ -819,16 +963,13 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="fragment">
 <p>Plot the bootstrap distribution of the mean.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
-<span id="cb47-2"><a></a> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mean)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb47-3"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a></a> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mean)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb28-3"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W11_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
+<p><img data-src="W11_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -837,12 +978,12 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <div class="fragment">
 <p>Compare distribution of estimates</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb49-2"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb29-2"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W11_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+<p><img data-src="W11_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -854,7 +995,7 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <h2>Quantify uncertainty? Standard error</h2>
 <p>Compute the standard deviation of the bootstrap distribution.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a><span class="fu">sd</span>(boots_galton_mean<span class="sc">$</span>mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a></a><span class="fu">sd</span>(boots_galton_mean<span class="sc">$</span>mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.732243</code></pre>
 </div>
@@ -864,7 +1005,7 @@ What are the statistics in the penguins example? <span class="fragment">The coef
 <p><span style="color:red;">Do not confuse standard error (of a statistic) and standard deviation (of a variable).</span></p>
 <p>The <strong>standard error of the mean</strong> can also be estimated directly from the original sample <span class="math inline">\(x\)</span> as <span class="math inline">\(\frac{\text{sd}(x)}{\sqrt{n}}\)</span> where <span class="math inline">\(n\)</span> is the sample size.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a></a><span class="fu">sd</span>(galton<span class="sc">$</span>Estimate) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">nrow</span>(galton))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a></a><span class="fu">sd</span>(galton<span class="sc">$</span>Estimate) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">nrow</span>(galton))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.623085</code></pre>
 </div>
@@ -884,10 +1025,10 @@ The true value of the statistic is expected to lie with the CI with certain prob
 <div class="column" style="width:30%;">
 <p>Compute the 95% confidence interval of the bootstrap distribution with <code>quantile</code>-functions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
-<span id="cb54-2"><a></a>  <span class="fu">summarize</span>(</span>
-<span id="cb54-3"><a></a>    <span class="at">lower =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.025</span>),</span>
-<span id="cb54-4"><a></a>    <span class="at">upper =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
+<span id="cb34-2"><a></a>  <span class="fu">summarize</span>(</span>
+<span id="cb34-3"><a></a>    <span class="at">lower =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.025</span>),</span>
+<span id="cb34-4"><a></a>    <span class="at">upper =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 2
   lower upper
@@ -898,19 +1039,16 @@ The true value of the statistic is expected to lie with the CI with certain prob
 </div><div class="column" style="width:60%;">
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
-<span id="cb56-2"><a></a> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mean)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb56-3"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">quantile</span>(boots_galton_mean<span class="sc">$</span>mean, <span class="fl">0.025</span>), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb56-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">quantile</span>(boots_galton_mean<span class="sc">$</span>mean, <span class="fl">0.975</span>), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb56-5"><a></a> <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">1197</span>, <span class="at">y =</span> <span class="dv">10</span>, <span class="at">label =</span> <span class="st">"95% of estimates"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fu">unit</span>(<span class="dv">12</span>, <span class="st">"pt"</span>)) <span class="sc">+</span></span>
-<span id="cb56-6"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a></a> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mean)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb36-3"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">quantile</span>(boots_galton_mean<span class="sc">$</span>mean, <span class="fl">0.025</span>), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb36-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">quantile</span>(boots_galton_mean<span class="sc">$</span>mean, <span class="fl">0.975</span>), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb36-5"><a></a> <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">1197</span>, <span class="at">y =</span> <span class="dv">10</span>, <span class="at">label =</span> <span class="st">"95% of estimates"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fu">unit</span>(<span class="dv">12</span>, <span class="st">"pt"</span>)) <span class="sc">+</span></span>
+<span id="cb36-6"><a></a> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W11_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
+<p><img data-src="W11_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -922,10 +1060,10 @@ The true value of the statistic is expected to lie with the CI with certain prob
 <section id="confidence-interval-meaning" class="slide level2 smaller">
 <h2>Confidence Interval: Meaning</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
-<span id="cb58-2"><a></a>  <span class="fu">summarize</span>(</span>
-<span id="cb58-3"><a></a>    <span class="at">lower =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.025</span>),</span>
-<span id="cb58-4"><a></a>    <span class="at">upper =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
+<span id="cb37-2"><a></a>  <span class="fu">summarize</span>(</span>
+<span id="cb37-3"><a></a>    <span class="at">lower =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.025</span>),</span>
+<span id="cb37-4"><a></a>    <span class="at">upper =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 2
   lower upper
@@ -940,7 +1078,10 @@ The true value of the statistic is expected to lie with the CI with certain prob
 <li>We are 95% confident that the mean estimate of this sample is between 1191 and 1202.</li>
 </ol>
 <div class="fragment">
-<p>Correct: 2.</p>
+<p>Correct: 2.<br>
+1. The confidence is about a parameter (here the population mean) not about sample values!<br>
+3. We know the mean of the sample precisely!<br>
+The confidence interval assesses where 95% of the values are when do new samples.</p>
 </div>
 </section>
 <section id="ci-precision-vs.-confidence" class="slide level2 smaller">
@@ -950,10 +1091,10 @@ The true value of the statistic is expected to lie with the CI with certain prob
 </ul>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
-<span id="cb60-2"><a></a>  <span class="fu">summarize</span>(</span>
-<span id="cb60-3"><a></a>    <span class="at">lower =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.005</span>),</span>
-<span id="cb60-4"><a></a>    <span class="at">upper =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.995</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>boots_galton_mean <span class="sc">|&gt;</span> </span>
+<span id="cb39-2"><a></a>  <span class="fu">summarize</span>(</span>
+<span id="cb39-3"><a></a>    <span class="at">lower =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.005</span>),</span>
+<span id="cb39-4"><a></a>    <span class="at">upper =</span> <span class="fu">quantile</span>(mean, <span class="fl">0.995</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 2
   lower upper
@@ -967,10 +1108,10 @@ The true value of the statistic is expected to lie with the CI with certain prob
 <section id="bootstrap-linear-model-coefficients" class="slide level2 smaller">
 <h2>Bootstrap linear model coefficients</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a></a>peng_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> <span class="fu">add_recipe</span>(<span class="fu">recipe</span>(body_mass_g <span class="sc">~</span> ., <span class="at">data =</span> penguins) <span class="sc">|&gt;</span> <span class="fu">step_rm</span>(year)) <span class="sc">|&gt;</span> </span>
-<span id="cb62-2"><a></a>  <span class="fu">add_model</span>(<span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>))</span>
-<span id="cb62-3"><a></a>peng_fit <span class="ot">&lt;-</span> peng_workflow <span class="sc">|&gt;</span> <span class="fu">fit</span>(<span class="at">data =</span> penguins)</span>
-<span id="cb62-4"><a></a>peng_fit <span class="sc">|&gt;</span> <span class="fu">tidy</span>() <span class="sc">|&gt;</span> <span class="fu">mutate_if</span>(is.numeric, round, <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a>peng_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> <span class="fu">add_recipe</span>(<span class="fu">recipe</span>(body_mass_g <span class="sc">~</span> ., <span class="at">data =</span> penguins) <span class="sc">|&gt;</span> <span class="fu">step_rm</span>(year)) <span class="sc">|&gt;</span> </span>
+<span id="cb41-2"><a></a>  <span class="fu">add_model</span>(<span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>))</span>
+<span id="cb41-3"><a></a>peng_fit <span class="ot">&lt;-</span> peng_workflow <span class="sc">|&gt;</span> <span class="fu">fit</span>(<span class="at">data =</span> penguins)</span>
+<span id="cb41-4"><a></a>peng_fit <span class="sc">|&gt;</span> <span class="fu">tidy</span>() <span class="sc">|&gt;</span> <span class="fu">mutate_if</span>(is.numeric, round, <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 9 × 5
   term              estimate std.error statistic   p.value
@@ -989,11 +1130,11 @@ The true value of the statistic is expected to lie with the CI with certain prob
 <div class="fragment">
 <p>Let us now bootstrap whole models instead of just mean values!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a></a><span class="co"># A function to fit a model to a bootstrap sample and tidy the coefficients</span></span>
-<span id="cb64-2"><a></a>fit_split <span class="ot">&lt;-</span> <span class="cf">function</span>(split) peng_workflow <span class="sc">|&gt;</span> <span class="fu">fit</span>(<span class="at">data =</span> <span class="fu">analysis</span>(split)) <span class="sc">|&gt;</span> <span class="fu">tidy</span>() </span>
-<span id="cb64-3"><a></a><span class="co"># Make 1000 bootstrap samples and fit a model to each</span></span>
-<span id="cb64-4"><a></a>boots_peng <span class="ot">&lt;-</span> <span class="fu">bootstraps</span>(penguins, <span class="at">times =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb64-5"><a></a>  <span class="fu">mutate</span>(<span class="at">coefs =</span> <span class="fu">map</span>(splits, fit_split))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a><span class="co"># A function to fit a model to a bootstrap sample and tidy the coefficients</span></span>
+<span id="cb43-2"><a></a>fit_split <span class="ot">&lt;-</span> <span class="cf">function</span>(split) peng_workflow <span class="sc">|&gt;</span> <span class="fu">fit</span>(<span class="at">data =</span> <span class="fu">analysis</span>(split)) <span class="sc">|&gt;</span> <span class="fu">tidy</span>() </span>
+<span id="cb43-3"><a></a><span class="co"># Make 1000 bootstrap samples and fit a model to each</span></span>
+<span id="cb43-4"><a></a>boots_peng <span class="ot">&lt;-</span> <span class="fu">bootstraps</span>(penguins, <span class="at">times =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb43-5"><a></a>  <span class="fu">mutate</span>(<span class="at">coefs =</span> <span class="fu">map</span>(splits, fit_split))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -1001,7 +1142,7 @@ The true value of the statistic is expected to lie with the CI with certain prob
 <h2>Bootstrap data frame</h2>
 <p>Now we have a column <code>coefs</code> with a list of data frames, each containing the fitted coefficients.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a></a>boots_peng</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a></a>boots_peng</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Bootstrap sampling 
 # A tibble: 1,000 × 3
@@ -1022,7 +1163,7 @@ The true value of the statistic is expected to lie with the CI with certain prob
 </div>
 <p>We can <code>unnest</code> the list column to make a much longer but unnested data frame:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a></a>boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a></a>boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 9,000 × 7
    splits            id            term    estimate std.error statistic  p.value
@@ -1044,25 +1185,20 @@ The true value of the statistic is expected to lie with the CI with certain prob
 <section id="some-coefficient-distributions" class="slide level2 smaller">
 <h2>Some coefficient distributions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb69-2"><a></a>g1 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"islandDream"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb69-3"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients islandDream"</span>) <span class="sc">+</span></span>
-<span id="cb69-4"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
-<span id="cb69-5"><a></a>g2 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"bill_length_mm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb69-6"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients bill_length_mm"</span>) <span class="sc">+</span></span>
-<span id="cb69-7"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
-<span id="cb69-8"><a></a>g3 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"flipper_length_mm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb69-9"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients flipper_length_mm"</span>) <span class="sc">+</span></span>
-<span id="cb69-10"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
-<span id="cb69-11"><a></a>g1 <span class="sc">+</span> g2 <span class="sc">+</span> g3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb48-2"><a></a>g1 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"islandDream"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb48-3"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients islandDream"</span>) <span class="sc">+</span></span>
+<span id="cb48-4"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
+<span id="cb48-5"><a></a>g2 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"bill_length_mm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb48-6"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients bill_length_mm"</span>) <span class="sc">+</span></span>
+<span id="cb48-7"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
+<span id="cb48-8"><a></a>g3 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"flipper_length_mm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb48-9"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients flipper_length_mm"</span>) <span class="sc">+</span></span>
+<span id="cb48-10"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
+<span id="cb48-11"><a></a>g1 <span class="sc">+</span> g2 <span class="sc">+</span> g3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="W11_files/figure-html/unnamed-chunk-27-1.png" width="1728" class="r-stretch"><ul>
+<img data-src="W11_files/figure-revealjs/unnamed-chunk-23-1.png" width="1728" class="r-stretch"><ul>
 <li>We could derive <em>bootstrapped p-values</em> from these distributions.</li>
 </ul>
 </section>
@@ -1072,19 +1208,14 @@ The true value of the statistic is expected to lie with the CI with certain prob
 <li>Each bootstrap fit also delivers computed p-values for each coefficient.<sup>1</sup></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a></a>g1 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"islandDream"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> p.value)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients islandDream"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
-<span id="cb71-2"><a></a>g2 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"bill_length_mm"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> p.value)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients bill_length_mm"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
-<span id="cb71-3"><a></a>g3 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"flipper_length_mm"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> p.value)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients flipper_length_mm"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
-<span id="cb71-4"><a></a>g1 <span class="sc">+</span> g2 <span class="sc">+</span> g3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a></a>g1 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"islandDream"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> p.value)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients islandDream"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
+<span id="cb49-2"><a></a>g2 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"bill_length_mm"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> p.value)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients bill_length_mm"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
+<span id="cb49-3"><a></a>g3 <span class="ot">&lt;-</span> boots_peng <span class="sc">|&gt;</span> <span class="fu">unnest</span>(coefs) <span class="sc">|&gt;</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"flipper_length_mm"</span>) <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> p.value)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"coefficients flipper_length_mm"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">24</span>)</span>
+<span id="cb49-4"><a></a>g1 <span class="sc">+</span> g2 <span class="sc">+</span> g3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W11_files/figure-html/unnamed-chunk-28-1.png" width="1728"></p>
+<p><img data-src="W11_files/figure-revealjs/unnamed-chunk-24-1.png" width="1728"></p>
 </figure>
 </div>
 </div>
@@ -1121,8 +1252,171 @@ The true value of the statistic is expected to lie with the CI with certain prob
 </section>
 <section id="cross-validation-1" class="slide level2">
 <h2>Cross validation</h2>
-<p><img data-src="img/cross-validation.png"></p>
-<p>Today only the concept on this no details how to do it.</p>
+
+<img data-src="img/cross-validation.png" class="r-stretch"></section></section>
+<section>
+<section id="wisdom-of-the-crowd-bias-and-diversity" class="title-slide slide level1 center">
+<h1>Wisdom of the crowd, Bias and Diversity</h1>
+
+</section>
+<section id="galtons-data" class="slide level2 smaller">
+<h2>Galton’s data</h2>
+<p><em>What is the weight of the meat of this ox?</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/galton.csv"</span>)</span>
+<span id="cb50-2"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1198</span>, <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span> </span>
+<span id="cb50-3"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(galton<span class="sc">$</span>Estimate), <span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="W11_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>787 estimates, <span style="color:green;">true value</span> 1198, <span style="color:red;">mean</span> 1196.7</p>
+
+<aside><div>
+<p>We focus on the arithmetic mean as aggregation function for the wisdom of the crowd here.</p>
+</div></aside></section>
+<section id="rmse-galtons-data" class="slide level2 smaller">
+<h2>RMSE Galton’s data</h2>
+<p>Describe the estimation game as a predictive model:</p>
+<ul>
+<li>All <em>estimates</em> are made to predict the same value: the truth.
+<ul>
+<li>In contrast to the regression model, the estimate come from people and not from a regression formula.</li>
+</ul></li>
+<li>The <em>truth</em> is the same for all.
+<ul>
+<li>In contrast to the regression model, the truth is one value and not a value for each prediction</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a></a>rmse_galton <span class="ot">&lt;-</span> galton <span class="sc">|&gt;</span> </span>
+<span id="cb51-2"><a></a> <span class="fu">mutate</span>(<span class="at">true_value =</span> <span class="dv">1198</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-3"><a></a> <span class="fu">rmse</span>(<span class="at">truth =</span> true_value, Estimate)</span>
+<span id="cb51-4"><a></a>rmse_galton</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        73.6</code></pre>
+</div>
+</div>
+<!-- ## Regression vs. crowd estimation {.smaller} -->
+<!-- The linear regression and the crowd estimation problems are similar but not identical! -->
+<!-- |Variable      | Linear Regression Model                       | Crowd estimation -->
+<!-- |--------------|-----------------------------------------------|-------------------------------------------- -->
+<!-- | $y_i$        | Data point of response variable               | True value, uniform for all estimators $y_i = y$ -->
+<!-- | $\hat{y}_i$  | Predicted value $\hat{y}_i=b_0+b_1+x_1+\dots$ | Estimate of one estimator -->
+<!-- | $\bar{y}$    | Mean of response variable                     | Mean of estimates  -->
+</section>
+<section id="mse-variance-and-bias-of-estimates" class="slide level2 smaller">
+<h2>MSE, Variance, and Bias of estimates</h2>
+<p>In a crowd estimation, <span class="math inline">\(n\)</span> estimators delivered the estimates <span class="math inline">\(\hat{y}_1,\dots,\hat{y}_n\)</span>. Let us look at the following measures</p>
+<ul>
+<li><p><span class="math inline">\(\bar{y} = \frac{1}{n}\sum_{i = 1}^n \hat{y}_i^2\)</span> is the mean estimate, it is the aggregated estimate of the crowd</p></li>
+<li><p><span class="math inline">\(\text{MSE} = \text{RMSE}^2 = \frac{1}{n}\sum_{i = 1}^n (\text{truth} - \hat{y}_i)^2\)</span></p></li>
+<li><p><span class="math inline">\(\text{Variance} = \frac{1}{n}\sum_{i = 1}^n (\hat{y}_i - \bar{y})^2\)</span></p></li>
+<li><p><span class="math inline">\(\text{Bias-squared} = (\bar{y} - \text{truth})^2\)</span> which is the square difference between truth and mean estimate.</p></li>
+</ul>
+<p>There is a mathematical relation (a math exercise to check):</p>
+<p><span class="math display">\[\text{MSE} = \text{Bias-squared} + \text{Variance}\]</span></p>
+</section>
+<section id="testing-for-galtons-data" class="slide level2 smaller">
+<h2>Testing for Galton’s data</h2>
+<p><span class="math display">\[\text{MSE} = \text{Bias-squared} + \text{Variance}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a></a>MSE <span class="ot">&lt;-</span> (rmse_galton<span class="sc">$</span>.estimate)<span class="sc">^</span><span class="dv">2</span> </span>
+<span id="cb53-2"><a></a>MSE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5409.795</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a></a>Variance <span class="ot">&lt;-</span> <span class="fu">var</span>(galton<span class="sc">$</span>Estimate)<span class="sc">*</span>(<span class="fu">nrow</span>(galton)<span class="sc">-</span><span class="dv">1</span>)<span class="sc">/</span><span class="fu">nrow</span>(galton)</span>
+<span id="cb55-2"><a></a><span class="co"># Note, we had to correct for the divisor (n-1) in the classical statistical definition</span></span>
+<span id="cb55-3"><a></a><span class="co"># to get the sample variance instead of the estimate for the population variance</span></span>
+<span id="cb55-4"><a></a>Variance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5408.132</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a></a>Bias_squared <span class="ot">&lt;-</span> (<span class="fu">mean</span>(galton<span class="sc">$</span>Estimate) <span class="sc">-</span> <span class="dv">1198</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb57-2"><a></a>Bias_squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.663346</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a></a>Bias_squared <span class="sc">+</span> Variance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5409.795</code></pre>
+</div>
+</div>
+
+<aside><div>
+<p>Such nice mathematical properties are probably one reason why these squared measures are so popular.</p>
+</div></aside></section>
+<section id="the-diversity-prediction-theorem" class="slide level2 smaller">
+<h2>The diversity prediction theorem<sup>1</sup></h2>
+<ul>
+<li><em>MSE</em> is a measure for the average <strong>individuals error</strong></li>
+<li><em>Bias-squared</em> is a measure for the <strong>collective error</strong></li>
+<li><em>Variance</em> is a measure for the <strong>diversity</strong> of estimates around the mean estimate</li>
+</ul>
+<p>The mathematical relation <span class="math display">\[\text{MSE} = \text{Bias-squared} + \text{Variance}\]</span> can be formulated as</p>
+<p><strong>Collective error = Individual error - Diversity</strong></p>
+<p>Interpretation: <em>The higher the diversity the lower the collective error!</em></p>
+<aside><ol class="aside-footnotes"><li id="fn6"><p>Notion from: Page, S. E. (2007). The Difference: How the Power of Diversity Creates Better Groups, Firms, Schools, and Societies. Princeton University Press.</p></li></ol></aside></section>
+<section id="why-is-this-message-a-bit-suggestive" class="slide level2 smaller">
+<h2>Why is this message a bit suggestive?</h2>
+<p>The mathematical relation <span class="math display">\[\text{MSE} = \text{Bias-squared} + \text{Variance}\]</span> can be formulated as</p>
+<p><strong>Collective error = Individual error - Diversity</strong></p>
+<p>Interpretation: <em>The higher the diversity the lower the collective error!</em></p>
+<div class="fragment">
+<ul>
+<li><span class="math inline">\(\text{MSE}\)</span> and <span class="math inline">\(\text{Variance}\)</span> are not independent!</li>
+<li>Activities to increase diversity (Variance) typically also increase the average individual error (MSE).</li>
+<li>For example, if we just add more random estimates with same mean but wild variance to our sample we increase both and do not gain any decrease of the collective error.</li>
+</ul>
+</div>
+</section>
+<section id="accuracy-for-numerical-estimate" class="slide level2 smaller">
+<h2>Accuracy for numerical estimate</h2>
+<ul>
+<li>For binary classifiers <strong>accuracy</strong> has a simple definition: Fraction of correct classifications.
+<ul>
+<li>It can be further informed by other more specific measures taken from the confusion matrix (sensitivity, specificity)</li>
+</ul></li>
+</ul>
+<p>How about numerical estimators?<br>
+For example outcomes of estimation games, or linear regression models?</p>
+<div class="fragment">
+<ul>
+<li>Accuracy is for example measured by (R)MSE</li>
+<li><span class="math inline">\(\text{MSE} = \text{Bias-squared} + \text{Variance}\)</span> shows us that we can make a<br>
+<strong>bias-variance decomposition</strong></li>
+<li>That means some part of the error is a systematic (the bias) and another part due to random variation (the variance).</li>
+<li>The bias-variance tradeoff is also an important concept in statistical learning!</li>
+</ul>
+</div>
+</section>
+<section id="d-accuracy-trueness-and-precision" class="slide level2 smaller">
+<h2>2-d Accuracy: Trueness and Precision</h2>
+<p>According to ISO 5725-1 Standard: <em>Accuracy (trueness and precision) of measurement methods and results - Part 1: General principles and definitions.</em> there are two dimension of accuracy of numerical measurement.</p>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/9/92/Accuracy_%28trueness_and_precision%29.svg"> <img data-src="img/accuracy_trueness_precision.png" height="300"></p>
+</section>
+<section id="what-is-a-wise-crowd" class="slide level2 smaller">
+<h2>What is a wise crowd?</h2>
+<p>Assume the dots are estimates. <strong>Which is a wise crowd?</strong></p>
+<p><img data-src="img/accuracy_trueness_precision.png" height="300"></p>
+<div class="fragment">
+<ul>
+<li>Of course, high trueness and high precision! But, …</li>
+<li>Focusing on the <strong>crowd</strong> being wise instead of its <strong>individuals</strong>: High trueness, low precision.</li>
+</ul>
+</div>
+</section></section>
+<section id="bias-variance-trade-off-in-a-script" class="title-slide slide level1 center">
+<h1>Bias-variance trade-off in a script</h1>
+<p><code>penguins_bias_variance.R</code></p>
 
 <div class="quarto-auto-generated-content">
 <p><img src="img/ConstructorUniversity.png" class="slide-logo"></p>
@@ -1130,7 +1424,8 @@ The true value of the statistic is expected to lie with the CI with certain prob
 <p>MDSSB-DSCO-02: Data Science Concepts</p>
 </div>
 </div>
-</section></section>
+</section>
+
 
     </div>
   </div>
@@ -1165,7 +1460,7 @@ The true value of the statistic is expected to lie with the CI with certain prob
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,
@@ -1344,6 +1639,44 @@ The true value of the statistic is expected to lie with the CI with certain prob
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
