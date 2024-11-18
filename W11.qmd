@@ -722,7 +722,6 @@ More specifically, **$v$-fold cross validation**:
 ```{r}
 #| echo: true
 #| fig-height: 2.5
-library(readxl)
 galton <- read_csv("data/galton.csv")
 galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + geom_vline(xintercept = 1198, color = "green") + 
  geom_vline(xintercept = mean(galton$Estimate), color = "red")

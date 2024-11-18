@@ -31,7 +31,7 @@ Date format MM-DD (month-day) (09-05 is Sep, 5)
 | 9    | 10-28  | W#08 [Predicting Categorical Variables, Logistic Regression, Classification Problems](W08.qmd) <br> [Achievements W#-@sec-week8] | 10-31    | *no class, Public Holiday* |
 | 10   | 11-04  | [**Final Projects Info**](final.qmd) <br> W#09 [Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting](W09.qmd) | 11-07    | python       |
 | 11   | 11-11  | W#10 [Overfitting, Clustering Algorithms](W10.qmd)  | 11-14    | python       |
-| 12   | 11-18  | W#11 [Final Projects](https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Course-Organization-Resources/blob/main/STUDENT_PROJECTS.md) Collaborative Git, Bootstrapping, Confidence Intervals, Crossvalidation, Bias and Diversity in Crowd Wisdom*       | 11-21    | python       |
+| 12   | 11-18  | W#11 [Final Projects](https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Course-Organization-Resources/blob/main/STUDENT_PROJECTS.md) [Collaborative Git, Bootstrapping, Cross validation, Bias-Variance Tradeoff](W11.qmd)  | 11-21    | python       |
 | 13   | 11-25  | *Probability, Random Variables, Probability Distributions, Central Limit Theorem* | 11-28    | python / R   |
 | 14   | 12-02  | Course Review, Exam Preparation                             | 12-05    | student project presentations |
 | Exam | 12-16  | **The exam takes place as an online exam <br> Monday, Dec 16 09:00-11:00**  |  |  |

@@ -4,18 +4,19 @@ library(tidyverse)
 library(rpart.plot)
 library(ranger)
 
-
 # Email spam-prediction: Overfitting a decision tree
 
 email_recipe <- recipe(spam ~ ., data = email) |>
- step_rm(from, sent_email, viagra) |> 
- step_date(time, features = c("dow", "month")) |>
- step_rm(time) |> 
+ step_rm(from, sent_email, viagra) |> # Remove some variables (see former lectures)
+ step_date(time, features = c("dow", "month")) |> # Make day-of-week and month features ...
+ step_rm(time) |> # ... and remove the date-time itself
  step_dummy(all_nominal(), -all_outcomes()) |> 
+ # Dummies are not needed for Decision Trees, but we make them to compare to Logistic Regression
  step_zv(all_predictors())
+email_recipe
 
 email_tree <- decision_tree(
- cost_complexity = -1,
+ cost_complexity = -1, # This specifies the deepest tree
  tree_depth = 30
 ) |>
  set_engine("rpart") |>

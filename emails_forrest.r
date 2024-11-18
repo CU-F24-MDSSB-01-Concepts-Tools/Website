@@ -2,7 +2,6 @@ library(tidymodels)
 library(openintro)
 library(tidyverse)
 library(rpart.plot)
-library(rattle)
 
 
 # Email spam-prediction: Overfitting a decision tree
@@ -33,7 +32,8 @@ email_test <- testing(email_split)
 # Train the model
 email_fit <- fit(email_workflow, data = email_train)
 email_fit
-email_fit$fit$fit$fit |> rpart.plot(roundint=FALSE, tweak = 0.5)
+email_fit$fit$fit$fit |> 
+ rpart.plot(roundint=FALSE, tweak = 0.5)
 
 # Make predictions
 email_pred_test <- predict(email_fit, email_test) |>
@@ -44,6 +44,8 @@ email_pred_train <- predict(email_fit, email_train) |>
 # Print the evaluation metrics
 email_pred_test |> conf_mat(truth = spam, estimate = .pred_class)
 email_pred_train |> conf_mat(truth = spam, estimate = .pred_class)
+email_pred_test |> conf_mat(truth = spam, estimate = .pred_class) |> summary()
+# Select accuracy, sensitivity, specificity
 email_pred_test |> conf_mat(truth = spam, estimate = .pred_class) |> summary() |> slice(c(1,3,4))
 email_pred_train |> conf_mat(truth = spam, estimate = .pred_class) |> summary()|> slice(c(1,3,4))
 
@@ -73,8 +75,9 @@ decisiontree_fit_predict_accuracy_by_complexitycost(0.001)  |> filter(.metric ==
 decisiontree_fit_predict_accuracy_by_complexitycost(0)  |> filter(.metric == "accuracy")
 
 # Collect values in a dataframe
-simtest <- seq(0, 0.02, 0.001) |> map_df(\(x) decisiontree_fit_predict_accuracy_by_cohttp://127.0.0.1:44823/graphics/plot_zoom_png?width=1240&height=677mplexitycost(x) |> 
-                               mutate(complexitycost = x))
+simtest <- seq(0, 0.02, 0.001) |> 
+ map_df(\(x) decisiontree_fit_predict_accuracy_by_complexitycost(x) |> 
+         mutate(complexitycost = x))
 
 # Show the overfitting in a plot
 simtest |> 
