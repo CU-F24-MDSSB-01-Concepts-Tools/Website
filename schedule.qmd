@@ -29,10 +29,10 @@ Date format MM-DD (month-day) (09-05 is Sep, 5)
 | 7    | 10-14  | W#6 [Principal Component Analysis, Math: Exponentiations and Logarithms, Epidemic Modeling, Calculus](W06.qmd) <br> [Achievements W#-@sec-week6] | 10-17    | R            |
 | 8    | 10-21  | W#07 [Models in Science, Linear Model, Interaction Effects, Nonlinear Models](W07.qmd) <br> [Achievements W#-@sec-week7]| 10-24    | python       |
 | 9    | 10-28  | W#08 [Predicting Categorical Variables, Logistic Regression, Classification Problems](W08.qmd) <br> [Achievements W#-@sec-week8] | 10-31    | *no class, Public Holiday* |
-| 10   | 11-04  | **Your Data Science Project**, Hypothesis Testing, p-value, Decision Trees, RMSE, Overfitting | 11-07    | python       |
-| 11   | 11-11  | Bootstrapping, Cross validation, Clustering                 | 11-14    | python       |
-| 12   | 11-18  | *Collaborative Git, Data Science Projects, Probability*       | 11-21    | python       |
-| 13   | 11-25  | *Your data science questions; Random Variables, Probability Distributions, Central Limit Theorem* | 11-28    | python / R   |
+| 10   | 11-04  | [**Final Projects Info**](final.qmd) <br> W#09 [Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting](W09.qmd) | 11-07    | python       |
+| 11   | 11-11  | W#10 [Overfitting, Clustering Algorithms](W10.qmd)  | 11-14    | python       |
+| 12   | 11-18  | W#11 [Final Projects](https://github.com/CU-F24-MDSSB-01-Concepts-Tools/Course-Organization-Resources/blob/main/STUDENT_PROJECTS.md) Collaborative Git, Bootstrapping, Confidence Intervals, Crossvalidation, Bias and Diversity in Crowd Wisdom*       | 11-21    | python       |
+| 13   | 11-25  | *Probability, Random Variables, Probability Distributions, Central Limit Theorem* | 11-28    | python / R   |
 | 14   | 12-02  | Course Review, Exam Preparation                             | 12-05    | student project presentations |
 | Exam | 12-16  | **The exam takes place as an online exam <br> Monday, Dec 16 09:00-11:00**  |  |  |
 | Project |        | **Deadline for submission of the Final Project is Saturday, Dec 21** (see [academic calendar]({{< var link.academic-calendar >}})) | 12-21 |   |
@@ -40,7 +40,7 @@ Date format MM-DD (month-day) (09-05 is Sep, 5)
 | 2nd <br> Exam |   | Those who fail the exam and those who are officially excused can sit in the second exam end of January 2025. <br> *To be scheduled by the admin.*  |   |   |
 |      |        | Those who fail to deliver their final project or are officially excused must deliver it by January 31, 2025 (see [academic calendar]({{< var link.academic-calendar >}})) |    |   |
 
-*Finale note on assessment scheduling: This semester provides two options to pass. The final 3rd attempt (in particular the exam) is offered again in the fall semester 2025.*
+*Final note on official assessment scheduling: This semester provides two options to pass. The final 3rd attempt (in particular the exam) is offered again in the fall semester 2025.*
 
 
 # Achievements W#1 {#sec-week1}

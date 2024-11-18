@@ -3,15 +3,17 @@ title: "W#13: Random Variables, Probability Distributions, Central Limit Theorem
 author: Jan Lorenz
 format: 
   revealjs: 
+    toc: true
+    toc-depth: 1
     slide-number: true
     chalkboard: 
       buttons: true
-    preview-links: false
+    preview-links: true
     logo: img/ConstructorUniversity.png
-    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+    footer: "MDSSB-DSCO-02: Data Science Concepts"
 bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
-execute: 
-  cache: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -692,7 +694,7 @@ eu_mass | eu_distr
 ```{r}
 library(tidymodels)
 library(readxl)
-galton <- read_excel("data/galton_data.xlsx") |> mutate(true_value = 1198)
+galton <- read_csv("data/galton.csv") |> mutate(true_value = 1198)
 viertelfest <- read_csv("data/Viertelfest.csv") |> mutate(true_value = 10788)
 owid <- read_csv("data/owid-covid-data.csv")
 owid_inds <- owid |> 

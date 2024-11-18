@@ -1,74 +1,116 @@
-library(tidyverse)
+# Load necessary libraries
 library(tidymodels)
 library(palmerpenguins)
-library(rpart.plot)
+library(dplyr)
 
-penguins_recipe <- recipe(body_mass_g ~ flipper_length_mm + species, data = penguins) |> 
- step_naomit(all_predictors()) 
+# Load and clean the Palmer Penguins dataset
+data <- penguins |> na.omit() |>
+ select(body_mass_g, bill_length_mm, bill_depth_mm, flipper_length_mm, species)
 
-penguins_tree <- decision_tree(cost_complexity = 0.01, min_n = 10) |>
+# Specify a Decision Tree model
+tree_spec <- decision_tree(cost_complexity = 0) |>
  set_engine("rpart") |>
  set_mode("regression")
 
-penguins_workflow <- workflow() |>
- add_recipe(penguins_recipe) |>
- add_model(penguins_tree)
+# Create a 5-fold cross-validation object
+set.seed(1)
+cv_folds <- vfold_cv(data, v = 10, , repeats = 20)
 
-set.seed(123)
-penguins_split <- initial_split(penguins, prop = 0.7, strata = sex)
-peng_train <- training(penguins_split)
-peng_test <- testing(penguins_split)
+# Define a workflow
+tree_wf <- workflow() |>
+ add_model(tree_spec) |>
+ add_formula(body_mass_g ~ .)
 
-peng_fit <- fit(penguins_workflow, data = peng_train)
-peng_fit
+# Fit the model using cross-validation
+cv_results <- fit_resamples(
+ tree_wf,
+ resamples = cv_folds, 
+ control = control_resamples(save_pred = TRUE) # we also want the predictions
+)
 
-rpart.rules(peng_fit$fit$fit$fit, style = "tall", roundint=FALSE)
-rpart.plot(peng_fit$fit$fit$fit)
+# Collect predictions of all 5 repeats of 10-times cross-validations in one dataframe
+cv_predictions <- collect_predictions(cv_results) # These are 20 times number of penguins rows
 
-peng_pred <- predict(object = peng_fit, new_data = peng_train) |> 
- bind_cols(peng_train)
-peng_pred |> rmse(truth = body_mass_g, estimate = .pred)
-peng_pred |> rsq(truth = body_mass_g, estimate = .pred)
+# Now we compute bias (squared collective error), variance, and average individual error for each prediction 
+# We have 20 predictions per original row
 
-peng_pred <- predict(object = peng_fit, new_data = peng_test) |> 
- bind_cols(peng_test)
-peng_pred |> rmse(truth = body_mass_g, estimate = .pred)
-peng_pred |> rsq(truth = body_mass_g, estimate = .pred)
+# Calculate the expected prediction (mean prediction for each observation)
+bias_var_error <- cv_predictions |> 
+ mutate( # Compute some measures for each repeated observation
+  mean_pred = mean(.pred), # mean prediction per original row
+  true_val = body_mass_g, 
+  squared_diff = (.pred - mean_pred)^2, # use to compute variance per original row
+  .by = .row) |> 
+ summarize( # Summarize for each original value
+  bias_squared = mean( (mean_pred - true_val)^2 ), 
+  variance = mean(squared_diff), 
+  individual_error = mean((true_val - .pred)^2),
+  .by = .row
+ )
 
-peng_sim <- expand_grid(flipper_length_mm = seq(170, 240, by = 1), 
-                        species = unique(penguins$species))
-peng_pred = predict(object = peng_fit, new_data = peng_sim) |> 
- bind_cols(peng_sim)
-
-peng_pred |> ggplot(aes(x = flipper_length_mm, y = .pred, color = species)) + geom_line()
+bias_var_error |> 
+ summarize(across(c(bias_squared, variance, individual_error), mean))
 
 
 
-# Theoretical Bias Variance Tradoff example
 
-## 1. Define "Real" Model
-real_f <- function(x) x^2
-ggplot() + 
- geom_function(fun = realmodel_f, color = "black")
 
-## Sample from the model
-sample_f <- function(n, irreducible_err_sd = 0.1) {
- tibble(x = runif(n, 0, 1), 
-        y = real_f(x) + rnorm(n, mean = 0, sd = irreducible_err_sd))
+
+## Simulation with increasing cost_complexity
+# Strategy: Put all of the above into a function which outputs bias square, variance, and individual error
+
+
+bias_variance_error <- function(compl) {
+ tree_spec <- decision_tree(cost_complexity = compl) |>
+  set_engine("rpart") |>
+  set_mode("regression")
+ 
+ # Create a 5-fold cross-validation object
+ set.seed(1)
+ cv_folds <- vfold_cv(data, v = 10, , repeats = 20)
+ 
+ # Define a workflow
+ tree_wf <- workflow() |>
+  add_model(tree_spec) |>
+  add_formula(body_mass_g ~ .)
+ 
+ # Fit the model using cross-validation
+ cv_results <- fit_resamples(
+  tree_wf,
+  resamples = cv_folds, 
+  control = control_resamples(save_pred = TRUE) # we also want the predictions
+ )
+ 
+ # Collect predictions of all 5 repeats of 10-times cross-validations in one dataframe
+ cv_predictions <- collect_predictions(cv_results) # These are 20 times number of penguins rows
+ 
+ # Now we compute bias (squared collective error), variance, and average individual error for each prediction 
+ # We have 20 predictions per original row
+ 
+ # Calculate the expected prediction (mean prediction for each observation)
+ bias_var_error <- cv_predictions |> 
+  mutate( # Compute some measures for each repeated observation
+   mean_pred = mean(.pred), # mean prediction per original row
+   true_val = body_mass_g, 
+   squared_diff = (.pred - mean_pred)^2, # use to compute variance per original row
+   .by = .row) |> 
+  summarize( # Summarize for each original value
+   bias_squared = mean( (mean_pred - true_val)^2 ), 
+   variance = mean(squared_diff), 
+   individual_error = mean((true_val - .pred)^2),
+   .by = .row
+  )
+ 
+ bias_var_error |> 
+  summarize(across(c(bias_squared, variance, individual_error), mean)) |> 
+  mutate(cost_complexity = compl)
 }
-sample_f(50) |> ggplot(aes(x = x, y = y)) + geom_point() + geom_function(fun = real_f, color = "blue")
-
-s <- sample_f(1000)
-linear_fit_sample <- function() lm(y ~ poly(x,2), data = s)
-lm(y ~ poly(x,2), data = s)
-lm(y ~ x.^2 + x + 1, data = s)
-linear_fit_sample()
-s |> mutate(.pred = predict(linear_fit_sample(), newdata = s)) |> 
- ggplot(aes(x = x, y = y)) + geom_point() + 
- geom_function(fun = real_f, color = "blue") + 
- geom_point(aes(y = .pred), color = "red")
-
-
-linear_fit_sample()
-
-
+ 
+simulation <- seq(0, 0.015, by = 0.001) |> map(\(x) bias_variance_error(x)) |> reduce(bind_rows) 
+simulation |> 
+ pivot_longer(c(bias_squared, variance, individual_error)) |> 
+ ggplot(aes(x = cost_complexity, y = value, color = name)) +
+ geom_line() +
+ geom_point() +
+ scale_x_reverse() +
+ facet_wrap(~name, ncol = 1, scales = "free_y")

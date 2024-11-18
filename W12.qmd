@@ -3,344 +3,75 @@ title: "W#12: Collaborative Git, Data Science Projects, Probability"
 author: Jan Lorenz
 format: 
   revealjs: 
+    toc: true
+    toc-depth: 1
     slide-number: true
     chalkboard: 
       buttons: true
-    preview-links: false
+    preview-links: true
     logo: img/ConstructorUniversity.png
-    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+    footer: "MDSSB-DSCO-02: Data Science Concepts"
 bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
-execute: 
-  cache: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 
-# Collaborative Work with Git
 
-Learning goal: First experiences with collaborative data science work with `git`
+# Matrices
 
-
-## Step 1: git clone *project-Y-USERNAMES* {.smaller}
-
-
-[Team formation is mostly complete.]{style='color:blue;'} 
-Repositories `project-A-USERNAMES`, ..., `project-H-USERNAMES` are created. **You are to deliver your project reports in your repository.**
-
-- Go to: <https://github.com/orgs/CU-F23-MDSSB-01-Concepts-Tools/repositories>
-- Find your project repository 
-- Copy the URL   
-  ![](img/clone-repo-link.png){height=150}
-- Go to RStudio
-  - New Project > Form Version Control > Git > Paste your URL
-  - The project is created
-
-
-## Step 2: First Team member commits and pushes {.smaller}
-
-**The first team member^[Who is the first team member? The first one mentioned in the USERNAMES in the repo-name.  **Example:** In the project `project-Y-Poro_Jan` *Poro* is the first team member] does the following:**
-
-- Open the file `report.qmd`
-- Write your name in the first line at `author` in the YAML
-- `git add` the file `report.qmd`
-- `git commit` (enter "Added name" as commit message)
-- `git push`
-  
-  
-## Step 3: Other team members pull {.smaller}
-
-- Do `git pull` in the RStudio interface. 
-
+## What is a matrix? {.smaller} 
 
 :::: {.columns}
 
-::: {.column width='60%'}
-**What does `git pull` do?**
+::: {.column width='50%'}
+- A **matrix** is a 2-dimensional array of numbers with rows and columns.
+- The numbers in it are called its **elements**.
 
-- `git pull` does two things: fetching new stuff and merging it with existing stuff
-    1. First it `git fetch`s the commit from the remote repository (GitHub) to the local machine
-    2. Then it `git merge`s the commit with the latest commit on your local machine. 
-- When we are lucky this works with no problems. (Should be the case with new files.)
+Isn't that a data frame?
+
+- No, a dataframe is more general. In a matrix, every element has the same basic data type! 
+- In R, a matrix is a vector plus some specification of the dimensions.  
+- (A matrix can also be of characters or logicals, it can also have row- and column-names)
 :::
 
-::: {.column width='40%'}
-![](https://files.mastodon.social/media_attachments/files/109/303/119/338/776/592/original/662a5e803a5e6c21.png)
-
-Source: <https://mastodon.social/@allison_horst/109303149552034159>
+::: {.column width='50%'}
+```{r}
+#| echo: true
+#| output-location: fragment
+matrix(data = 1:6, nrow = 2)
+```
+```{r}
+#| echo: true
+#| output-location: fragment
+matrix(data = 1:6, ncol = 2)
+```
+```{r}
+#| echo: true
+#| output-location: fragment
+matrix(data = 1:6, nrow = 3)
+```
+```{r}
+#| echo: true
+#| output-location: fragment
+matrix(data = 1:6, nrow = 3, byrow = TRUE)
+```
 :::
 
 ::::
 
 
+## Matrices in Mathematics {.smaller background-color="aquamarine"}
 
+- **Addition** and **subtraction** of matrices is done element-wise.
+- **Multiplication** of a matrix with a scalar is done element-wise.
+- **Multiplication** of two matrices is done row times column.
+- **Transposition** of a matrix is done by flipping the matrix over its diagonal.
 
-## Step 4: Merge independent changes {.smaller}
 
-[Git can merge changes in the same file when there are no conflicts.]{style='color:blue;'} Let's try. 
 
-- **The second team member:**
-  - Add your name in the author section of the YAML, save the file, add the file in the Git pane and make a commit. 
-  - Save, add the file in the Git pane, commit with message "Next author name", **push.**
-- **The third (or first) team member:**
-  - Change the title in the YAML to something meaningful (and also add your name if third team member), save the file, add the file in the Git pane and make a commit.
-  - Try to **push**. You should receive an error. Read it carefully, often it tells you what to do. Here: Do `git pull` first. You cannot push because remotely there is a newer commit (the one your colleague just made).
-  - **Pull.** This should result in message about a **successfull auto-merge**. Check that **both** are there: Your line and the line of your colleague.
-  *If you receive several hints instead, first read the next slide!*
 
 
-
-## ??? `git` configuration for divergent branches {.smaller}
-
-:::: {.columns}
-
-::: {.column width='50%'}
-If you pull for the first time in a local git repository, git may complain like this: 
-
-![](img/gitconfigrebase_rstudio.png){height=200}
-
-Read that carefully. It advises to configure with `git config pull.rebase false` as the default version. 
-:::
-
-::: {.column width='50%'}
-
-**How to do the configuration?**
-
-- Copy the line `git config pull.rebase false` and close the window.
-- Go to the Terminal pane (not the console, the one besides that). This is a terminal not for R but to speak with the computer in general. Paste the command and press enter. Now you are done and your next `git pull` should work.
-:::
-
-::::
-
-:::{.aside}
-What is a *branch* and what a *rebase*? These are features of git well worth to learn but not now. Learn at <http://happygitwithr.com>
-:::
-
-
-## Step 5: Push and pull the other way round {.smaller}
-
-- **The third/first member:**
-  - The successful merge creates a new commit, which you can directly push. 
-  - **Push.**
-- **The second team member (and all others):** 
-  - **Pull** the changes of your colleague. 
-  
-Practice a bit more pulling and pushing commits and check the merging. 
-
-
-## Step 6: Create a merge conflict {.smaller}
-
-- First and second team members: 
-  - Write a different sentence after "Executive Summary." in YAML `abstract:`.
-  - Each `git add`  and `git commit` on local machines. 
-- First member: `git push`
-- Second member: 
-  - `git pull`. That should result in a conflict. *If you receive several hints instead, first read the slide two slides before!*
-  - The conflict should show directly in the file with markings like this
-  
-`>>>>>>>>`   
-one option of text,   
-`========` a separator,    
-the other option, and     
-`<<<<<<<`. 
-
-## Step 7: Solve the conflict {.smaller}
-
-- The second member
-  - You have to solve this conflict now!
-  - Solving is by editing the text
-  - Decide for an option or make a new text
-  - Thereby, remove the `>>>>>`,`=====`,`<<<<<<`
-  - When you are done: `git add`, `git commit`, and `git push`. 
-
-Now you know how to solve merge conflicts. Practice a bit in your team. 
-
-**Working in VSCode:** The workflow is the same because it relies on git not on the editor of choice. 
-    
-## Advice: Collaborative work with git {.smaller}
-
-- Whenever you start a work session: First **pull** to see if there is anything new. That way you reduce the need for merges. 
-- Inform your colleagues when you pushed new commits. 
-- Coordinate the work, e.g. discuss who works on what part and maybe when. However, git allows to also work without full coordination and in parallel. 
-- When you finish your work session, end with pushing a *nice* commit. That means. The file should render. You made comments when there are loose ends and todo's. 
-- You can also use the *issues* section of the GitHub repository for things to do. 
-- When you work on different parts of the file, be aware that also a successful merge can create problems. Example: Your colleague changed the data import, while you worked on graphics. Maybe after the merge the imported data is not what you need for your chunk. Then coordinate.  
-- Commit and push often. This avoids that potential merge conflicts become large. 
-
-
-# Data Science Projects {background-color=khaki}
-
-
-## A project report in a nutshell  {background-color=khaki}
-
-- You pick a dataset, 
-- do some interesting question-driven data analysis with it, 
-- write up a well structured and nicely formatted report about the analysis, and 
-- present it at the end of the semester. 
-
-
-## Project Timeline {.smaller background-color=khaki} 
-
-- **Week 12** (this week): 
-    - Decide for the **data** you will use
-        - When the dataset is small, you can upload it to your repository
-        - When the dataset is large, provide download instructions in your report and keep the data only locally
-    - Write a (tentative) **title** in your report file
-    - Write a (tentative) list of ~3 **questions** you want to answer in your report
-    - Render, Commit, and Push
-- **Week 13**: Work towards answering at least one question  
-  Try to reach a preliminary final step for the work-in-progress presentation
-- **Week 14**: Work-in-progress presentation Thu, Dec 7
-- **Deadline Dec 22:** Render, Commit, and Push your final report
-
-## Six types of questions {.smaller background-color=khaki}
-
-:::: {.columns}
-
-::: {.column width='60%'}
-1.  **Descriptive:** summarize a characteristic of  data
-2.  **Exploratory:** analyze to see if there are patterns, trends, or relationships between variables (hypothesis generating)
-3.  **Inferential:** analyze patterns, trends, or relationships in representative data from a population
-4.  **Predictive:** make predictions for individuals or groups of individuals
-5.  **Causal:** whether changing one factor will change another factor, on average, in a population
-6.  **Mechanistic:** explore "how" as opposed to whether
-:::
-
-::: {.column width='40%'}
-![](img/DataAnalysisFlowChart_LeekPeng.jpeg)
-:::
-
-::::
-
-:::{.aside}
-Leek, Jeffery T., and Roger D. Peng. 2015. “What Is the Question?” Science 347 (6228): 1314–15. <https://doi.org/10.1126/science.aaa6146>.
-:::
-
-## What are good questions? {.smaller background-color=khaki}
-
-A good question
-
-- is not too broad (but also not too specific)
-- can be answered (or at least approached) with data
-- call for one of the different types of data analysis: 
-    - descriptive
-    - exploratory
-    - inferential
-    - predictive
-    - (causal or mechanistic -- not the typical choices for a short term data analysis projects. They should not be central but may be touched.)
-
-
-## Tools and advice for questions {.smaller background-color=khaki}
-
-:::: {.columns}
-
-::: {.column width='50%'}
-[**Descriptive**]{style='color:blue;'}
-
-::: {.fragment}
-- What is an observation?
-- What are the variables?
-- Summary statistics and basic visualizations
-- Category frequencies and numerical distributions
-:::
-:::
-
-::: {.column width='50%'}
-[**Exploratory**]{style='color:blue;'}
-
-::: {.fragment}
-- Questions specific to the topic
-- Compute/summarize relevant variables: percentages, ratios, differences, ...)
-- Scatter plots
-- Correlations
-- Cluster Analysis
-- **Crafted computations and visualizations for your particular questions**
-:::
-:::
-
-::::
-
-
-## Tools and advice for questions {.smaller background-color=khaki}
-
-:::: {.columns}
-
-::: {.column width='50%'}
-[**Inferential**]{style='color:blue;'}
-
-::: {.fragment}
-- Describe the population the data represents
-- Can it be considered a random sample?
-- Think theoretically about variable selection and data transformations
-- Interpret coefficients of models
-- Be careful interpreting coefficients when variables are highly correlated
-- Check sensible interactions
-- Are effects statistical significant?
-- If you test hypothesis: Describe the null distribution
-:::
-:::
-
-::: {.column width='50%'}
-[**Predictive**]{style='color:blue;'}
-
-:::{.fragment}
-- Do you have a regression or a classification problem?
-- Do a train/test split (Optional, do crossvalidation) to evaluate your model performance
-- Select sensible performance metrics for the problem (from the confusion matrix or regression metrics)
-- Maybe compare different models and tune hyperparameters
-- Do feature selection and engineering to improve the performance
-:::
-:::
-::::
-
-## Example questions {.smaller background-color=khaki}
-
-:::: {.columns}
-
-::: {.column width='50%'}
-[**Political Attitudes**]{style='color:blue;'}
-
-:::{.fragment}
-- How are attitudes correlated different in different European countries?
-- How does the PCA of political attitudes changes over time in a country when computed for different waves?
-- How well can party support be predicted for other European countries?
-:::
-:::
-
-::: {.column width='50%'}
-[**Fuel Watch**]{style='color:blue;'}
-
-:::{.fragment}
-- How can we automatically quantify the different price politics of petrol stations (weekly oscillation, follow the oil price, fixed price, are there more)?
-- Are there regional patterns in the price politics? Where do petrol stations use the weekly oscillation?
-- What is associated with the highest prices?
-- How do the prices exactly follow the crude oil price? (Find and merge data about the crude oil price.)
-:::
-:::
-
-::::
-
-## Example questions {.smaller background-color=khaki}
-
-:::: {.columns}
-
-::: {.column width='50%'}
-[**COVID-19 Cases and Deaths**]{style='color:blue;'}
-
-:::{.fragment}
-- Did new cases in the first wave show similar exponential growth growth rates in different countries?
-- How did the relation between new cases and deaths change from wave to wave?
-- How are world development indicators associated to the number of total deaths per million in a country?
-:::
-:::
-
-::: {.column width='50%'}
-[**Housing**]{style='color:blue;'}
-
-:::{.fragment}
-- How much can we improve house price predictions by using decision trees and random forests?
-- How can we make use of the spatial information to engineer features to improve the prediction?
-:::
-:::
-::::
 
 
 

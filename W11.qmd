@@ -1,18 +1,297 @@
 ---
-title: "W#11: Bootstrapping, Cross validation (idea), Clustering"
+title: "W#11: Final Project, Collaborative Git, Bootstrapping, Cross validation, Bias-Variance Tradeoff"
 author: Jan Lorenz
 format: 
   revealjs: 
+    smaller: true
+    toc: true
+    toc-depth: 1
     slide-number: true
     chalkboard: 
       buttons: true
-    preview-links: false
+    preview-links: true
     logo: img/ConstructorUniversity.png
-    footer: "[CU-F23-MDSSB-DSCO-02: Data Science Concepts](https://github.com/CU-F23-MDSSB-01-Concepts-Tools)"
+    footer: "MDSSB-DSCO-02: Data Science Concepts"
 bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
-execute:
-  cache: true
+editor_options: 
+  chunk_output_type: console
 ---
+
+# Final Project {background-color=khaki}
+
+
+## A project report in a nutshell  {background-color=khaki}
+
+- You pick a dataset, 
+- do some interesting question-driven data analysis with it, 
+- write up a well structured and nicely formatted report about the analysis, and 
+- present it at the end of the semester. 
+
+
+## Six types of questions {.smaller background-color=khaki}
+
+:::: {.columns}
+
+::: {.column width='60%'}
+1.  **Descriptive:** summarize a characteristic of  data
+2.  **Exploratory:** analyze to see if there are patterns, trends, or relationships between variables (hypothesis generating)
+3.  **Inferential:** analyze patterns, trends, or relationships in representative data from a population
+4.  **Predictive:** make predictions for individuals or groups of individuals
+5.  **Causal:** whether changing one factor will change another factor, on average, in a population
+6.  **Mechanistic:** explore "how" as opposed to whether
+:::
+
+::: {.column width='40%'}
+![](img/DataAnalysisFlowChart_LeekPeng.jpeg)
+:::
+
+::::
+
+:::{.aside}
+Leek, Jeffery T., and Roger D. Peng. 2015. “What Is the Question?” Science 347 (6228): 1314–15. <https://doi.org/10.1126/science.aaa6146>.
+:::
+
+## What are good questions? {.smaller background-color=khaki}
+
+A good question
+
+- is not too broad (= complicated to answer)
+- is not too specific (= trivial to answer)
+- can be answered or at least approached with data
+- call for one of the different types of data analysis: 
+    - descriptive
+    - exploratory
+    - inferential
+    - predictive
+    - (causal or mechanistic -- not the typical choices for a short term data analysis projects. They should not be central but may be touched.)
+
+
+## Tools and advice for questions {.smaller background-color=khaki}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+[**Descriptive**]{style='color:blue;'}
+
+::: {.fragment}
+- What is an observation? [Answer this in any data analysis!]{style='color:red;'}
+- What are the variables?
+- Summary statistics and basic visualizations
+- Category frequencies and numerical distributions
+:::
+:::
+
+::: {.column width='50%'}
+[**Exploratory**]{style='color:blue;'}
+
+::: {.fragment}
+- Questions specific to the topic
+- Compute/summarize relevant variables: percentages, ratios, differences, ...)
+- Scatter plots
+- Correlations
+- Cluster Analysis
+- **Crafted computations and visualizations for your particular questions**
+:::
+:::
+
+::::
+
+
+## Tools and advice for questions {.smaller background-color=khaki}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+[**Inferential**]{style='color:blue;'}
+
+::: {.fragment}
+- Describe the population the data represents
+- Can it be considered a random sample?
+- Think theoretically about variable selection and data transformations
+- Interpret coefficients of models
+- Be careful interpreting coefficients when variables are highly correlated
+- Are effects statistical significant?
+- Hypothesis test: Describe null distribution
+:::
+:::
+
+::: {.column width='50%'}
+[**Predictive**]{style='color:blue;'}
+
+:::{.fragment}
+- Regression or classification?
+- Do a train/test split to evaluate model performance (Optional, do crossvalidation) 
+- Select sensible performance metrics for the problem (from confusion matrix or regression metrics)
+- Maybe compare different models and tune hyperparameters
+- Do feature selection and feature engineering to improve the performance!
+:::
+:::
+::::
+
+
+# Modeling Mindsets
+
+![](img/ModelingMindsets_annotated.png){height=300}
+
+Some methods:  
+**Linear Model:** [Inferential]{style='color:red;' .fragment} [and Predictive!]{style='color:red;' .fragment}  
+**Logistic Regression:** [Inferential]{style='color:red;' .fragment} [and Predictive!]{style='color:red;' .fragment}  
+**k-means Clustering:** [Exploratory]{style='color:red;' .fragment}
+
+[**Let's check your questions in the Course Organization Repo!**]{style='color:blue;' .fragment}
+
+# Collaborative Work with Git
+
+Learning goal: First experiences with collaborative data science work with `git`
+
+
+## Step 1: git clone *project-Y-USERNAMES* {.smaller}
+
+
+[Team formation is mostly complete.]{style='color:blue;'} 
+Repositories `project-1`, `FinalProject_2`, ... are created. **You are to deliver your project reports in your repository.**
+
+- Find your project repository 
+- Copy the URL   
+  ![](img/clone-repo-link.png){height=150}
+- Go to RStudio
+  - New Project > Form Version Control > Git > Paste your URL
+  - The project is created
+
+
+## Step 2: First Team member commits and pushes {.smaller}
+
+**One team member does the following:**
+
+- Open the file `report.qmd`
+- Write your name in the first line at `author` in the YAML
+- `git add` the file `report.qmd`
+- `git commit` (enter "Added name" as commit message)
+- `git push`
+  
+  
+## Step 3: Other team members pull {.smaller}
+
+- Do `git pull` in the RStudio interface. 
+
+
+:::: {.columns}
+
+::: {.column width='60%'}
+**What does `git pull` do?**
+
+- `git pull` does two things: fetching new stuff and merging it with existing stuff
+    1. First it `git fetch`s the commit from the remote repository (GitHub) to the local machine
+    2. Then it `git merge`s the commit with the latest commit on your local machine. 
+- When we are lucky this works with no problems. (Should be the case with new files.)
+:::
+
+::: {.column width='40%'}
+![](https://files.mastodon.social/media_attachments/files/109/303/119/338/776/592/original/662a5e803a5e6c21.png)
+
+Source: <https://mastodon.social/@allison_horst/109303149552034159>
+:::
+
+::::
+
+
+
+
+## Step 4: Merge independent changes {.smaller}
+
+[Git can merge changes in the same file when there are no conflicts.]{style='color:blue;'} Let's try. 
+
+- **The second team member:**
+  - Add your name in the author section of the YAML, save the file, add the file in the Git pane and make a commit. 
+  - Save, add the file in the Git pane, commit with message "Next author name", **push.**
+- **The third (or first) team member:**
+  - Change the title in the YAML to something meaningful (and also add your name if third team member), save the file, add the file in the Git pane and make a commit.
+  - Try to **push**. You should receive an error. Read it carefully, often it tells you what to do. Here: Do `git pull` first. You cannot push because remotely there is a newer commit (the one your colleague just made).
+  - **Pull.** This should result in message about a **successfull auto-merge**. Check that **both** are there: Your line and the line of your colleague.
+  *If you receive several hints instead, first read the next slide!*
+
+
+
+## ??? `git` configuration for divergent branches {.smaller}
+
+:::: {.columns}
+
+::: {.column width='50%'}
+If you pull for the first time in a local git repository, git may complain like this: 
+
+![](img/gitconfigrebase_rstudio.png){height=200}
+
+Read that carefully. It advises to configure with `git config pull.rebase false` as the default version. 
+:::
+
+::: {.column width='50%'}
+
+**How to do the configuration?**
+
+- Copy the line `git config pull.rebase false` and close the window.
+- Go to the Terminal pane (not the console, the one besides that). This is a terminal not for R but to speak with the computer in general. Paste the command and press enter. Now you are done and your next `git pull` should work.
+:::
+
+::::
+
+:::{.aside}
+What is a *branch* and what a *rebase*? These are features of git well worth to learn but not now. Learn at <http://happygitwithr.com>
+:::
+
+
+## Step 5: Push and pull the other way round {.smaller}
+
+- **The third/first member:**
+  - The successful merge creates a new commit, which you can directly push. 
+  - **Push.**
+- **The second team member (and all others):** 
+  - **Pull** the changes of your colleague. 
+  
+Practice a bit more pulling and pushing commits and check the merging. 
+
+
+## Step 6: Create a merge conflict {.smaller}
+
+- First and second team members: 
+  - Write a different sentence after "Executive Summary." in YAML `abstract:`.
+  - Each `git add`  and `git commit` on local machines. 
+- First member: `git push`
+- Second member: 
+  - `git pull`. That should result in a conflict. *If you receive several hints instead, first read the slide two slides before!*
+  - The conflict should show directly in the file with markings like this
+  
+`>>>>>>>>`   
+one option of text,   
+`========` a separator,    
+the other option, and     
+`<<<<<<<`. 
+
+## Step 7: Solve the conflict {.smaller}
+
+- The second member
+  - You have to solve this conflict now!
+  - Solving is by editing the text
+  - Decide for an option or make a new text
+  - Thereby, remove the `>>>>>`,`=====`,`<<<<<<`
+  - When you are done: `git add`, `git commit`, and `git push`. 
+
+Now you know how to solve merge conflicts. Practice a bit in your team. 
+
+**Working in VSCode:** The workflow is the same because it relies on git not on the editor of choice. 
+    
+## Advice: Collaborative work with git {.smaller}
+
+- Whenever you start a work session: First **pull** to see if there is anything new. That way you reduce the need for merges. 
+- Inform your colleagues when you pushed new commits. 
+- Coordinate the work, e.g. discuss who works on what part and maybe when. However, git allows to also work without full coordination and in parallel. 
+- When you finish your work session, end with pushing a *nice* commit. That means. The file should render. You made comments when there are loose ends and todo's. 
+- You can also use the *issues* section of the GitHub repository for things to do. 
+- When you work on different parts of the file, be aware that also a successful merge can create problems. Example: Your colleague changed the data import, while you worked on graphics. Maybe after the merge the imported data is not what you need for your chunk. Then coordinate.  
+- Commit and push often. This avoids that potential merge conflicts become large. 
+
+
+
+
 
 # Bootstrapping
 
@@ -47,7 +326,7 @@ Competition: Guess the weight of the meat of an Ox? (Galton, 1907)
 #| fig-height: 2
 library(tidyverse)
 library(readxl)
-galton <- read_excel("data/galton_data.xlsx")
+galton <- read_csv("data/galton.csv")
 galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5)
 ```
 
@@ -162,6 +441,7 @@ boots_galton
 The column `splits` contains a list of split objects. 
 
 ```{r}
+#| echo: true
 boots_galton$splits[[1]]
 ```
 :::
@@ -308,7 +588,10 @@ What is the correct interpretation?
 
 . . . 
 
-Correct: 2.
+Correct: 2.  
+1. The confidence is about a parameter (here the population mean) not about sample values!  
+3. We know the mean of the sample precisely!   
+The confidence interval assesses where 95% of the values are when do new samples.   
 
 ## CI: Precision vs. Confidence {.smaller}
 
@@ -375,13 +658,13 @@ boots_peng |> unnest(coefs)
 library(patchwork)
 g1 <- boots_peng |> unnest(coefs) |> filter(term == "islandDream") |> 
   ggplot(aes(x = estimate)) + geom_histogram() + xlab("coefficients islandDream") +
-  geom_vline(xintercept = 0, color = "red") + theme_minimal(base_size = 24)
+  geom_vline(xintercept = 0, color = "gray") + theme_minimal(base_size = 24)
 g2 <- boots_peng |> unnest(coefs) |> filter(term == "bill_length_mm") |> 
   ggplot(aes(x = estimate)) + geom_histogram() + xlab("coefficients bill_length_mm") +
-  geom_vline(xintercept = 0, color = "red") + theme_minimal(base_size = 24)
+  geom_vline(xintercept = 0, color = "gray") + theme_minimal(base_size = 24)
 g3 <- boots_peng |> unnest(coefs) |> filter(term == "flipper_length_mm") |> 
   ggplot(aes(x = estimate)) + geom_histogram() + xlab("coefficients flipper_length_mm") +
-  geom_vline(xintercept = 0, color = "red") + theme_minimal(base_size = 24)
+  geom_vline(xintercept = 0, color = "gray") + theme_minimal(base_size = 24)
 g1 + g2 + g3
 ```
 
@@ -430,470 +713,164 @@ More specifically, **$v$-fold cross validation**:
 
 ![](img/cross-validation.png)
 
-Today only the concept on this no details how to do it. 
+# Wisdom of the crowd, Bias and Diversity
 
+## Galton's data {.smaller}
 
-# Cluster Analysis
-
-## 3 common data analysis tasks {.smaller}
-
-1. **Regression:** We want to *explain/predict* a **numerical** variable.    
-Example: In a linear regression, we model a numerical response variable as a linear combination of predictors and estimate the coefficients with data. 
-2. **Classification:** We want to *explain/predict* a **nominal** (often binary) variable.  
-Example: In a logistic regression, we assume the binary outcomes are realized randomly based on a probability which is a the logistic transformation of a linear combination of predictors and estimate the coefficients with data. 
-3. [**Clustering:**]{style='color:red;'} We want label cases in data. 
-
-**Classification and clustering** are about producing new nominal data. In classification the categories are already know from the training data. [Clustering algorithms produces the categories without training data.]{style='color:blue;'}
-
-
-## Supervised vs. unsupervised statistical learning {.smaller}
-
-- Regression and classification problems are solved by **supervised** algorithms. 
-  - That means they receive *training data* which includes the outcome variable (which is often made by humans) and should perform on new test data. 
-  - *Prediction questions* can be:
-    - What is a house worth?
-    - Which emails are spam?
-- A clustering problems is a problem of **unsupervised** learning. 
-  - The algorithm shall generate labels for the cases as a new variable.  
-  - *Prediction questions* can be:
-    - What different types of customers exist and how can each one be labelled?
-    - Which players in a sport league are similar and how can we label them?
-  
-## Cluster analysis and PCA {.smaller}
-
-Solving a clustering problem is also called **cluster analysis**. 
-
-- **Cluster analysis** and **principle component analysis** (PCA) both extract information from existing rectangular data without specifying predictors and response. 
-  - PCA extracts relations based on linear correlations between numerical **variables** (columns). These principle components can be used to create *new numerical variables* (and thereby reduce the number of variables).
-  - Cluster analysis tries to group **cases** (rows) into clusters such that cases in a cluster are similar. 
-    - When clusters are found they are labelled and a *new nominal variable* in the data set is created. Each case receives a nominal label to which cluster it belongs. 
-
-## Two clustering methods {.smaller}
-
-Today, we do a quick tour through two methods focusing on 
-
-- the general idea, and
-- how to apply, interpret, and look at the results. 
-
-The two paradigms are 
- 
- - centroid based clustering
- - connectivity based hierarchical clustering
-
-# k-means clustering
-
-
-## Centroid based: k-means clustering {.smaller}
-
-k-means clustering aims to *partition* $n$ observations into $k$ clusters in which 
-each observation belongs to the cluster with the nearest mean (*cluster centers* or *cluster centroid*) serving as a *prototype* of the cluster.
-
-::: {style='color:blue;'}
-**Important** 
-
-- We must specify **how many** ($k$) clusters we want to have.
-- We need a measure of **distance** between cases. How far is one case from each other?
-- A cluster is characterized by its **centroid**. 
-:::
- 
- 
-## Measuring distance between cases {.smaller background-color="aquamarine"} 
-
-Assume we have $m$ numerical variables.  
-$\to$ Every case is a **point** in $m$-dimensional space.
-
-In the following we will use the *Euclidean distance* in $m$ dimensions:
-
-For two points $(x_1, x_2, \dots, x_m)$ and  $(y_1, y_2, \dots, y_m)$ it is 
-
-$$\sqrt{(x_1-y_1)^2 +(x_2-y_2)^2 + \dots + (x_m-y_m)^2}$$
-
-- In $m=2$ or $3$ dimensions it is what we would measure with a ruler. ]
-- Note, the points represents rows in a dataset.
-
-[There are many more useful distance measures! It is a field to constantly learn about. Two visual examples: Manhattan distance, French railway metric]{style='color:green;'}
-
-## k-means algorithm: Start
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/ee71c89f-04e1-48f1-9ebc-350c8c872bf7.jpg?h=6b41c8a833b6137f529d59170ea90533)
-
-::: aside
-From <https://allisonhorst.com/k-means-clustering>
-:::
-
-
-## k-means algorithm: Iteration step 1
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/05cc17da-8ad7-4095-ba40-e0e492f2fd2b_rw_1920.jpg?h=500cfd89f65f6ec23eb6bf47c00bf1a2)
-
-::: aside
-From <https://allisonhorst.com/k-means-clustering>
-:::
-
-
-## k-means algorithm: Iteration step 2
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/caaad9b0-398b-4edb-92b6-25a224ae05bc_rw_1920.jpg?h=bf56b093b88b6b0e435cf2ffcfa91c18)
-
-::: aside
-From <https://allisonhorst.com/k-means-clustering>
-:::
-
-
-
-## Why we need iteration:
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/2f2e8dff-bcb4-4623-a38d-3cc71fba24c3_rw_1920.jpg?h=0fbd4da2938d4f69c91df95c842b942b)
-
-::: aside
-From <https://allisonhorst.com/k-means-clustering>
-:::
-
-
-## Iterate steps 1 and 2
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/f97bc420-d704-4bbe-ad00-28678e9c58cb_rw_1920.jpg?h=1cdfcef8903f8d8be17404ed6bd7aba1)
-
-::: aside
-From <https://allisonhorst.com/k-means-clustering>
-:::
-
-## k-means algorithm: Stop
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/614b8766-c72d-4c8f-9fd3-d738c36b073f.jpg?h=ae43d74e48e4d472a06dbee511e773af)
-
-::: aside
-From <https://allisonhorst.com/k-means-clustering>
-:::
-
-## Clustering penguins: Preprocessing {.smaller}
-
-- Standardization (shift-scale transformation by mean and standard deviation)
-    - When we measure distance between cases it is desireable that variables are of the same scale.
-    - If we do not standardize, body mass will dominate the distance measure!
-
-```{r}
-#| echo: true
-peng_rec <- penguins |> recipe() |> # No model specification to distinguish response ond predictor!
- step_rm(all_nominal(), year) |> # Keep only numeric variables
- step_center(all_numeric()) |> # shift by mean
- step_scale(all_numeric()) 
-# Call prep to calculate transformed variables
-peng_prepped <- peng_rec |> prep(penguins |> drop_na())
-```
-
-## Whats in the `prep`ed object? {.smaller .scrollable}
-
-A lot!
-
-```{r}
-#| echo: true
-glimpse(peng_prepped)
-```
-
-
-## Preprocessing in a list in `$steps`  {.smaller .scrollable}
-
-```{r}
-#| echo: true
-glimpse(peng_prepped$steps)
-```
-
-## Parameters of Standardization {.smaller}
-
-```{r}
-#| echo: true
-peng_prepped$steps[[2]]$means # Shifting was step 2
-peng_prepped$steps[[3]]$sds # Scaling was step 3
-```
-
-Transformed data in `$template`
+*What is the weight of the meat of this ox?*
 
 ```{r}
 #| echo: true
 #| fig-height: 2.5
-
-peng_transformed <- peng_prepped$template
-peng_transformed
+library(readxl)
+galton <- read_csv("data/galton.csv")
+galton |> ggplot(aes(Estimate)) + geom_histogram(binwidth = 5) + geom_vline(xintercept = 1198, color = "green") + 
+ geom_vline(xintercept = mean(galton$Estimate), color = "red")
 ```
 
-## k-means for $k=3$ clusters {.smaller .scrollable}
-
-- `kmean` from base-R
-- Output: *Cluster means* are the centroids, *Cluster vector* are the labels for the cases, *Within cluster sum of squares by cluster* are performance measures
-- [Warning:]{style='color:red;'} In principle, k-means can results in different clusters for different initial starting positions of clusters. 
-
-```{r}
-#| echo: true
-peng_transformed |> kmeans(centers = 3)
-```
-
-## How many clusters should we ask for? {.smaller .scrollable}
-
-- Computer solutions for different numbers of cluster $k$ 
-
-```{r}
-#| echo: true
-set.seed(2023)
-kclusts <- tibble(k = 1:9) |>
-  mutate(
-    kclust = map(k, \(x) kmeans(peng_transformed, x)), # kmeans for k=1:9
-    tidied = map(kclust, tidy), # tidy extracts the centroids here 
-    glanced = map(kclust, glance), # 
-    augmented = map(kclust, augment, peng_transformed) # add cluster labels to data
-  ) # This is large data frame with nested objects as entries. We unnest next
-
-clusters <- kclusts |> unnest(cols = c(tidied))
-clusters
-
-clusterings <- kclusts |> unnest(cols = c(glanced))
-clusterings
-
-assignments <- kclusts |> unnest(cols = c(augmented))
-assignments
-```
-
-
-## Total within sum of squares to decide {.smaller}
-
-```{r}
-#| echo: true
-ggplot(clusterings, aes(k, tot.withinss)) +
-  geom_line() + geom_point() + scale_x_continuous(breaks = 1:9) + theme_minimal(base_size = 20)
-```
-
-- From 3 to 4 clusters there is little improvement
-- From 6 to more clusters there is very little improvement (or worsening)
-
-[Warning:]{style='color:red;'} Better do more clusterings for each $k$ and average `tot.withness` to see if the graph is stable!
-
-## Visualization: Cluster centroids {.smaller}
-
-```{r}
-#| echo: true
-#| fig-width: 18
-library(patchwork)
-g_3clusters <- clusters |> filter(k==3) |> 
- select(bill_length_mm:body_mass_g, cluster) |> 
- pivot_longer(bill_length_mm:body_mass_g) |> 
- ggplot(aes(value,name)) + geom_col() + facet_grid(~cluster) + geom_vline(xintercept = 0, color = "blue") + theme_minimal(base_size = 16)
-g_6clusters <- clusters |> filter(k==6) |> 
- select(bill_length_mm:body_mass_g, cluster) |> 
- pivot_longer(bill_length_mm:body_mass_g) |> 
- ggplot(aes(value,name)) + geom_col() + facet_grid(~cluster) + geom_vline(xintercept = 0, color = "blue") + theme_minimal(base_size = 16)
-g_3clusters + g_6clusters
-```
-
-## Visualization: Scatter plot {.smaller}
-
-```{r}
-#| echo: true
-library(patchwork) 
-g1 <- assignments |> filter(k==3) |> 
- ggplot(aes(bill_length_mm, bill_depth_mm, color = .cluster)) +  geom_point()
-g2 <- assignments |> filter(k==6) |> mutate(species = na.omit(penguins)$species) |> 
- ggplot(aes(bill_length_mm, bill_depth_mm, color = species)) +  geom_point()
-g1 + g2
-```
-
-- This 3-cluster solution finds the species fairly well! 
-- [Attention:]{style='color:red;'} These are just two out of four variables!
-
-
-
-## Visualization: Clusters and species {.smaller}
-
-```{r}
-#| echo: true
-clustspecies <- assignments |> filter(k==6) |> 
- mutate(species = na.omit(penguins)$species) |> 
- select(.cluster, species) |> arrange(.cluster, species)
-g1 <- clustspecies |> ggplot(aes(.cluster, fill = species)) + geom_bar()
-g1 + g_6clusters
-```
-
-
-
-
-
-## It can go differently... {.smaller}
-
-```{r}
-#| echo: true
-set.seed(2)
-peng_transformed |> 
- mutate(cluster = kmeans(peng_transformed, 3)$cluster) |> 
- ggplot(aes(bill_length_mm, bill_depth_mm, color = factor(cluster))) +  geom_point()
-```
-
-This 3-cluster solution divides the Gentoo penguins into two clusters and keeps most Adelie and Chinstrap in one cluster.
-
-Why? Different random starting positions of the cluster centroids!
-
-
-# Hierarchical clustering
-
-## Connectivity based: Hierarchical clustering {.smaller}
-
-Hierarchical clustering seeks to build a *hierarchy* of clusters. 
-
-Here, we use a bottom up approach:
-
-- We start with every case building its own cluster
-- Then we iteratively join clusters which are close to each other to form a cluster
-
-To that end we first build the **distance matrix**. It is a symmetric $n \times n$ matrix where each entry is the **Euclidean distance** between two cases. 
-
-## Hierarchical clustering: Step 1
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/a8deb407-0aac-4eec-bf06-9eff89ec60f4_rw_1920.jpg?h=ba48313c2b9793700c204592c545d366)
+`r nrow(galton)` estimates, [true value]{style="color:green;"} 1198, [mean]{style="color:red;"} `r round(mean((galton$Estimate)), digits=1)`
 
 ::: aside
-From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
+We focus on the arithmetic mean as aggregation function for the wisdom of the crowd here. 
 :::
 
 
-## Hierarchical clustering: Step 2
+## RMSE Galton's data {.smaller}
 
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/23f5ebe7-5108-43d4-8ee3-e21bcc90368c_rw_1920.jpg?h=dfefdbcba3b07bbd3b21847d6989878e)
+Describe the estimation game as a predictive model:
 
-::: aside
-From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
-:::
-
-## Hierarchical clustering: Step 3
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/8be02f8f-296d-4b8d-9bd1-b05f9b82bd0e_rw_1920.jpg?h=f28b9120a354e7ffebec309fecf6cd42)
-
-::: aside
-From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
-:::
-
-## Hierarchical clustering: Step 4
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/55463c7d-d414-49ac-a229-23420caf6a17_rw_1920.jpg?h=5e9f3867df8550e0b013cf82009f0002)
-
-::: aside
-From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
-:::
-
-
-## Hierarchical clustering: Step 5
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/393b3b7a-47d9-47b7-8e39-61264d37561a_rw_1920.jpg?h=8c22aaae3262f253cb7ca2ab23be3085)
-
-::: aside
-From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
-:::
-
-
-## Hierarchical clustering: Step 6
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/aa0be35e-89c6-4b82-8aba-d261c2c2d061_rw_1920.jpg?h=6a93d982b2832cc53fa3e207fa9243bc)
-
-::: aside
-From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
-:::
-
-
-
-## Hierarchical clustering: Step 7
-
-![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/0310beae-ab04-49a8-ab09-ba73d727ed02_rw_1920.jpg?h=65b0e4106a62ecea3476414db247dfdf)
-
-::: aside
-From <https://allisonhorst.com/agglomerative-hierarchical-clustering>
-:::
-
-
-## Calculate hierarchical clustering in R {.smaller}
-
-- First compute the distance matrix (entry $i,j$ is the distance between case $i$ and case $j$)
-
-```{r}
-#| echo: true 
-peng_transformed |> dist(method = "euclidean") 
-```
-
-## Calculate hierarchical clustering in R {.smaller}
-
-- `hclust` from base-R
-
-```{r}
-#| echo: true 
-peng_df <- as.data.frame(peng_transformed) # base-R data.frame 
-#row.names(peng_df) <- peng_df$iso_code # base-R way to have row names for hclust
-hc_peng <- peng_df |> dist(method = "euclidean") |> hclust()
-hc_peng
-glimpse(hc_peng)
-```
-
-
-## Plot the dendrogram {.smaller}
-
-```{r}
-#| echo: true 
-plot(hc_peng, cex = 0.4) # base-R way of plotting hclust object
-```
-
-## Plot height of hierarchy steps {.smaller}
-
-- Now we start looking at the *height* from the top.
-- Height at $x$ is the Euclidean distance which needs to be bridged to join the closest two clusters from the $x+1$-cluster solution to get the $x$-cluster solution. We should not cut where the increase in height is marginal.
-
-
-```{r}
-#| echo: true 
-tibble(height = hc_peng$height |> tail(10), # last ten values of height
-       num_cluster = 10:1) |> 
- ggplot(aes(num_cluster,height)) + geom_point() + geom_line()
-```
-
-- Empirically, we do not see clear cut points in this case. 
-
-
-## Dendrogram with cutpoints {.smaller}
-
-```{r}
-#| echo: true 
-plot(hc_peng, cex = 0.4) # base-R way of plotting hclust object
-rect.hclust(hc_peng, k = 3) # base-R way of plotting in an existing plot
-rect.hclust(hc_peng, k = 6)
-```
-
-## Visualization: Clusters and continents {.smaller}
-
-Use `cutree`. 
+- All *estimates* are made to predict the same value: the truth. 
+  - In contrast to the regression model, the estimate come from people and not from a regression formula.
+- The *truth* is the same for all.
+  - In contrast to the regression model, the truth is one value and not a value for each prediction
 
 ```{r}
 #| echo: true
-peng_transformed |> mutate(species = na.omit(penguins)$species,
-                           sex = na.omit(penguins)$sex,
-                           hclust3 = cutree(hc_peng, k = 3),
-                           hclust4 = cutree(hc_peng, k = 4),
-                           hclust6 = cutree(hc_peng, k = 6)) |> 
- pivot_longer(c(hclust3,hclust4,hclust6)) |> 
- ggplot(aes(value, fill = species, alpha = sex)) + geom_bar() + 
- facet_wrap(~name, scales = "free_x") + 
- scale_alpha_discrete(range = c(0.6,1)) + theme_minimal(base_size = 24)
+rmse_galton <- galton |> 
+ mutate(true_value = 1198) |>
+ rmse(truth = true_value, Estimate)
+rmse_galton
 ```
 
-## Clustering Summary {.smaller}
+<!-- ## Regression vs. crowd estimation {.smaller} -->
 
-::: {.incremental}
-- We have seen two clustering methods: k-means and hierarchical clustering.
-- k-means is a partitioning method, hierarchical clustering is a nested method.
-- k-means clusterings may differ from run to run, hierarchical clusterings uniquely deliver a hierarchy of clusters
-- However, hierarchical clusterings may change substantially with time changes in the data (not practically shown here)
-- The choice of the number of clusters is a difficult one. There are some quantitative methods (not shown in detail), but in the end it often involves qualitative criteria.
+<!-- The linear regression and the crowd estimation problems are similar but not identical! -->
+
+<!-- |Variable      | Linear Regression Model                       | Crowd estimation -->
+<!-- |--------------|-----------------------------------------------|-------------------------------------------- -->
+<!-- | $y_i$        | Data point of response variable               | True value, uniform for all estimators $y_i = y$ -->
+<!-- | $\hat{y}_i$  | Predicted value $\hat{y}_i=b_0+b_1+x_1+\dots$ | Estimate of one estimator -->
+<!-- | $\bar{y}$    | Mean of response variable                     | Mean of estimates  -->
+
+
+## MSE, Variance, and Bias of estimates {.smaller}
+
+In a crowd estimation, $n$ estimators delivered the estimates $\hat{y}_1,\dots,\hat{y}_n$. 
+Let us look at the following measures
+
+- $\bar{y} = \frac{1}{n}\sum_{i = 1}^n \hat{y}_i^2$ is the mean estimate, it is the aggregated estimate of the crowd
+
+- $\text{MSE} = \text{RMSE}^2 = \frac{1}{n}\sum_{i = 1}^n (\text{truth} - \hat{y}_i)^2$
+  
+- $\text{Variance} = \frac{1}{n}\sum_{i = 1}^n (\hat{y}_i - \bar{y})^2$ 
+
+- $\text{Bias-squared} = (\bar{y} - \text{truth})^2$ which is the square difference between truth and mean estimate. 
+
+There is a mathematical relation (a math exercise to check):
+
+$$\text{MSE} = \text{Bias-squared} + \text{Variance}$$
+
+## Testing for Galton's data {.smaller}
+
+$$\text{MSE} = \text{Bias-squared} + \text{Variance}$$
+
+```{r}
+#| echo: true
+MSE <- (rmse_galton$.estimate)^2 
+MSE
+Variance <- var(galton$Estimate)*(nrow(galton)-1)/nrow(galton)
+# Note, we had to correct for the divisor (n-1) in the classical statistical definition
+# to get the sample variance instead of the estimate for the population variance
+Variance
+Bias_squared <- (mean(galton$Estimate) - 1198)^2
+Bias_squared
+
+Bias_squared + Variance
+```
+
+::: aside
+Such nice mathematical properties are probably one reason why these squared measures are so popular. 
 :::
+
+
+## The diversity prediction theorem^[Notion from: Page, S. E. (2007). The Difference: How the Power of Diversity Creates Better Groups, Firms, Schools, and Societies. Princeton University Press.] {.smaller}
+
+- *MSE* is a measure for the average **individuals error**
+- *Bias-squared* is a measure for the **collective error**
+- *Variance* is a measure for the **diversity** of estimates around the mean estimate
+
+The mathematical relation $$\text{MSE} = \text{Bias-squared} + \text{Variance}$$ can be formulated as 
+
+**Collective error = Individual error - Diversity**
+
+Interpretation: *The higher the diversity the lower the collective error!*
+
+
+## Why is this message a bit suggestive? {.smaller}
+
+The mathematical relation $$\text{MSE} = \text{Bias-squared} + \text{Variance}$$ can be formulated as 
+
+**Collective error = Individual error - Diversity**
+
+Interpretation: *The higher the diversity the lower the collective error!*
+
+. . . 
+
+- $\text{MSE}$ and $\text{Variance}$ are not independent! 
+- Activities to increase diversity (Variance) typically also increase the average individual error (MSE).
+- For example, if we just add more random estimates with same mean but wild variance to our sample we increase both and do not gain any decrease of the collective error.
+
+
+## Accuracy for numerical estimate {.smaller}
+
+- For binary classifiers **accuracy** has a simple definition: Fraction of correct classifications. 
+  - It can be further informed by other more specific measures taken from the confusion matrix (sensitivity, specificity)
+
+How about numerical estimators?   
+For example outcomes of estimation games, or linear regression models? 
 
 . . .
 
-Tip: For visualization purposes it could make sense to plot the data in principal component space with dimensions PC1 and PC2 and on top show the clustering with colors. 
+- Accuracy is for example measured by (R)MSE
+- $\text{MSE} = \text{Bias-squared} + \text{Variance}$ shows us that we can make a  
+**bias-variance decomposition**
+- That means some part of the error is a systematic (the bias) and another part due to random variation (the variance).
+- The bias-variance tradeoff is also an important concept in statistical learning! 
+
+
+## 2-d Accuracy: Trueness and Precision {.smaller}
+
+According to ISO 5725-1 Standard: *Accuracy (trueness and precision) of measurement methods and results - Part 1: General principles and definitions.* there are two dimension of accuracy of numerical measurement. 
+
+![](https://upload.wikimedia.org/wikipedia/commons/9/92/Accuracy_%28trueness_and_precision%29.svg) ![](img/accuracy_trueness_precision.png){height="300px"}
 
 
 
+## What is a wise crowd? {.smaller}
 
+Assume the dots are estimates. **Which is a wise crowd?**
+
+![](img/accuracy_trueness_precision.png){height="300px"}
+
+. . . 
+
+- Of course, high trueness and high precision! But, ...
+- Focusing on the **crowd** being wise instead of its **individuals**: High trueness, low precision. 
+
+
+
+# Bias-variance trade-off in a script
+
+`penguins_bias_variance.R`
 
 

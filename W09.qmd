@@ -1,5 +1,5 @@
 ---
-title: "W#09: Hypothesis Testing"
+title: "W#09: Hypothesis Testing, Classification and Regression with Decision Trees, Overfitting"
 author: Jan Lorenz
 format: 
   revealjs: 
@@ -9,7 +9,7 @@ format:
     slide-number: true
     chalkboard: 
       buttons: true
-    preview-links: true
+    preview-links: false
     logo: img/ConstructorUniversity.png
     footer: "MDSSB-DSCO-02: Data Science Concepts"
 bibliography: "/home/janlo/Documents/literature/litlorenz_zot.bib"
@@ -172,7 +172,7 @@ sim1
 sum(sim1 == "complication")/62
 ```
 
-Oh OK, this was is pretty close to the consultant's rate. But maybe it was a rare event?
+Oh OK, this was exactly the consultant's rate. But maybe it was a rare event? Let us repeat it. 
 
 ## More simulation! {.smaller}
 
@@ -234,7 +234,7 @@ ggplot(data = null_dist, mapping = aes(x = stat)) +
 
 ## Calculating the p-value, visually {.smaller}
 
-**What is the p-value:**^[The name p-value has nothing to do with the value $p$ we are currently trying to use as population parameter.] *How often was the simulated sample proportion at least as extreme as the observed sample proportion?*
+**What is the p-value:** *How often was the simulated sample proportion at least as extreme as the observed sample proportion?*^[This a one-sided hypothesis test because we are looking for extremely lower rates not also extremely higher rates. We do one-sided test if we know the direction of interest, here "low" and "lower" rates.]
 
 ```{r}
 #| echo: true
@@ -678,7 +678,7 @@ peng_linreg_fit |> tidy()
 . . . 
 
 
-**Categorical predictors:** We 3 `species`, 3 `island` and 2 `sex`. So, we see
+**Categorical predictors:** We have 3 `species`, 3 `island` and 2 `sex`. So, we see
 5 new variables. Species and sex are significant, but islands not.
 
 **Numerical predictors:** All 3 are significant.
@@ -864,9 +864,7 @@ The RMSE shows many grams predicted values deviate from the true value on averag
 
 ::: {.column width='50%'}
 
-**Linear Regression**
-
-Predict with testing data:
+**Linear Regression** Predict with test data:
 ```{r}
 #| echo: true
 predict(peng_linreg_fit, peng_test) |> bind_cols(peng_test) |> 
@@ -883,9 +881,7 @@ predict(peng_linreg_fit, peng_train) |> bind_cols(peng_train) |>
 
 ::: {.column width='50%'}
 
-**Decision Tree Regression**
-
-Predict with testing data:
+**Decision Tree** Predict with test data:
 ```{r}
 #| echo: true
 predict(peng_regtree_fit, peng_test) |> bind_cols(peng_test) |> 
@@ -989,10 +985,11 @@ peng_regtree_deep_fit |>
 
 ## More in an R-script
 
-- Overfitting in a spam prediciton model
+- Overfitting in spam predicton models.
 
 - From decision trees to random forrests. 
 
+Move to the [script](https://raw.githubusercontent.com/CU-F24-MDSSB-01-Concepts-Tools/Website/refs/heads/main/emails_decision_tree_overfitting_randomforrest.r).
 
 
 

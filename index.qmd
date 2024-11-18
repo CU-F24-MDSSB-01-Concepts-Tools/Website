@@ -13,10 +13,12 @@ You are free to also use the material provided here, but look in the handbook an
 :::
 
 
-:::{.callout-important collapse=true appearance='default' icon=true}
+:::{.callout-important collapse=false appearance='default' icon=true}
 ## Developing Syllabus
 This syllabus may change during the course of the semester with some additions and clarifications.   
 All substantial changes will marked here with date. 
+
+[Update Nov 10, 2024: **Specification of module passing requirement for Data Science Tools!** (See below.)]{style='color:red;'} 
 
 [Important Links:]{style='color:red;'}    
 GitHub organization of the course: <https://github.com/CU-F23-MDSSB-01-Concepts-Tools>   
@@ -140,20 +142,39 @@ There are no additional achievements necessary and there are no bonus options.
 
 ### *Tools* Module
 
-Module achievement: **50% of the assignments correctly solved**   
+**Module achievement: 50% of the assignments correctly solved**   
 Programming and analysis assignments will appear step by step during the courses.   
 To pass the module you have to solve half of them by the end of the semester. 
 
 Assessment Type: **Project Report**   
-Length: 4000 - 5000 words (This is a guideline, not a strict rule! Content counts, we will not count words.)
-Weight: 100%
+Length: 4000 - 5000 words (This is a guideline, not a strict rule! Content counts, we will not count words.)  
+Weight: 100%  
 Scope: All intended learning outcomes of the module.  
 
 **More information of project formats and grading rubric:** [Final Projects](final.qmd)
 
-Bonus option: Students receive **0.33 points** grade improvements on their project grade on the numerical grade as specified in the [Grading Table](https://constructor.university/sites/default/files/2023-02/Grading_Table_2023.pdf) when all assignments are solved by the end of the semester.  (Note, the bonus is not necessary to reach the best grade in the module.)
+**Bonus option:** Students receive **0.33 points** grade improvements on their project grade on the numerical grade as specified in the [Grading Table](https://constructor.university/sites/default/files/2023-02/Grading_Table_2023.pdf) when all assignments are solved by the end of the semester.  (Note, the bonus is not necessary to reach the best grade in the module.)
 
 All assignments and the final project must be delivered in personalized repositories in the [GitHub organization](https://github.com/CU-F24-MDSSB-01-Concepts-Tools).
+
+
+[Update Nov 10, 2024:]{style='color:red;'}
+
+:::{.callout-important collapse=false appearance='default' icon=true}
+## Homework Specification for Passing and Bonus
+
+By the end of the semester, all Homework repositories will be assessed as 
+
+- "Just Passed" when half of the tasks are solved meaningfully,
+- "Passed" when almost all tasks are solved (some shortcomings are acceptable), 
+- "Bonus" when the solutions are great, or 
+- "Fail" when none of this has been achieved. 
+
+To **pass the module** (50% Module Achievement such that the student can be assessed on the final project) a student needs to have all Homework Projects at least as "Just Passed" (no "Fail"). However, a "Fail" in one Homework can be compensated by a another Homework being "Passed" or "Bonus". 
+
+To receive the **bonus** for the module assessments a student needs to have more than half of the Homework Projects at "Bonus" and all others at "Passed" (no "Fail" or "Just Passed").  
+:::
+
 
 
 ## Module Policies
@@ -173,14 +194,15 @@ All involved parties (professors and lecturers, instructors and students) are ex
 
 ## Artifical Intelligence (AI) Use Policy
 
-This policy covers any generative AI tool, such as ChatGPT, Elicit, etc. This includes text, code, slides, artwork/graphics/video/audio and other products.
+This policy covers any generative AI tool, such as ChatGPT, Elicit, Gemini, Claude, CoPilot, etc. This includes text, code, slides, artwork/graphics/video/audio and other products.
 
-We instructors encouraged to using and exploring AI tools for these purposes: 
+We instructors encourage exploring AI tools for these purposes: 
 
-  - **Learning by dialog with a chatbot.** AI chatbots can be very helpful to explain you concepts *on your desired level* and get a feeling about how certain topics are treated. You can ask for an easier or more detailed explanation or focus on certain aspects. Note: The capabilities are limited and you likely receive a lot of false information! An AI chat can be a good entry point to learn about a specific topic but the more specific it gets the more likely it is that AI will start to deliver useless or wrong answers. Using chatbots should remain a small part of your learning process. Rule of thumb: Spend not more than 25% of the learning time with chatting. There is no way around reading textbooks, reading software documentation, learning and understanding concepts, searching for help online, asking instructors or fellow students.
-  - **Have code snippets written.** Tools like GitHub Copilot can be a great help in coding! You are encouraged to have them available and try them. The GitHub Copilot is free to use for students and teachers who joined [GitHub Education](https://github.com/education)), they can be integrated in your programming IDE like RStudio and VSCode. Copilots can speed up writing. However, they may deliver bad code. There is no way around understanding yourself what code is doing! Do not spend endless hours asking for new code with new prompts, spend time understanding a language and the functions and objects you are using! AI chatbots and Copilots can also help you to understand code. Copilots can be a great help to get a skeleton of code and an idea how your solution *might* look, they rarely deliver the complete code, expect that the code does not work, expect that the code seems to works but the results are wrong. **You are 100% accountable for the code you produce, with or without the help of a copilot!**
-  - **Have a draft text snippet written.** Formulating and describing research questions, describing data, documenting code, interpreting results, and deriving conclusion form the results is an essential part of data science not direclty related to coding but verbal text. Chatbots are good in writing text which often appears as well readable. You can use this to inspire you and to polish and improve your texts. However, you are 100% accountable for the text you deliver. You are expected to know what your text is about and to be able to answer questions about what your text means! With text generated purely by chatbots, it is oftenn evident for us that students do not understand. We consider such cases worse than incomplete but sensible self-written text. Text written by chatbots is often very generic and not specific. In general, we value more specific text higher than generic text. Large parts of very generic text is considered worse than a shorter more specific text. 
-  - Note: **Philosophical and legal questions around the training and use of chatbots and code copilots are controversially contested and re-examined constantly!** We encourage to engage with such questions and become aware of arguments and debates.
+  - **Learning by dialog with a chatbot.** AI chatbots can be helpful to explain you concepts *on your desired level* and get a feeling about how topics are treated. You can ask for an easier or more detailed explanation or focus on certain aspects. Note: The capabilities are limited and you likely receive also false information! An AI chat can be a good entry point to learn about a specific topic but the more specific it gets the more likely it is that AI will start to deliver useless or wrong answers. Using chatbots should remain a small part of your learning process. Rule of thumb: Spend not more than 25% of the learning time with chatting with AI. There is no way around reading textbooks, reading software documentation, learning and understanding concepts, searching for help online, asking instructors or fellow students.
+  - **Have code snippets written.** Tools like GitHub Copilot can be a great help in coding! Try them, many coders do it. Maybe the GitHub Copilot is stil free to use for students and teachers who join [GitHub Education](https://github.com/education)), they can be integrated in your programming IDE like RStudio and VSCode. Copilots can speed up writing. However, they may deliver bad code. There is no way around understanding yourself what code is doing! Do not spend endless hours asking for new code with new prompts, spend time understanding a language and the functions and objects you are using! AI chatbots and Copilots can also help you to understand code. Copilots can be a great help to get a skeleton of code and an idea how your solution *might* look. They rarely deliver the complete code. Expect that the code does not work, expect that the code seems to works but the results are wrong! [You are 100% accountable for the code you produce, with or without the help of a copilot!]{style='color:red;'} When a task in a Homework project can be well solved by Copilot we are happy if you drop us a note, same when it is totally off, it is interesting to explore what AI can do well and what not. 
+  - **Have a draft text snippet written.** Formulating and describing research questions, describing data, documenting code, interpreting results, and deriving conclusion form the results is an essential part of data science. Chatbots are good in writing text which appears well readable. You can use this to inspire you and to polish and improve your texts. However, you are 100% accountable for the text you deliver. You are expected to know what your text is about and to be able to answer questions about what your text means! With text generated purely by chatbots, it is often evident for us that students do not understand. We consider such cases worse than incomplete but sensible self-written text. Text written by chatbots is often very generic and not specific. In general, we value more specific text higher than generic text. [Long generic text is considered **worse** than a shorter more specific text.]{style='color:red;'} 
+
+Note: **Philosophical and legal questions around the training and use of chatbots and code copilots are controversially contested and re-examined constantly!** We encourage to engage with such questions and become aware of arguments and debates.
 
 If any part of this AI policy is confusing or uncertain, please reach out to us for a conversation before submitting your work.
 

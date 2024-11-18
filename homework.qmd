@@ -18,8 +18,8 @@ As a registered student, you find personalized repositories for your Homework Pr
 1. NYCFlights
 2. DataScienceProfiles
 3. COVID19
-4. *In preparation:* FuelWatch 
-5. *In preparation:* Finance
+4. FuelWatch 
+5. Stock
 
 Please read the next sections. 
 
