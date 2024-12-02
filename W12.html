@@ -520,7 +520,7 @@ Jan Lorenz
 <h2>Matrices and Vectors</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>The elements of an <span class="math inline">\(m\)</span>-by-<span class="math inline">\(n\)</span> matrix</p>
+<p>The elements<sup>1</sup> of an <span class="math inline">\(m\)</span>-by-<span class="math inline">\(n\)</span> matrix <span class="math inline">\(A\)</span></p>
 <p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/MatrixLabelled.svg/330px-MatrixLabelled.svg.png"></p>
 <div class="fragment">
 <p>A matrix can be interpreted</p>
@@ -540,7 +540,7 @@ Jan Lorenz
 <p>Convention: If a vector is not specified as row or column it is usually treated as columns if that is relevant.</p>
 </div>
 </div></div>
-</section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Convention: Capital letters for matrices (<span class="math inline">\(A\)</span>), small letters for their elements (<span class="math inline">\(a_{ij}\)</span>)</p></li></ol></aside></section>
 <section id="square-and-diagonal-matrices" class="slide level2" data-background-color="aquamarine">
 <h2>Square and Diagonal Matrices</h2>
 <div class="columns">
@@ -550,7 +550,7 @@ Jan Lorenz
 <li>A <strong>diagonal matrix</strong> is a matrix where all elements outside the main diagonal are zero.<br>
 <span class="math inline">\(\left[\begin{array}{ccc}
 a_{11} &amp;  &amp; 0 \\
-&amp; 0 \ddots &amp;  \\
+&amp; &amp; \ddots &amp;  \\
 0 &amp;  &amp; a_{nn} \\
 \end{array}\right]\)</span></li>
 <li>The <strong>identity matrix</strong><br>
@@ -623,6 +623,7 @@ a_{11} &amp;  &amp; 0 \\
 <li>Transposes of vectors make rows to columns and vice versa
 <ul>
 <li>When <span class="math inline">\(x\)</span> is a row vector <span class="math inline">\(x^T\)</span> is a column vector</li>
+<li><span style="color:blue;"><strong>For Data Frames:</strong> Transposition makes every case a variables and every variable a case.</span></li>
 </ul></li>
 <li>Interesting behavior in R (an atomic vector becomes a matrix)</li>
 </ul>
@@ -1448,7 +1449,7 @@ bill_depth_mm   -1.62201792</code></pre>
 </div></div>
 <p><span style="color:blue;">These are typical problems of <em>combinatorics</em>, the <strong>theory of counting</strong>.</span></p>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Mathematicall called “n choose k” <span class="math inline">\({n \choose k} =\frac{n!}{(n-k)!k!}\)</span>. Here: <span class="math inline">\({5\choose 2}\)</span>.</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>Mathematicall called “n choose k” <span class="math inline">\({n \choose k} =\frac{n!}{(n-k)!k!}\)</span>. Here: <span class="math inline">\({5\choose 2}\)</span>.</p></li></ol></aside></section>
 <section id="probability-function" class="slide level2 smaller" data-background-color="aquamarine">
 <h2>Probability function</h2>
 <p><strong>Definition:</strong> A set of all events a function <span class="math inline">\(\text{Pr}: \text{Set of all subsets of $S$} \to \mathbb{R}\)</span> is a <strong>probability function</strong> when</p>
@@ -1549,7 +1550,7 @@ bill_depth_mm   -1.62201792</code></pre>
 <p>Here TP, TN, FP, FN are the numbers of true positives, true negatives, false positives, and false negatives.</p>
 <p>We can define fraction/probabilities for all the events <span class="math inline">\(P, N, PP, PTP, FP, FN, TN\)</span> by dividing by <span class="math inline">\(n = TP + FP + FN + TN\)</span>.<sup>1</sup></p>
 <p>For example: <span class="math inline">\(\text{Pr}(TP) = \frac{TP}{n}\)</span>, <span class="math inline">\(\text{Pr}(P) = \frac{P}{n}\)</span>, <span class="math inline">\(\text{Pr}(PP) = \frac{PP}{n}\)</span>, …</p>
-<aside><ol class="aside-footnotes"><li id="fn2"><p>Warning: <span class="math inline">\(n\)</span> is the total population, <span class="math inline">\(N\)</span> the number of negatives.</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>Warning: <span class="math inline">\(n\)</span> is the total population, <span class="math inline">\(N\)</span> the number of negatives.</p></li></ol></aside></section>
 <section id="as-conditional-probabilities" class="slide level2 smaller" data-background-color="aquamarine">
 <h2>… as conditional probabilities</h2>
 <p>Sensitivity and specificity are conditional probabilities:</p>

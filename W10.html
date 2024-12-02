@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Jan Lorenz">
-  <title>Data Science Concepts / Data Science Tools – W#10: Overfitting, Clustering Algorithms, Bias and Diversity in Crowd Wisdom</title>
+  <title>Data Science Concepts / Data Science Tools – W#10: Overfitting, Clustering Algorithms</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -393,7 +393,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">W#10: Overfitting, Clustering Algorithms, Bias and Diversity in Crowd Wisdom</h1>
+  <h1 class="title">W#10: Overfitting, Clustering Algorithms</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -411,7 +411,6 @@ Jan Lorenz
 <li><a href="#/cluster-analysis" id="/toc-cluster-analysis">Cluster Analysis</a></li>
 <li><a href="#/k-means-clustering" id="/toc-k-means-clustering">k-means clustering</a></li>
 <li><a href="#/hierarchical-clustering" id="/toc-hierarchical-clustering">Hierarchical clustering</a></li>
-<li><a href="#/wisdom-of-the-crowd-bias-and-diversity" id="/toc-wisdom-of-the-crowd-bias-and-diversity">Wisdom of the crowd, Bias and Diversity</a></li>
 </ul>
 </nav>
 </section>
@@ -1066,7 +1065,7 @@ Example: In a logistic regression, we assume the binary outcomes are realized ra
   .. ..$ ordered: logi NA
  $ fit_times     : tibble [6 × 2] (S3: tbl_df/tbl/data.frame)
   ..$ stage_id: chr [1:6] "prep.rm_yulwk" "bake.rm_yulwk" "prep.center_3eO03" "bake.center_3eO03" ...
-  ..$ elapsed : num [1:6] 0.001 0 0.002 0 0.002 ...
+  ..$ elapsed : num [1:6] 0.001 0 0.002 0.001 0.002 ...
  $ last_term_info: gropd_df [8 × 6] (S3: grouped_df/tbl_df/tbl/data.frame)
   ..$ variable: chr [1:8] "bill_depth_mm" "bill_length_mm" "body_mass_g" "flipper_length_mm" ...
   ..$ type    :List of 8
@@ -16015,167 +16014,6 @@ Number of objects: 333 </code></pre>
 </div>
 <div class="fragment">
 <p>Tip: For visualization purposes it could make sense to plot the data in principal component space with dimensions PC1 and PC2 and on top show the clustering with colors.</p>
-</div>
-</section></section>
-<section>
-<section id="wisdom-of-the-crowd-bias-and-diversity" class="title-slide slide level1 center">
-<h1>Wisdom of the crowd, Bias and Diversity</h1>
-
-</section>
-<section id="galtons-data" class="slide level2 smaller">
-<h2>Galton’s data</h2>
-<p><em>What is the weight of the meat of this ox?</em></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a></a><span class="fu">library</span>(readxl)</span>
-<span id="cb84-2"><a></a>galton <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/galton.csv"</span>)</span>
-<span id="cb84-3"><a></a>galton <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Estimate)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1198</span>, <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span> </span>
-<span id="cb84-4"><a></a> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(galton<span class="sc">$</span>Estimate), <span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W10_files/figure-revealjs/unnamed-chunk-32-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>787 estimates, <span style="color:green;">true value</span> 1198, <span style="color:red;">mean</span> 1196.7</p>
-
-<aside><div>
-<p>We focus on the arithmetic mean as aggregation function for the wisdom of the crowd here.</p>
-</div></aside></section>
-<section id="rmse-galtons-data" class="slide level2 smaller">
-<h2>RMSE Galton’s data</h2>
-<p>Describe the estimation game as a predictive model:</p>
-<ul>
-<li>All <em>estimates</em> are made to predict the same value: the truth.
-<ul>
-<li>In contrast to the regression model, the estimate come from people and not from a regression formula.</li>
-</ul></li>
-<li>The <em>truth</em> is the same for all.
-<ul>
-<li>In contrast to the regression model, the truth is one value and not a value for each prediction</li>
-</ul></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a></a>rmse_galton <span class="ot">&lt;-</span> galton <span class="sc">|&gt;</span> </span>
-<span id="cb85-2"><a></a> <span class="fu">mutate</span>(<span class="at">true_value =</span> <span class="dv">1198</span>) <span class="sc">|&gt;</span></span>
-<span id="cb85-3"><a></a> <span class="fu">rmse</span>(<span class="at">truth =</span> true_value, Estimate)</span>
-<span id="cb85-4"><a></a>rmse_galton</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 3
-  .metric .estimator .estimate
-  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-1 rmse    standard        73.6</code></pre>
-</div>
-</div>
-<!-- ## Regression vs. crowd estimation {.smaller} -->
-<!-- The linear regression and the crowd estimation problems are similar but not identical! -->
-<!-- |Variable      | Linear Regression Model                       | Crowd estimation -->
-<!-- |--------------|-----------------------------------------------|-------------------------------------------- -->
-<!-- | $y_i$        | Data point of response variable               | True value, uniform for all estimators $y_i = y$ -->
-<!-- | $\hat{y}_i$  | Predicted value $\hat{y}_i=b_0+b_1+x_1+\dots$ | Estimate of one estimator -->
-<!-- | $\bar{y}$    | Mean of response variable                     | Mean of estimates  -->
-</section>
-<section id="mse-variance-and-bias-of-estimates" class="slide level2 smaller">
-<h2>MSE, Variance, and Bias of estimates</h2>
-<p>In a crowd estimation, <span class="math inline">\(n\)</span> estimators delivered the estimates <span class="math inline">\(\hat{y}_1,\dots,\hat{y}_n\)</span>. Let us look at the following measures</p>
-<ul>
-<li><p><span class="math inline">\(\bar{y} = \frac{1}{n}\sum_{i = 1}^n \hat{y}_i^2\)</span> is the mean estimate, it is the aggregated estimate of the crowd</p></li>
-<li><p><span class="math inline">\(\text{MSE} = \text{RMSE}^2 = \frac{1}{n}\sum_{i = 1}^n (\text{truth} - \hat{y}_i)^2\)</span></p></li>
-<li><p><span class="math inline">\(\text{Variance} = \frac{1}{n}\sum_{i = 1}^n (\hat{y}_i - \bar{y})^2\)</span></p></li>
-<li><p><span class="math inline">\(\text{Bias-squared} = (\bar{y} - \text{truth})^2\)</span> which is the square difference between truth and mean estimate.</p></li>
-</ul>
-<p>There is a mathematical relation (a math exercise to check):</p>
-<p><span class="math display">\[\text{MSE} = \text{Bias-squared} + \text{Variance}\]</span></p>
-</section>
-<section id="testing-for-galtons-data" class="slide level2 smaller">
-<h2>Testing for Galton’s data</h2>
-<p><span class="math display">\[\text{MSE} = \text{Bias-squared} + \text{Variance}\]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a></a>MSE <span class="ot">&lt;-</span> (rmse_galton<span class="sc">$</span>.estimate)<span class="sc">^</span><span class="dv">2</span> </span>
-<span id="cb87-2"><a></a>MSE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 5409.795</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a></a>Variance <span class="ot">&lt;-</span> <span class="fu">var</span>(galton<span class="sc">$</span>Estimate)<span class="sc">*</span>(<span class="fu">nrow</span>(galton)<span class="sc">-</span><span class="dv">1</span>)<span class="sc">/</span><span class="fu">nrow</span>(galton)</span>
-<span id="cb89-2"><a></a><span class="co"># Note, we had to correct for the divisor (n-1) in the classical statistical definition</span></span>
-<span id="cb89-3"><a></a><span class="co"># to get the sample variance instead of the estimate for the population variance</span></span>
-<span id="cb89-4"><a></a>Variance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 5408.132</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a></a>Bias_squared <span class="ot">&lt;-</span> (<span class="fu">mean</span>(galton<span class="sc">$</span>Estimate) <span class="sc">-</span> <span class="dv">1198</span>)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb91-2"><a></a>Bias_squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.663346</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a></a>Bias_squared <span class="sc">+</span> Variance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 5409.795</code></pre>
-</div>
-</div>
-
-<aside><div>
-<p>Such nice mathematical properties are probably one reason why these squared measures are so popular.</p>
-</div></aside></section>
-<section id="the-diversity-prediction-theorem" class="slide level2 smaller">
-<h2>The diversity prediction theorem<sup>1</sup></h2>
-<ul>
-<li><em>MSE</em> is a measure for the average <strong>individuals error</strong></li>
-<li><em>Bias-squared</em> is a measure for the <strong>collective error</strong></li>
-<li><em>Variance</em> is a measure for the <strong>diversity</strong> of estimates around the mean estimate</li>
-</ul>
-<p>The mathematical relation <span class="math display">\[\text{MSE} = \text{Bias-squared} + \text{Variance}\]</span> can be formulated as</p>
-<p><strong>Collective error = Individual error - Diversity</strong></p>
-<p>Interpretation: <em>The higher the diversity the lower the collective error!</em></p>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Notion from: Page, S. E. (2007). The Difference: How the Power of Diversity Creates Better Groups, Firms, Schools, and Societies. Princeton University Press.</p></li></ol></aside></section>
-<section id="why-is-this-message-a-bit-suggestive" class="slide level2 smaller">
-<h2>Why is this message a bit suggestive?</h2>
-<p>The mathematical relation <span class="math display">\[\text{MSE} = \text{Bias-squared} + \text{Variance}\]</span> can be formulated as</p>
-<p><strong>Collective error = Individual error - Diversity</strong></p>
-<p>Interpretation: <em>The higher the diversity the lower the collective error!</em></p>
-<div class="fragment">
-<ul>
-<li><span class="math inline">\(\text{MSE}\)</span> and <span class="math inline">\(\text{Variance}\)</span> are not independent!</li>
-<li>Activities to increase diversity (Variance) typically also increase the average individual error (MSE).</li>
-<li>For example, if we just add more random estimates with same mean but wild variance to our sample we increase both and do not gain any decrease of the collective error.</li>
-</ul>
-</div>
-</section>
-<section id="accuracy-for-numerical-estimate" class="slide level2 smaller">
-<h2>Accuracy for numerical estimate</h2>
-<ul>
-<li>For binary classifiers <strong>accuracy</strong> has a simple definition: Fraction of correct classifications.
-<ul>
-<li>It can be further informed by other more specific measures taken from the confusion matrix (sensitivity, specificity)</li>
-</ul></li>
-</ul>
-<p>How about numerical estimators?<br>
-For example outcomes of estimation games, or linear regression models?</p>
-<div class="fragment">
-<ul>
-<li>Accuracy is for example measured by (R)MSE</li>
-<li><span class="math inline">\(\text{MSE} = \text{Bias-squared} + \text{Variance}\)</span> shows us that we can make a<br>
-<strong>bias-variance decomposition</strong></li>
-<li>That means some part of the error is a systematic (the bias) and another part due to random variation (the variance).</li>
-<li>The bias-variance tradeoff is also an important concept in statistical learning.</li>
-</ul>
-</div>
-</section>
-<section id="d-accuracy-trueness-and-precision" class="slide level2 smaller">
-<h2>2-d Accuracy: Trueness and Precision</h2>
-<p>According to ISO 5725-1 Standard: <em>Accuracy (trueness and precision) of measurement methods and results - Part 1: General principles and definitions.</em> there are two dimension of accuracy of numerical measurement.</p>
-<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/9/92/Accuracy_%28trueness_and_precision%29.svg"> <img data-src="img/accuracy_trueness_precision.png" height="300"></p>
-</section>
-<section id="what-is-a-wise-crowd" class="slide level2 smaller">
-<h2>What is a wise crowd?</h2>
-<p>Assume the dots are estimates. <strong>Which is a wise crowd?</strong></p>
-<p><img data-src="img/accuracy_trueness_precision.png" height="300"></p>
-<div class="fragment">
-<ul>
-<li>Of course, high trueness and high precision! But, …</li>
-<li>Focusing on the <strong>crowd</strong> being wise instead of its <strong>individuals</strong>: High trueness, low precision.</li>
-</ul>
 
 <div class="quarto-auto-generated-content">
 <p><img src="img/ConstructorUniversity.png" class="slide-logo"></p>
@@ -16185,7 +16023,6 @@ For example outcomes of estimation games, or linear regression models?</p>
 </div>
 </div>
 </section></section>
-
     </div>
   </div>
 
